@@ -770,7 +770,8 @@ export class NativeStackController extends StackLifecycle {
           POSTGRES_IMAGE,
         ],
         signal,
-        { env: { POSTGRES_PASSWORD: password } },
+        // Burrow: `create` pulls the 152 MB database image first, which is slow on a phone hotspot.
+        { env: { POSTGRES_PASSWORD: password }, timeoutMs: IMAGE_PULL_TIMEOUT_MS },
       );
     }
     await writePrivateFile(this.dir(NATIVE_PORTS_FILE), JSON.stringify(ports));
@@ -845,12 +846,12 @@ export class NativeStackController extends StackLifecycle {
     cli: string,
     args: string[],
     signal: AbortSignal,
-    options: { env?: Record<string, string>; exists?: boolean } = {},
+    options: { env?: Record<string, string>; exists?: boolean; timeoutMs?: number } = {},
   ) {
     const result = await this.deps.run(cli, args, {
       cwd: this.deps.stackDir,
       env: { ...this.baseEnv(), ...options.env },
-      timeoutMs: CLI_TIMEOUT_MS,
+      timeoutMs: options.timeoutMs ?? CLI_TIMEOUT_MS,
       signal,
     });
     if (result.code === 0 || (options.exists && /already exists/i.test(result.stderr))) return;
