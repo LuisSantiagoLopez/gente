@@ -192,6 +192,8 @@ export class Brain {
   constructor(
     private readonly stackDirectory: string,
     private readonly onChange: (state: BrainState) => void,
+    /** Runs before "ready" when the default model changed, so the workspace restarts on it. */
+    private readonly onModelChanged: () => Promise<void> = async () => {},
   ) {
     this.state = {
       phase: "checking",
@@ -251,6 +253,8 @@ export class Brain {
       SWIFT_MODELS.findIndex((m) => m.tag === options.model || m.alias === options.model),
     );
     let firstFailure: string | undefined;
+    const failed = new Set<string>();
+    const before = await readSavedBrain(this.stackDirectory);
     for (let i = start; i < SWIFT_MODELS.length; i++) {
       const model = SWIFT_MODELS[i];
       if (model === undefined) break;
@@ -264,16 +268,21 @@ export class Brain {
       try {
         await this.prepare(model);
         const tags = await installedTags();
-        const installed = SWIFT_MODELS.filter((m) => hasTag(tags, m.alias)).map((m) => m.alias);
+        // A model that failed to load here is never offered again.
+        const installed = SWIFT_MODELS.filter(
+          (m) => hasTag(tags, m.alias) && !failed.has(m.alias),
+        ).map((m) => m.alias);
         const vision: string[] = [];
         for (const alias of installed) if (await hasVision(alias)) vision.push(alias);
         const saved: SavedBrain = { model: model.tag, alias: model.alias, installed, vision };
         await mkdir(this.stackDirectory, { recursive: true });
         await writeFile(brainFile(this.stackDirectory), `${JSON.stringify(saved, null, 2)}\n`);
+        if (before !== null && before.alias !== saved.alias) await this.onModelChanged();
         this.set({ phase: "ready" });
         return;
       } catch (error) {
         firstFailure ??= model.name;
+        failed.add(model.alias);
         this.set({ message: `${model.name}: ${errorText(error)}` });
       }
     }

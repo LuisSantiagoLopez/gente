@@ -21,6 +21,9 @@ export function registerBrainIpc(stackDirectory: string) {
   brain = new Brain(stackDirectory, (state) => {
     const win = desktop.setupWindow;
     if (win !== null && !win.isDestroyed()) win.webContents.send("desktop.setup.brain.changed", state);
+  }, async () => {
+    // The API and worker read the default model when they start.
+    if (desktop.localStack.managedStackRunning()) await desktop.localStack.stop();
   });
   handleIpc("desktop.setup.brain.state", () => (brain as Brain).current());
   handleIpc("desktop.setup.brain.start", (_event, options) => {

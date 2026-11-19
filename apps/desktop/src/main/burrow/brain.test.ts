@@ -69,6 +69,26 @@ describe("Burrow brain", () => {
     expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-compact"]);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
     expect(saved.alias).toBe("swift-1.5-27b-compact");
+    // The model that failed to load is not offered as a choice afterwards.
+    expect(saved.installed).toEqual(["swift-1.5-27b-compact"]);
+  });
+
+  it("restarts the workspace only when the person switches to another model", async () => {
+    const { brainModule, dir } = await setup();
+    let restarts = 0;
+    const brain = new brainModule.Brain(dir, () => {}, async () => {
+      restarts++;
+    });
+    await brain.start();
+    expect(restarts).toBe(0);
+    await brain.start();
+    expect(restarts).toBe(0);
+    await brain.start({ model: SMALL });
+    expect(brain.current().model.tag).toBe(SMALL);
+    expect(restarts).toBe(1);
+    const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
+    expect(saved.alias).toBe("swift-1.5-ornith-9b");
+    expect(saved.installed).toEqual(["swift-1.5-27b", "swift-1.5-ornith-9b"]);
   });
 
   it("starts from the model the person picks", async () => {

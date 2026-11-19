@@ -430,7 +430,7 @@
     renderModelChoices(state);
     const { phase, model } = state;
     brainSize.textContent = `${model.name} · ${model.sizeGB} GB`;
-    brainModels.hidden = !(phase === "checking" && !busyBrain) && phase !== "failed" && phase !== "ollama-missing";
+    brainModels.hidden = busyBrain || !["checking", "failed", "ollama-missing", "ready"].includes(phase);
     stepBrain.dataset.state =
       phase === "ready"
         ? "done"
@@ -497,7 +497,8 @@
 
   let busyBrain = false;
   async function runBrainThenStack() {
-    if (lastBrain?.phase === "ready") {
+    // A different model picked after setup runs the model step again.
+    if (lastBrain?.phase === "ready" && (chosenModel === null || chosenModel === lastBrain.model.tag)) {
       await runStack();
       return;
     }
