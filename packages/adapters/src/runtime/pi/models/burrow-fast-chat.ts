@@ -107,6 +107,9 @@ export function quickChatBody(
   const prefix = { ...parsed, messages: parsed.messages.slice(0, -1) };
   if (isSmallTalk(parsed.messages)) {
     const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
+    // One assistant, two engines: greetings go to the small fast model when Burrow set one.
+    const quick = process.env.BURROW_CHAT_MODEL?.trim();
+    if (quick) slim.model = quick;
     const messages = slim.messages as unknown[];
     return { body: JSON.stringify(slim), prefix, chatPrefix: { ...slim, messages: messages.slice(0, -1) } };
   }

@@ -29,7 +29,7 @@ export type SwiftModel = {
 const SWIFT_LADDER = [
   {
     tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M",
-    alias: "swift-1.5-27b",
+    alias: "swift-1.5-27b-max",
     name: "Swift 1.5 27B Max",
     sizeGB: 17.4,
     note: "Highest quality. Uses about 19 GB of memory.",
@@ -55,6 +55,8 @@ export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
  * 11 GB loaded). Max quality (Q4_K_M) and the small Ornith 9B are one click away in the picker.
  */
 export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[1];
+/** Answers greetings and small talk in about a second while a 27B handles real work. */
+export const QUICK_MODEL: SwiftModel = SWIFT_LADDER[2];
 
 /** Context Burrow asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
 export const SWIFT_CONTEXT = 32768;
@@ -83,6 +85,8 @@ export type BrainState = {
 export type SavedBrain = {
   model: string;
   alias: string;
+  /** The small model that answers greetings while the main 27B handles real work. */
+  chatAlias?: string;
   installed: string[];
   vision?: string[];
   /** True when the person picked this model; false when Burrow chose the default. */
@@ -114,6 +118,7 @@ export function swiftServerEnv(saved: SavedBrain | null): Record<string, string>
     RAKAZO_LOCAL_REASONING_MODELS: installed.join(","),
     RAKAZO_LOCAL_VISION_MODELS: (saved.vision ?? []).join(","),
     BURROW_FAST_CHAT: "on",
+    ...(saved.chatAlias && saved.chatAlias !== saved.alias ? { BURROW_CHAT_MODEL: saved.chatAlias } : {}),
     PI_DEFAULT_PROVIDER: "local",
     PI_DEFAULT_MODEL: saved.alias,
     PI_DEFAULT_CREDENTIALS: "host",
@@ -316,15 +321,17 @@ export async function moveToFastDefault(stackDirectory: string): Promise<boolean
     const vision = (await hasVision(DEFAULT_MODEL.alias))
       ? [DEFAULT_MODEL.alias, ...(saved.vision ?? [])]
       : (saved.vision ?? []);
+    const chatAlias = hasTag(tags, QUICK_MODEL.alias) ? QUICK_MODEL.alias : undefined;
     const next: SavedBrain = {
       model: DEFAULT_MODEL.tag,
       alias: DEFAULT_MODEL.alias,
       installed,
       vision,
       userPicked: false,
+      ...(chatAlias ? { chatAlias } : {}),
     };
     await writeFile(brainFile(stackDirectory), `${JSON.stringify(next, null, 2)}\n`);
-    await unloadModel(saved.alias);
+    if (saved.alias !== chatAlias) await unloadModel(saved.alias);
     return true;
   } catch {
     return false;
@@ -422,6 +429,18 @@ export class Brain {
       });
       try {
         await this.prepare(model);
+        // A 27B gets a quick partner for small talk; shown to the person as one assistant.
+        let chatAlias: string | undefined;
+        if (model.alias !== QUICK_MODEL.alias) {
+          try {
+            this.set({ model: QUICK_MODEL, completedBytes: 0, totalBytes: 0 });
+            await this.prepare(QUICK_MODEL);
+            chatAlias = QUICK_MODEL.alias;
+          } catch {
+            chatAlias = undefined;
+          }
+          this.set({ model });
+        }
         const tags = await installedTags();
         // A model that failed to load here is never offered again.
         const installed = SWIFT_MODELS.filter(
@@ -435,13 +454,14 @@ export class Brain {
           installed,
           vision,
           userPicked: picked >= 0 || kept >= 0,
+          ...(chatAlias ? { chatAlias } : {}),
         };
         await mkdir(this.stackDirectory, { recursive: true });
         await writeFile(brainFile(this.stackDirectory), `${JSON.stringify(saved, null, 2)}\n`);
         if (before !== null && before.alias !== saved.alias) {
           await this.onModelChanged();
           // Free the memory the previous model held; it loads again if picked.
-          await unloadModel(before.alias);
+          if (before.alias !== chatAlias) await unloadModel(before.alias);
         }
         this.set({ phase: "ready" });
         return;

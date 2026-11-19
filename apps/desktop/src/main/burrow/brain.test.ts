@@ -47,7 +47,8 @@ describe("Burrow brain", () => {
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(brain.current().model.tag).toBe(COMPACT);
-    expect(pulled(calls)).toEqual([COMPACT]);
+    // The 27B default also gets the quick model for small talk.
+    expect(pulled(calls)).toEqual([COMPACT, SMALL]);
     const create = calls.find((c) => c.path === "/api/create");
     expect(create?.body).toMatchObject({ model: "swift-1.5-27b-iq2xxs", from: COMPACT, parameters: { num_ctx: 32768 } });
     expect(states.some((s) => s.phase === "pulling" && s.totalBytes === 1000)).toBe(true);
@@ -55,12 +56,12 @@ describe("Burrow brain", () => {
     expect(saved).toMatchObject({ model: COMPACT, alias: "swift-1.5-27b-iq2xxs", userPicked: false });
   });
 
-  it("uses the picked 27B, and never touches a smaller one when it loads", async () => {
+  it("uses the picked 27B, never falls back when it loads, and adds the quick small-talk model", async () => {
     const { brain, calls } = await setup();
     await brain.start({ model: BEST });
     expect(brain.current().model.tag).toBe(BEST);
     expect(brain.current().switchedFrom).toBeUndefined();
-    expect(pulled(calls)).toEqual([BEST]);
+    expect(pulled(calls)).toEqual([BEST, SMALL]);
   });
 
   it("switches to the next smaller Swift only after the picked one really fails to load", async () => {
@@ -70,16 +71,17 @@ describe("Burrow brain", () => {
     expect(state.phase).toBe("ready");
     expect(state.model.tag).toBe(COMPACT);
     expect(state.switchedFrom).toBe("Swift 1.5 27B Max");
-    expect(pulled(calls)).toEqual([BEST, COMPACT]);
+    expect(pulled(calls)).toEqual([BEST, COMPACT, SMALL]);
     const loads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive !== 0).map((c) => c.body.model);
-    expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-iq2xxs"]);
+    expect(loads).toEqual(["swift-1.5-27b-max", "swift-1.5-27b-iq2xxs", "swift-1.5-ornith-9b"]);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
     expect(saved.alias).toBe("swift-1.5-27b-iq2xxs");
-    expect(saved.installed).toEqual(["swift-1.5-27b-iq2xxs"]);
+    expect(saved.installed).toEqual(["swift-1.5-27b-iq2xxs", "swift-1.5-ornith-9b"]);
+    expect(saved.chatAlias).toBe("swift-1.5-ornith-9b");
   });
 
   it("does not download again when the model is already there", async () => {
-    const { brain, calls } = await setup({ installed: [COMPACT] });
+    const { brain, calls } = await setup({ installed: [COMPACT, SMALL] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(pulled(calls)).toEqual([]);
@@ -115,10 +117,10 @@ describe("Burrow brain", () => {
     const { brainModule, dir } = await setup({ installed: [COMPACT] });
     const file = path.join(dir, "burrow-model.json");
     const { writeFile } = await import("node:fs/promises");
-    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"] }));
+    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b-max", installed: ["swift-1.5-27b-max"] }));
     expect(await brainModule.moveToFastDefault(dir)).toBe(true);
     expect(JSON.parse(await readFile(file, "utf8"))).toMatchObject({ alias: "swift-1.5-27b-iq2xxs", userPicked: false });
-    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: [], userPicked: true }));
+    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b-max", installed: [], userPicked: true }));
     expect(await brainModule.moveToFastDefault(dir)).toBe(false);
   });
 
@@ -127,14 +129,14 @@ describe("Burrow brain", () => {
     const env = brainModule.swiftServerEnv({
       model: SMALL,
       alias: "swift-1.5-ornith-9b",
-      installed: ["swift-1.5-ornith-9b", "swift-1.5-27b"],
+      installed: ["swift-1.5-ornith-9b", "swift-1.5-27b-max"],
       vision: [],
     });
     expect(env).toMatchObject({
       PI_DEFAULT_PROVIDER: "local",
       PI_DEFAULT_MODEL: "swift-1.5-ornith-9b",
       BURROW_FAST_CHAT: "on",
-      RAKAZO_LOCAL_MODELS: "swift-1.5-ornith-9b,swift-1.5-27b",
+      RAKAZO_LOCAL_MODELS: "swift-1.5-ornith-9b,swift-1.5-27b-max",
     });
     expect(brainModule.swiftServerEnv(null)).toEqual({});
   });

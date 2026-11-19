@@ -74,3 +74,17 @@ describe("Burrow small-talk window", () => {
     expect(JSON.parse(quickChatBody(JSON.stringify({ messages: turns(40) }))!.body).messages.length).toBeLessThanOrEqual(22);
   });
 });
+
+describe("Burrow quick-reply model", () => {
+  it("sends small talk to BURROW_CHAT_MODEL and keeps everything else on the main model", async () => {
+    process.env.BURROW_CHAT_MODEL = "swift-1.5-ornith-9b";
+    try {
+      const hey = quickChatBody(JSON.stringify({ model: "swift-1.5-27b-iq2xxs", messages: [{ role: "user", content: "hey" }] }));
+      expect(JSON.parse(hey!.body).model).toBe("swift-1.5-ornith-9b");
+      const task = quickChatBody(JSON.stringify({ model: "swift-1.5-27b-iq2xxs", messages: [{ role: "user", content: "research flights to Tokyo" }] }));
+      expect(JSON.parse(task!.body).model).toBe("swift-1.5-27b-iq2xxs");
+    } finally {
+      delete process.env.BURROW_CHAT_MODEL;
+    }
+  });
+});
