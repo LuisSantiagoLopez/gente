@@ -1,4 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+import { openTelegramWindow } from "../burrow/telegram-window.js";
 import type { DesktopMenuCommand, DesktopUpdateState } from "@rakazo/contracts";
 import { app, dialog, Menu } from "electron";
 import { desktop } from "../desktop-state.js";
@@ -132,6 +133,10 @@ export function applicationMenuInstaller({
       visible: updaterSupport(updaterEnvironment).supported,
       click: () => void checkForUpdatesFromMenu(),
     };
+    const connectTelegram: Electron.MenuItemConstructorOptions = {
+      label: t("Connect Telegram…"),
+      click: () => openTelegramWindow(),
+    };
     const changeServer: Electron.MenuItemConstructorOptions = {
       id: "change-rakazo-server",
       label: t("Change Gente Server…"),
@@ -253,6 +258,7 @@ export function applicationMenuInstaller({
                 { type: "separator" },
                 computerAccess,
                 revokeComputerAccess,
+                connectTelegram,
                 changeServer,
                 { type: "separator" },
                 { role: "hide", label: t("Hide {name}", { name: app.name }) },
@@ -295,6 +301,7 @@ export function applicationMenuInstaller({
                 openSettings,
                 computerAccess,
                 revokeComputerAccess,
+                connectTelegram,
                 changeServer,
                 { type: "separator" },
                 checkForUpdates,

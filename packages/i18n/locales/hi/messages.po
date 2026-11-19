@@ -7942,6 +7942,14 @@ msgstr "अभी तक कुछ याद नहीं किया गया
 msgid "Nothing saved yet."
 msgstr "अभी कुछ सहेजा नहीं गया।"
 
+#: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
+msgid "Nothing yet. Check that you sent the code to the right chat, exactly as shown. The code works for 10 minutes."
+msgstr ""
+
+#: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
+msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
+msgstr ""
+
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
 msgstr "सूचना सेटिंग्स"

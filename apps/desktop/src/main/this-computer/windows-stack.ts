@@ -15,6 +15,7 @@ import type { DesktopLocalStackPhase } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
+import { telegramSecret } from "../burrow/telegram.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
@@ -91,6 +92,8 @@ interface WindowsPorts {
 }
 
 export interface WindowsStackDeps {
+  /** The Telegram bot token the person pasted (OS keychain); replies go out with it. */
+  telegramToken?: () => Promise<string | undefined>;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -407,11 +410,16 @@ export class WindowsStackController extends StackLifecycle {
       (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
       (stackEnv.get("E2B_API_KEY") || undefined);
     const computer = computerEnv(e2bKey, await readComputerChoice(this.deps.stackDir), "none");
+    const telegramToken = await this.deps.telegramToken?.().catch(() => undefined);
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
       ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
       ...computer,
+      // Updates arrive through Gente's long-poll hand-off, signed with this computer's secret.
+      ...(telegramToken
+        ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
+        : {}),
     });
     const entry = (name: keyof ServerManifest["entrypoints"]) =>
       path.join(server.dir, server.manifest.entrypoints[name]);

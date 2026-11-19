@@ -116,6 +116,9 @@ export function MessagingSettingsPanel() {
     [linkRequest],
   );
   useTimeout(() => setLinkRequest(null), untilLinkExpiry, linkRequest);
+  const [slowLink, setSlowLink] = useState(false);
+  useEffect(() => setSlowLink(false), [linkRequest]);
+  useTimeout(() => setSlowLink(true), linkRequest ? 30_000 : null, linkRequest);
   // Linking completes in the chat app: watch for a new or reassigned identity.
   useEffect(() => {
     if (!linkRequest) return;
@@ -480,6 +483,23 @@ export function MessagingSettingsPanel() {
               </Trans>
             )}
           </p>
+        ) : null}
+        {linkCode && slowLink ? (
+          // Gente: never wait silently. After 30 seconds, say plainly what may be missing.
+          <div className="mt-3 rounded-xl bg-muted px-4 py-3 text-body-sm text-muted-foreground" data-testid="messaging-link-help">
+            {linkRequest?.provider.startsWith("whatsapp") ? (
+              <Trans>
+                Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and
+                Meta doesn't allow general AI assistants in every country yet. Telegram works right
+                away: in the Gente menu, choose Connect Telegram.
+              </Trans>
+            ) : (
+              <Trans>
+                Nothing yet. Check that you sent the code to the right chat, exactly as shown. The
+                code works for 10 minutes.
+              </Trans>
+            )}
+          </div>
         ) : null}
         {linkCode && linkRequest?.shared ? (
           <p className="mt-1 text-body-sm text-muted-foreground">

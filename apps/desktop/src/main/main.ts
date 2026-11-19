@@ -57,6 +57,8 @@ import {
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
+import { readTelegramToken } from "./burrow/telegram.js";
+import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
 import { startWatchdogs } from "./burrow/watchdogs.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
@@ -737,6 +739,7 @@ app.whenReady().then(async () => {
   heal.bind(() => desktop.localStack.start());
   const onState = (state: DesktopLocalStackState) => {
     heal.observe(state);
+    void syncTelegramPoller(userStackDir, state.phase === "ready");
     // Gente: once the workspace is up, have the model read the last chat's prompt ahead of time.
     if (state.phase === "ready" && !prewarmed) {
       prewarmed = true;
@@ -801,6 +804,7 @@ app.whenReady().then(async () => {
       sealer,
       composioKey: () => readComposioKey(),
       cloudComputerKey: () => readKeychainSecret("E2B_API_KEY"),
+      telegramToken: () => readTelegramToken(),
     });
   };
   // Gente: Windows runs the server as plain processes with its own Postgres; no Docker needed.
@@ -831,6 +835,7 @@ app.whenReady().then(async () => {
           sealer,
           composioKey: () => readComposioKey(),
           cloudComputerKey: () => readKeychainSecret("E2B_API_KEY"),
+          telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null
       ? await nativeStack(serverBundle)
@@ -1045,6 +1050,7 @@ app.whenReady().then(async () => {
   handleIpc("desktop.update.download", () => desktop.desktopUpdater.download(), updateState);
   handleIpc("desktop.update.install", () => installUpdate(), updateState);
   registerBrainIpc(stackDir(app.getPath("userData")));
+  registerTelegram(stackDir(app.getPath("userData")));
   // Gente: keep Ollama and the workspace alive without asking the person to do anything.
   startWatchdogs(() => desktop.localStack);
   registerSetupIpc({

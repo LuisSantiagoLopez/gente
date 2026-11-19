@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- Copyright 2026 DeskHead Inc. New file in Gente (a fork of Rakazo, Apache-2.0). -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'" />
+    <title>Connect Telegram</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="telegram.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Talk to Gente on Telegram</h1>
+      <ol>
+        <li>In Telegram, open <b>@BotFather</b> and send <code>/newbot</code>.</li>
+        <li>Pick a name. BotFather replies with a token.</li>
+        <li>Paste the token here.</li>
+      </ol>
+      <form id="form">
+        <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="123456789:AA…" />
+        <button id="connect" type="submit">Connect</button>
+      </form>
+      <p id="status" role="status" aria-live="polite"></p>
+      <p class="note">Your token stays in this computer's keychain. Gente reads your bot's messages directly from Telegram; nothing else is needed.</p>
+    </main>
+    <script src="telegram.js"></script>
+  </body>
+</html>
