@@ -10,6 +10,7 @@ import {
   downloadVerified,
   installContainerRuntime,
   installServerBundle,
+  serverDirName,
   nativeStackEligible,
   pruneRuntimes,
   RuntimeTooOldError,
@@ -191,9 +192,12 @@ describe("installers", () => {
   });
 
   it("reuses a completely unpacked version without downloading again", async () => {
-    const server = path.join(dir, "server-1.0.0", "rakazo-server");
+    // Gente: the folder name carries the archive's checksum prefix.
+    const pinned = pinnedFor(new Uint8Array());
+    const folder = serverDirName({ version: "1.0.0", download: pinned });
+    const server = path.join(dir, folder, "rakazo-server");
     await mkdir(server, { recursive: true });
-    await writeFile(path.join(dir, "server-1.0.0", ".complete"), "");
+    await writeFile(path.join(dir, folder, ".complete"), "");
     const entrypoints = { api: "a.js", worker: "w.js", web: "web.js", migrate: "m.js" };
     await writeFile(
       path.join(server, "manifest.json"),
@@ -205,7 +209,7 @@ describe("installers", () => {
       },
     });
     await expect(
-      installServerBundle(deps, { version: "1.0.0", download: pinnedFor(new Uint8Array()) }),
+      installServerBundle(deps, { version: "1.0.0", download: pinned }),
     ).resolves.toMatchObject({ dir: server });
   });
 

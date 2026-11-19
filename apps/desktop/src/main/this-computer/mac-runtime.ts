@@ -246,6 +246,15 @@ export interface ServerManifest {
 }
 
 /** Returns the unpacked `rakazo-server/` directory and its manifest. */
+/**
+ * Gente: the unpacked folder carries the archive's checksum, so a new build with the same version
+ * number still gets its own fresh copy instead of reusing an older unpacked one.
+ */
+export function serverDirName(bundle: ServerBundle): string {
+  const sha = bundle.sha256 ?? bundle.download?.sha256;
+  return sha ? `server-${bundle.version}-${sha.slice(0, 12)}` : `server-${bundle.version}`;
+}
+
 /** Gente: a shipped archive is checked before it is unpacked, like a download would be. */
 export async function verifyFileSha256(file: string, expected: string): Promise<void> {
   const hash = createHash("sha256");
@@ -261,7 +270,7 @@ export async function installServerBundle(
   const source = bundle.download ?? (bundle.file ? { file: bundle.file } : null);
   if (source === null) throw new Error("No server bundle is configured");
   if (bundle.file && bundle.sha256) await verifyFileSha256(bundle.file, bundle.sha256);
-  const root = await installVersion(deps, `server-${bundle.version}`, source, (archive, into) =>
+  const root = await installVersion(deps, serverDirName(bundle), source, (archive, into) =>
     runChecked(deps, "/usr/bin/tar", ["-xJf", archive, "-C", into], RUNTIME_TIMEOUT_MS).then(
       () => undefined,
     ),
