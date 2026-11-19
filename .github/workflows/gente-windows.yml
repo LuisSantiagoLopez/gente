@@ -49,6 +49,21 @@ jobs:
           mkdir -p "$dir" && 7z x -y "-o$dir" "$RUNNER_TEMP"/bundle/burrow-server-win32-x64-*.zip > /dev/null && touch "$dir/.complete"
       - name: Stand-in model server on 11434
         run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
+      - name: Diagnose a first launch (60 s, output and data folder)
+        continue-on-error: true
+        run: |
+          mkdir -p "$RUNNER_TEMP/e2e"
+          tasklist | grep -i gente || true
+          exe="$LOCALAPPDATA/Programs/Gente/Gente.exe"
+          (ELECTRON_ENABLE_LOGGING=1 "$exe" --enable-logging > "$RUNNER_TEMP/e2e/first-launch.log" 2>&1 &)
+          sleep 60
+          tasklist | grep -i -E "gente|postgres|ollama|node" > "$RUNNER_TEMP/e2e/processes.txt" || true
+          ls -R "$APPDATA/Gente" 2>/dev/null | head -80 > "$RUNNER_TEMP/e2e/userdata.txt" || true
+          cp -r "$APPDATA/Gente/stack/logs" "$RUNNER_TEMP/e2e/first-launch-stack-logs" 2>/dev/null || true
+          taskkill //F //IM Gente.exe || true
+          sleep 5
+          tail -50 "$RUNNER_TEMP/e2e/first-launch.log" || true
+          cat "$RUNNER_TEMP/e2e/processes.txt" || true
       - name: Smoke test on real Windows
         run: |
           exe=$(ls "$LOCALAPPDATA/Programs/Gente/Gente.exe" 2>/dev/null || ls "$LOCALAPPDATA"/Programs/*/Gente.exe | head -1)
