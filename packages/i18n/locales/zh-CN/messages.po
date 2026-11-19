@@ -11702,6 +11702,10 @@ msgstr "关闭"
 msgid "Turn on"
 msgstr "开启"
 
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "Turn on Composio apps"
+msgstr ""
+
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx

@@ -90,6 +90,8 @@ interface WindowsPorts {
 }
 
 export interface WindowsStackDeps {
+  /** The Composio Connect consumer key from the OS keychain, if the person set one. */
+  composioKey?: () => Promise<string | undefined>;
   /** Seals the workspace's master secrets with Windows DPAPI (Electron safeStorage). */
   sealer?: Sealer;
   stackDir: string;
@@ -395,9 +397,12 @@ export class WindowsStackController extends StackLifecycle {
     if (chosenWeb !== webPort) this.currentWebUrl = `http://127.0.0.1:${chosenWeb}`;
     await writePrivateFile(this.dir(STACK_WEB_URL_FILE), this.currentWebUrl);
 
+    const composioKey = (await this.deps.composioKey?.().catch(() => undefined)) ??
+      (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
+      ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
     });
     const entry = (name: keyof ServerManifest["entrypoints"]) =>
       path.join(server.dir, server.manifest.entrypoints[name]);

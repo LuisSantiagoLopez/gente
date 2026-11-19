@@ -404,6 +404,26 @@ export function PluginsOverlay({
                 through Composio's cloud, one app at a time, only for the apps you choose.
               </Trans>
             </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              disabled={pending !== null}
+              onClick={() => {
+                // Gente: one MCP connection reaches every Composio app (search, connect, run).
+                // The consumer key is added by the server from the OS keychain, never stored here.
+                setPending("install-source");
+                void rpc.mcp.servers
+                  .create(customMcpServerInput("Composio apps", "https://connect.composio.dev/mcp"))
+                  .then(() => refresh())
+                  .catch((error: unknown) =>
+                    setSourceError(error instanceof Error ? error.message : String(error)),
+                  )
+                  .finally(() => setPending(null));
+              }}
+            >
+              <Trans>Turn on Composio apps</Trans>
+            </Button>
           </div>
           <div className="flex items-center gap-2">
             {browsing && appCount > 0 ? (

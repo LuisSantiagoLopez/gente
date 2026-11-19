@@ -277,6 +277,8 @@ export interface DockerImportTarget {
 }
 
 export interface NativeStackDeps {
+  /** The Composio Connect consumer key from the OS keychain, if the person set one. */
+  composioKey?: () => Promise<string | undefined>;
   /** Seals the workspace's master secrets with the OS keychain (Electron safeStorage). */
   sealer?: Sealer;
   stackDir: string;
@@ -625,11 +627,14 @@ export class NativeStackController extends StackLifecycle {
     await writePrivateFile(this.dir(STACK_WEB_URL_FILE), this.currentWebUrl);
 
     const computerImage = `${stackEnv.get("RAKAZO_COMPUTER_IMAGE") || COMPUTER_IMAGE}:${this.deps.imageTag}`;
+    const composioKey = (await this.deps.composioKey?.().catch(() => undefined)) ??
+      (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,
       LOCAL_VM_CLI: runtime.cli,
       LOCAL_VM_COMPUTER_IMAGE: computerImage,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
+      ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
     });
     const entry = (name: keyof ServerManifest["entrypoints"]) =>
       path.join(server.dir, server.manifest.entrypoints[name]);
