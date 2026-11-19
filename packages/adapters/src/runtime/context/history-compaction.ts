@@ -1,6 +1,6 @@
 import type { AgentRunRequest, AgentRuntime, JobPublisher } from "@rakazo/adapter-kit";
 import { historyCompactJob } from "@rakazo/adapter-kit";
-import { blocksToAgentHistoryText, botMessageContext } from "@rakazo/core";
+import { blocksToAgentHistoryText, botMessageContext, mergeThreadLedger } from "@rakazo/core";
 import type { PrismaClient } from "@rakazo/db";
 import { recordUsage, runAsTenant, storedMessageBlocks } from "@rakazo/db";
 import { getLogger, unwrapJobPayload } from "@rakazo/logging";
@@ -343,7 +343,8 @@ export async function compactHistory(
     return message.role === "user" ? personLineSpeaker(people, message) : message.role;
   };
   const transcriptParts = batch.map(
-    (message) => `${speaker(message)}: ${blocksToAgentHistoryText(storedMessageBlocks(message))}`,
+    (message) =>
+      `[seq ${message.seq}] ${speaker(message)}: ${blocksToAgentHistoryText(storedMessageBlocks(message))}`,
   );
   let transcript = transcriptParts.join("\n\n");
   if (transcript.length > MAX_TRANSCRIPT_CHARS) {
@@ -469,6 +470,8 @@ export async function compactHistory(
   if (!summary) {
     throw new Error(`history.compact summarizer returned no summary for thread ${threadId}`);
   }
+  // Decisions, facts and open loops the summarizer forgot are carried forward, not lost.
+  summary = mergeThreadLedger(previousSummary, summary, MAX_COMPACTED_SUMMARY_CHARS);
   if (summary.length > MAX_COMPACTED_SUMMARY_CHARS) {
     const [deferred] = await deps.prisma.$queryRaw<
       Array<{ historyCompactionRetryAfterSeq: number }>

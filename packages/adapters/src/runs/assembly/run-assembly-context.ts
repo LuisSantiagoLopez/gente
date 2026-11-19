@@ -283,6 +283,7 @@ export async function buildTurnPrompt(
     history,
     historyMessages,
     recalledMemory,
+    earlierInChat,
     turnBlocks,
   } = parts.turnContext;
   const { resolved, runModelId, runModelProvider } = parts.model;
@@ -405,6 +406,12 @@ export async function buildTurnPrompt(
     historicalContext.push({
       role: "user",
       content: redactSecrets(recalledMemory, runSecrets),
+    });
+  }
+  if (earlierInChat) {
+    historicalContext.push({
+      role: "user",
+      content: redactSecrets(earlierInChat, runSecrets),
     });
   }
   const modelImageBudget =

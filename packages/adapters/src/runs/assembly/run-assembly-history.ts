@@ -3,6 +3,8 @@ import { isPartialReplyClientNonce, storedMessageBlocks } from "@rakazo/db";
 import { getLogger } from "@rakazo/logging";
 import { loadAgentMemoryContext } from "../../memory/memory-context.js";
 import { PARTIAL_REPLY_NOTE } from "../../messaging/automated-messages.prompt.js";
+import { recallEarlierInChat } from "../../runtime/context/earlier-in-chat.js";
+import { formatEarlierInChat } from "../../runtime/context/earlier-in-chat.prompt.js";
 import {
   historyWindowSize,
   selectCompactedHistory,
@@ -219,25 +221,48 @@ export async function loadTurnContext(
           context,
         )
       : Promise.resolve(null);
-  const [discovered, currentTurnImages, memoryContext, scratchpadContext, ticketContext, recalled] =
-    await Promise.all([
-      discoveredPromise,
-      loadCurrentTurnImages(deps, turnBlocks, context),
-      nonOwnerChatRun ? Promise.resolve("") : loadAgentMemoryContext(deps.memory, bot.id, context),
-      nonOwnerChatRun
-        ? Promise.resolve("")
-        : loadAgentScratchpadContext(deps, {
-            spaceId: run.spaceId,
-            botId: bot.id,
-          }),
-      nonOwnerChatRun || !ticketBoardEnabled
-        ? Promise.resolve(undefined)
-        : loadAgentTicketContext(deps, {
-            spaceId: run.spaceId,
-            text: task.prompt,
-          }),
-      recallPromise,
-    ]);
+  // Older messages of this chat that match the turn, from Gente's own index of the whole chat, so
+  // a fact from turn 20 still reaches turn 1000 without sending every message each time.
+  const oldestLoadedSeq = compactedHistory.history[0]?.seq;
+  const earlierPromise =
+    threadContext.includeSemanticRecall && !nonOwnerChatRun && oldestLoadedSeq
+      ? recallEarlierInChat(deps.prisma, {
+          threadId: thread.id,
+          generation: thread.historyCompactionGeneration,
+          query: task.prompt,
+          beforeSeq: oldestLoadedSeq,
+        }).catch((error: unknown) => {
+          getLogger().error("earlier-in-chat recall failed", error);
+          return [];
+        })
+      : Promise.resolve([]);
+  const [
+    discovered,
+    currentTurnImages,
+    memoryContext,
+    scratchpadContext,
+    ticketContext,
+    recalled,
+    earlier,
+  ] = await Promise.all([
+    discoveredPromise,
+    loadCurrentTurnImages(deps, turnBlocks, context),
+    nonOwnerChatRun ? Promise.resolve("") : loadAgentMemoryContext(deps.memory, bot.id, context),
+    nonOwnerChatRun
+      ? Promise.resolve("")
+      : loadAgentScratchpadContext(deps, {
+          spaceId: run.spaceId,
+          botId: bot.id,
+        }),
+    nonOwnerChatRun || !ticketBoardEnabled
+      ? Promise.resolve(undefined)
+      : loadAgentTicketContext(deps, {
+          spaceId: run.spaceId,
+          text: task.prompt,
+        }),
+    recallPromise,
+    earlierPromise,
+  ]);
   const semanticMemoryEnabled = Boolean(semanticMemory) && !nonOwnerChatRun;
   let recalledMemory = "";
   let recallSucceeded = false;
@@ -277,6 +302,7 @@ export async function loadTurnContext(
     ticketContext,
     semanticMemoryEnabled,
     recalledMemory,
+    earlierInChat: formatEarlierInChat(earlier),
   };
 }
 
