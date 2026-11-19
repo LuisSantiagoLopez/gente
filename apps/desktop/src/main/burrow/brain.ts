@@ -28,25 +28,11 @@ export type SwiftModel = {
 /** Best first. Each later entry is tried only after the one before it fails. */
 const SWIFT_LADDER = [
   {
-    tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M",
-    alias: "swift-1.5-27b-max",
-    name: "Swift 1.5 27B Max",
-    sizeGB: 17.4,
-    note: "Highest quality. Uses about 19 GB of memory.",
-  },
-  {
     tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS",
-    alias: "swift-1.5-27b-iq2xxs",
+    alias: "swift-1.5-27b",
     name: "Swift 1.5 27B",
     sizeGB: 8.9,
-    note: "The default. Uses about 11 GB of memory.",
-  },
-  {
-    tag: "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M",
-    alias: "swift-1.5-ornith-9b",
-    name: "Swift 1.5 Ornith 9B",
-    sizeGB: 5.8,
-    note: "For Macs and PCs with 16 GB or less.",
+    note: "Gente's model. About 11 GB in memory.",
   },
 ] as const satisfies readonly SwiftModel[];
 export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
@@ -54,9 +40,10 @@ export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
  * The model Gente uses unless the person picks another: the 27B at IQ2_XXS (8.9 GB file, about
  * 11 GB loaded). Max quality (Q4_K_M) and the small Ornith 9B are one click away in the picker.
  */
-export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[1];
+export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[0];
 /** Answers greetings and small talk in about a second while a 27B handles real work. */
-export const QUICK_MODEL: SwiftModel = SWIFT_LADDER[2];
+/** Gente uses one model for everything (Santi's decision); kept for older saved settings. */
+export const QUICK_MODEL: SwiftModel | null = null;
 
 /** Context Gente asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
 export const SWIFT_CONTEXT = 32768;
@@ -295,7 +282,7 @@ export async function unloadModel(model: string): Promise<void> {
  */
 export async function moveToFastDefault(stackDirectory: string): Promise<boolean> {
   const saved = await readSavedBrain(stackDirectory);
-  if (saved === null || saved.userPicked === true || saved.alias === DEFAULT_MODEL.alias) return false;
+  if (saved === null || (saved.alias === DEFAULT_MODEL.alias && !saved.chatAlias)) return false;
   try {
     if (!(await ollamaRunning()) && !(await startOllama())) return false;
     let tags = await installedTags();
@@ -325,7 +312,7 @@ export async function moveToFastDefault(stackDirectory: string): Promise<boolean
     const vision = (await hasVision(DEFAULT_MODEL.alias))
       ? [DEFAULT_MODEL.alias, ...(saved.vision ?? [])]
       : (saved.vision ?? []);
-    const chatAlias = hasTag(tags, QUICK_MODEL.alias) ? QUICK_MODEL.alias : undefined;
+    const chatAlias = undefined;
     const next: SavedBrain = {
       model: DEFAULT_MODEL.tag,
       alias: DEFAULT_MODEL.alias,
@@ -398,6 +385,11 @@ export class Brain {
 
   private async run(options: { installOllama?: boolean; model?: string }) {
     this.set({ phase: "checking", message: "", completedBytes: 0, totalBytes: 0 });
+    // A friendly check before anything downloads: the 27B needs about 11 GB on its own.
+    if (os.totalmem() < MIN_MEMORY_BYTES) {
+      this.set({ phase: "failed", message: CALM.smallComputer });
+      return;
+    }
     if (!(await ollamaRunning())) {
       if (!ollamaInstalled()) {
         if (!options.installOllama) {
@@ -443,7 +435,7 @@ export class Brain {
         await this.prepare(model);
         // A 27B gets a quick partner for small talk; shown to the person as one assistant.
         let chatAlias: string | undefined;
-        if (model.alias !== QUICK_MODEL.alias) {
+        if (QUICK_MODEL && model.alias !== QUICK_MODEL.alias) {
           try {
             this.set({ model: QUICK_MODEL, completedBytes: 0, totalBytes: 0 });
             await this.prepare(QUICK_MODEL);
@@ -670,9 +662,14 @@ export const CALM = {
   ollama: "Ollama is taking a moment to start. Press Try again.",
   memory:
     "This computer is short on free memory for Swift right now. Close a few apps, then press Try again.",
+  smallComputer:
+    "Gente needs a computer with at least 16 GB of memory. This one has less, so Gente can't run its model here.",
   space: (gb: number) =>
     `Swift needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
 } as const;
+/** 16 GB machines report a little less than 16 GiB; allow for that. */
+export const MIN_MEMORY_BYTES = 15 * 1024 ** 3;
+
 /** Pauses between download retries; exported so tests can shorten them. */
 export const PULL_RETRY_MS: number[] = [2_000, 5_000, 15_000, 30_000];
 

@@ -13,7 +13,7 @@ type Stub = {
   calls: { path: string; body: Record<string, unknown> }[];
 };
 
-const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M";
+const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
 const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
 const SMALL = "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M";
 
@@ -41,105 +41,61 @@ afterEach(async () => {
 const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
-describe("Gente brain", () => {
-  it("uses the fast default (27B IQ2_XXS) when the person picks nothing", async () => {
+describe("Gente brain (one model: Swift 1.5 27B IQ2_XXS)", () => {
+  const MODEL = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
+
+  it("downloads and loads the one model, named swift-1.5-27b with a 32K context", async () => {
     const { brain, dir, states, calls } = await setup();
     await brain.start();
     expect(brain.current().phase).toBe("ready");
-    expect(brain.current().model.tag).toBe(COMPACT);
-    // The 27B default also gets the quick model for small talk.
-    expect(pulled(calls)).toEqual([COMPACT, SMALL]);
+    expect(brain.current().model.tag).toBe(MODEL);
+    expect(pulled(calls)).toEqual([MODEL]);
     const create = calls.find((c) => c.path === "/api/create");
-    expect(create?.body).toMatchObject({ model: "swift-1.5-27b-iq2xxs", from: COMPACT, parameters: { num_ctx: 32768 } });
+    expect(create?.body).toMatchObject({ model: "swift-1.5-27b", from: MODEL, parameters: { num_ctx: 32768 } });
     expect(states.some((s) => s.phase === "pulling" && s.totalBytes === 1000)).toBe(true);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved).toMatchObject({ model: COMPACT, alias: "swift-1.5-27b-iq2xxs", userPicked: false });
+    expect(saved).toMatchObject({ model: MODEL, alias: "swift-1.5-27b" });
+    expect(saved.chatAlias).toBeUndefined();
   });
 
-  it("uses the picked 27B, never falls back when it loads, and adds the quick small-talk model", async () => {
-    const { brain, calls } = await setup();
-    await brain.start({ model: BEST });
-    expect(brain.current().model.tag).toBe(BEST);
-    expect(brain.current().switchedFrom).toBeUndefined();
-    expect(pulled(calls)).toEqual([BEST, SMALL]);
-  });
-
-  it("switches to the next smaller Swift only after the picked one really fails to load", async () => {
-    const { brain, dir, calls } = await setup({ failLoad: [BEST] });
-    await brain.start({ model: BEST });
-    const state = brain.current();
-    expect(state.phase).toBe("ready");
-    expect(state.model.tag).toBe(COMPACT);
-    expect(state.switchedFrom).toBe("Swift 1.5 27B Max");
-    expect(pulled(calls)).toEqual([BEST, COMPACT, SMALL]);
-    const loads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive !== 0).map((c) => c.body.model);
-    expect(loads).toEqual(["swift-1.5-27b-max", "swift-1.5-27b-iq2xxs", "swift-1.5-ornith-9b"]);
-    const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved.alias).toBe("swift-1.5-27b-iq2xxs");
-    expect(saved.installed).toEqual(["swift-1.5-27b-iq2xxs", "swift-1.5-ornith-9b"]);
-    expect(saved.chatAlias).toBe("swift-1.5-ornith-9b");
+  it("never falls back to another model: a load that fails shows one calm sentence", async () => {
+    const { brain, calls } = await setup({ failLoad: [MODEL] });
+    await brain.start();
+    expect(brain.current().phase).toBe("failed");
+    expect(pulled(calls)).toEqual([MODEL]);
+    expect(brain.current().message).toContain("short on free memory");
+    expect(brain.current().message).not.toMatch(/HTTP|GiB|error/i);
   });
 
   it("does not download again when the model is already there", async () => {
-    const { brain, calls } = await setup({ installed: [COMPACT, SMALL] });
+    const { brain, calls } = await setup({ installed: [MODEL] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(pulled(calls)).toEqual([]);
   });
 
-  it("reports a failure when no Swift can run", async () => {
-    const { brain } = await setup({ failLoad: [BEST, COMPACT, SMALL] });
-    await brain.start({ model: BEST });
-    expect(brain.current().phase).toBe("failed");
-    expect(brain.current().message).toContain("short on free memory");
-    expect(brain.current().message).not.toMatch(/HTTP|GiB|error/i);
-  });
-
-  it("restarts the workspace and unloads the old model only when the person switches", async () => {
-    const { brainModule, dir, calls } = await setup();
-    let restarts = 0;
-    const brain = new brainModule.Brain(dir, () => {}, async () => {
-      restarts++;
-    });
-    await brain.start();
-    await brain.start();
-    expect(restarts).toBe(0);
-    await brain.start({ model: BEST });
-    expect(brain.current().model.tag).toBe(BEST);
-    expect(restarts).toBe(1);
-    const unloads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive === 0);
-    expect(unloads.map((c) => c.body.model)).toEqual(["swift-1.5-27b-iq2xxs"]);
-    // A picked model stays picked when setup runs again without a new pick.
-    await brain.start();
-    expect(brain.current().model.tag).toBe(BEST);
-  });
-
-  it("moves a default Gente chose (27B) to the fast model on launch, but never a picked one", async () => {
-    const { brainModule, dir } = await setup({ installed: [COMPACT] });
+  it("moves an older two-model setup to the one model on launch", async () => {
+    const { brainModule, dir } = await setup({ installed: [MODEL] });
     const file = path.join(dir, "burrow-model.json");
     const { writeFile } = await import("node:fs/promises");
-    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b-max", installed: ["swift-1.5-27b-max"] }));
+    await writeFile(file, JSON.stringify({ model: MODEL, alias: "swift-1.5-27b-iq2xxs", installed: [], chatAlias: "swift-1.5-ornith-9b" }));
     expect(await brainModule.moveToFastDefault(dir)).toBe(true);
-    expect(JSON.parse(await readFile(file, "utf8"))).toMatchObject({ alias: "swift-1.5-27b-iq2xxs", userPicked: false });
-    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b-max", installed: [], userPicked: true }));
-    expect(await brainModule.moveToFastDefault(dir)).toBe(false);
+    const saved = JSON.parse(await readFile(file, "utf8"));
+    expect(saved).toMatchObject({ alias: "swift-1.5-27b" });
+    expect(saved.chatAlias).toBeUndefined();
   });
 
   it("makes the saved Swift every bot's default model", async () => {
     const { brainModule } = await setup();
-    const env = brainModule.swiftServerEnv({
-      model: SMALL,
-      alias: "swift-1.5-ornith-9b",
-      installed: ["swift-1.5-ornith-9b", "swift-1.5-27b-max"],
-      vision: [],
-    });
+    const env = brainModule.swiftServerEnv({ model: MODEL, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"], vision: [] });
     expect(env).toMatchObject({
       PI_DEFAULT_PROVIDER: "local",
-      PI_DEFAULT_MODEL: "swift-1.5-ornith-9b",
+      PI_DEFAULT_MODEL: "swift-1.5-27b",
       BURROW_FAST_CHAT: "on",
       PAYMENT_WALLET_PROVIDER: "link",
-      RAKAZO_LOCAL_MODELS: "swift-1.5-ornith-9b,swift-1.5-27b-max",
+      RAKAZO_LOCAL_MODELS: "swift-1.5-27b",
     });
+    expect(env.BURROW_CHAT_MODEL).toBeUndefined();
     expect(brainModule.swiftServerEnv(null)).toEqual({});
   });
 });
@@ -161,8 +117,23 @@ describe("Burrow brain, network trouble", () => {
     await brain.start();
     expect(calls.filter((c) => c.path === "/api/pull")).toHaveLength(5);
     expect(brain.current().phase).toBe("failed");
-    expect(brain.current().model.tag).toBe(COMPACT);
     expect(brain.current().message).toMatch(/internet/);
     expect(brain.current().message).not.toMatch(/HTTP|500/);
+  });
+});
+
+describe("Gente memory check", () => {
+  it("tells an 8 GB computer, in one friendly sentence, before downloading anything", async () => {
+    const os = await import("node:os");
+    const spy = vi.spyOn(os.default, "totalmem").mockReturnValue(8 * 1024 ** 3);
+    try {
+      const { brain, calls } = await setup();
+      await brain.start();
+      expect(brain.current().phase).toBe("failed");
+      expect(brain.current().message).toContain("at least 16 GB of memory");
+      expect(calls.filter((c) => c.path === "/api/pull")).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
