@@ -35,33 +35,26 @@ const SWIFT_LADDER = [
     note: "Highest quality. Uses about 19 GB of memory.",
   },
   {
-    tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ3_XXS",
-    alias: "swift-1.5-27b-iq3",
+    tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS",
+    alias: "swift-1.5-27b-iq2xxs",
     name: "Swift 1.5 27B",
-    sizeGB: 12.3,
-    note: "For long multi-step work on 32 GB Macs. Uses about 13 GB.",
-  },
-  {
-    tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_M",
-    alias: "swift-1.5-27b-iq2",
-    name: "Swift 1.5 27B Compact",
-    sizeGB: 10.5,
-    note: "The 27B in about 11 GB, for 24 GB Macs.",
+    sizeGB: 8.9,
+    note: "The default. Uses about 11 GB of memory.",
   },
   {
     tag: "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M",
     alias: "swift-1.5-ornith-9b",
     name: "Swift 1.5 Ornith 9B",
     sizeGB: 5.8,
-    note: "Fast replies. The default.",
+    note: "For Macs and PCs with 16 GB or less.",
   },
 ] as const satisfies readonly SwiftModel[];
 export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
 /**
- * The model Burrow uses unless the person picks another: Ornith 9B starts replying in about a
- * second and leaves room in memory. The 27B models are one click away in the picker.
+ * The model Burrow uses unless the person picks another: the 27B at IQ2_XXS (8.9 GB file, about
+ * 11 GB loaded). Max quality (Q4_K_M) and the small Ornith 9B are one click away in the picker.
  */
-export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[3];
+export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[1];
 
 /** Context Burrow asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
 export const SWIFT_CONTEXT = 32768;

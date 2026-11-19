@@ -14,7 +14,7 @@ type Stub = {
 };
 
 const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M";
-const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ3_XXS";
+const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
 const SMALL = "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M";
 
 let stub: Stub | null = null;
@@ -42,17 +42,17 @@ const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
 describe("Burrow brain", () => {
-  it("uses the fast default (Ornith 9B) when the person picks nothing", async () => {
+  it("uses the fast default (27B IQ2_XXS) when the person picks nothing", async () => {
     const { brain, dir, states, calls } = await setup();
     await brain.start();
     expect(brain.current().phase).toBe("ready");
-    expect(brain.current().model.tag).toBe(SMALL);
-    expect(pulled(calls)).toEqual([SMALL]);
+    expect(brain.current().model.tag).toBe(COMPACT);
+    expect(pulled(calls)).toEqual([COMPACT]);
     const create = calls.find((c) => c.path === "/api/create");
-    expect(create?.body).toMatchObject({ model: "swift-1.5-ornith-9b", from: SMALL, parameters: { num_ctx: 32768 } });
+    expect(create?.body).toMatchObject({ model: "swift-1.5-27b-iq2xxs", from: COMPACT, parameters: { num_ctx: 32768 } });
     expect(states.some((s) => s.phase === "pulling" && s.totalBytes === 1000)).toBe(true);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved).toMatchObject({ model: SMALL, alias: "swift-1.5-ornith-9b", userPicked: false });
+    expect(saved).toMatchObject({ model: COMPACT, alias: "swift-1.5-27b-iq2xxs", userPicked: false });
   });
 
   it("uses the picked 27B, and never touches a smaller one when it loads", async () => {
@@ -72,21 +72,21 @@ describe("Burrow brain", () => {
     expect(state.switchedFrom).toBe("Swift 1.5 27B Max");
     expect(pulled(calls)).toEqual([BEST, COMPACT]);
     const loads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive !== 0).map((c) => c.body.model);
-    expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-iq3"]);
+    expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-iq2xxs"]);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved.alias).toBe("swift-1.5-27b-iq3");
-    expect(saved.installed).toEqual(["swift-1.5-27b-iq3"]);
+    expect(saved.alias).toBe("swift-1.5-27b-iq2xxs");
+    expect(saved.installed).toEqual(["swift-1.5-27b-iq2xxs"]);
   });
 
   it("does not download again when the model is already there", async () => {
-    const { brain, calls } = await setup({ installed: [SMALL] });
+    const { brain, calls } = await setup({ installed: [COMPACT] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(pulled(calls)).toEqual([]);
   });
 
   it("reports a failure when no Swift can run", async () => {
-    const { brain } = await setup({ failLoad: [BEST, COMPACT, "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_M", SMALL] });
+    const { brain } = await setup({ failLoad: [BEST, COMPACT, SMALL] });
     await brain.start({ model: BEST });
     expect(brain.current().phase).toBe("failed");
     expect(brain.current().message).toContain("No Swift model could run");
@@ -105,19 +105,19 @@ describe("Burrow brain", () => {
     expect(brain.current().model.tag).toBe(BEST);
     expect(restarts).toBe(1);
     const unloads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive === 0);
-    expect(unloads.map((c) => c.body.model)).toEqual(["swift-1.5-ornith-9b"]);
+    expect(unloads.map((c) => c.body.model)).toEqual(["swift-1.5-27b-iq2xxs"]);
     // A picked model stays picked when setup runs again without a new pick.
     await brain.start();
     expect(brain.current().model.tag).toBe(BEST);
   });
 
   it("moves a default Burrow chose (27B) to the fast model on launch, but never a picked one", async () => {
-    const { brainModule, dir } = await setup({ installed: [SMALL] });
+    const { brainModule, dir } = await setup({ installed: [COMPACT] });
     const file = path.join(dir, "burrow-model.json");
     const { writeFile } = await import("node:fs/promises");
     await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"] }));
     expect(await brainModule.moveToFastDefault(dir)).toBe(true);
-    expect(JSON.parse(await readFile(file, "utf8"))).toMatchObject({ alias: "swift-1.5-ornith-9b", userPicked: false });
+    expect(JSON.parse(await readFile(file, "utf8"))).toMatchObject({ alias: "swift-1.5-27b-iq2xxs", userPicked: false });
     await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: [], userPicked: true }));
     expect(await brainModule.moveToFastDefault(dir)).toBe(false);
   });
