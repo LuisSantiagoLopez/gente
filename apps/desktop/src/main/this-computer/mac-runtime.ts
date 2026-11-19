@@ -99,6 +99,11 @@ const COMPLETE_MARKER = ".complete";
 const RUNTIME_TIMEOUT_MS = 10 * 60_000;
 const CLI_TIMEOUT_MS = 30_000;
 const SYSTEM_START_TIMEOUT_S = 120;
+/**
+ * Burrow (modified from Rakazo): the first start downloads the VM kernel, which takes well over
+ * ten minutes on a slow connection such as a phone hotspot.
+ */
+const SYSTEM_START_PROCESS_TIMEOUT_MS = 60 * 60_000;
 
 /** The download itself failed or did not match its pin; retrying (or the network) fixes it. */
 export class DownloadError extends Error {}
@@ -469,7 +474,7 @@ export async function resolveContainerRuntime(
   ];
   if (userUsable && !deps.keepOurs) {
     deps.onLine("Starting the computer runtime");
-    await runChecked(deps, USER_CONTAINER_CLI, start, RUNTIME_TIMEOUT_MS);
+    await runChecked(deps, USER_CONTAINER_CLI, start, SYSTEM_START_PROCESS_TIMEOUT_MS);
     return { cli: USER_CONTAINER_CLI, ours: false };
   }
   const cli = await install();
@@ -486,7 +491,7 @@ export async function resolveContainerRuntime(
       "--log-root",
       deps.logRoot,
     ],
-    RUNTIME_TIMEOUT_MS,
+    SYSTEM_START_PROCESS_TIMEOUT_MS,
   );
   return { cli, ours: true };
 }
