@@ -17,11 +17,12 @@ describe("Gente keyring", () => {
   it("moves the vault key and sign-in secret out of .env, keeps the same values, and is idempotent", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "gente-keyring-"));
     const key = "a".repeat(64);
-    await writeFile(path.join(dir, ".env"), `POSTGRES_PASSWORD=pw\nENCRYPTION_KEY=${key}\nBETTER_AUTH_SECRET=s3cret\n`);
-    expect(await sealStackSecrets(dir, sealer)).toEqual(["ENCRYPTION_KEY", "BETTER_AUTH_SECRET"]);
+    await writeFile(path.join(dir, ".env"), `POSTGRES_PASSWORD=pw\nENCRYPTION_KEY=${key}\nBETTER_AUTH_SECRET=s3cret\nCOMPOSIO_API_KEY=ck_test_123\n`);
+    expect(await sealStackSecrets(dir, sealer)).toEqual(["ENCRYPTION_KEY", "BETTER_AUTH_SECRET", "COMPOSIO_API_KEY"]);
     const text = await readFile(path.join(dir, ".env"), "utf8");
     expect(text).not.toContain(key);
     expect(text).not.toContain("s3cret");
+    expect(text).not.toContain("ck_test_123");
     expect(text).toContain("ENCRYPTION_KEY=keychain:ENCRYPTION_KEY");
     for (const file of await readdir(path.join(dir, "keyring")))
       expect(await readFile(path.join(dir, "keyring", file), "utf8")).not.toContain(key);
@@ -29,6 +30,7 @@ describe("Gente keyring", () => {
     expect(env.get("ENCRYPTION_KEY")).toBe(key);
     expect(env.get("BETTER_AUTH_SECRET")).toBe("s3cret");
     expect(env.get("POSTGRES_PASSWORD")).toBe("pw");
+    expect(env.get("COMPOSIO_API_KEY")).toBe("ck_test_123");
     expect(await sealStackSecrets(dir, sealer)).toEqual([]);
   });
 });

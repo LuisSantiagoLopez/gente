@@ -393,9 +393,18 @@ export function PluginsOverlay({
     >
       <DialogContent showCloseButton={false} size="2xl" className="bg-card">
         <DialogHeader className="flex-row items-start justify-between px-8 pt-7">
-          <DialogTitle className="text-heading2 text-foreground">
-            <Trans>Integrations</Trans>
-          </DialogTitle>
+          <div>
+            <DialogTitle className="text-heading2 text-foreground">
+              <Trans>Connections</Trans>
+            </DialogTitle>
+            {/* Gente: the private-by-default promise, stated where it changes. */}
+            <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
+              <Trans>
+                Nothing leaves your computer until you connect an app. A connected app's data goes
+                through Composio's cloud, one app at a time, only for the apps you choose.
+              </Trans>
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             {browsing && appCount > 0 ? (
               <Button

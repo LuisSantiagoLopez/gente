@@ -15,7 +15,7 @@ export interface Sealer {
   unseal(sealed: Buffer): string;
 }
 
-export const SEALED_SECRETS = ["ENCRYPTION_KEY", "BETTER_AUTH_SECRET"] as const;
+export const SEALED_SECRETS = ["ENCRYPTION_KEY", "BETTER_AUTH_SECRET", "COMPOSIO_API_KEY"] as const;
 export const KEYCHAIN_MARKER = "keychain:";
 
 const sealedFile = (stackDir: string, name: string) => path.join(stackDir, "keyring", `${name}.sealed`);

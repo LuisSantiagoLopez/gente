@@ -3101,6 +3101,10 @@ msgstr "La prueba de conexión falló."
 msgid "Connection to {0} is still pending. You can close this and check again."
 msgstr "La conexión con {0} sigue pendiente. Puedes cerrar esto y volver a comprobar."
 
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "Connections"
+msgstr ""
+
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Connector"
@@ -6327,7 +6331,6 @@ msgstr "Dominio de la integración"
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/(settings)/account.tsx
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Integrations"
 msgstr "Integraciones"
 
@@ -7921,6 +7924,10 @@ msgstr "Gente no lo usa"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "No funciona"
+
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
+msgstr ""
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
