@@ -91,6 +91,13 @@
         {
           "from": "build/server-bundle.json",
           "to": "server-bundle.json"
+        },
+        {
+          "from": "build/server/",
+          "to": ".",
+          "filter": [
+            "*.tar.xz"
+          ]
         }
       ],
       "target": [
@@ -128,7 +135,20 @@
       "target": [
         "nsis"
       ],
-      "verifyUpdateCodeSignature": true
+      "verifyUpdateCodeSignature": true,
+      "extraResources": [
+        {
+          "from": "build/server/",
+          "to": ".",
+          "filter": [
+            "*.zip"
+          ]
+        },
+        {
+          "from": "build/server-bundle.json",
+          "to": "server-bundle.json"
+        }
+      ]
     },
     "linux": {
       "executableName": "gente",

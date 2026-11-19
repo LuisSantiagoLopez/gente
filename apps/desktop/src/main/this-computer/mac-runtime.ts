@@ -2,7 +2,7 @@
 // the Rakazo server bundle and, unless the person already runs one, the computer runtime. Every
 // download is pinned by size and SHA-256 and checked before it is unpacked.
 import { createHash, randomUUID } from "node:crypto";
-import { createWriteStream } from "node:fs";
+import { createReadStream, createWriteStream } from "node:fs";
 import { mkdir, readdir, readFile, realpath, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
@@ -48,6 +48,8 @@ const CONTAINER_API_LABEL = "com.apple.container.apiserver";
 
 export interface ServerBundle {
   version: string;
+  /** Gente: the archive's expected SHA-256 when it ships inside the app (`file`). */
+  sha256?: string;
   /** Release builds download and verify this; a development override names a local file. */
   download?: PinnedDownload;
   file?: string;
@@ -77,6 +79,16 @@ export async function readServerBundle(input: {
   if (raw === null) return null;
   try {
     const { url, sha256, size, version } = JSON.parse(raw) as Record<string, unknown>;
+    // Gente: the server ships inside the app; nothing of ours is downloaded on first run.
+    const shipped = typeof url === "string" ? path.join(input.resourcesPath, path.basename(new URL(url).pathname)) : "";
+    if (
+      shipped &&
+      typeof sha256 === "string" &&
+      typeof version === "string" &&
+      (await stat(shipped).catch(() => null))?.isFile()
+    ) {
+      return { version, file: shipped, sha256 };
+    }
     if (
       typeof url === "string" &&
       url.startsWith("https://") &&
@@ -234,12 +246,21 @@ export interface ServerManifest {
 }
 
 /** Returns the unpacked `rakazo-server/` directory and its manifest. */
+/** Gente: a shipped archive is checked before it is unpacked, like a download would be. */
+export async function verifyFileSha256(file: string, expected: string): Promise<void> {
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(file)) hash.update(chunk as Buffer);
+  const actual = hash.digest("hex");
+  if (actual !== expected) throw new DownloadError(`The bundled server does not match its checksum (${actual})`);
+}
+
 export async function installServerBundle(
   deps: RuntimeDeps,
   bundle: ServerBundle,
 ): Promise<{ dir: string; manifest: ServerManifest }> {
   const source = bundle.download ?? (bundle.file ? { file: bundle.file } : null);
   if (source === null) throw new Error("No server bundle is configured");
+  if (bundle.file && bundle.sha256) await verifyFileSha256(bundle.file, bundle.sha256);
   const root = await installVersion(deps, `server-${bundle.version}`, source, (archive, into) =>
     runChecked(deps, "/usr/bin/tar", ["-xJf", archive, "-C", into], RUNTIME_TIMEOUT_MS).then(
       () => undefined,

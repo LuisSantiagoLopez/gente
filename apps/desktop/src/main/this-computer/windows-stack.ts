@@ -35,7 +35,7 @@ import {
   startInterrupted,
 } from "./local-stack.js";
 import type { Fetch, RuntimeDeps, ServerBundle, ServerManifest } from "./mac-runtime.js";
-import { DownloadError, installVersion, pruneRuntimes } from "./mac-runtime.js";
+import { DownloadError, installVersion, pruneRuntimes, verifyFileSha256 } from "./mac-runtime.js";
 import {
   COMPOSE_ONLY,
   choosePort,
@@ -133,6 +133,7 @@ export async function installWindowsServerBundle(
 ): Promise<{ dir: string; manifest: ServerManifest }> {
   const source = bundle.download ?? (bundle.file ? { file: bundle.file } : null);
   if (source === null) throw new Error("No server bundle is configured");
+  if (bundle.file && bundle.sha256) await verifyFileSha256(bundle.file, bundle.sha256);
   const root = await installVersion(deps, `server-${bundle.version}`, source, async (archive, into) => {
     const result = await deps.run(tar, ["-xf", archive, "-C", into], {
       cwd: deps.dir,

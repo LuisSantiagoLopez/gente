@@ -9,10 +9,11 @@ export const LEGACY_APP_NAMES = ["Burrow"] as const;
 
 /** The folder to use: the current one if it exists, else the newest legacy one that does. */
 export function pickUserData(current: string, exists: (dir: string) => boolean): string {
-  if (exists(current)) return current;
+  // Chromium may create the current folder before this runs, so look for a workspace in it.
+  if (exists(path.join(current, "stack"))) return current;
   for (const name of LEGACY_APP_NAMES) {
     const legacy = path.join(path.dirname(current), name);
-    if (exists(legacy)) return legacy;
+    if (exists(path.join(legacy, "stack"))) return legacy;
   }
   return current;
 }
