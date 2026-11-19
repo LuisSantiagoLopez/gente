@@ -9,9 +9,9 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { describe, expect, it } from "vitest";
 import { STACK_ENV_TEMPLATE } from "./local-stack.js";
-import { appLoginSql, WindowsStackController } from "./windows-stack.js";
+import { WindowsStackController } from "./windows-stack.js";
 
-type Call = { command: string; args: string[]; env: Record<string, string> };
+type Call = { command: string; args: string[]; env: Record<string, string>; input?: string };
 
 function fakeChild(): ChildProcess {
   const child = new EventEmitter() as ChildProcess & EventEmitter;
@@ -52,7 +52,7 @@ async function setup(options: { pgVersion?: boolean } = {}) {
     nodeBinary: "C:\\Gente\\Gente.exe",
     env: { PATH: "C:\\Windows", SystemRoot: "C:\\Windows" },
     run: async (command, args, opts) => {
-      calls.push({ command, args, env: opts.env as Record<string, string> });
+      calls.push({ command, args, env: opts.env as Record<string, string>, input: opts.input });
       const sql = args.at(-1) ?? "";
       return { code: 0, stdout: sql.startsWith("SELECT 1") ? " ?column? \n----------\n(0 rows)\n" : "", stderr: "" };
     },
@@ -81,18 +81,18 @@ async function setup(options: { pgVersion?: boolean } = {}) {
 
 describe("Windows stack (no Docker, embedded Postgres)", () => {
   it("creates a password-only cluster once, then starts Postgres, migrations and the server", async () => {
-    const { controller, calls, spawned, serverDir } = await setup();
+    const { controller, calls, spawned, serverDir, stackDir } = await setup();
     await controller.start();
     expect(controller.state().phase).toBe("ready");
 
     const initdb = calls.find((c) => c.command.endsWith(path.join("bin", "initdb.exe")));
     expect(initdb?.args).toEqual(expect.arrayContaining(["-U", "rakazo", "-A", "scram-sha-256"]));
-    const postgres = spawned.find((s) => s.command.endsWith(path.join("bin", "postgres.exe")));
-    expect(postgres?.args).toContain("listen_addresses=127.0.0.1");
+    const pgStart = calls.find((c) => c.command.endsWith("pg_ctl.exe") && c.args[0] === "start");
+    expect(pgStart?.args.join(" ")).toContain("-c listen_addresses=127.0.0.1");
 
-    const sql = calls.filter((c) => c.command.endsWith("psql.exe")).map((c) => c.args.at(-1));
-    expect(sql).toContain("CREATE DATABASE rakazo OWNER rakazo");
-    expect(sql.some((s) => s?.includes("CREATE ROLE rakazo_app"))).toBe(true);
+    const ensure = calls.find((c) => c.args[0] === "-e");
+    expect(ensure?.env.GENTE_DATABASE).toBe("rakazo");
+    expect(ensure?.env.GENTE_PG_URL).toMatch(/^postgres:\/\/rakazo:.*@127\.0\.0\.1:\d+\/postgres$/);
     const migrate = calls.find((c) => c.args[0]?.endsWith("migrate.js"));
     expect(migrate?.env.DATABASE_URL).toMatch(/^postgres:\/\/rakazo_app:/);
     expect(migrate?.env.ELECTRON_RUN_AS_NODE).toBe("1");
@@ -105,6 +105,8 @@ describe("Windows stack (no Docker, embedded Postgres)", () => {
       expect.arrayContaining(["api.js", "worker.js", "web.js"]),
     );
     expect(serverDir).toContain("rakazo-server");
+    await mkdir(path.join(stackDir, "pgdata"), { recursive: true });
+    await writeFile(path.join(stackDir, "pgdata", "postmaster.pid"), "1\n");
     await controller.stop();
     expect(calls.some((c) => c.command.endsWith("pg_ctl.exe") && c.args[0] === "stop")).toBe(true);
   });
@@ -114,9 +116,7 @@ describe("Windows stack (no Docker, embedded Postgres)", () => {
     await controller.start();
     expect(controller.state().phase).toBe("ready");
     expect(calls.some((c) => c.command.endsWith("initdb.exe"))).toBe(false);
+
   });
 
-  it("quotes the app password safely in SQL", () => {
-    expect(appLoginSql("it's")).toContain("PASSWORD 'it''s'");
-  });
 });

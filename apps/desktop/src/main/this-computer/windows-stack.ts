@@ -153,25 +153,30 @@ export function postgresBin(serverDir: string, program: string) {
   return path.join(serverDir, "postgres", "bin", `${program}.exe`);
 }
 
-/** SQL that creates the runtime login and gives it the database, safe to run on every start. */
-export function appLoginSql(appPassword: string): string {
-  const quoted = appPassword.replace(/'/g, "''");
-  return [
-    `DO $$ BEGIN`,
-    `  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${APP_LOGIN}') THEN`,
-    `    CREATE ROLE ${APP_LOGIN} LOGIN PASSWORD '${quoted}';`,
-    `  ELSE`,
-    `    ALTER ROLE ${APP_LOGIN} LOGIN PASSWORD '${quoted}';`,
-    `  END IF;`,
-    `END $$;`,
-    `GRANT CONNECT, TEMPORARY ON DATABASE ${DATABASE} TO ${APP_LOGIN};`,
-  ].join("\n");
-}
+/**
+ * Run by the server's Node: finds the bundled `pg` package and creates the database once.
+ * `pg` sits under node_modules/.pnpm in the bundle, so it is located by name.
+ */
+export const ENSURE_DATABASE_SCRIPT = `
+const fs = require("node:fs"), path = require("node:path");
+const store = path.join(process.env.GENTE_SERVER_DIR, "node_modules", ".pnpm");
+const dir = fs.readdirSync(store).find((d) => /^pg@\\d/.test(d));
+const { Client } = require(path.join(store, dir, "node_modules", "pg"));
+(async () => {
+  const c = new Client({ connectionString: process.env.GENTE_PG_URL });
+  await c.connect();
+  const name = process.env.GENTE_DATABASE;
+  const r = await c.query("SELECT 1 FROM pg_database WHERE datname = $1", [name]);
+  if (r.rowCount === 0) await c.query('CREATE DATABASE "' + name.replace(/"/g, "") + '"');
+  await c.end();
+})().catch((e) => { console.error(e.message); process.exit(1); });
+`;
 
 export class WindowsStackController extends StackLifecycle {
   private services: Service[] = [];
   /** Set once the bundle is unpacked, so a stop can ask Postgres to shut down cleanly. */
   private serverDir: string | null = null;
+  private postgresUp = false;
 
   constructor(private readonly deps: WindowsStackDeps) {
     super(deps.imageTag, deps.localWebUrl, deps.onState);
@@ -319,33 +324,48 @@ export class WindowsStackController extends StackLifecycle {
         await rm(pwfile, { force: true });
       }
     }
-    const postgres = this.service({
-      name: "postgres",
-      command: postgresBin(server.dir, "postgres"),
-      args: ["-D", pgdata, "-p", String(ports.postgres), "-c", "listen_addresses=127.0.0.1"],
-      cwd: this.deps.stackDir,
-      env: this.baseEnv(),
-      stopSignal: "SIGTERM",
-    });
-    postgres.start();
-    await this.waitForDatabase(ports.postgres, signal, postgres);
-
-    const pgEnv = { ...this.baseEnv(), PGPASSWORD: password };
-    const psql = (database: string, sql: string) =>
-      this.runTool(
-        postgresBin(server.dir, "psql"),
-        ["-h", "127.0.0.1", "-p", String(ports.postgres), "-U", OWNER, "-d", database, "-v", "ON_ERROR_STOP=1", "-c", sql],
-        pgEnv,
+    // pg_ctl drops administrator rights before starting Postgres, which refuses to run as an
+    // administrator; a server a crashed launch left running is stopped first.
+    await this.stopPostgres(server.dir);
+    const started = await this.deps.run(
+      postgresBin(server.dir, "pg_ctl"),
+      [
+        "start",
+        "-D",
+        pgdata,
+        "-l",
+        this.dir("logs", "postgres.log"),
+        "-w",
+        "-t",
+        "120",
+        "-o",
+        `-p ${ports.postgres} -c listen_addresses=127.0.0.1`,
+      ],
+      { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: 150_000, signal },
+    );
+    if (started.code !== 0)
+      throw new StartFailure(servicesFailed(), [started.stdout, started.stderr, "pg_ctl start failed"]);
+    this.postgresUp = true;
+    await this.waitForDatabase(ports.postgres, signal);
+    // The embedded binaries have no psql: create the database with the server's own pg client.
+    const ensured = await this.deps.run(
+      this.deps.nodeBinary,
+      ["-e", ENSURE_DATABASE_SCRIPT],
+      {
+        cwd: server.dir,
+        env: {
+          ...this.nodeEnv(),
+          GENTE_PG_URL: `postgres://${OWNER}:${encodeURIComponent(password)}@127.0.0.1:${ports.postgres}/postgres`,
+          GENTE_DATABASE: DATABASE,
+          GENTE_SERVER_DIR: server.dir,
+        },
+        timeoutMs: CLI_TIMEOUT_MS,
         signal,
-      );
-    const exists = await psql("postgres", `SELECT 1 FROM pg_database WHERE datname='${DATABASE}'`);
-    if (exists.code !== 0) throw new StartFailure(servicesFailed(), [exists.stderr, "psql failed"]);
-    if (!/\b1\b/.test(exists.stdout.split("\n").slice(2).join("\n"))) {
-      const created = await psql("postgres", `CREATE DATABASE ${DATABASE} OWNER ${OWNER}`);
-      if (created.code !== 0) throw new StartFailure(servicesFailed(), [created.stderr]);
-    }
-    const login = await psql(DATABASE, appLoginSql(appPassword));
-    if (login.code !== 0) throw new StartFailure(servicesFailed(), [login.stderr]);
+        onLine: (line) => this.push({ type: "output", line }),
+      },
+    );
+    if (ensured.code !== 0)
+      throw new StartFailure(servicesFailed(), [ensured.stderr, "creating the database failed"]);
 
     const at = (user: string, secret: string) =>
       `postgres://${encodeURIComponent(user)}:${encodeURIComponent(secret)}@127.0.0.1:${ports.postgres}/${DATABASE}`;
@@ -432,17 +452,16 @@ export class WindowsStackController extends StackLifecycle {
     throw new StartFailure(servicesFailed(), [...api.tail, ...web.tail].slice(-STACK_OUTPUT_LINES));
   }
 
-  private async waitForDatabase(port: number, signal: AbortSignal, postgres: Service) {
+  private async waitForDatabase(port: number, signal: AbortSignal) {
     const answers = this.deps.databaseAnswers ?? ((p: number, s: AbortSignal) => postgresAnswers(p, s));
     const sleep = this.deps.sleep ?? defaultSleep;
     for (let attempt = 1; ; attempt++) {
-      if (!postgres.alive) throw new StartFailure(servicesFailed(), [...postgres.tail, "postgres exited"]);
       try {
         return await answers(port, signal);
       } catch (error) {
         if (signal.aborted) throw error;
         if (attempt >= DATABASE_ANSWER_ATTEMPTS)
-          throw new StartFailure(servicesFailed(), [...postgres.tail, `Postgres did not answer on 127.0.0.1:${port}`]);
+          throw new StartFailure(servicesFailed(), [`Postgres did not answer on 127.0.0.1:${port}`]);
         await sleep(HEALTH_POLL_INTERVAL_MS, signal);
       }
     }
@@ -503,20 +522,22 @@ export class WindowsStackController extends StackLifecycle {
   private async stopServices() {
     const services = this.services;
     this.services = [];
-    const database = services.filter((service) => service.spec.name === "postgres");
-    await Promise.all(services.filter((s) => !database.includes(s)).map((s) => s.stop()));
-    // Windows has no SIGINT for a child: ask Postgres for a fast, clean shutdown first.
-    if (this.serverDir && database.some((service) => service.alive)) {
-      await this.deps
-        .run(postgresBin(this.serverDir, "pg_ctl"), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
-          cwd: this.deps.stackDir,
-          env: this.baseEnv(),
-          timeoutMs: 30_000,
-          signal: AbortSignal.timeout(35_000),
-        })
-        .catch(() => undefined);
-    }
-    await Promise.all(database.map((service) => service.stop(30_000)));
+    await Promise.all(services.map((s) => s.stop()));
+    if (this.serverDir && this.postgresUp) await this.stopPostgres(this.serverDir);
+  }
+
+  /** A fast, clean shutdown; nothing to do when no server runs in this data folder. */
+  private async stopPostgres(serverDir: string) {
+    this.postgresUp = false;
+    if (!this.deps.exists(path.join(this.dir("pgdata"), "postmaster.pid"))) return;
+    await this.deps
+      .run(postgresBin(serverDir, "pg_ctl"), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
+        cwd: this.deps.stackDir,
+        env: this.baseEnv(),
+        timeoutMs: 30_000,
+        signal: AbortSignal.timeout(35_000),
+      })
+      .catch(() => undefined);
   }
 }
 

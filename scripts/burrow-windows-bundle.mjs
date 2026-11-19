@@ -45,7 +45,7 @@ if (!txz) throw new Error("The Postgres jar holds no .txz");
 const postgresDir = path.join(server, "postgres");
 fs.mkdirSync(postgresDir);
 execFileSync("tar", ["-xJf", path.relative(postgresDir, path.join(jarDir, txz))], { cwd: postgresDir, stdio: "inherit" });
-for (const program of ["initdb", "postgres", "psql", "pg_ctl"]) {
+for (const program of ["initdb", "postgres", "pg_ctl"]) {
   if (!fs.existsSync(path.join(postgresDir, "bin", `${program}.exe`)))
     throw new Error(`Postgres ${program}.exe is missing from the bundle`);
 }
