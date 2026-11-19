@@ -123,8 +123,8 @@ export function serializeSetup(setup: DesktopSetup): string {
 }
 
 /**
- * Decides between the setup window and the app window. A first launch opens Rakazo
- * Cloud; other servers are a choice made from setup later. An explicit
+ * Decides between the setup window and the app window. Burrow (modified from Rakazo): a first
+ * launch opens setup, which runs everything on this Mac. An explicit
  * `RAKAZO_WEB_URL` still wins over saved configuration so test and performance
  * harnesses can point the shell anywhere without touching a user's real setup.
  */
@@ -143,7 +143,7 @@ export function resolveStartupTarget(input: {
     if (saved !== null) return { kind: "app", url: saved.serverUrl, source: "saved" };
     return { kind: "setup" };
   }
-  return { kind: "app", url: RAKAZO_CLOUD_URL, source: "cloud" };
+  return { kind: "setup" };
 }
 
 /** Turns a network failure into something a person can act on. */

@@ -187,13 +187,9 @@ describe("server request headers", () => {
 describe("startup target", () => {
   const saved = { mode: "existing", serverUrl: "https://rakazo.example.com" } as const;
 
-  it("opens Burrow Cloud on a first launch", () => {
-    expect(resolveStartupTarget({})).toEqual({
-      kind: "app",
-      url: RAKAZO_CLOUD_URL,
-      source: "cloud",
-    });
-    expect(resolveStartupTarget({ saved: null })).toMatchObject({ source: "cloud" });
+  it("opens setup on a first launch (Burrow runs on this Mac)", () => {
+    expect(resolveStartupTarget({})).toEqual({ kind: "setup" });
+    expect(resolveStartupTarget({ saved: null })).toEqual({ kind: "setup" });
   });
 
   it("opens the saved instance on later launches", () => {
