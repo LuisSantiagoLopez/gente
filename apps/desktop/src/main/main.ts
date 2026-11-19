@@ -56,6 +56,8 @@ import {
 } from "./setup/setup-store.js";
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
+import { stackSelfHeal } from "./burrow/self-heal.js";
+import { startWatchdogs } from "./burrow/watchdogs.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
 import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
@@ -226,7 +228,8 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("The server answered with HTTP {status}.", { status: response.status }),
+        // Gente: calm words on screen; the status code stays in the result for logs.
+        error: t("That address didn't answer like a Gente server. Check it, then try again."),
       };
     }
     const health = await readProbeJson(response);
@@ -730,7 +733,10 @@ app.whenReady().then(async () => {
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
+  const heal = stackSelfHeal(path.join(userStackDir, "logs"));
+  heal.bind(() => desktop.localStack.start());
   const onState = (state: DesktopLocalStackState) => {
+    heal.observe(state);
     // Gente: once the workspace is up, have the model read the last chat's prompt ahead of time.
     if (state.phase === "ready" && !prewarmed) {
       prewarmed = true;
@@ -738,7 +744,7 @@ app.whenReady().then(async () => {
     }
     if (state.phase !== "ready") prewarmed = false;
     if (desktop.setupWindow !== null && !desktop.setupWindow.isDestroyed()) {
-      desktop.setupWindow.webContents.send("desktop.setup.stack.changed", state);
+      desktop.setupWindow.webContents.send("desktop.setup.stack.changed", heal.present(state));
     }
     // A stack can start or stop without a server switch; its phase transitions refresh
     // the stop item.
@@ -1039,6 +1045,8 @@ app.whenReady().then(async () => {
   handleIpc("desktop.update.download", () => desktop.desktopUpdater.download(), updateState);
   handleIpc("desktop.update.install", () => installUpdate(), updateState);
   registerBrainIpc(stackDir(app.getPath("userData")));
+  // Gente: keep Ollama and the workspace alive without asking the person to do anything.
+  startWatchdogs(() => desktop.localStack);
   registerSetupIpc({
     userDataDir,
     appOpener,

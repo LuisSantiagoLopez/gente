@@ -200,7 +200,8 @@
     }
     const hasOutput = stack.output.length > 0;
     // A failure asks the person to read the output, so open it for them.
-    if (stack.phase === "failed" && hasOutput && !detailsOpen) {
+    // Gente: technical output is written to logs/setup.log, never opened on screen.
+    if (false && stack.phase === "failed" && hasOutput && !detailsOpen) {
       detailsOpen = true;
       detailsOpenedByFailure = true;
     }
@@ -251,7 +252,7 @@
       continueButton.textContent = dockerDesktop
         ? t("Download Docker Desktop")
         : t("Install Docker");
-    else if (phase === "failed") continueButton.textContent = t("Retry");
+    else if (phase === "failed") continueButton.textContent = t("Try again");
     else continueButton.textContent = t("Get started");
     setBusy(!TERMINAL_PHASES.has(phase));
     if (waitingForDocker) scheduleDockerRecheck();

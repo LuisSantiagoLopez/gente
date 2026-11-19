@@ -13,6 +13,7 @@ import { developmentIcon, markOnce } from "../windows/app-window.js";
 import { setupWindowOptions } from "../windows/window-options.js";
 import { managedLocalOpenUrl, parseSetupInput, RAKAZO_CLOUD_URL } from "./setup-config.js";
 import { writeSetup } from "./setup-store.js";
+import { stackSelfHeal } from "../burrow/self-heal.js";
 
 let setupSaveInProgress = false;
 function createSetupWindow() {
@@ -245,11 +246,13 @@ export function registerSetupIpc({
     const arch = app.runningUnderARM64Translation ? "arm64" : process.arch;
     await shell.openExternal(dockerDownloadUrl(process.platform, arch));
   });
-  handleIpc("desktop.setup.stack.state", () => desktop.localStack.state());
+  // Gente: the setup screen sees calm states only; retries and details stay in the main process.
+  handleIpc("desktop.setup.stack.state", () => stackSelfHeal().present(desktop.localStack.state()));
   handleIpc("desktop.setup.stack.start", async () => {
     await settleLocalStack();
+    stackSelfHeal().manualRetry();
     // Respond right away; the setup window polls `stack.state` until a terminal phase.
     void desktop.localStack.start();
-    return desktop.localStack.state();
+    return stackSelfHeal().present(desktop.localStack.state());
   });
 }

@@ -91,7 +91,8 @@ describe("Gente brain", () => {
     const { brain } = await setup({ failLoad: [BEST, COMPACT, SMALL] });
     await brain.start({ model: BEST });
     expect(brain.current().phase).toBe("failed");
-    expect(brain.current().message).toContain("No Swift model could run");
+    expect(brain.current().message).toContain("short on free memory");
+    expect(brain.current().message).not.toMatch(/HTTP|GiB|error/i);
   });
 
   it("restarts the workspace and unloads the old model only when the person switches", async () => {
@@ -140,5 +141,28 @@ describe("Gente brain", () => {
       RAKAZO_LOCAL_MODELS: "swift-1.5-ornith-9b,swift-1.5-27b-max",
     });
     expect(brainModule.swiftServerEnv(null)).toEqual({});
+  });
+});
+
+describe("Burrow brain, network trouble", () => {
+  it("retries a failing download instead of switching models, then asks calmly", async () => {
+    const { brainModule, dir, calls } = await setup();
+    // Every pull fails (the stub answers 500 on a closed stream): simulate by a stub without /api/pull.
+    stub?.server.removeAllListeners("request");
+    stub?.server.on("request", (req, res) => {
+      calls.push({ path: req.url ?? "", body: {} });
+      if (req.url === "/api/version") return res.end(JSON.stringify({ version: "x" }));
+      if (req.url === "/api/tags") return res.end(JSON.stringify({ models: [] }));
+      res.writeHead(500);
+      res.end("{}");
+    });
+    brainModule.PULL_RETRY_MS.splice(0, 4, 1, 1, 1, 1);
+    const brain = new brainModule.Brain(dir, () => {});
+    await brain.start();
+    expect(calls.filter((c) => c.path === "/api/pull")).toHaveLength(5);
+    expect(brain.current().phase).toBe("failed");
+    expect(brain.current().model.tag).toBe(COMPACT);
+    expect(brain.current().message).toMatch(/internet/);
+    expect(brain.current().message).not.toMatch(/HTTP|500/);
   });
 });

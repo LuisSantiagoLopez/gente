@@ -7,7 +7,7 @@
 
 import { spawn } from "node:child_process";
 import { createWriteStream, existsSync } from "node:fs";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, rm, statfs, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -369,6 +369,15 @@ export class Brain {
     if (model && this.state.phase === "checking") this.set({ model });
   }
 
+  private async logDetail(line: string) {
+    try {
+      await mkdir(path.join(this.stackDirectory, "logs"), { recursive: true });
+      await appendFile(path.join(this.stackDirectory, "logs", "setup.log"), `${new Date().toISOString()} ${line}\n`);
+    } catch {
+      // Never let logging fail setup.
+    }
+  }
+
   current(): BrainState {
     return this.state;
   }
@@ -398,16 +407,15 @@ export class Brain {
         try {
           await this.installOllama();
         } catch (error) {
-          this.set({ phase: "failed", message: `Could not install Ollama: ${errorText(error)}` });
+          await this.logDetail(`Ollama install failed: ${errorText(error)}`);
+          this.set({ phase: "failed", message: CALM.install });
           return;
         }
       }
       this.set({ phase: "starting-ollama", completedBytes: 0, totalBytes: 0 });
       if (!(await startOllama())) {
-        this.set({
-          phase: "failed",
-          message: "Ollama is installed but did not start. Open Ollama once, then retry.",
-        });
+        await this.logDetail("Ollama did not start");
+        this.set({ phase: "failed", message: CALM.ollama });
         return;
       }
     }
@@ -470,15 +478,18 @@ export class Brain {
         this.set({ phase: "ready" });
         return;
       } catch (error) {
+        await this.logDetail(`${model.name}: ${errorText(error)}`);
+        // A download that keeps failing is a network problem, not a reason to pick a smaller model.
+        if (error instanceof NeedsAction) {
+          this.set({ phase: "failed", message: error.message });
+          return;
+        }
         firstFailure ??= model.name;
         failed.add(model.alias);
-        this.set({ message: `${model.name}: ${errorText(error)}` });
+        this.set({ message: "" });
       }
     }
-    this.set({
-      phase: "failed",
-      message: `No Swift model could run on this Mac. Last error: ${this.state.message}`,
-    });
+    this.set({ phase: "failed", message: CALM.memory });
   }
 
   /** Pulls (resumable), names it with a larger context, and loads it once to prove it runs. */
@@ -486,7 +497,18 @@ export class Brain {
     let tags = await installedTags();
     if (!hasTag(tags, model.tag)) {
       this.set({ phase: "pulling" });
-      await this.pull(model.tag);
+      await ensureFreeSpace(model);
+      // Ollama resumes a pull where it stopped, so retrying costs nothing already downloaded.
+      for (let attempt = 0; ; attempt++) {
+        try {
+          await this.pull(model.tag);
+          break;
+        } catch (error) {
+          await this.logDetail(`pull ${model.tag} attempt ${attempt + 1}: ${errorText(error)}`);
+          if (attempt >= PULL_RETRY_MS.length) throw new NeedsAction(CALM.offline);
+          await new Promise((resolve) => setTimeout(resolve, PULL_RETRY_MS[attempt]));
+        }
+      }
       tags = await installedTags();
     }
     if (!hasTag(tags, model.alias)) {
@@ -638,6 +660,35 @@ async function downloadTo(url: string, file: string, onBytes: (done: number, tot
   await new Promise<void>((resolve, reject) =>
     out.end((err?: Error | null) => (err ? reject(err) : resolve())),
   );
+}
+
+/** Calm words for the few things a person may need to do; details go to logs/setup.log. */
+export const CALM = {
+  offline:
+    "Gente needs the internet to download Swift. It will pick up where it left off. Press Try again when you're back online.",
+  install: "Gente couldn't set up Ollama just now. Press Try again in a moment.",
+  ollama: "Ollama is taking a moment to start. Press Try again.",
+  memory:
+    "This computer is short on free memory for Swift right now. Close a few apps, then press Try again.",
+  space: (gb: number) =>
+    `Swift needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
+} as const;
+/** Pauses between download retries; exported so tests can shorten them. */
+export const PULL_RETRY_MS: number[] = [2_000, 5_000, 15_000, 30_000];
+
+/** A failure only the person can fix; its message is already calm. */
+export class NeedsAction extends Error {}
+
+async function ensureFreeSpace(model: SwiftModel) {
+  try {
+    const stats = await statfs(os.homedir());
+    const free = Number(stats.bavail) * Number(stats.bsize);
+    const needed = (model.sizeGB + 2) * 1e9;
+    if (free < needed) throw new NeedsAction(CALM.space(Math.ceil(model.sizeGB + 2)));
+  } catch (error) {
+    if (error instanceof NeedsAction) throw error;
+    // Can't read the disk size: let the download try.
+  }
 }
 
 function errorText(error: unknown) {
