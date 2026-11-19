@@ -132,18 +132,34 @@ export async function ollamaRunning(): Promise<boolean> {
   }
 }
 
+/** Where the official Windows installer puts Ollama (per user, no admin). */
+function windowsOllamaDir(): string {
+  return path.join(process.env.LOCALAPPDATA ?? path.join(os.homedir(), "AppData", "Local"), "Programs", "Ollama");
+}
+
+/**
+ * Settings Burrow wants from the model server: two requests at once (a chat and a routine) and
+ * the model kept in memory so replies never wait for a reload.
+ */
+export const OLLAMA_SETTINGS = { OLLAMA_NUM_PARALLEL: "2", OLLAMA_KEEP_ALIVE: "-1" } as const;
+
 function ollamaAppPath(): string | null {
-  for (const candidate of [
-    "/Applications/Ollama.app",
-    path.join(os.homedir(), "Applications", "Ollama.app"),
-  ]) {
+  const candidates =
+    process.platform === "win32"
+      ? [path.join(windowsOllamaDir(), "ollama app.exe")]
+      : ["/Applications/Ollama.app", path.join(os.homedir(), "Applications", "Ollama.app")];
+  for (const candidate of candidates) {
     if (existsSync(candidate)) return candidate;
   }
   return null;
 }
 
 function ollamaCliPath(): string | null {
-  for (const candidate of ["/opt/homebrew/bin/ollama", "/usr/local/bin/ollama"]) {
+  const candidates =
+    process.platform === "win32"
+      ? [path.join(windowsOllamaDir(), "ollama.exe")]
+      : ["/opt/homebrew/bin/ollama", "/usr/local/bin/ollama"];
+  for (const candidate of candidates) {
     if (existsSync(candidate)) return candidate;
   }
   return null;
@@ -158,10 +174,20 @@ export async function startOllama(): Promise<boolean> {
   if (await ollamaRunning()) return true;
   const appPath = ollamaAppPath();
   const cli = ollamaCliPath();
-  if (appPath !== null) {
+  const env = { ...process.env, ...OLLAMA_SETTINGS };
+  if (process.platform === "win32") {
+    if (cli === null) return false;
+    // The tray app reads the user's environment, so keep Burrow's settings there too.
+    for (const [name, value] of Object.entries(OLLAMA_SETTINGS)) {
+      if (process.env[name] === undefined)
+        spawn("setx", [name, value], { stdio: "ignore", windowsHide: true }).unref();
+    }
+    spawn(cli, ["serve"], { detached: true, stdio: "ignore", windowsHide: true, env }).unref();
+  } else if (appPath !== null) {
+    // The Mac app keeps its own settings; Burrow does not change a person's Ollama app.
     spawn("/usr/bin/open", ["-g", "-j", appPath], { detached: true, stdio: "ignore" }).unref();
   } else if (cli !== null) {
-    spawn(cli, ["serve"], { detached: true, stdio: "ignore" }).unref();
+    spawn(cli, ["serve"], { detached: true, stdio: "ignore", env }).unref();
   } else {
     return false;
   }
@@ -520,6 +546,7 @@ export class Brain {
 
   private async installOllama() {
     this.set({ phase: "installing-ollama", completedBytes: 0, totalBytes: 0 });
+    if (process.platform === "win32") return this.installOllamaWindows();
     const res = await fetch(OLLAMA_ZIP_URL, { redirect: "follow" });
     if (!res.ok || res.body === null) throw new Error(`download failed (HTTP ${res.status})`);
     const total = Number(res.headers.get("content-length") ?? 0);
@@ -545,6 +572,48 @@ export class Brain {
     });
     await rm(tmp, { force: true });
   }
+
+  /** The official installer, silent and per user (no admin prompt). */
+  private async installOllamaWindows() {
+    const setup = path.join(os.tmpdir(), `burrow-OllamaSetup-${process.pid}.exe`);
+    await downloadTo(OLLAMA_WINDOWS_SETUP_URL, setup, (completedBytes, totalBytes) =>
+      this.set({ completedBytes, totalBytes }),
+    );
+    await new Promise<void>((resolve, reject) => {
+      const child = spawn(setup, ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART"], {
+        stdio: "ignore",
+        windowsHide: true,
+      });
+      child.once("error", reject);
+      child.once("exit", (code) =>
+        code === 0 ? resolve() : reject(new Error(`Ollama setup exited ${code}`)),
+      );
+    });
+    await rm(setup, { force: true });
+  }
+}
+
+export const OLLAMA_WINDOWS_SETUP_URL = "https://ollama.com/download/OllamaSetup.exe";
+
+/** Downloads a file with progress pushed through `onBytes`. */
+async function downloadTo(url: string, file: string, onBytes: (done: number, total: number) => void) {
+  const res = await fetch(url, { redirect: "follow" });
+  if (!res.ok || res.body === null) throw new Error(`download failed (HTTP ${res.status})`);
+  const total = Number(res.headers.get("content-length") ?? 0);
+  const out = createWriteStream(file);
+  let completed = 0;
+  let lastPush = 0;
+  for await (const chunk of res.body as unknown as AsyncIterable<Uint8Array>) {
+    completed += chunk.length;
+    if (!out.write(chunk)) await new Promise<void>((resolve) => out.once("drain", () => resolve()));
+    if (Date.now() - lastPush > 250) {
+      lastPush = Date.now();
+      onBytes(completed, total);
+    }
+  }
+  await new Promise<void>((resolve, reject) =>
+    out.end((err?: Error | null) => (err ? reject(err) : resolve())),
+  );
 }
 
 function errorText(error: unknown) {
