@@ -1,0 +1,38 @@
+// Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
+// New file in Deskhead (a fork of Rakazo by Elie Steinbock).
+
+import { app } from "electron";
+import { desktop } from "../desktop-state.js";
+import { handleIpc } from "../ipc/ipc.js";
+import { Brain, ollamaInstalled, startOllama } from "./brain.js";
+
+let brain: Brain | null = null;
+
+export function registerBrainIpc(stackDirectory: string) {
+  app.setAboutPanelOptions({
+    applicationName: "Deskhead",
+    applicationVersion: app.getVersion(),
+    copyright: "Copyright 2026 DeskHead Inc.",
+    credits:
+      "Based on Rakazo by Elie Steinbock (Apache-2.0), github.com/elie222/rakazo.\n" +
+      "Default model: Swift 1.5 by UkisAI, run locally with Ollama.",
+  });
+  brain = new Brain(stackDirectory, (state) => {
+    const win = desktop.setupWindow;
+    if (win !== null && !win.isDestroyed()) win.webContents.send("desktop.setup.brain.changed", state);
+  });
+  handleIpc("desktop.setup.brain.state", () => (brain as Brain).current());
+  handleIpc("desktop.setup.brain.start", (_event, options) => {
+    const opts =
+      typeof options === "object" && options !== null
+        ? (options as { installOllama?: unknown; model?: unknown })
+        : {};
+    void (brain as Brain).start({
+      installOllama: opts.installOllama === true,
+      model: typeof opts.model === "string" ? opts.model : undefined,
+    });
+    return (brain as Brain).current();
+  });
+  // On a later launch the person's Ollama may not be running yet; bots need it.
+  if (ollamaInstalled()) void startOllama();
+}

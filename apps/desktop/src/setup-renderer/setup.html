@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Modified by DeskHead Inc. from Rakazo's setup page: Deskhead one-screen onboarding. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; form-action 'none'; base-uri 'none'"
+    />
+    <title>Welcome to Deskhead</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="setup.css" />
+  </head>
+  <body>
+    <header class="titlebar">
+      <span class="titlebar-name">Deskhead</span>
+      <button id="quit" class="titlebar-quit" type="button" title="Quit Deskhead">Quit</button>
+    </header>
+
+    <main class="shell">
+      <div class="mark" aria-hidden="true">
+        <span class="mark-head"><i></i><i></i></span>
+        <span class="mark-desk"></span>
+      </div>
+      <h1 class="heading">Your AI coworkers, on your Mac.</h1>
+      <p class="subheading">
+        Deskhead bots chat, use their own computer, and finish work while you do other things.
+        They think with Swift, a private model that runs right here. Nothing leaves this Mac.
+      </p>
+
+      <form id="setup" novalidate>
+        <fieldset class="choices" hidden>
+          <legend class="sr-only">Instance</legend>
+          <input id="mode-new" type="radio" name="mode" value="new" checked />
+          <input id="mode-existing" type="radio" name="mode" value="existing" />
+        </fieldset>
+
+        <ol class="steps">
+          <li class="step" id="step-brain" data-state="todo">
+            <span class="step-dot" aria-hidden="true"></span>
+            <div class="step-body">
+              <div class="step-row">
+                <span class="step-title">Swift model</span>
+                <span id="brain-size" class="step-meta"></span>
+              </div>
+              <p id="brain-status" class="step-status" role="status" aria-live="polite">
+                Downloads once, then works offline.
+              </p>
+              <div id="brain-progress" class="progress" role="progressbar" aria-label="Model download" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+                <div id="brain-progress-fill" class="progress-fill"></div>
+              </div>
+              <p id="brain-detail" class="step-detail"></p>
+              <details id="brain-models" class="models">
+                <summary>Choose a different Swift model</summary>
+                <div id="brain-model-list" class="model-list" role="radiogroup" aria-label="Swift model"></div>
+              </details>
+            </div>
+          </li>
+
+          <li class="step" id="step-stack" data-state="todo">
+            <span class="step-dot" aria-hidden="true"></span>
+            <div class="step-body">
+              <div class="step-row">
+                <span class="step-title">Workspace</span>
+                <span class="step-meta">Bots, chats, files, routines</span>
+              </div>
+              <section id="panel-new" class="panel">
+                <p id="stack-idle" class="step-status">Runs privately in the background on this Mac.</p>
+                <div id="stack" hidden>
+                  <div class="stack-head">
+                    <p id="stack-phase" class="step-status" role="status" aria-live="polite"></p>
+                    <button id="stack-details" class="icon-button" type="button" aria-controls="stack-output" aria-expanded="false" aria-label="Technical details" title="Technical details">
+                      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path d="M3.5 4.5 7 8l-3.5 3.5M8.5 11.5H13" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div id="stack-progress" class="progress" role="progressbar" aria-label="Setup progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+                    <div id="stack-progress-fill" class="progress-fill"></div>
+                  </div>
+                  <p id="stack-detail" class="step-detail"></p>
+                  <pre id="stack-output" class="stack-output" hidden></pre>
+                  <p id="stack-hint" class="step-detail" hidden></p>
+                </div>
+              </section>
+            </div>
+          </li>
+        </ol>
+
+        <section id="panel-existing" class="panel panel-existing" hidden>
+          <label class="field-label" for="server-url">Server address</label>
+          <input id="server-url" class="field" type="text" spellcheck="false" autocomplete="off" placeholder="https://deskhead.example.com" />
+          <details id="server-headers-section" class="headers">
+            <summary>Headers</summary>
+            <textarea id="server-headers" class="field" rows="2" spellcheck="false" autocomplete="off" aria-label="Headers" placeholder="Name: value"></textarea>
+          </details>
+        </section>
+
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+
+        <div class="actions">
+          <button id="advanced" class="link-button" type="button">Connect to a server instead</button>
+          <span class="actions-spacer"></span>
+          <button id="check" class="button button-secondary" type="button" hidden>Check connection</button>
+          <button id="continue" class="button button-primary" type="submit">Get started</button>
+        </div>
+      </form>
+      <p class="footnote">Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.</p>
+    </main>
+
+    <script src="setup.js"></script>
+  </body>
+</html>
