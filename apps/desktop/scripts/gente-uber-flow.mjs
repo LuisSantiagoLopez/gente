@@ -67,7 +67,10 @@ try {
 
   // Wait for the person to sign in through the live view.
   const waitMs = Number(args["wait-login-s"] ?? 0) * 1000;
-  const signedIn = async () => !/auth\.uber\.com|login/i.test(page.url());
+  // Signed in when Uber no longer offers "Login" (the button sits in the page's top bar).
+  const signedIn = async () =>
+    !/auth\.uber\.com|login/i.test(page.url()) &&
+    (await page.getByRole("button", { name: /^log ?in$/i }).or(page.getByRole("link", { name: /^log ?in$/i })).count()) === 0;
   const until = Date.now() + waitMs;
   while (!(await signedIn()) && Date.now() < until) {
     await page.waitForTimeout(3000);

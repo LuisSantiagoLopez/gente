@@ -136,6 +136,7 @@ describe("Gente brain", () => {
       PI_DEFAULT_PROVIDER: "local",
       PI_DEFAULT_MODEL: "swift-1.5-ornith-9b",
       BURROW_FAST_CHAT: "on",
+      PAYMENT_WALLET_PROVIDER: "link",
       RAKAZO_LOCAL_MODELS: "swift-1.5-ornith-9b,swift-1.5-27b-max",
     });
     expect(brainModule.swiftServerEnv(null)).toEqual({});
