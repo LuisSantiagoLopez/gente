@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Gente mark: people gathered in a circle at golden hour. Copyright 2026 DeskHead Inc. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE7B8"/>
+      <stop offset="1" stop-color="#F6C46B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="228" fill="url(#sky)"/>
+  <circle cx="512.0" cy="262.0" r="84" fill="#E8551A"/>
+  <circle cx="688.8" cy="335.2" r="70" fill="#1C1710"/>
+  <circle cx="762.0" cy="512.0" r="70" fill="#1C1710"/>
+  <circle cx="688.8" cy="688.8" r="70" fill="#1C1710"/>
+  <circle cx="512.0" cy="762.0" r="70" fill="#1C1710"/>
+  <circle cx="335.2" cy="688.8" r="70" fill="#1C1710"/>
+  <circle cx="262.0" cy="512.0" r="70" fill="#1C1710"/>
+  <circle cx="335.2" cy="335.2" r="70" fill="#1C1710"/>
+</svg>

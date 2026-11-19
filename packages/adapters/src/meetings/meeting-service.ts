@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHash, randomUUID } from "node:crypto";
 import type {
   BackgroundJob,
@@ -456,7 +456,7 @@ export class MeetingService {
       sessionId: row.id,
       meetingUrl: row.meetingUrl,
       platform: MeetingPlatformSchema.parse(row.platform),
-      botName: `${bot.name.slice(0, 88)} · Burrow`,
+      botName: `${bot.name.slice(0, 88)} · Gente`,
       expiresAt: row.expiresAt,
     };
     const { count } = await prisma.meetingSession.updateMany({

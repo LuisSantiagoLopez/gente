@@ -1,4 +1,4 @@
-# Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+# Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2026-08-26 00:00+0000\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: rakazo-web\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Burrow\n"
+"Last-Translator: Gente\n"
 "Language-Team: Dutch\n"
 "Plural-Forms: \n"
 
@@ -1392,14 +1392,14 @@ msgstr "Toestaan"
 msgid "Allow {name} on mobile"
 msgstr "{name} op mobiel toestaan"
 
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Burrow to use Speech Recognition and the microphone in System Settings."
-msgstr "Sta Burrow toe om Spraakherkenning en de microfoon te gebruiken in Systeeminstellingen."
-
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/shell/bots/bot-panel.tsx
 msgid "Allow cross-space bot communication"
 msgstr "Communicatie tussen bots in verschillende ruimtes toestaan"
+
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Gente to use Speech Recognition and the microphone in System Settings."
+msgstr "Sta Gente toe om Spraakherkenning en de microfoon te gebruiken in Systeeminstellingen."
 
 #: apps/mobile/lib/cards/ask-action-label.ts
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2131,16 +2131,6 @@ msgstr "MCP-servers doorzoeken"
 msgid "Built-in"
 msgstr "Ingebouwd"
 
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Burrow"
-msgstr "Burrow"
-
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Burrow credits"
-msgstr "Burrow-tegoed"
-
 #: apps/mobile/components/cards/ask-receipt.tsx
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Button “{button}” · read from the page, not checked"
@@ -2561,8 +2551,8 @@ msgstr "Map kiezen"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Burrow"
-msgstr "Kies hoe je Burrow gebruikt"
+msgid "Choose how to use Gente"
+msgstr "Kies hoe je Gente gebruikt"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3036,8 +3026,8 @@ msgstr "Verbind je AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Burrow credits in Billing."
-msgstr "Verbind je eigen API-sleutel bij Modellen of kies Burrow-tegoed bij Facturatie."
+msgid "Connect your own API key in Models or choose Gente credits in Billing."
+msgstr "Verbind je eigen API-sleutel bij Modellen of kies Gente-tegoed bij Facturatie."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5344,8 +5334,8 @@ msgid "Ends {day}"
 msgstr "Eindigt op {day}"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Burrow?"
-msgstr "Bevalt Burrow?"
+msgid "Enjoying Gente?"
+msgstr "Bevalt Gente?"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -5848,6 +5838,16 @@ msgstr "Gateway-URL"
 msgid "General"
 msgstr "Algemeen"
 
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Gente"
+msgstr "Gente"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Gente credits"
+msgstr "Gente-tegoed"
+
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "Krijg een gratis maand voor elke vriend die een proefperiode start."
@@ -6133,8 +6133,8 @@ msgid "How to check"
 msgstr "Hoe te controleren"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Burrow?"
-msgstr "Hoe ga je Burrow gebruiken?"
+msgid "How will you use Gente?"
+msgstr "Hoe ga je Gente gebruiken?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
@@ -7859,8 +7859,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "Niet in {organizationName}. Ziet alleen deze space."
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Burrow's catalog"
-msgstr "Niet in de catalogus van Burrow"
+msgid "Not in Gente's catalog"
+msgstr "Niet in de catalogus van Gente"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -7909,12 +7909,12 @@ msgstr "Niet verzonden. Tik om opnieuw te proberen"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Burrow"
-msgstr "Niet ondersteund in Burrow"
+msgid "Not supported in Gente"
+msgstr "Niet ondersteund in Gente"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Burrow"
-msgstr "Niet gebruikt door Burrow"
+msgid "Not used by Gente"
+msgstr "Niet gebruikt door Gente"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/components/integrations/McpServerHealthLine.tsx
@@ -8092,13 +8092,6 @@ msgstr "{title} openen"
 msgid "Open <0>{0}</0> and enter this code:"
 msgstr "Open <0>{0}</0> en voer deze code in:"
 
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Burrow"
-msgstr "Burrow openen"
-
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Open call"
 msgstr "Gesprek openen"
@@ -8125,6 +8118,13 @@ msgstr "Gesprek openen"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 msgid "Open external link?"
 msgstr "Externe link openen?"
+
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Gente"
+msgstr "Gente openen"
 
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
@@ -8403,8 +8403,8 @@ msgid "Paste a replacement key"
 msgstr "Plak een vervangende sleutel"
 
 #: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Burrow adds /v1 if needed."
-msgstr "Plak het OpenAI-compatibele adres van je server. Burrow voegt zo nodig /v1 toe."
+msgid "Paste the OpenAI-compatible address from your server. Gente adds /v1 if needed."
+msgstr "Plak het OpenAI-compatibele adres van je server. Gente voegt zo nodig /v1 toe."
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
@@ -8748,8 +8748,8 @@ msgid "Rakazo credits"
 msgstr ""
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Burrow."
-msgstr "rakazo-shared en ID's die beginnen met bot- zijn gereserveerd voor Burrow."
+msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
+msgstr "rakazo-shared en ID's die beginnen met bot- zijn gereserveerd voor Gente."
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -8769,6 +8769,10 @@ msgstr "Van de pagina gelezen, niet gecontroleerd"
 #: apps/web/src/pages/shell/bots/bot-panel.tsx
 msgid "Read replies aloud"
 msgstr "Antwoorden hardop voorlezen"
+
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Reading…"
+msgstr ""
 
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
@@ -8795,8 +8799,8 @@ msgid "Recall from banks"
 msgstr "Ophalen uit banken"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Burrow’s own peers."
-msgstr "Ophalen uit deze peer; opslaan in Burrow’s eigen peers."
+msgid "Recall from this peer; save to Gente’s own peers."
+msgstr "Ophalen uit deze peer; opslaan in Gente’s eigen peers."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -9402,15 +9406,15 @@ msgstr "Nu opnieuw proberen"
 msgid "Retry screen"
 msgstr "Scherm opnieuw proberen"
 
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Burrow"
-msgstr "Terug naar Burrow"
-
 #. placeholder {0}: call.botName
 #: apps/web/src/components/call/CallCard.tsx
 msgid "Return to call with {0}"
 msgstr "Terug naar het gesprek met {0}"
+
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Gente"
+msgstr "Terug naar Gente"
 
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
@@ -10224,8 +10228,8 @@ msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "Meld je aan op <0>{0}</0> en plak de code hier."
 
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Burrow"
-msgstr "Aanmelden bij Burrow"
+msgid "Sign in to Gente"
+msgstr "Aanmelden bij Gente"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -10477,6 +10481,10 @@ msgstr "Gesorteerd op {column}, aflopend"
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "Sorts new email and drafts the replies"
 msgstr "Sorteert nieuwe e-mail en schrijft conceptantwoorden"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Sounds"
+msgstr ""
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/lib/bots/identity-display.ts
@@ -11066,8 +11074,8 @@ msgid "The shared link stops working"
 msgstr "De gedeelde link werkt dan niet meer"
 
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Burrow."
-msgstr "Het transcript wordt uit Burrow verwijderd."
+msgid "The transcript will be removed from Gente."
+msgstr "Het transcript wordt uit Gente verwijderd."
 
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
@@ -11230,8 +11238,8 @@ msgid "This device"
 msgstr "Dit apparaat"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Burrow can read. Update Burrow and try again."
-msgstr "Deze export is nieuwer dan Burrow kan lezen. Werk Burrow bij en probeer het opnieuw."
+msgid "This export is newer than Gente can read. Update Gente and try again."
+msgstr "Deze export is nieuwer dan Gente kan lezen. Werk Gente bij en probeer het opnieuw."
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -11405,8 +11413,8 @@ msgid "This Space keeps its own vault. Its bots save and use items there, not he
 msgstr "Deze space heeft een eigen kluis. De bots ervan bewaren en gebruiken items daar, niet hier: open de instellingen van de space en dan Kluis."
 
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Burrow yet. Use a deployment credential or choose another provider."
-msgstr "Deze abonnementsaanmelding is nog niet beschikbaar in Burrow. Gebruik een implementatiegegeven of kies een andere aanbieder."
+msgid "This subscription sign-in is not available in Gente yet. Use a deployment credential or choose another provider."
+msgstr "Deze abonnementsaanmelding is nog niet beschikbaar in Gente. Gebruik een implementatiegegeven of kies een andere aanbieder."
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
@@ -11806,10 +11814,6 @@ msgstr "Komende meetings"
 msgid "Update"
 msgstr "Bijwerken"
 
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Burrow to connect your calendar from the desktop app."
-msgstr "Werk Burrow bij om je agenda te koppelen vanuit de desktop-app."
-
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Update failed"
@@ -11824,6 +11828,10 @@ msgstr "Update van {name}"
 #: apps/web/src/lib/activity-list-filters.ts
 msgid "Update from {name}: {text}"
 msgstr "Update van {name}: {text}"
+
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Gente to connect your calendar from the desktop app."
+msgstr "Werk Gente bij om je agenda te koppelen vanuit de desktop-app."
 
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -11953,10 +11961,6 @@ msgstr "Gebruik een account met hetzelfde e-mailadres"
 msgid "Use an http or https URL"
 msgstr "Gebruik een http- of https-URL"
 
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Burrow credits"
-msgstr "Burrow-tegoed gebruiken"
-
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Use Connect to verify the key."
 msgstr "Gebruik Verbinden om de sleutel te verifiëren."
@@ -11972,6 +11976,10 @@ msgstr "Standaardinstellingen gebruiken"
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Use defaults for {label}"
 msgstr "Standaardinstellingen gebruiken voor {label}"
+
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Gente credits"
+msgstr "Gente-tegoed gebruiken"
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -12250,8 +12258,8 @@ msgid "Welcome back"
 msgstr "Welkom terug"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Burrow"
-msgstr "Welkom bij Burrow"
+msgid "Welcome to Gente"
+msgstr "Welkom bij Gente"
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
@@ -12267,8 +12275,8 @@ msgid "What can this space use?"
 msgstr "Wat kan deze space gebruiken?"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Burrow to help with?"
-msgstr "Waarmee wil je het liefst hulp van Burrow?"
+msgid "What do you most want Gente to help with?"
+msgstr "Waarmee wil je het liefst hulp van Gente?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
@@ -12424,7 +12432,6 @@ msgstr "Werkinstructies"
 #: apps/web/src/components/messages/ToolActivityDisclosure.tsx
 #: apps/web/src/lib/chat/roster-status.ts
 #: apps/web/src/pages/auth/Auth.tsx
-#: apps/web/src/pages/shell/chat/transcript.tsx
 msgid "Working…"
 msgstr "Bezig…"
 

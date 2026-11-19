@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { strict as assert } from "node:assert";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -213,7 +213,7 @@ describe("MCP transport seam", () => {
     await session.close();
   });
 
-  it("launches only package bins that Burrow installed", async () => {
+  it("launches only package bins that Gente installed", async () => {
     const session = new McpSession();
     await expect(
       session.connectStdio({
@@ -221,7 +221,7 @@ describe("MCP transport seam", () => {
         allowedCommands: ["npx"],
         installedBin: { binPath: process.execPath },
       }),
-    ).rejects.toThrow("not installed by Burrow");
+    ).rejects.toThrow("not installed by Gente");
     await expect(
       session.connectStdio({ command: "npx", args: ["-c", "echo hi"], allowedCommands: ["npx"] }),
     ).rejects.toThrow("npx only launches");

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type {
   ModelBackupChoice,
@@ -208,7 +208,7 @@ export function ModelRoleSettings({
     }),
     creditOfferingId: choice.creditOfferingId,
     providerName: choice.creditOfferingId
-      ? t`Burrow credits`
+      ? t`Gente credits`
       : choice.credentialId
         ? choice.connectionName
         : providerLabel(choice.provider),
@@ -223,7 +223,7 @@ export function ModelRoleSettings({
         )
       : [];
   const providerName = (choice: ModelRoleChoice) =>
-    (choice.creditOfferingId ? t`Burrow credits` : undefined) ||
+    (choice.creditOfferingId ? t`Gente credits` : undefined) ||
     (choice.credentialId &&
       options.find((option) => option.credentialId === choice.credentialId)?.providerName) ||
     providerLabel(choice.provider);

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 /**
  * `unsupported` covers an unpackaged build and a repository with no published releases, which is
  * the normal state for a fork. It is not an error the user needs to act on. Automatic checks stay
@@ -261,8 +261,8 @@ export interface DesktopLocalStackState {
 /** The official Docker download for this platform (an installer, or Linux install docs). */
 export type DesktopSetupLink = "docker-download";
 
-/** Burrow: where the local Swift model is in its first-run setup. */
-export interface BurrowBrainState {
+/** Gente: where the local Swift model is in its first-run setup. */
+export interface GenteBrainState {
   phase:
     | "checking"
     | "ollama-missing"
@@ -295,11 +295,11 @@ export interface RakazoSetup {
   quit: () => Promise<void>;
   /** Opens the Docker download in the system browser; the person runs the installer. */
   openLink: (link: DesktopSetupLink) => Promise<void>;
-  /** Burrow: the local Swift model through Ollama (find or install, pull, load). */
+  /** Gente: the local Swift model through Ollama (find or install, pull, load). */
   brain: {
-    state: () => Promise<BurrowBrainState>;
-    start: (options?: { installOllama?: boolean; model?: string }) => Promise<BurrowBrainState>;
-    onChange: (listener: (state: BurrowBrainState) => void) => void;
+    state: () => Promise<GenteBrainState>;
+    start: (options?: { installOllama?: boolean; model?: string }) => Promise<GenteBrainState>;
+    onChange: (listener: (state: GenteBrainState) => void) => void;
   };
   /** The Docker Compose stack this app installs and runs for mode `new`. */
   stack: {

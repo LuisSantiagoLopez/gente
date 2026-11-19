@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -363,11 +363,11 @@ describe("reduceStackState", () => {
   it("records why Docker is unavailable", () => {
     const state = reduceStackState(reduceStackState(start, { type: "check-start" }), {
       type: "docker-missing",
-      message: "Burrow needs Docker to run on this computer.",
+      message: "Gente needs Docker to run on this computer.",
     });
     expect(state).toMatchObject({
       phase: "docker-missing",
-      message: "Burrow needs Docker to run on this computer.",
+      message: "Gente needs Docker to run on this computer.",
     });
   });
 });
@@ -976,7 +976,7 @@ describe("LocalStackController", () => {
     const state = await stack.start();
     expect(state).toMatchObject({
       phase: "docker-missing",
-      message: "Burrow needs Docker to run on this computer.",
+      message: "Gente needs Docker to run on this computer.",
     });
     expect(calls).toEqual([]);
     await expect(stat(path.join(root, "stack", STACK_ENV_FILE))).rejects.toThrow();
@@ -1054,7 +1054,7 @@ describe("LocalStackController", () => {
   it("names Docker Desktop when it is missing on macOS and Windows", async () => {
     const stack = controller({ platform: "darwin", exists: () => false });
     expect((await stack.start()).message).toBe(
-      "Burrow needs Docker Desktop to run on this computer.",
+      "Gente needs Docker Desktop to run on this computer.",
     );
   });
 

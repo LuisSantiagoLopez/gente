@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import type { BotAvatarSet } from "@rakazo/contracts";
@@ -72,7 +72,7 @@ export function BotLookPicker({
               <Trans>Original</Trans>
             </TabsTrigger>
             <TabsTrigger value="rakazo" className="flex-1">
-              <Trans>Burrow</Trans>
+              <Trans>Gente</Trans>
             </TabsTrigger>
           </TabsList>
         </Tabs>

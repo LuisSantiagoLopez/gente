@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
@@ -56,6 +56,7 @@ import {
 } from "./setup/setup-store.js";
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
+import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
@@ -216,7 +217,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address redirects elsewhere. Enter the final Burrow server address."),
+        error: t("That address redirects elsewhere. Enter the final Gente server address."),
       };
     }
     if (!response.ok) {
@@ -233,7 +234,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address did not respond like a Burrow server."),
+        error: t("That address did not respond like a Gente server."),
       };
     }
     return {
@@ -262,7 +263,7 @@ async function offerDockerMove(userStackDir: string): Promise<StackChoice> {
     return "docker";
   const options: Electron.MessageBoxOptions = {
     type: "question",
-    message: t("Run Burrow without Docker?"),
+    message: t("Run Gente without Docker?"),
     detail: t("Your bots and data move over. Docker is stopped, not removed."),
     buttons: [t("Move"), t("Keep Docker")],
     defaultId: 0,
@@ -554,6 +555,9 @@ async function recoverFromCrashedSave(
   showSetupWindow(message);
   return message;
 }
+// Gente (renamed from Burrow): keep using an existing Burrow folder so chats, bots and the
+// workspace survive the rename. Nothing is moved, so a running workspace is never cut off.
+useLegacyUserData();
 // A second launch on Linux/Windows would rerun host-computer setup, overwrite
 // the saved token and restart the local stack under the running instance.
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
@@ -570,7 +574,7 @@ app.whenReady().then(async () => {
   if (!hasSingleInstanceLock) return;
   installSessionPermissions(session.defaultSession, permissionTarget);
   const userDataDir = app.getPath("userData");
-  // Burrow: move a default Burrow chose to the fast model before the workspace starts on it.
+  // Gente: move a default Gente chose to the fast model before the workspace starts on it.
   const movedToFastModel = await Promise.race([
     moveToFastDefault(stackDir(userDataDir)),
     new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 15_000)),
@@ -611,16 +615,16 @@ app.whenReady().then(async () => {
         type: "info",
         title: t("Mac app control"),
         message: readyForRestart
-          ? t("Restart Burrow to finish setup")
+          ? t("Restart Gente to finish setup")
           : t("Set up Mac app control"),
         detail: readyForRestart
           ? undefined
           : t(
-              "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.",
+              "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.",
             ),
         buttons: readyForRestart
-          ? [t("Restart Burrow"), t("Not Now")]
-          : [t("Open System Settings"), t("Restart Burrow"), t("Not Now")],
+          ? [t("Restart Gente"), t("Not Now")]
+          : [t("Open System Settings"), t("Restart Gente"), t("Not Now")],
         defaultId: 0,
         cancelId: readyForRestart ? 1 : 2,
         noLink: true,
@@ -719,7 +723,7 @@ app.whenReady().then(async () => {
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
   const onState = (state: DesktopLocalStackState) => {
-    // Burrow: once the workspace is up, have the model read the last chat's prompt ahead of time.
+    // Gente: once the workspace is up, have the model read the last chat's prompt ahead of time.
     if (state.phase === "ready" && !prewarmed) {
       prewarmed = true;
       void prewarmSwift(userStackDir);
@@ -782,7 +786,7 @@ app.whenReady().then(async () => {
       importFromDocker: moving ? (target) => moveDockerStack(moveDeps, target) : undefined,
     });
   };
-  // Burrow: Windows runs the server as plain processes with its own Postgres; no Docker needed.
+  // Gente: Windows runs the server as plain processes with its own Postgres; no Docker needed.
   const windowsBundle = windowsStackEligible({ platform: process.platform })
     ? await readServerBundle({
         resourcesPath: process.resourcesPath,

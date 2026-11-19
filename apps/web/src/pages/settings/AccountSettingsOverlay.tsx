@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { AccountSecurity, BotAvatarSet, SignInProvider } from "@rakazo/contracts";
 import {
@@ -36,6 +36,7 @@ import { DesktopUpdateSection } from "../../components/DesktopUpdates";
 import { AccountDataSettings } from "../../components/settings/AccountDataSettings";
 import { SettingsGroup, SettingsRow } from "../../components/settings/SettingsRows";
 import { checkEntitlement } from "../../lib/burrow/entitlement";
+import { playSound, setSoundsEnabled, soundsEnabled } from "../../lib/gente/sounds";
 import { TrustedLinkSitesSettings } from "../../components/settings/TrustedLinkSitesSettings";
 import { authClient } from "../../lib/auth/auth";
 import { fetchAuthCapabilities } from "../../lib/auth/auth-capabilities";
@@ -84,6 +85,7 @@ export function GeneralSettingsPanels({
   onImportAgent,
 }: SettingsGeneralProps) {
   const { t } = useLingui();
+  const [sounds, setSounds] = useState(soundsEnabled);
   const account = accountDisplay({ name, email }, t`You`);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
@@ -282,13 +284,27 @@ export function GeneralSettingsPanels({
         )}
       </SettingsGroup>
 
-      <SettingsGroup title={<Trans>Burrow</Trans>}>
+      <SettingsGroup title={<Trans>Gente</Trans>}>
         <SettingsRow
           label={<Trans>Plan</Trans>}
           control={
             <span className="text-body-sm text-muted-foreground">
               {checkEntitlement().plan === "free-trial" ? <Trans>Free trial</Trans> : <Trans>Subscription</Trans>}
             </span>
+          }
+        />
+        <SettingsRow
+          label={<Trans>Sounds</Trans>}
+          control={
+            <Switch
+              aria-label={t`Sounds`}
+              checked={sounds}
+              onCheckedChange={(next) => {
+                setSounds(next);
+                setSoundsEnabled(next);
+                if (next) playSound("arrive");
+              }}
+            />
           }
         />
         <SettingsRow
@@ -347,7 +363,7 @@ export function GeneralSettingsPanels({
                     value="rakazo"
                     className="text-body-sm aria-pressed:bg-background aria-pressed:shadow-sm"
                   >
-                    <Trans>Burrow</Trans>
+                    <Trans>Gente</Trans>
                   </ToggleGroupItem>
                 </ToggleGroup>
                 {botStyleError ? (

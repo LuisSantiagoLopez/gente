@@ -1,4 +1,5 @@
 import { useLingui } from "@lingui/react/macro";
+import { GenteMark } from "../../../lib/gente/gente-mark";
 import type { Bot } from "@rakazo/contracts";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@rakazo/ui-web";
 import { Bell, PanelLeftClose, PanelLeftOpen, Plus, Search } from "lucide-react";
@@ -75,6 +76,11 @@ export function SidebarHeader({
       <div className={`flex items-center ${mini ? "flex-col gap-2" : "gap-2"}`}>
         {hasWindowChrome ? <WindowChrome /> : null}
         {toggle}
+        {mini ? null : (
+          <span className="text-foreground/80">
+            <GenteMark />
+          </span>
+        )}
       </div>
       {/* Fits beside the macOS window controls at the narrowest sidebar width. */}
       <div className={`relative flex items-center ${mini ? "flex-col gap-1" : "gap-0.5"}`}>

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   AgentRunRequest,
@@ -752,7 +752,7 @@ code-b
         toolCalls: [
           {
             name: "destination.write",
-            args: { collection: "notes", title: "Burrow result", body: prompt },
+            args: { collection: "notes", title: "Gente result", body: prompt },
           },
         ],
         complete: true,

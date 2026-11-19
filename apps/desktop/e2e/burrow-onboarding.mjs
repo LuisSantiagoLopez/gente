@@ -1,9 +1,9 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// Drives the installed Burrow.app through first-run onboarding and screenshots each step.
+// Drives the installed Gente.app through first-run onboarding and screenshots each step.
 //   node e2e/burrow-onboarding.mjs <out-dir>
-// Env: BURROW_APP (default /Applications/Burrow.app), BURROW_OLLAMA_URL (a stub or real Ollama),
+// Env: BURROW_APP (default /Applications/Gente.app), BURROW_OLLAMA_URL (a stub or real Ollama),
 //      BURROW_SKIP_CLICK=1 to only open the window.
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -11,11 +11,11 @@ import { _electron as electron } from "@playwright/test";
 
 const out = path.resolve(process.argv[2] ?? "/tmp/burrow-e2e");
 await mkdir(out, { recursive: true });
-const appPath = process.env.BURROW_APP ?? "/Applications/Burrow.app";
+const appPath = process.env.BURROW_APP ?? "/Applications/Gente.app";
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
 const app = await electron.launch({
-  executablePath: path.join(appPath, "Contents/MacOS/Burrow"),
+  executablePath: path.join(appPath, "Contents/MacOS/Gente"),
   env: { ...process.env },
   timeout: 120_000,
 });

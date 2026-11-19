@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { BackgroundJob, BackgroundJobPayloads } from "@rakazo/adapter-kit";
 import {
   BillingEmulator,
@@ -131,7 +131,7 @@ dbTests("model connection email", () => {
 
     const [message, ...extra] = sentTo(id);
     expect(extra).toHaveLength(0);
-    expect(message!.subject).toBe("Connect a model to start using Burrow");
+    expect(message!.subject).toBe("Connect a model to start using Gente");
     expect(message!.text).toContain(`${WEB_ORIGIN}/sign-in?next=%2Fonboarding%2Fmodel`);
     expect(message!.text).toContain("ChatGPT or Claude subscription, or paste an API key");
     expect(message!.headers).toEqual({
@@ -285,7 +285,7 @@ dbTests("model connection email", () => {
     await send(importJob);
     const [message, ...extra] = sentTo(id);
     expect(extra).toHaveLength(0);
-    expect(message!.subject).toBe("Bring your old assistant to Burrow");
+    expect(message!.subject).toBe("Bring your old assistant to Gente");
     expect(message!.text).toContain(`${WEB_ORIGIN}/sign-in?next=%2Fapp%3Fimport`);
   });
 

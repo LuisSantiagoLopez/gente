@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHash } from "node:crypto";
 import type { AdapterContext } from "@rakazo/adapter-kit";
 import { createLogger, createTestSink, installLogger } from "@rakazo/logging";
@@ -479,7 +479,7 @@ describe("Mnemoverse forget", () => {
   it("will not delete a memory that sits in another bot's or Space's domain", async () => {
     const { atoms, calls } = mnemoverse([
       { id: ATOM_OTHER, domain: "rakazo:bot:bot-2", content: "Not yours" },
-      { id: ATOM_FOREIGN, domain: "personal-notes", content: "Not Burrow's" },
+      { id: ATOM_FOREIGN, domain: "personal-notes", content: "Not Gente's" },
     ]);
     expect((await forget(ATOM_OTHER, "shared")).ok).toBe(false);
     expect((await forget(ATOM_FOREIGN, "shared")).ok).toBe(false);

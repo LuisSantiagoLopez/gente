@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { setTimeout as sleep } from "node:timers/promises";
 import type {
   AdapterContext,
@@ -1244,7 +1244,7 @@ export class MessagingDelivery {
         ? teamChatResponseText(reply ? storedMessageBlocks(reply) : [], run.bot.name, ambient)
         : ambient
           ? ""
-          : `${run.bot.name} could not complete that request. Open Burrow for details.`;
+          : `${run.bot.name} could not complete that request. Open Gente for details.`;
     const recorded = await this.deps.prisma.$transaction(async (tx) => {
       const claimed = await tx.externalMessage.updateMany({
         where: { id: message.id, status: "running" },
@@ -1296,7 +1296,7 @@ export class MessagingDelivery {
         : null;
     const body =
       run.status === "failed"
-        ? `${run.bot.name} could not complete the delegated request. Open Burrow for details.`
+        ? `${run.bot.name} could not complete the delegated request. Open Gente for details.`
         : teamChatResponseText(reply ? storedMessageBlocks(reply) : [], run.bot.name, true);
     if (!body) return undefined;
     const lane = {

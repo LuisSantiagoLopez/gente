@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   AuthenticationError,
   CommandExitError,
@@ -259,7 +259,7 @@ describe("Novita adapter over the SDK emulator", () => {
     return events;
   }
 
-  it("creates an auto-pausing computer from the Burrow template and rejects a revoked key", async () => {
+  it("creates an auto-pausing computer from the Gente template and rejects a revoked key", async () => {
     const { emulator, provider, computer } = await emulated();
     expect(emulator.computers.get(computer.id)).toMatchObject({
       state: "running",

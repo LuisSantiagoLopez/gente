@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -37,7 +37,7 @@ it.skipIf(!databaseUrl)(
         headers: { "content-type": "application/json", origin: webOrigin },
         body: JSON.stringify(body),
       });
-    const welcomes = () => email.sent.filter((message) => message.subject === "Welcome to Burrow");
+    const welcomes = () => email.sent.filter((message) => message.subject === "Welcome to Gente");
     try {
       expect((await post("/api/auth/sign-up/email", { ...credentials, name: "New" })).status).toBe(
         200,

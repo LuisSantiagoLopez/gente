@@ -249,6 +249,7 @@ export function ComposerActions({
           <Button
             size="icon"
             aria-label={t`Send`}
+            data-gente-send=""
             disabled={sendDisabled}
             onClick={onSend}
             style={sendStyle}
@@ -273,6 +274,7 @@ export function ComposerActions({
           <Button
             size="icon"
             aria-label={t`Send`}
+            data-gente-send=""
             disabled={sendDisabled}
             onClick={onSend}
             style={sendStyle}

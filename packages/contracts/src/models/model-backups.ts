@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { ModelBackupChoice, ModelCatalogEntry, ModelCredential } from "./model-connections.js";
 import { OPENAI_COMPATIBLE_PROVIDER_ID } from "./model-connections.js";
 import { canonicalPiProviderId } from "./model-provider.js";
@@ -119,7 +119,7 @@ export function connectedBackupOptions(
       options.push({
         ...option(entry),
         creditOfferingId: entry.creditOfferingId,
-        connectionName: "Burrow credits",
+        connectionName: "Gente credits",
       });
     }
     if (owners.length === 0) {

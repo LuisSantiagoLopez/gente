@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { Server } from "node:http";
 import { createServer } from "node:http";
 import type { RakazoDesktopOAuthCallback } from "@rakazo/contracts";
@@ -86,11 +86,11 @@ export async function openBrowserAuth(
             !code ||
             target.searchParams.has("error")
           ) {
-            response.writeHead(400).end(t("Sign-in callback rejected. Return to Burrow to retry."));
+            response.writeHead(400).end(t("Sign-in callback rejected. Return to Gente to retry."));
             return;
           }
           consumed = true;
-          response.end(t("You can close this tab and return to Burrow."), close);
+          response.end(t("You can close this tab and return to Gente."), close);
           options.onCallback({ code, state });
         });
         server.requestTimeout = 10_000;

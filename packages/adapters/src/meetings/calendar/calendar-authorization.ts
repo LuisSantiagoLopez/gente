@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHash, createHmac, randomUUID } from "node:crypto";
 import type { BackgroundJob } from "@rakazo/adapter-kit";
 import {
@@ -226,7 +226,7 @@ export class CalendarAuthorization {
             ) {
               throw new ClientError(
                 "SERVICE_UNAVAILABLE",
-                "Calendar sign-in could not be confirmed. Check the connection in Burrow.",
+                "Calendar sign-in could not be confirmed. Check the connection in Gente.",
                 undefined,
                 { cause: error },
               );

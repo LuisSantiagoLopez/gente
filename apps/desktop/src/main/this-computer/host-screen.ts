@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
@@ -19,7 +19,7 @@ export const SCREEN_LOCKED_MESSAGE =
 export const SCREEN_DRIVER_DOWNLOAD_MESSAGE =
   "Screen control couldn't be set up on this computer. Ask the user to check their internet connection, then try again.";
 export const SCREEN_PERMISSION_MESSAGE =
-  "Burrow needs Accessibility and Screen Recording access on this Mac. Ask the user to allow Burrow in System Settings > Privacy & Security, quit and reopen Burrow, then try again.";
+  "Gente needs Accessibility and Screen Recording access on this Mac. Ask the user to allow Gente in System Settings > Privacy & Security, quit and reopen Gente, then try again.";
 
 /** The parts of Electron's macOS permission API this uses. */
 export interface ScreenPermissionApi {

@@ -1,10 +1,10 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export const TR_MESSAGES: Record<string, string> = {
   "About {name}": "{name} Hakkında",
   "Check for Updates…": "Güncellemeleri Denetle…",
   "Computer Access…": "Bilgisayar Erişimi…",
   "Revoke Local Computer Access": "Yerel Bilgisayar Erişimini İptal Et",
-  "Change Burrow Server…": "Burrow Sunucusunu Değiştir…",
+  "Change Gente Server…": "Gente Sunucusunu Değiştir…",
   "Hide {name}": "{name} Uygulamasını Gizle",
   "Hide Others": "Diğerlerini Gizle",
   "Show All": "Tümünü Göster",
@@ -39,13 +39,13 @@ export const TR_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Güncellemeler Denetleniyor…",
   "Downloading Update…": "Güncelleme İndiriliyor…",
   "Restart to Update…": "Güncellemek İçin Yeniden Başlat…",
-  "Downloading Burrow {version}…": "Burrow {version} indiriliyor…",
-  "Burrow {version} is ready to install.": "Burrow {version} yüklenmeye hazır.",
+  "Downloading Gente {version}…": "Gente {version} indiriliyor…",
+  "Gente {version} is ready to install.": "Gente {version} yüklenmeye hazır.",
   Restart: "Yeniden Başlat",
   Later: "Daha Sonra",
   "Could not install the update.": "Güncelleme yüklenemedi.",
   "Could not check for updates.": "Güncellemeler denetlenemedi.",
-  "Burrow is up to date.": "Burrow güncel.",
+  "Gente is up to date.": "Gente güncel.",
   "Version {version}": "Sürüm {version}",
   "Automatic updates are turned off for this install.":
     "Bu kurulumda otomatik güncellemeler kapalı.",
@@ -53,11 +53,11 @@ export const TR_MESSAGES: Record<string, string> = {
     "Otomatik güncellemeler yalnızca kurulu bir sürümde çalışır.",
   "No desktop releases are published for this build yet.":
     "Bu derleme için henüz yayımlanmış masaüstü sürümü yok.",
-  "Move Burrow to Applications to install updates.":
-    "Güncellemeleri yüklemek için Burrow’yu Uygulamalar klasörüne taşıyın.",
+  "Move Gente to Applications to install updates.":
+    "Güncellemeleri yüklemek için Gente’yu Uygulamalar klasörüne taşıyın.",
   "Free up disk space to install updates.": "Güncellemeleri yüklemek için diskte yer açın.",
-  "This update could not be verified. Reinstall Burrow from a trusted download.":
-    "Bu güncelleme doğrulanamadı. Burrow’yu güvenilir bir indirmeden yeniden yükleyin.",
+  "This update could not be verified. Reinstall Gente from a trusted download.":
+    "Bu güncelleme doğrulanamadı. Gente’yu güvenilir bir indirmeden yeniden yükleyin.",
   "The update could not be completed. Try again later.":
     "Güncelleme tamamlanamadı. Daha sonra yeniden deneyin.",
   "Could not reach the update server.": "Güncelleme sunucusuna ulaşılamadı.",
@@ -76,13 +76,13 @@ export const TR_MESSAGES: Record<string, string> = {
     "Zaten devam eden bir oturum açma denemesi var. Onu iptal edip yeniden deneyin.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Tarayıcıda oturum açma başlatılamadı. Diğer oturum açma denemelerini kapatıp yeniden deneyin.",
-  "Sign-in callback rejected. Return to Burrow to retry.":
-    "Oturum açma yanıtı reddedildi. Yeniden denemek için Burrow’ya dönün.",
-  "You can close this tab and return to Burrow.": "Bu sekmeyi kapatıp Burrow’ya dönebilirsiniz.",
-  "Set up Burrow": "Burrow’yu Kur",
-  "Quit Burrow": "Burrow’dan Çık",
-  "Welcome to Burrow": "Burrow’ya hoş geldiniz",
-  "Choose where Burrow runs.": "Burrow'nun nerede çalışacağını seçin.",
+  "Sign-in callback rejected. Return to Gente to retry.":
+    "Oturum açma yanıtı reddedildi. Yeniden denemek için Gente’ya dönün.",
+  "You can close this tab and return to Gente.": "Bu sekmeyi kapatıp Gente’ya dönebilirsiniz.",
+  "Set up Gente": "Gente’yu Kur",
+  "Quit Gente": "Gente’dan Çık",
+  "Welcome to Gente": "Gente’ya hoş geldiniz",
+  "Choose where Gente runs.": "Gente'nun nerede çalışacağını seçin.",
   Instance: "Örnek",
   "This computer": "Bu bilgisayar",
   "Existing instance": "Mevcut örnek",
@@ -95,14 +95,14 @@ export const TR_MESSAGES: Record<string, string> = {
   Continue: "Devam",
   Retry: "Yeniden dene",
   "Getting ready…": "Hazırlanıyor…",
-  "Downloading Burrow…": "Burrow indiriliyor…",
-  "Starting Burrow…": "Burrow başlatılıyor…",
+  "Downloading Gente…": "Gente indiriliyor…",
+  "Starting Gente…": "Gente başlatılıyor…",
   "Almost ready…": "Neredeyse hazır…",
-  "Burrow is ready.": "Burrow hazır.",
+  "Gente is ready.": "Gente hazır.",
   "{size} downloaded": "{size} indirildi",
   "Connecting…": "Bağlanıyor…",
   "Checking…": "Denetleniyor…",
-  "Burrow answered at {url}.": "Burrow {url} adresinde yanıt verdi.",
+  "Gente answered at {url}.": "Gente {url} adresinde yanıt verdi.",
   "Enter a server address first.": "Önce bir sunucu adresi girin.",
   "Could not save that address.": "Bu adres kaydedilemedi.",
   "Could not save that address. Try again.": "Bu adres kaydedilemedi. Yeniden deneyin.",
@@ -111,17 +111,17 @@ export const TR_MESSAGES: Record<string, string> = {
   "Could not run the connection check. Try again.":
     "Bağlantı denetimi çalıştırılamadı. Yeniden deneyin.",
   "Setup bridge unavailable.": "Kurulum köprüsü kullanılamıyor.",
-  "Setup could not start. Quit Burrow and try again.":
-    "Kurulum başlatılamadı. Burrow’dan çıkıp yeniden deneyin.",
+  "Setup could not start. Quit Gente and try again.":
+    "Kurulum başlatılamadı. Gente’dan çıkıp yeniden deneyin.",
   "Enter a server address.": "Bir sunucu adresi girin.",
   "Enter a valid http:// or https:// address.": "Geçerli bir http:// veya https:// adresi girin.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Geçerli bir sunucu adresi girin. Herkese açık sunucular HTTPS gerektirir; yeni bir yerel örnek localhost kullanmalıdır.",
   "Invalid custom headers": "Geçersiz özel üst bilgiler",
-  "That address redirects elsewhere. Enter the final Burrow server address.":
-    "Bu adres başka bir yere yönlendiriyor. Burrow sunucusunun son adresini girin.",
-  "That address did not respond like a Burrow server.":
-    "Bu adres bir Burrow sunucusu gibi yanıt vermedi.",
+  "That address redirects elsewhere. Enter the final Gente server address.":
+    "Bu adres başka bir yere yönlendiriyor. Gente sunucusunun son adresini girin.",
+  "That address did not respond like a Gente server.":
+    "Bu adres bir Gente sunucusu gibi yanıt vermedi.",
   "The server answered with HTTP {status}.": "Sunucu HTTP {status} ile yanıt verdi.",
   "Timed out reaching that address.": "Bu adrese ulaşırken zaman aşımı oluştu.",
   "Nothing is listening at that address yet.": "Bu adreste henüz dinleyen bir şey yok.",
@@ -145,8 +145,8 @@ export const TR_MESSAGES: Record<string, string> = {
     "Kurulum kaydedilemedi. Önceki örnek geri yüklendi.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Bağlanıldı ancak kurulum bir sonraki açılış için kaydedilemedi. Devam’a yeniden tıklayın.",
-  "The app-managed Burrow services are not ready. Retry setup.":
-    "Uygulamanın yönettiği Burrow hizmetleri hazır değil. Kurulumu yeniden deneyin.",
+  "The app-managed Gente services are not ready. Retry setup.":
+    "Uygulamanın yönettiği Gente hizmetleri hazır değil. Kurulumu yeniden deneyin.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker yüklü ancak Docker Compose eksik. Docker Desktop’ı veya docker-compose-plugin’i yükleyin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -167,10 +167,10 @@ export const TR_MESSAGES: Record<string, string> = {
     "Docker yanıt vermeyi bıraktı. Docker’ı başlatıp yeniden deneyin.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose eksik. Docker Desktop’ı veya docker-compose-plugin’i yükleyip yeniden deneyin.",
-  "Downloading Burrow images failed. Check the output below, then retry.":
-    "Burrow görüntüleri indirilemedi. Aşağıdaki çıktıyı inceleyip yeniden deneyin.",
-  "Burrow services did not start. Check the output below, then retry.":
-    "Burrow hizmetleri başlamadı. Aşağıdaki çıktıyı inceleyip yeniden deneyin.",
+  "Downloading Gente images failed. Check the output below, then retry.":
+    "Gente görüntüleri indirilemedi. Aşağıdaki çıktıyı inceleyip yeniden deneyin.",
+  "Gente services did not start. Check the output below, then retry.":
+    "Gente hizmetleri başlamadı. Aşağıdaki çıktıyı inceleyip yeniden deneyin.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "Yığın başladı ancak web uygulaması yanıt vermedi. Yeniden deneyin ve aşağıdaki çıktıyı inceleyin.",
   "Could not prepare the local stack. Retry.": "Yerel yığın hazırlanamadı. Yeniden deneyin.",
@@ -193,15 +193,15 @@ export const TR_MESSAGES: Record<string, string> = {
   "Chat Details": "Sohbet Ayrıntıları",
   Help: "Yardım",
   "Keyboard Shortcuts": "Klavye Kısayolları",
-  "Downloading Burrow failed. Check the internet connection, then retry.":
-    "Burrow indirilemedi. İnternet bağlantısını kontrol edip yeniden deneyin.",
+  "Downloading Gente failed. Check the internet connection, then retry.":
+    "Gente indirilemedi. İnternet bağlantısını kontrol edip yeniden deneyin.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Verileriniz Docker'dan taşınamadı. Aşağıdaki çıktıyı kontrol edip yeniden deneyin.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "Zaten çalışan bilgisayar çalışma ortamı çok eski. Güncelleyin veya kapatın, ardından yeniden deneyin.",
-  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
-    "Burrow verileriniz farklı bir bilgisayar çalışma ortamında. Çalışanı kapatın, ardından yeniden deneyin.",
-  "Run Burrow without Docker?": "Burrow Docker olmadan çalıştırılsın mı?",
+  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+    "Gente verileriniz farklı bir bilgisayar çalışma ortamında. Çalışanı kapatın, ardından yeniden deneyin.",
+  "Run Gente without Docker?": "Gente Docker olmadan çalıştırılsın mı?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Botlarınız ve verileriniz taşınır. Docker durdurulur, kaldırılmaz.",
   Move: "Taşı",
@@ -210,12 +210,12 @@ export const TR_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "Verileriniz bu bilgisayarda kalır.",
   "Connect to a server you or your team already run.":
     "Sizin veya ekibinizin zaten çalıştırdığı bir sunucuya bağlanın.",
-  "Burrow needs Docker Desktop to run on this computer.":
-    "Burrow'nun bu bilgisayarda çalışması için Docker Desktop gerekir.",
-  "Burrow needs Docker to run on this computer.":
-    "Burrow'nun bu bilgisayarda çalışması için Docker gerekir.",
-  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
-    "Docker Desktop, Burrow'yu arka planda çalıştıran ücretsiz bir uygulamadır. Yükleyip bir kez açın.",
+  "Gente needs Docker Desktop to run on this computer.":
+    "Gente'nun bu bilgisayarda çalışması için Docker Desktop gerekir.",
+  "Gente needs Docker to run on this computer.":
+    "Gente'nun bu bilgisayarda çalışması için Docker gerekir.",
+  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
+    "Docker Desktop, Gente'yu arka planda çalıştıran ücretsiz bir uygulamadır. Yükleyip bir kez açın.",
   "Install Docker Engine and start it.": "Docker Engine'i yükleyip başlatın.",
   "Download Docker Desktop": "Docker Desktop'ı indir",
   "Install Docker": "Docker'ı yükle",
@@ -224,14 +224,14 @@ export const TR_MESSAGES: Record<string, string> = {
   "Starting {app}…": "{app} başlatılıyor…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker yüklü ama çalışmıyor. Devam etmek için Docker hizmetini başlatın.",
-  "Burrow stopped unexpectedly.": "Burrow beklenmedik şekilde durdu.",
+  "Gente stopped unexpectedly.": "Gente beklenmedik şekilde durdu.",
   Reload: "Yeniden yükle",
   "Mac app control": "Mac uygulama kontrolü",
   "Set up Mac app control": "Mac uygulama kontrolünü ayarla",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
-    "Komutlar zaten çalışıyor. Uygulamaları kullanmak için Sistem Ayarları’nda Burrow için Erişilebilirlik ve Ekran Kaydı izinlerini verin, ardından Burrow’yu yeniden başlatın.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
+    "Komutlar zaten çalışıyor. Uygulamaları kullanmak için Sistem Ayarları’nda Gente için Erişilebilirlik ve Ekran Kaydı izinlerini verin, ardından Gente’yu yeniden başlatın.",
   "Open System Settings": "Sistem Ayarları’nı aç",
-  "Restart Burrow": "Burrow’yu yeniden başlat",
+  "Restart Gente": "Gente’yu yeniden başlat",
   "Not Now": "Şimdi değil",
-  "Restart Burrow to finish setup": "Kurulumu tamamlamak için Burrow’yu yeniden başlatın",
+  "Restart Gente to finish setup": "Kurulumu tamamlamak için Gente’yu yeniden başlatın",
 };

@@ -1,10 +1,10 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export const DE_MESSAGES: Record<string, string> = {
   "About {name}": "Über {name}",
   "Check for Updates…": "Nach Updates suchen …",
   "Computer Access…": "Computerzugriff …",
   "Revoke Local Computer Access": "Zugriff auf lokalen Computer widerrufen",
-  "Change Burrow Server…": "Burrow-Server wechseln …",
+  "Change Gente Server…": "Gente-Server wechseln …",
   "Hide {name}": "{name} ausblenden",
   "Hide Others": "Andere ausblenden",
   "Show All": "Alle einblenden",
@@ -39,13 +39,13 @@ export const DE_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Nach Updates wird gesucht …",
   "Downloading Update…": "Update wird geladen …",
   "Restart to Update…": "Zum Aktualisieren neu starten …",
-  "Downloading Burrow {version}…": "Burrow {version} wird geladen …",
-  "Burrow {version} is ready to install.": "Burrow {version} ist bereit zur Installation.",
+  "Downloading Gente {version}…": "Gente {version} wird geladen …",
+  "Gente {version} is ready to install.": "Gente {version} ist bereit zur Installation.",
   Restart: "Neu starten",
   Later: "Später",
   "Could not install the update.": "Das Update konnte nicht installiert werden.",
   "Could not check for updates.": "Es konnte nicht nach Updates gesucht werden.",
-  "Burrow is up to date.": "Burrow ist auf dem neuesten Stand.",
+  "Gente is up to date.": "Gente ist auf dem neuesten Stand.",
   "Version {version}": "Version {version}",
   "Automatic updates are turned off for this install.":
     "Automatische Updates sind für diese Installation deaktiviert.",
@@ -53,11 +53,11 @@ export const DE_MESSAGES: Record<string, string> = {
     "Automatische Updates funktionieren nur in einer installierten Version.",
   "No desktop releases are published for this build yet.":
     "Für diesen Build wurden noch keine Desktop-Versionen veröffentlicht.",
-  "Move Burrow to Applications to install updates.":
-    "Bewege Burrow in den Ordner „Programme“, um Updates zu installieren.",
+  "Move Gente to Applications to install updates.":
+    "Bewege Gente in den Ordner „Programme“, um Updates zu installieren.",
   "Free up disk space to install updates.": "Gib Speicherplatz frei, um Updates zu installieren.",
-  "This update could not be verified. Reinstall Burrow from a trusted download.":
-    "Dieses Update konnte nicht überprüft werden. Installiere Burrow erneut aus einer vertrauenswürdigen Quelle.",
+  "This update could not be verified. Reinstall Gente from a trusted download.":
+    "Dieses Update konnte nicht überprüft werden. Installiere Gente erneut aus einer vertrauenswürdigen Quelle.",
   "The update could not be completed. Try again later.":
     "Das Update konnte nicht abgeschlossen werden. Versuche es später erneut.",
   "Could not reach the update server.": "Der Update-Server ist nicht erreichbar.",
@@ -76,14 +76,14 @@ export const DE_MESSAGES: Record<string, string> = {
     "Eine Anmeldung läuft bereits. Brich sie ab und versuche es erneut.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Die Anmeldung im Browser konnte nicht geöffnet werden. Schließe andere Anmeldeversuche und versuche es erneut.",
-  "Sign-in callback rejected. Return to Burrow to retry.":
-    "Die Anmeldeantwort wurde abgelehnt. Kehre zu Burrow zurück, um es erneut zu versuchen.",
-  "You can close this tab and return to Burrow.":
-    "Du kannst diesen Tab schließen und zu Burrow zurückkehren.",
-  "Set up Burrow": "Burrow einrichten",
-  "Quit Burrow": "Burrow beenden",
-  "Welcome to Burrow": "Willkommen bei Burrow",
-  "Choose where Burrow runs.": "Wähle, wo Burrow läuft.",
+  "Sign-in callback rejected. Return to Gente to retry.":
+    "Die Anmeldeantwort wurde abgelehnt. Kehre zu Gente zurück, um es erneut zu versuchen.",
+  "You can close this tab and return to Gente.":
+    "Du kannst diesen Tab schließen und zu Gente zurückkehren.",
+  "Set up Gente": "Gente einrichten",
+  "Quit Gente": "Gente beenden",
+  "Welcome to Gente": "Willkommen bei Gente",
+  "Choose where Gente runs.": "Wähle, wo Gente läuft.",
   Instance: "Instanz",
   "This computer": "Dieser Computer",
   "Existing instance": "Bestehende Instanz",
@@ -96,14 +96,14 @@ export const DE_MESSAGES: Record<string, string> = {
   Continue: "Weiter",
   Retry: "Erneut versuchen",
   "Getting ready…": "Wird vorbereitet …",
-  "Downloading Burrow…": "Burrow wird heruntergeladen …",
-  "Starting Burrow…": "Burrow wird gestartet …",
+  "Downloading Gente…": "Gente wird heruntergeladen …",
+  "Starting Gente…": "Gente wird gestartet …",
   "Almost ready…": "Fast fertig …",
-  "Burrow is ready.": "Burrow ist bereit.",
+  "Gente is ready.": "Gente ist bereit.",
   "{size} downloaded": "{size} heruntergeladen",
   "Connecting…": "Verbindung wird hergestellt …",
   "Checking…": "Wird geprüft …",
-  "Burrow answered at {url}.": "Burrow hat unter {url} geantwortet.",
+  "Gente answered at {url}.": "Gente hat unter {url} geantwortet.",
   "Enter a server address first.": "Gib zuerst eine Serveradresse ein.",
   "Could not save that address.": "Diese Adresse konnte nicht gespeichert werden.",
   "Could not save that address. Try again.":
@@ -115,18 +115,18 @@ export const DE_MESSAGES: Record<string, string> = {
   "Could not run the connection check. Try again.":
     "Die Verbindungsprüfung konnte nicht ausgeführt werden. Versuche es erneut.",
   "Setup bridge unavailable.": "Die Einrichtungsbrücke ist nicht verfügbar.",
-  "Setup could not start. Quit Burrow and try again.":
-    "Die Einrichtung konnte nicht starten. Beende Burrow und versuche es erneut.",
+  "Setup could not start. Quit Gente and try again.":
+    "Die Einrichtung konnte nicht starten. Beende Gente und versuche es erneut.",
   "Enter a server address.": "Gib eine Serveradresse ein.",
   "Enter a valid http:// or https:// address.":
     "Gib eine gültige http://- oder https://-Adresse ein.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Gib eine gültige Serveradresse ein. Öffentliche Server erfordern HTTPS; eine neue lokale Instanz muss localhost verwenden.",
   "Invalid custom headers": "Ungültige benutzerdefinierte Header",
-  "That address redirects elsewhere. Enter the final Burrow server address.":
-    "Diese Adresse leitet woanders hin weiter. Gib die endgültige Adresse des Burrow-Servers ein.",
-  "That address did not respond like a Burrow server.":
-    "Diese Adresse hat nicht wie ein Burrow-Server geantwortet.",
+  "That address redirects elsewhere. Enter the final Gente server address.":
+    "Diese Adresse leitet woanders hin weiter. Gib die endgültige Adresse des Gente-Servers ein.",
+  "That address did not respond like a Gente server.":
+    "Diese Adresse hat nicht wie ein Gente-Server geantwortet.",
   "The server answered with HTTP {status}.": "Der Server hat mit HTTP {status} geantwortet.",
   "Timed out reaching that address.": "Zeitüberschreitung beim Erreichen dieser Adresse.",
   "Nothing is listening at that address yet.": "Unter dieser Adresse lauscht noch nichts.",
@@ -152,8 +152,8 @@ export const DE_MESSAGES: Record<string, string> = {
     "Die Einrichtung konnte nicht gespeichert werden. Die vorherige Instanz wurde wiederhergestellt.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Verbunden, aber die Einrichtung konnte nicht für den nächsten Start gespeichert werden. Klicke erneut auf „Weiter“.",
-  "The app-managed Burrow services are not ready. Retry setup.":
-    "Die von der App verwalteten Burrow-Dienste sind nicht bereit. Starte die Einrichtung erneut.",
+  "The app-managed Gente services are not ready. Retry setup.":
+    "Die von der App verwalteten Gente-Dienste sind nicht bereit. Starte die Einrichtung erneut.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker ist installiert, aber Docker Compose fehlt. Installiere Docker Desktop oder das docker-compose-plugin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -174,10 +174,10 @@ export const DE_MESSAGES: Record<string, string> = {
     "Docker antwortet nicht mehr. Starte Docker und versuche es erneut.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose fehlt. Installiere Docker Desktop oder das docker-compose-plugin und versuche es erneut.",
-  "Downloading Burrow images failed. Check the output below, then retry.":
-    "Die Burrow-Images konnten nicht heruntergeladen werden. Sieh dir die Ausgabe unten an und versuche es erneut.",
-  "Burrow services did not start. Check the output below, then retry.":
-    "Die Burrow-Dienste wurden nicht gestartet. Sieh dir die Ausgabe unten an und versuche es erneut.",
+  "Downloading Gente images failed. Check the output below, then retry.":
+    "Die Gente-Images konnten nicht heruntergeladen werden. Sieh dir die Ausgabe unten an und versuche es erneut.",
+  "Gente services did not start. Check the output below, then retry.":
+    "Die Gente-Dienste wurden nicht gestartet. Sieh dir die Ausgabe unten an und versuche es erneut.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "Der Stack wurde gestartet, aber die Web-App hat nicht geantwortet. Versuche es erneut und sieh dir die Ausgabe unten an.",
   "Could not prepare the local stack. Retry.":
@@ -202,15 +202,15 @@ export const DE_MESSAGES: Record<string, string> = {
   "Chat Details": "Chatdetails",
   Help: "Hilfe",
   "Keyboard Shortcuts": "Tastaturkurzbefehle",
-  "Downloading Burrow failed. Check the internet connection, then retry.":
-    "Burrow konnte nicht heruntergeladen werden. Prüfe die Internetverbindung und versuche es dann erneut.",
+  "Downloading Gente failed. Check the internet connection, then retry.":
+    "Gente konnte nicht heruntergeladen werden. Prüfe die Internetverbindung und versuche es dann erneut.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Deine Daten konnten nicht aus Docker übertragen werden. Prüfe die Ausgabe unten und versuche es dann erneut.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "Die bereits laufende Computer-Laufzeitumgebung ist zu alt. Aktualisiere oder beende sie und versuche es dann erneut.",
-  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
-    "Deine Burrow-Daten liegen in einer anderen Computer-Laufzeitumgebung. Beende die laufende und versuche es dann erneut.",
-  "Run Burrow without Docker?": "Burrow ohne Docker ausführen?",
+  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+    "Deine Gente-Daten liegen in einer anderen Computer-Laufzeitumgebung. Beende die laufende und versuche es dann erneut.",
+  "Run Gente without Docker?": "Gente ohne Docker ausführen?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Deine Bots und Daten werden übernommen. Docker wird gestoppt, nicht entfernt.",
   Move: "Übertragen",
@@ -219,12 +219,12 @@ export const DE_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "Deine Daten bleiben auf diesem Computer.",
   "Connect to a server you or your team already run.":
     "Mit einem Server verbinden, den du oder dein Team bereits betreibt.",
-  "Burrow needs Docker Desktop to run on this computer.":
-    "Burrow braucht Docker Desktop, um auf diesem Computer zu laufen.",
-  "Burrow needs Docker to run on this computer.":
-    "Burrow braucht Docker, um auf diesem Computer zu laufen.",
-  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
-    "Docker Desktop ist eine kostenlose App, die Burrow im Hintergrund ausführt. Installiere sie und öffne sie einmal.",
+  "Gente needs Docker Desktop to run on this computer.":
+    "Gente braucht Docker Desktop, um auf diesem Computer zu laufen.",
+  "Gente needs Docker to run on this computer.":
+    "Gente braucht Docker, um auf diesem Computer zu laufen.",
+  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
+    "Docker Desktop ist eine kostenlose App, die Gente im Hintergrund ausführt. Installiere sie und öffne sie einmal.",
   "Install Docker Engine and start it.": "Installiere Docker Engine und starte es.",
   "Download Docker Desktop": "Docker Desktop herunterladen",
   "Install Docker": "Docker installieren",
@@ -233,14 +233,14 @@ export const DE_MESSAGES: Record<string, string> = {
   "Starting {app}…": "{app} wird gestartet …",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker ist installiert, läuft aber nicht. Starte den Docker-Dienst, um fortzufahren.",
-  "Burrow stopped unexpectedly.": "Burrow wurde unerwartet beendet.",
+  "Gente stopped unexpectedly.": "Gente wurde unerwartet beendet.",
   Reload: "Neu laden",
   "Mac app control": "Mac-App-Steuerung",
   "Set up Mac app control": "Mac-App-Steuerung einrichten",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
-    "Befehle funktionieren bereits. Um Apps zu verwenden, erlaube Burrow in den Systemeinstellungen Bedienungshilfen und Bildschirmaufnahme und starte Burrow dann neu.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
+    "Befehle funktionieren bereits. Um Apps zu verwenden, erlaube Gente in den Systemeinstellungen Bedienungshilfen und Bildschirmaufnahme und starte Gente dann neu.",
   "Open System Settings": "Systemeinstellungen öffnen",
-  "Restart Burrow": "Burrow neu starten",
+  "Restart Gente": "Gente neu starten",
   "Not Now": "Nicht jetzt",
-  "Restart Burrow to finish setup": "Burrow neu starten, um die Einrichtung abzuschließen",
+  "Restart Gente to finish setup": "Gente neu starten, um die Einrichtung abzuschließen",
 };

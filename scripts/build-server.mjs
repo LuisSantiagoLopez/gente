@@ -38,6 +38,8 @@ export function serverBuildOptions(entry, outfile) {
         setup(builder) {
           builder.onResolve({ filter: /^[^./]/ }, async (args) => {
             if (args.pluginData?.inner) return undefined;
+            // Burrow/Gente: on Windows an entry point is "D:\\..." and matches the filter above.
+            if (args.kind === "entry-point" || path.isAbsolute(args.path)) return undefined;
             if (args.path.startsWith("node:") || builtins.has(args.path)) {
               return { path: args.path, external: true };
             }

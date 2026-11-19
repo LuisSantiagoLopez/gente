@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { randomUUID } from "node:crypto";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
@@ -629,7 +629,7 @@ describePostgres("organization members and invitations (PostgreSQL)", () => {
     expect(sent.slice(before)).toHaveLength(1);
     const message = sent.at(-1)!;
     expect(message.to).toBe(outsider.email);
-    expect(message.subject).toBe("owner invited you to Clients on Burrow");
+    expect(message.subject).toBe("owner invited you to Clients on Gente");
     expect(message.text).toContain(url);
     // Anyone holding the link may join, so the email asks for no particular address.
     expect(message.text).not.toContain("Sign in with this email address");

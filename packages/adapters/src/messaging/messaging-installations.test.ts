@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { MessagingInstallProvider, SecretStore } from "@rakazo/adapter-kit";
 import { MessagingInstallRefusedError } from "@rakazo/adapter-kit";
 import type { Actor } from "@rakazo/contracts";
@@ -146,7 +146,7 @@ it("rejects expired and forged state before contacting Slack", async () => {
   await expect(f.manager.complete(actor, state, "code")).rejects.toThrow("expired");
   expect(f.provider.exchange).not.toHaveBeenCalled();
 });
-it("does not let another Burrow space claim an installed Slack workspace", async () => {
+it("does not let another Gente space claim an installed Slack workspace", async () => {
   const f = fixture();
   const state = await begin(f);
   f.setInstallation({

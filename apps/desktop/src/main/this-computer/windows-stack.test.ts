@@ -1,5 +1,5 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 import type { ChildProcess } from "node:child_process";
 import { EventEmitter } from "node:events";
 import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
@@ -49,7 +49,7 @@ async function setup(options: { pgVersion?: boolean } = {}) {
     localWebUrl: "http://127.0.0.1:45173",
     imageTag: "v1.0.0",
     serverBundle: { version: "1" },
-    nodeBinary: "C:\\Burrow\\Burrow.exe",
+    nodeBinary: "C:\\Gente\\Gente.exe",
     env: { PATH: "C:\\Windows", SystemRoot: "C:\\Windows" },
     run: async (command, args, opts) => {
       calls.push({ command, args, env: opts.env as Record<string, string> });

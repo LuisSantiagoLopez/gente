@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -824,6 +824,6 @@ describe("favicon SSRF guard", () => {
 
     expect(seen.cookie).toBeUndefined();
     expect(seen.authorization).toBeUndefined();
-    expect(seen["user-agent"]).toMatch(/^Burrow\//);
+    expect(seen["user-agent"]).toMatch(/^Gente\//);
   });
 });

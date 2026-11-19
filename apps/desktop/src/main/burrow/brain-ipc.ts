@@ -1,5 +1,5 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 
 import { app } from "electron";
 import { desktop } from "../desktop-state.js";
@@ -11,7 +11,7 @@ let brain: Brain | null = null;
 
 export function registerBrainIpc(stackDirectory: string) {
   app.setAboutPanelOptions({
-    applicationName: "Burrow",
+    applicationName: "Gente",
     applicationVersion: `${app.getVersion()} · Plan: ${checkEntitlement().label}`,
     copyright: "Copyright 2026 DeskHead Inc.",
     credits:

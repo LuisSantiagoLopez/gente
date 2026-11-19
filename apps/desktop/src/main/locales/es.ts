@@ -1,11 +1,11 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export const ES_MESSAGES: Record<string, string> = {
   // Menus
   "About {name}": "Acerca de {name}",
   "Check for Updates…": "Buscar actualizaciones…",
   "Computer Access…": "Acceso a la computadora…",
   "Revoke Local Computer Access": "Revocar el acceso a la computadora local",
-  "Change Burrow Server…": "Cambiar servidor de Burrow…",
+  "Change Gente Server…": "Cambiar servidor de Gente…",
   "Hide {name}": "Ocultar {name}",
   "Hide Others": "Ocultar otros",
   "Show All": "Mostrar todo",
@@ -42,13 +42,13 @@ export const ES_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Buscando actualizaciones…",
   "Downloading Update…": "Descargando actualización…",
   "Restart to Update…": "Reiniciar para actualizar…",
-  "Downloading Burrow {version}…": "Descargando Burrow {version}…",
-  "Burrow {version} is ready to install.": "Burrow {version} está listo para instalarse.",
+  "Downloading Gente {version}…": "Descargando Gente {version}…",
+  "Gente {version} is ready to install.": "Gente {version} está listo para instalarse.",
   Restart: "Reiniciar",
   Later: "Más tarde",
   "Could not install the update.": "No se pudo instalar la actualización.",
   "Could not check for updates.": "No se pudieron buscar actualizaciones.",
-  "Burrow is up to date.": "Burrow está actualizado.",
+  "Gente is up to date.": "Gente está actualizado.",
   "Version {version}": "Versión {version}",
   "Automatic updates are turned off for this install.":
     "Las actualizaciones automáticas están desactivadas en esta instalación.",
@@ -56,12 +56,12 @@ export const ES_MESSAGES: Record<string, string> = {
     "Las actualizaciones automáticas solo funcionan en una versión instalada.",
   "No desktop releases are published for this build yet.":
     "Todavía no hay versiones de escritorio publicadas para esta compilación.",
-  "Move Burrow to Applications to install updates.":
-    "Mueve Burrow a Aplicaciones para instalar actualizaciones.",
+  "Move Gente to Applications to install updates.":
+    "Mueve Gente a Aplicaciones para instalar actualizaciones.",
   "Free up disk space to install updates.":
     "Libera espacio en el disco para instalar actualizaciones.",
-  "This update could not be verified. Reinstall Burrow from a trusted download.":
-    "No se pudo verificar esta actualización. Vuelve a instalar Burrow desde una descarga de confianza.",
+  "This update could not be verified. Reinstall Gente from a trusted download.":
+    "No se pudo verificar esta actualización. Vuelve a instalar Gente desde una descarga de confianza.",
   "The update could not be completed. Try again later.":
     "No se pudo completar la actualización. Inténtalo de nuevo más tarde.",
   "Could not reach the update server.": "No se pudo conectar con el servidor de actualizaciones.",
@@ -84,15 +84,15 @@ export const ES_MESSAGES: Record<string, string> = {
     "Ya hay un inicio de sesión en curso. Cancélalo y vuelve a intentarlo.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "No se pudo abrir el inicio de sesión en el navegador. Cierra los otros intentos de inicio de sesión y vuelve a intentarlo.",
-  "Sign-in callback rejected. Return to Burrow to retry.":
-    "Se rechazó la respuesta del inicio de sesión. Vuelve a Burrow para intentarlo de nuevo.",
-  "You can close this tab and return to Burrow.": "Puedes cerrar esta pestaña y volver a Burrow.",
+  "Sign-in callback rejected. Return to Gente to retry.":
+    "Se rechazó la respuesta del inicio de sesión. Vuelve a Gente para intentarlo de nuevo.",
+  "You can close this tab and return to Gente.": "Puedes cerrar esta pestaña y volver a Gente.",
 
   // Setup window
-  "Set up Burrow": "Configurar Burrow",
-  "Quit Burrow": "Salir de Burrow",
-  "Welcome to Burrow": "Te damos la bienvenida a Burrow",
-  "Choose where Burrow runs.": "Elige dónde se ejecuta Burrow.",
+  "Set up Gente": "Configurar Gente",
+  "Quit Gente": "Salir de Gente",
+  "Welcome to Gente": "Te damos la bienvenida a Gente",
+  "Choose where Gente runs.": "Elige dónde se ejecuta Gente.",
   Instance: "Instancia",
   "This computer": "Esta computadora",
   "Existing instance": "Instancia existente",
@@ -105,14 +105,14 @@ export const ES_MESSAGES: Record<string, string> = {
   Continue: "Continuar",
   Retry: "Reintentar",
   "Getting ready…": "Preparando…",
-  "Downloading Burrow…": "Descargando Burrow…",
-  "Starting Burrow…": "Iniciando Burrow…",
+  "Downloading Gente…": "Descargando Gente…",
+  "Starting Gente…": "Iniciando Gente…",
   "Almost ready…": "Casi listo…",
-  "Burrow is ready.": "Burrow está listo.",
+  "Gente is ready.": "Gente está listo.",
   "{size} downloaded": "{size} descargados",
   "Connecting…": "Conectando…",
   "Checking…": "Comprobando…",
-  "Burrow answered at {url}.": "Burrow respondió en {url}.",
+  "Gente answered at {url}.": "Gente respondió en {url}.",
   "Enter a server address first.": "Primero introduce la dirección de un servidor.",
   "Could not save that address.": "No se pudo guardar esa dirección.",
   "Could not save that address. Try again.":
@@ -124,8 +124,8 @@ export const ES_MESSAGES: Record<string, string> = {
   "Could not run the connection check. Try again.":
     "No se pudo comprobar la conexión. Inténtalo de nuevo.",
   "Setup bridge unavailable.": "El puente de configuración no está disponible.",
-  "Setup could not start. Quit Burrow and try again.":
-    "No se pudo iniciar la configuración. Sal de Burrow e inténtalo de nuevo.",
+  "Setup could not start. Quit Gente and try again.":
+    "No se pudo iniciar la configuración. Sal de Gente e inténtalo de nuevo.",
 
   // Connecting to a server
   "Enter a server address.": "Introduce la dirección de un servidor.",
@@ -134,10 +134,10 @@ export const ES_MESSAGES: Record<string, string> = {
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Introduce una dirección de servidor válida. Los servidores públicos requieren HTTPS; una nueva instancia local debe usar localhost.",
   "Invalid custom headers": "Encabezados personalizados no válidos",
-  "That address redirects elsewhere. Enter the final Burrow server address.":
-    "Esa dirección redirige a otro lugar. Introduce la dirección final del servidor de Burrow.",
-  "That address did not respond like a Burrow server.":
-    "Esa dirección no respondió como un servidor de Burrow.",
+  "That address redirects elsewhere. Enter the final Gente server address.":
+    "Esa dirección redirige a otro lugar. Introduce la dirección final del servidor de Gente.",
+  "That address did not respond like a Gente server.":
+    "Esa dirección no respondió como un servidor de Gente.",
   "The server answered with HTTP {status}.": "El servidor respondió con HTTP {status}.",
   "Timed out reaching that address.": "Se agotó el tiempo al intentar acceder a esa dirección.",
   "Nothing is listening at that address yet.": "Todavía no hay nada escuchando en esa dirección.",
@@ -162,8 +162,8 @@ export const ES_MESSAGES: Record<string, string> = {
     "No se pudo guardar la configuración. Se restauró la instancia anterior.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Se conectó, pero no se pudo guardar la configuración para el próximo inicio. Vuelve a pulsar Continuar.",
-  "The app-managed Burrow services are not ready. Retry setup.":
-    "Los servicios de Burrow que administra la app no están listos. Vuelve a intentar la configuración.",
+  "The app-managed Gente services are not ready. Retry setup.":
+    "Los servicios de Gente que administra la app no están listos. Vuelve a intentar la configuración.",
 
   // Docker
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
@@ -186,10 +186,10 @@ export const ES_MESSAGES: Record<string, string> = {
     "Docker dejó de responder. Inicia Docker y vuelve a intentarlo.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Falta Docker Compose. Instala Docker Desktop o docker-compose-plugin y vuelve a intentarlo.",
-  "Downloading Burrow images failed. Check the output below, then retry.":
-    "No se pudieron descargar las imágenes de Burrow. Revisa la salida de abajo y vuelve a intentarlo.",
-  "Burrow services did not start. Check the output below, then retry.":
-    "Los servicios de Burrow no se iniciaron. Revisa la salida de abajo y vuelve a intentarlo.",
+  "Downloading Gente images failed. Check the output below, then retry.":
+    "No se pudieron descargar las imágenes de Gente. Revisa la salida de abajo y vuelve a intentarlo.",
+  "Gente services did not start. Check the output below, then retry.":
+    "Los servicios de Gente no se iniciaron. Revisa la salida de abajo y vuelve a intentarlo.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "El stack se inició, pero la app web no respondió. Vuelve a intentarlo y revisa la salida de abajo.",
   "Could not prepare the local stack. Retry.":
@@ -213,15 +213,15 @@ export const ES_MESSAGES: Record<string, string> = {
   "Chat Details": "Detalles del chat",
   Help: "Ayuda",
   "Keyboard Shortcuts": "Atajos de teclado",
-  "Downloading Burrow failed. Check the internet connection, then retry.":
-    "No se pudo descargar Burrow. Revisa la conexión a internet y vuelve a intentarlo.",
+  "Downloading Gente failed. Check the internet connection, then retry.":
+    "No se pudo descargar Gente. Revisa la conexión a internet y vuelve a intentarlo.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "No se pudieron mover tus datos desde Docker. Revisa la salida de abajo y vuelve a intentarlo.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "El entorno de ejecución de computadoras que ya está en marcha es demasiado antiguo. Actualízalo o ciérralo y vuelve a intentarlo.",
-  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
-    "Tus datos de Burrow están en otro entorno de ejecución de computadoras. Cierra el que está en marcha y vuelve a intentarlo.",
-  "Run Burrow without Docker?": "¿Usar Burrow sin Docker?",
+  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+    "Tus datos de Gente están en otro entorno de ejecución de computadoras. Cierra el que está en marcha y vuelve a intentarlo.",
+  "Run Gente without Docker?": "¿Usar Gente sin Docker?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Tus bots y datos se trasladan. Docker se detiene, no se elimina.",
   Move: "Mover",
@@ -230,12 +230,12 @@ export const ES_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "Tus datos se quedan en esta computadora.",
   "Connect to a server you or your team already run.":
     "Conéctate a un servidor que tú o tu equipo ya ejecutan.",
-  "Burrow needs Docker Desktop to run on this computer.":
-    "Burrow necesita Docker Desktop para ejecutarse en esta computadora.",
-  "Burrow needs Docker to run on this computer.":
-    "Burrow necesita Docker para ejecutarse en esta computadora.",
-  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
-    "Docker Desktop es una app gratuita que ejecuta Burrow en segundo plano. Instálala y ábrela una vez.",
+  "Gente needs Docker Desktop to run on this computer.":
+    "Gente necesita Docker Desktop para ejecutarse en esta computadora.",
+  "Gente needs Docker to run on this computer.":
+    "Gente necesita Docker para ejecutarse en esta computadora.",
+  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
+    "Docker Desktop es una app gratuita que ejecuta Gente en segundo plano. Instálala y ábrela una vez.",
   "Install Docker Engine and start it.": "Instala Docker Engine e inícialo.",
   "Download Docker Desktop": "Descargar Docker Desktop",
   "Install Docker": "Instalar Docker",
@@ -244,14 +244,14 @@ export const ES_MESSAGES: Record<string, string> = {
   "Starting {app}…": "Iniciando {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker está instalado pero no se está ejecutando. Inicia el servicio de Docker para continuar.",
-  "Burrow stopped unexpectedly.": "Burrow se detuvo de forma inesperada.",
+  "Gente stopped unexpectedly.": "Gente se detuvo de forma inesperada.",
   Reload: "Recargar",
   "Mac app control": "Control de apps del Mac",
   "Set up Mac app control": "Configurar el control de apps del Mac",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
-    "Los comandos ya funcionan. Para usar apps, permite a Burrow acceder a Accesibilidad y Grabación de pantalla en Ajustes del Sistema y reinicia Burrow.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
+    "Los comandos ya funcionan. Para usar apps, permite a Gente acceder a Accesibilidad y Grabación de pantalla en Ajustes del Sistema y reinicia Gente.",
   "Open System Settings": "Abrir Ajustes del Sistema",
-  "Restart Burrow": "Reiniciar Burrow",
+  "Restart Gente": "Reiniciar Gente",
   "Not Now": "Ahora no",
-  "Restart Burrow to finish setup": "Reinicia Burrow para finalizar la configuración",
+  "Restart Gente to finish setup": "Reinicia Gente para finalizar la configuración",
 };

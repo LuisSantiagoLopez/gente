@@ -1,5 +1,5 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
 // Makes plain chat with a local model answer fast:
 // - A short message that is not part of a tool loop is answered without thinking
@@ -9,7 +9,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-/** On only where Burrow sets `BURROW_FAST_CHAT=on` (its desktop stack), so other setups keep Rakazo behavior. */
+/** On only where Gente sets `BURROW_FAST_CHAT=on` (its desktop stack), so other setups keep Rakazo behavior. */
 const FAST_CHAT_ENV = "BURROW_FAST_CHAT";
 /** Longest user message, after dropping tagged context, still treated as plain chat. */
 export const QUICK_CHAT_MAX_CHARS = 140;
@@ -107,7 +107,7 @@ export function quickChatBody(
   const prefix = { ...parsed, messages: parsed.messages.slice(0, -1) };
   if (isSmallTalk(parsed.messages)) {
     const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
-    // One assistant, two engines: greetings go to the small fast model when Burrow set one.
+    // One assistant, two engines: greetings go to the small fast model when Gente set one.
     const quick = process.env.BURROW_CHAT_MODEL?.trim();
     if (quick) slim.model = quick;
     const messages = slim.messages as unknown[];

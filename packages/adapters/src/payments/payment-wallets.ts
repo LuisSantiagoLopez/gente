@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   PaymentWalletCredential,
@@ -299,7 +299,7 @@ export async function connectPaymentWallet(
   const provider = deps.paymentWallet;
   if (!provider) throw new Error("No payment wallet is configured");
   const start = await provider.beginConnect(
-    { clientName: "Burrow" },
+    { clientName: "Gente" },
     providerContext(actor, "connect"),
   );
   const ciphertext = await storeMaterial(deps, actor, {

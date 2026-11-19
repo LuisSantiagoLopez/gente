@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import type {
   BillingByokCheckoutRequest,
@@ -239,7 +239,7 @@ export class StripeBillingProvider implements BillingProvider {
                 price: await this.recurringPrice(
                   `rakazo_monthly_credits_${input.amountCents}`,
                   input.amountCents,
-                  "Burrow monthly model credits",
+                  "Gente monthly model credits",
                 ),
               }
             : {
@@ -247,7 +247,7 @@ export class StripeBillingProvider implements BillingProvider {
                 price_data: {
                   currency: "usd",
                   unit_amount: input.amountCents,
-                  product_data: { name: "Burrow model credits" },
+                  product_data: { name: "Gente model credits" },
                 },
               },
         ],
@@ -282,7 +282,7 @@ export class StripeBillingProvider implements BillingProvider {
           price: await this.recurringPrice(
             `rakazo_monthly_credits_${amountCents}`,
             amountCents,
-            "Burrow monthly model credits",
+            "Gente monthly model credits",
           ),
           quantity: 1,
         },
@@ -382,8 +382,8 @@ export class StripeBillingProvider implements BillingProvider {
         : `${BYOK_PRICE_KEY_PREFIX}${tier}_${period}_${amountCents}`,
       amountCents,
       tier === "standard"
-        ? "Burrow own-key plan"
-        : `Burrow own-key plan (${BYOK_TIERS[tier].name})`,
+        ? "Gente own-key plan"
+        : `Gente own-key plan (${BYOK_TIERS[tier].name})`,
       interval,
     );
   }

@@ -1,5 +1,5 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { mkdtemp, readFile } from "node:fs/promises";
 import type { AddressInfo } from "node:net";
 import os from "node:os";
@@ -41,7 +41,7 @@ afterEach(async () => {
 const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
-describe("Burrow brain", () => {
+describe("Gente brain", () => {
   it("uses the fast default (27B IQ2_XXS) when the person picks nothing", async () => {
     const { brain, dir, states, calls } = await setup();
     await brain.start();
@@ -113,7 +113,7 @@ describe("Burrow brain", () => {
     expect(brain.current().model.tag).toBe(BEST);
   });
 
-  it("moves a default Burrow chose (27B) to the fast model on launch, but never a picked one", async () => {
+  it("moves a default Gente chose (27B) to the fast model on launch, but never a picked one", async () => {
     const { brainModule, dir } = await setup({ installed: [COMPACT] });
     const file = path.join(dir, "burrow-model.json");
     const { writeFile } = await import("node:fs/promises");

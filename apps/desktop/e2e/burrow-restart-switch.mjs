@@ -1,8 +1,8 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
 // After onboarding: relaunch the installed app (persistence), send a chat, then switch the
-// Swift model from the setup screen (app menu → Change Burrow Server…) and chat again.
+// Swift model from the setup screen (app menu → Change Gente Server…) and chat again.
 //   node e2e/burrow-restart-switch.mjs <out-dir> [model-tag-to-switch-to]
 import path from "node:path";
 import { _electron as electron } from "@playwright/test";
@@ -11,7 +11,7 @@ const out = path.resolve(process.argv[2] ?? "/tmp/burrow-e2e");
 const switchTo = process.argv[3];
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 const app = await electron.launch({
-  executablePath: "/Applications/Burrow.app/Contents/MacOS/Burrow",
+  executablePath: "/Applications/Gente.app/Contents/MacOS/Gente",
   env: { ...process.env },
   timeout: 120_000,
 });
@@ -50,7 +50,7 @@ if (switchTo) {
   await app.evaluate(({ Menu }) => {
     const find = (items) => {
       for (const item of items) {
-        if (/Burrow/.test(item.label ?? "") && /(Server|servidor)/i.test(item.label ?? "")) return item;
+        if (/Gente/.test(item.label ?? "") && /(Server|servidor)/i.test(item.label ?? "")) return item;
         const sub = item.submenu && find(item.submenu.items);
         if (sub) return sub;
       }

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   COMPUTER_ALLOWANCE_USED_ERROR,
   COMPUTER_PROVIDER_UNAVAILABLE_ERROR,
@@ -503,7 +503,7 @@ describe("normalizeRunError", () => {
       });
     });
 
-    it("keeps the advice when Burrow credits run out", () => {
+    it("keeps the advice when Gente credits run out", () => {
       expect(normalizeRunError(MODEL_CREDITS_EXHAUSTED_ERROR)).toEqual({
         summary: MODEL_CREDITS_EXHAUSTED_ERROR,
         details: MODEL_CREDITS_EXHAUSTED_ERROR,

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
 // Turns the server bundle built on Windows (rakazo-server-win32-x64-<v>.tar.xz from
 // build-server-bundle.mjs) into the zip the Windows app downloads: the same server plus its own

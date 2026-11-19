@@ -1,10 +1,10 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
 // Real-Windows smoke test for the installed app (run in CI on windows-2025):
 // onboarding → workspace (embedded Postgres) → sign up → starter bot → chat reply.
 // The model server is scripts/ollama-stub.mjs on 127.0.0.1:11434 (no GPU on the runner).
-//   node e2e/burrow-windows-smoke.mjs <path-to-Burrow.exe> <out-dir>
+//   node e2e/burrow-windows-smoke.mjs <path-to-Gente.exe> <out-dir>
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { _electron as electron } from "@playwright/test";

@@ -123,7 +123,7 @@ export function serializeSetup(setup: DesktopSetup): string {
 }
 
 /**
- * Decides between the setup window and the app window. Burrow (modified from Rakazo): a first
+ * Decides between the setup window and the app window. Gente (modified from Rakazo): a first
  * launch opens setup, which runs everything on this Mac. An explicit
  * `RAKAZO_WEB_URL` still wins over saved configuration so test and performance
  * harnesses can point the shell anywhere without touching a user's real setup.

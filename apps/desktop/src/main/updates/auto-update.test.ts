@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { Deferred } from "@rakazo/core/test-async";
 import { deferred } from "@rakazo/core/test-async";
 import { describe, expect, it, vi } from "vitest";
@@ -118,9 +118,9 @@ describe("classifyUpdaterFailure", () => {
       classifyUpdaterFailure(
         new Error("Cannot update while running on a read-only volume. The application is on a…"),
       ),
-    ).toEqual({ kind: "read-only", message: "Move Burrow to Applications to install updates." });
+    ).toEqual({ kind: "read-only", message: "Move Gente to Applications to install updates." });
     for (const message of [
-      "ditto: /private/update/Burrow.app/x.js.map: No space left on device\nditto: Couldn't read pkzip signature.",
+      "ditto: /private/update/Gente.app/x.js.map: No space left on device\nditto: Couldn't read pkzip signature.",
       "未能完成该操作。设备上无剩余空间: 设备上无剩余空间",
     ]) {
       expect(classifyUpdaterFailure(new Error(message)), message).toEqual({
@@ -254,7 +254,7 @@ describe("reduceUpdateState", () => {
       apply([{ type: "check-start" }, { type: "failed", error: readOnly, userInitiated: false }]),
     ).toMatchObject({
       phase: "unsupported",
-      message: "Move Burrow to Applications to install updates.",
+      message: "Move Gente to Applications to install updates.",
     });
   });
 
@@ -680,7 +680,7 @@ describe("DesktopUpdateController", () => {
   });
 
   describe("with a download verifier", () => {
-    const downloaded = { version: "0.2.0", downloadedFile: "/cache/Burrow-0.2.0.AppImage" };
+    const downloaded = { version: "0.2.0", downloadedFile: "/cache/Gente-0.2.0.AppImage" };
 
     function verifiedUpdater() {
       let fake: ReturnType<typeof fakeUpdater>;

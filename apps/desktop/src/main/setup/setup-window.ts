@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import path from "node:path";
 import type { DesktopReachability, DesktopSetup } from "@rakazo/contracts";
 import { parseServerHeaders } from "@rakazo/contracts";
@@ -171,7 +171,7 @@ export function registerSetupIpc({
         if (managedUrl === null || !(await desktop.localStack.matchesDesiredStack())) {
           return {
             ok: false,
-            error: t("The app-managed Burrow services are not ready. Retry setup."),
+            error: t("The app-managed Gente services are not ready. Retry setup."),
           };
         }
         openSetup = { mode: "new", serverUrl: managedUrl };

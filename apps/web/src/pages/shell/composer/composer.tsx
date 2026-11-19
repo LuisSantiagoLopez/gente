@@ -66,6 +66,7 @@ import { HoldToTalkStrip, useHoldToTalk } from "./hold-to-talk";
 import { useComposerFileDrop } from "./use-composer-file-drop";
 import { useComposerLayout } from "./use-composer-layout";
 import { useComposerTriggers } from "./use-composer-triggers";
+import { playSound } from "../../../lib/gente/sounds";
 
 export const LARGE_PASTE_THRESHOLD = 4_000;
 
@@ -158,6 +159,11 @@ const ComposerBody = memo(function Composer({
   docked?: boolean;
 }) {
   const { t } = useLingui();
+  const [sentPulse, setSentPulse] = useState(false);
+  // Gente: one low, soft tone when sending or a run fails.
+  useEffect(() => {
+    if (sendError || runError) playSound("error");
+  }, [sendError, runError]);
   const [composition, setComposition] = useState(() => ({
     text: readComposerDraft(draftKey),
     bindings: readComposerDraftBindings(draftKey),
@@ -466,6 +472,10 @@ const ComposerBody = memo(function Composer({
 
   async function send(imageHandling?: "file") {
     if (!canSend || sending || disabled) return;
+    // Gente: a soft pluck and a pop on the send button.
+    playSound("send");
+    setSentPulse(true);
+    globalThis.setTimeout(() => setSentPulse(false), 450);
     setLargePaste(null);
     const revision = editRevision.current;
     // Recovery rebuilds the draft from text alone, so only a plain-text send —
@@ -629,6 +639,8 @@ const ComposerBody = memo(function Composer({
     <fieldset
       aria-label={t`Message composer`}
       data-dragging={draggingFiles ? "files" : undefined}
+      data-gente-working-composer={running ? "" : undefined}
+      data-gente-sent={sentPulse ? "" : undefined}
       {...dropHandlers}
       className={`relative z-30 m-0 min-w-0 border-0 ${docked ? "p-0" : "px-3 pb-4 pt-0 md:px-[max(1.5rem,calc((100%_-_60rem)/2))] md:pb-6"} [&>*]:pointer-events-auto ${fileDragActive ? "pointer-events-auto" : "pointer-events-none"} ${
         draggingFiles ? "rounded-[14px] ring-2 ring-inset ring-ring" : ""
@@ -721,6 +733,7 @@ const ComposerBody = memo(function Composer({
       <div
         ref={composerBarRef}
         data-testid="composer-bar"
+        data-gente-composer-bar=""
         data-expanded={expanded}
         className={`grid grid-cols-[auto_minmax(0,1fr)_auto] content-end items-center rounded-[26px] border border-border pe-2.5 ps-3 transition-colors focus-within:border-input ${
           docked ? "bg-card" : "bg-background dark:bg-card"

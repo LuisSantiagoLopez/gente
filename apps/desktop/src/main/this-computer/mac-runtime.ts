@@ -100,7 +100,7 @@ const RUNTIME_TIMEOUT_MS = 10 * 60_000;
 const CLI_TIMEOUT_MS = 30_000;
 const SYSTEM_START_TIMEOUT_S = 120;
 /**
- * Burrow (modified from Rakazo): the first start downloads the VM kernel, which takes well over
+ * Gente (modified from Rakazo): the first start downloads the VM kernel, which takes well over
  * ten minutes on a slow connection such as a phone hotspot.
  */
 const SYSTEM_START_PROCESS_TIMEOUT_MS = 60 * 60_000;
@@ -428,7 +428,7 @@ async function ensureDefaultKernel(deps: ResolveRuntimeDeps, system: RunningSyst
     deps,
     system.cli,
     ["system", "kernel", "set", "--recommended", "--force"],
-    // Burrow: the recommended kernel is a 676 MB download.
+    // Gente: the recommended kernel is a 676 MB download.
     SYSTEM_START_PROCESS_TIMEOUT_MS,
   );
 }

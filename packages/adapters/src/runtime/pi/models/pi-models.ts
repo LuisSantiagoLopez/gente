@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { Api, Model } from "@earendil-works/pi-ai";
 import { getSupportedThinkingLevels } from "@earendil-works/pi-ai";
 import { builtinModels } from "@earendil-works/pi-ai/providers/all";
@@ -395,18 +395,18 @@ function catalogBilling(
   const signInMeta = modelProviderDefinition(providerId)?.signIn;
   if (signInMeta) return signInMeta.billing;
   if (providerId === LOCAL_PROVIDER_ID) {
-    return "Runs on infrastructure configured by the server operator. No model charges from Burrow.";
+    return "Runs on infrastructure configured by the server operator. No model charges from Gente.";
   }
   if (providerId === OPENAI_COMPATIBLE_PROVIDER_ID) {
-    return "Runs on a URL you control. Burrow does not pay for model usage.";
+    return "Runs on a URL you control. Gente does not pay for model usage.";
   }
   if (opts.oauth && !opts.apiKey) {
-    return `${name} subscription login is not in the Burrow UI yet. Skip if this deployment already has credentials.`;
+    return `${name} subscription login is not in the Gente UI yet. Skip if this deployment already has credentials.`;
   }
   if (opts.apiKey) {
-    return `Uses your ${name} API key. Burrow does not pay for model usage.`;
+    return `Uses your ${name} API key. Gente does not pay for model usage.`;
   }
-  return `Uses your ${name} key. Burrow does not pay for model usage.`;
+  return `Uses your ${name} key. Gente does not pay for model usage.`;
 }
 
 export const scriptedCatalogEntry: PiCatalogEntry = {

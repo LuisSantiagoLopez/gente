@@ -56,6 +56,7 @@ import type { ImportSetupTarget } from "../bots/import-setup-card";
 import { isEditableTarget } from "../shell-shortcuts";
 import { TimeSeparator, UnreadDivider } from "./chat-context";
 import { MessageView } from "./message-view";
+import { playSound } from "../../../lib/gente/sounds";
 import { QuoteSelectionButton } from "./quote-selection-button";
 
 /** Bubbles stop at a readable line length instead of stretching with wide windows. */
@@ -263,6 +264,18 @@ export const Transcript = memo(function Transcript({
   // Remounted per chat, so each opened chat paints its latest rows before the full history.
   const [tailOnly, setTailOnly] = useState(true);
   useEffect(() => startTransition(() => setTailOnly(false)), []);
+  // Gente: when a reply finishes, a soft two-note chime and a hop from the mark.
+  const wasRunning = useRef(running);
+  useEffect(() => {
+    if (wasRunning.current && !running) {
+      const last = messages.at(-1);
+      if (last && last.role !== "user") {
+        playSound("arrive");
+        globalThis.dispatchEvent(new CustomEvent("gente:reply"));
+      }
+    }
+    wasRunning.current = running;
+  }, [running, messages]);
   // A jump needs older rows, and must keep them after it clears its request.
   if (tailOnly && scrollRequest) setTailOnly(false);
   const showTail = tailOnly && !scrollRequest;
@@ -272,7 +285,7 @@ export const Transcript = memo(function Transcript({
   );
   const shownItems = showTail ? items.slice(-FIRST_FRAME_ROWS) : items;
   const workingLabel =
-    liveActivityLine(messages) ?? (workingRoutine ? t`Running ${workingRoutine}…` : t`Working…`);
+    liveActivityLine(messages) ?? (workingRoutine ? t`Running ${workingRoutine}…` : t`Reading…`);
   const [quoteDraft, setQuoteDraft] = useState<{
     message: ThreadMessage;
     text: string;
@@ -627,6 +640,7 @@ export const Transcript = memo(function Transcript({
               ) : null}
               <div
                 data-message-id={message.id}
+                data-gente-msg={message.role === "user" ? "mine" : "theirs"}
                 className={peerReceipt ? "relative" : "group/message relative hover:z-[1]"}
               >
                 <div

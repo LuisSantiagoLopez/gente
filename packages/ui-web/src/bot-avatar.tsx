@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { BotAvatarSet, BotColorDef } from "@rakazo/contracts";
 import { BOT_COLOR_LIST, BOT_COLORS } from "@rakazo/contracts";
 import type { AvatarEyes, LogoAvatarActivity } from "@rakazo/core";
@@ -400,17 +400,20 @@ export function BotShapePreview({
 export function Wordmark({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      {/* Burrow mark: two eyes peeking out of a burrow. */}
-      <div className="flex h-11 w-11 flex-col items-center justify-end rounded-[12px] bg-primary pb-[9px]">
-        <span className="flex h-[16px] w-[24px] items-center justify-center gap-[4px] rounded-t-full bg-primary-foreground">
-          <span className="h-[4px] w-[4px] rounded-full bg-primary" />
-          <span className="h-[4px] w-[4px] rounded-full bg-primary" />
-        </span>
-        <span className="h-[3px] w-[32px] rounded-full bg-primary-foreground" />
-      </div>
+      {/* Gente mark: people gathered in a circle; the marigold dot is you. */}
+      <svg data-gente-mark="" width={44} height={44} viewBox="0 0 24 24" aria-hidden="true" className="text-foreground">
+          <circle cx="12.00" cy="4.00" r="2.6" fill={"var(--primary)"} />
+          <circle cx="17.66" cy="6.34" r="2.1" fill={"currentColor"} />
+          <circle cx="20.00" cy="12.00" r="2.1" fill={"currentColor"} />
+          <circle cx="17.66" cy="17.66" r="2.1" fill={"currentColor"} />
+          <circle cx="12.00" cy="20.00" r="2.1" fill={"currentColor"} />
+          <circle cx="6.34" cy="17.66" r="2.1" fill={"currentColor"} />
+          <circle cx="4.00" cy="12.00" r="2.1" fill={"currentColor"} />
+          <circle cx="6.34" cy="6.34" r="2.1" fill={"currentColor"} />
+      </svg>
       {/* off-scale: wordmark sized to the 44px logo mark */}
       <span className="font-[Aeonik,ui-sans-serif] text-[28px] tracking-tight text-foreground">
-        Burrow
+        Gente
       </span>
     </div>
   );

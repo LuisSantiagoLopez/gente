@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { ConnectorTool } from "@rakazo/adapter-kit";
 import {
   ATTACHMENT_MAX_COUNT,
@@ -462,7 +462,7 @@ export const fleetTools: ConnectorTool[] = [
   {
     name: "update_preferences",
     description:
-      "Read or change the user's own account preferences: timezone and Burrow marketing emails. Change them only when the user asks. Call with no fields to read the current values. Email, password, sign-in, billing and account deletion are only in the app's settings.",
+      "Read or change the user's own account preferences: timezone and Gente marketing emails. Change them only when the user asks. Call with no fields to read the current values. Email, password, sign-in, billing and account deletion are only in the app's settings.",
     inputSchema: {
       type: "object",
       properties: {
@@ -472,7 +472,7 @@ export const fleetTools: ConnectorTool[] = [
         },
         marketingEmails: {
           type: "boolean",
-          description: "false unsubscribes from Burrow's product emails; true resubscribes.",
+          description: "false unsubscribes from Gente's product emails; true resubscribes.",
         },
       },
       additionalProperties: false,
@@ -481,7 +481,7 @@ export const fleetTools: ConnectorTool[] = [
   {
     name: "feedback",
     description:
-      "Send a bug report or product feedback about Burrow to the people who run this server. Only when the user asks you to report something. Describe what happened and what was expected in general terms; leave out names, contact details, message text, credentials and other personal details. The report already identifies this chat, bot and run.",
+      "Send a bug report or product feedback about Gente to the people who run this server. Only when the user asks you to report something. Describe what happened and what was expected in general terms; leave out names, contact details, message text, credentials and other personal details. The report already identifies this chat, bot and run.",
     inputSchema: {
       type: "object",
       properties: {

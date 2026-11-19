@@ -101,7 +101,7 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
     : new Agent(MODEL_STREAM_AGENT_TIMEOUTS);
   const dispatcher = localDispatcher;
   const transport = fetchPairedWithDispatcher(baseFetch);
-  // Burrow (modified from Rakazo): quick chat without thinking, and a saved prefix to prewarm.
+  // Gente (modified from Rakazo): quick chat without thinking, and a saved prefix to prewarm.
   return (input, init) =>
     transport(input, {
       ...burrowFastChatInit(init),

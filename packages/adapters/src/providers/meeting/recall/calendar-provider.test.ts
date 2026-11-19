@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { MeetingCalendarEvent } from "@rakazo/adapter-kit";
 import { describe, expect, it } from "vitest";
 import { RecallCalendarEmulator } from "./calendar-emulator.js";
@@ -45,7 +45,7 @@ function schedule(emulator: RecallCalendarEmulator, event: MeetingCalendarEvent,
     event.startsAt,
     {
       sessionId: "fixture-session",
-      botName: "Atlas · Burrow",
+      botName: "Atlas · Gente",
       meetingUrl: event.meetingUrl,
       platform,
       expiresAt: event.endsAt,

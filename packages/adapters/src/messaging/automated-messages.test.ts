@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { Server } from "node:http";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -69,7 +69,7 @@ describe("automated messages are labelled as not from the user", () => {
     expect(await plain.onPayload?.({ messages: [] }, undefined as never)).toBeUndefined();
   });
 
-  it("marks Burrow's continue nudges and finished shell output, and lets the bot ask the user", () => {
+  it("marks Gente's continue nudges and finished shell output, and lets the bot ask the user", () => {
     for (const prompt of [
       SILENT_TOOL_CONTINUATION_PROMPT,
       SILENT_ALLOWED_TOOL_CONTINUATION_PROMPT,

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { t } from "@lingui/core/macro";
 import { agentImportErrorReason } from "@rakazo/contracts";
 import type { GrokBotExportErrorCode } from "@rakazo/core";
@@ -51,6 +51,6 @@ export function grokBotErrorText(code: GrokBotExportErrorCode): string {
     case "too_large":
       return t`This export is too large to import.`;
     case "newer_version":
-      return t`This export is newer than Burrow can read. Update Burrow and try again.`;
+      return t`This export is newer than Gente can read. Update Gente and try again.`;
   }
 }

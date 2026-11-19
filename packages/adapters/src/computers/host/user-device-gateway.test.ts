@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { EventEmitter, once } from "node:events";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -427,7 +427,7 @@ describe("user device gateway in the holding process", () => {
     const result = collect(devices.request("user-1", environment, new AbortController().signal));
     await socket.nextRequest();
     await devices.disconnect(device.id);
-    await expect(result).rejects.toThrow("disconnected from Burrow");
+    await expect(result).rejects.toThrow("disconnected from Gente");
     expect(socket.sent).toContainEqual({ type: "revoked" });
     expect(socket.closed?.code).toBe(4001);
   });

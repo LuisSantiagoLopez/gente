@@ -1,4 +1,4 @@
-<!-- Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0). -->
+<!-- Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0). -->
 # Rakazo
 
 [![GitHub stars](https://img.shields.io/github/stars/elie222/rakazo?labelColor=black&style=for-the-badge&color=2563EB)](https://github.com/elie222/rakazo/stargazers)

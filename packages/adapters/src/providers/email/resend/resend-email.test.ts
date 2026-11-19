@@ -1,11 +1,11 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { EmailRecipientRejectedError } from "@rakazo/adapter-kit";
 import type { Deferred } from "@rakazo/core/test-async";
 import { deferred } from "@rakazo/core/test-async";
 import { describe, expect, it, vi } from "vitest";
 import { ResendEmailProvider } from "./resend-email.js";
 
-const config = { apiKey: "fake-api-key", from: "Burrow <hello@example.test>" };
+const config = { apiKey: "fake-api-key", from: "Gente <hello@example.test>" };
 const message = { to: "user@example.test", subject: "Reset password", text: "Reset link" };
 
 function provider(request: typeof fetch, timeoutMs = 1_000) {

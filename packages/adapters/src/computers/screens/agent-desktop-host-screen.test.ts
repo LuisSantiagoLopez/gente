@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { describe, expect, it, vi } from "vitest";
 import type { AgentDesktopEnvelope } from "./agent-desktop-host-screen.js";
 import {
@@ -12,7 +12,7 @@ const scope = { botId: "bot-1", signal: new AbortController().signal };
 const notepad = [
   { id: "w-7", title: "Find", app_name: "notepad.exe", pid: 41, minimized: true },
   { id: "w-8", title: "Untitled - Notepad", app_name: "notepad.exe", pid: 41 },
-  { id: "w-9", title: "Burrow", app_name: "Burrow.exe", pid: 99 },
+  { id: "w-9", title: "Gente", app_name: "Gente.exe", pid: 99 },
   { id: "w-10", title: "Notes", app_name: "notes-sync.exe", pid: 50 },
 ];
 const snapshot = {
@@ -99,7 +99,7 @@ describe("agent-desktop host screen", () => {
       'No open app is named exactly "note". Open apps with similar names: notepad, notes-sync.',
     );
     await expect(screen.observe(scope, "rakazo")).rejects.toThrow(
-      "Burrow can't use its own window.",
+      "Gente can't use its own window.",
     );
     expect(calls.filter(([name]) => name === "launch")).toEqual([
       ["launch", "--", "Photoshop"],

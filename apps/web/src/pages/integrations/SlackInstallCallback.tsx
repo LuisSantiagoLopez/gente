@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans } from "@lingui/react/macro";
 import { Button } from "@rakazo/ui-web";
 import { useEffect, useRef, useState } from "react";
@@ -33,7 +33,7 @@ export function SlackInstallCallbackPage() {
           <Trans>Could not connect</Trans>
         </div>
         <Button type="button" className="mt-5" onClick={() => navigate("/app?settings=messaging")}>
-          <Trans>Return to Burrow</Trans>
+          <Trans>Return to Gente</Trans>
         </Button>
       </div>
     </div>

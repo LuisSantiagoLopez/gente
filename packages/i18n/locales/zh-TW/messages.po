@@ -1,4 +1,4 @@
-# Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+# Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 #
 msgid ""
 msgstr ""
@@ -1393,14 +1393,14 @@ msgstr "允許"
 msgid "Allow {name} on mobile"
 msgstr "在手機上允許 {name}"
 
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Burrow to use Speech Recognition and the microphone in System Settings."
-msgstr "請在系統設定中允許 Burrow 使用語音辨識和麥克風。"
-
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/shell/bots/bot-panel.tsx
 msgid "Allow cross-space bot communication"
 msgstr "允許跨空間機器人通訊"
+
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Gente to use Speech Recognition and the microphone in System Settings."
+msgstr "請在系統設定中允許 Gente 使用語音辨識和麥克風。"
 
 #: apps/mobile/lib/cards/ask-action-label.ts
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2132,16 +2132,6 @@ msgstr "瀏覽 MCP 伺服器"
 msgid "Built-in"
 msgstr "內建"
 
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Burrow"
-msgstr "Burrow"
-
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Burrow credits"
-msgstr "Burrow 額度"
-
 #: apps/mobile/components/cards/ask-receipt.tsx
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Button “{button}” · read from the page, not checked"
@@ -2562,8 +2552,8 @@ msgstr "選擇資料夾"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Burrow"
-msgstr "選擇 Burrow 的使用方式"
+msgid "Choose how to use Gente"
+msgstr "選擇 Gente 的使用方式"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3037,8 +3027,8 @@ msgstr "連接你的 AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Burrow credits in Billing."
-msgstr "請在「模型」中連接你自己的 API 金鑰，或在「帳務」中選擇 Burrow 點數。"
+msgid "Connect your own API key in Models or choose Gente credits in Billing."
+msgstr "請在「模型」中連接你自己的 API 金鑰，或在「帳務」中選擇 Gente 點數。"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5345,8 +5335,8 @@ msgid "Ends {day}"
 msgstr "於 {day} 結束"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Burrow?"
-msgstr "喜歡 Burrow 嗎？"
+msgid "Enjoying Gente?"
+msgstr "喜歡 Gente 嗎？"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -5849,6 +5839,16 @@ msgstr "閘道網址"
 msgid "General"
 msgstr "一般"
 
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Gente"
+msgstr "Gente"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Gente credits"
+msgstr "Gente 額度"
+
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "每有一位朋友開始試用，你就能獲得一個月免費。"
@@ -6134,8 +6134,8 @@ msgid "How to check"
 msgstr "如何檢查"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Burrow?"
-msgstr "你會如何使用 Burrow？"
+msgid "How will you use Gente?"
+msgstr "你會如何使用 Gente？"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
@@ -7860,8 +7860,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "不在 {organizationName} 中，只能看到此空間。"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Burrow's catalog"
-msgstr "不在 Burrow 目錄中"
+msgid "Not in Gente's catalog"
+msgstr "不在 Gente 目錄中"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -7910,12 +7910,12 @@ msgstr "未傳送。點一下重試"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Burrow"
-msgstr "Burrow 不支援"
+msgid "Not supported in Gente"
+msgstr "Gente 不支援"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Burrow"
-msgstr "Burrow 不使用"
+msgid "Not used by Gente"
+msgstr "Gente 不使用"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/components/integrations/McpServerHealthLine.tsx
@@ -8093,13 +8093,6 @@ msgstr "開啟 {title}"
 msgid "Open <0>{0}</0> and enter this code:"
 msgstr "開啟 <0>{0}</0> 並輸入以下代碼："
 
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Burrow"
-msgstr "開啟 Burrow"
-
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Open call"
 msgstr "開啟通話"
@@ -8126,6 +8119,13 @@ msgstr "開啟對話"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 msgid "Open external link?"
 msgstr "開啟外部連結？"
+
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Gente"
+msgstr "開啟 Gente"
 
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
@@ -8404,8 +8404,8 @@ msgid "Paste a replacement key"
 msgstr "貼上替換金鑰"
 
 #: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Burrow adds /v1 if needed."
-msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Burrow 會補上 /v1。"
+msgid "Paste the OpenAI-compatible address from your server. Gente adds /v1 if needed."
+msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Gente 會補上 /v1。"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
@@ -8749,8 +8749,8 @@ msgid "Rakazo credits"
 msgstr ""
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Burrow."
-msgstr "rakazo-shared 與以 bot- 開頭的 ID 保留給 Burrow 使用。"
+msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
+msgstr "rakazo-shared 與以 bot- 開頭的 ID 保留給 Gente 使用。"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -8770,6 +8770,10 @@ msgstr "讀取自頁面，未核實"
 #: apps/web/src/pages/shell/bots/bot-panel.tsx
 msgid "Read replies aloud"
 msgstr "朗讀回覆"
+
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Reading…"
+msgstr ""
 
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
@@ -8796,8 +8800,8 @@ msgid "Recall from banks"
 msgstr "從記憶庫回想"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Burrow’s own peers."
-msgstr "從此 peer 讀取；儲存至 Burrow 自己的 peer。"
+msgid "Recall from this peer; save to Gente’s own peers."
+msgstr "從此 peer 讀取；儲存至 Gente 自己的 peer。"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -9403,15 +9407,15 @@ msgstr "立即重試"
 msgid "Retry screen"
 msgstr "重新連線螢幕"
 
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Burrow"
-msgstr "返回 Burrow"
-
 #. placeholder {0}: call.botName
 #: apps/web/src/components/call/CallCard.tsx
 msgid "Return to call with {0}"
 msgstr "返回與 {0} 的通話"
+
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Gente"
+msgstr "返回 Gente"
 
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
@@ -10225,8 +10229,8 @@ msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "在 <0>{0}</0> 登入，然後將代碼貼到這裡。"
 
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Burrow"
-msgstr "登入 Burrow"
+msgid "Sign in to Gente"
+msgstr "登入 Gente"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -10478,6 +10482,10 @@ msgstr "已依 {column} 遞減排序"
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "Sorts new email and drafts the replies"
 msgstr "分類新郵件並草擬回覆"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Sounds"
+msgstr ""
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/lib/bots/identity-display.ts
@@ -11067,8 +11075,8 @@ msgid "The shared link stops working"
 msgstr "共用連結將失效"
 
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Burrow."
-msgstr "文字紀錄將從 Burrow 中移除。"
+msgid "The transcript will be removed from Gente."
+msgstr "文字紀錄將從 Gente 中移除。"
 
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
@@ -11231,8 +11239,8 @@ msgid "This device"
 msgstr "本裝置"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Burrow can read. Update Burrow and try again."
-msgstr "此匯出內容的版本比 Burrow 能讀取的更新。請更新 Burrow 後再試一次。"
+msgid "This export is newer than Gente can read. Update Gente and try again."
+msgstr "此匯出內容的版本比 Gente 能讀取的更新。請更新 Gente 後再試一次。"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -11406,8 +11414,8 @@ msgid "This Space keeps its own vault. Its bots save and use items there, not he
 msgstr "此空間有自己的保管庫。其中的機器人會在那裡儲存和使用項目，而不是這裡：請開啟該空間的設定，然後進入保管庫。"
 
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Burrow yet. Use a deployment credential or choose another provider."
-msgstr "此訂閱登入在 Burrow 中尚不可用。請使用部署憑證或選擇其他供應商。"
+msgid "This subscription sign-in is not available in Gente yet. Use a deployment credential or choose another provider."
+msgstr "此訂閱登入在 Gente 中尚不可用。請使用部署憑證或選擇其他供應商。"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
@@ -11807,10 +11815,6 @@ msgstr "即將舉行的會議"
 msgid "Update"
 msgstr "更新"
 
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Burrow to connect your calendar from the desktop app."
-msgstr "請更新 Burrow，以便從桌面應用程式連線日曆。"
-
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Update failed"
@@ -11825,6 +11829,10 @@ msgstr "來自 {name} 的更新"
 #: apps/web/src/lib/activity-list-filters.ts
 msgid "Update from {name}: {text}"
 msgstr "來自 {name} 的更新：{text}"
+
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Gente to connect your calendar from the desktop app."
+msgstr "請更新 Gente，以便從桌面應用程式連線日曆。"
 
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -11954,10 +11962,6 @@ msgstr "請使用相同電子郵件地址的帳號"
 msgid "Use an http or https URL"
 msgstr "請使用 http 或 https 地址"
 
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Burrow credits"
-msgstr "使用 Burrow 額度"
-
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Use Connect to verify the key."
 msgstr "請使用「連線」驗證金鑰。"
@@ -11973,6 +11977,10 @@ msgstr "使用預設值"
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Use defaults for {label}"
 msgstr "{label}使用預設值"
+
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Gente credits"
+msgstr "使用 Gente 額度"
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -12251,8 +12259,8 @@ msgid "Welcome back"
 msgstr "歡迎回來"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Burrow"
-msgstr "歡迎使用 Burrow"
+msgid "Welcome to Gente"
+msgstr "歡迎使用 Gente"
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
@@ -12268,8 +12276,8 @@ msgid "What can this space use?"
 msgstr "此空間可以使用什麼？"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Burrow to help with?"
-msgstr "你最希望 Burrow 幫你做什麼？"
+msgid "What do you most want Gente to help with?"
+msgstr "你最希望 Gente 幫你做什麼？"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
@@ -12425,7 +12433,6 @@ msgstr "工作指示"
 #: apps/web/src/components/messages/ToolActivityDisclosure.tsx
 #: apps/web/src/lib/chat/roster-status.ts
 #: apps/web/src/pages/auth/Auth.tsx
-#: apps/web/src/pages/shell/chat/transcript.tsx
 msgid "Working…"
 msgstr "處理中…"
 

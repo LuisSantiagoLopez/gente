@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -66,7 +66,7 @@ for await (const line of createInterface({ input: process.stdin })) {
   } else if (method === "tools/list") {
     send({ id, result: { tools } });
   } else if (method === "tools/call") {
-    send({ id, result: { isError: true, content: [{ type: "text", text: "Burrow runs its tools itself." }] } });
+    send({ id, result: { isError: true, content: [{ type: "text", text: "Gente runs its tools itself." }] } });
   } else if (method === "ping") {
     send({ id, result: {} });
   } else {
@@ -340,7 +340,7 @@ function checkInit(event: Record<string, unknown>, expectTools: boolean): void {
     (entry) => entry && typeof entry === "object" && entry.name === TOOL_SERVER,
   ) as { status?: unknown } | undefined;
   if (expectTools && server?.status !== "connected") {
-    throw new Error("Claude Code could not load Burrow's tools.");
+    throw new Error("Claude Code could not load Gente's tools.");
   }
 }
 

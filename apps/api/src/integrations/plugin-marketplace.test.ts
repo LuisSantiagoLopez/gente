@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createRouterClient } from "@orpc/server";
 import type { PluginRepoFetcher } from "@rakazo/adapters";
 import type { Actor } from "@rakazo/contracts";
@@ -73,7 +73,7 @@ describe("marketplace RPC", () => {
     const { client } = setup([approved]);
     const result = await client(actor).marketplace.catalog({ query: "notes" });
     expect(result.entries.map((row) => [row.registry, row.description])).toEqual([
-      ["Burrow", "Reviewed notes."],
+      ["Gente", "Reviewed notes."],
       ["Cursor", ""],
     ]);
   });

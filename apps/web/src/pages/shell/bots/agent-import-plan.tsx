@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type {
   AgentImportMemoryDestination,
@@ -131,10 +131,10 @@ export function AgentImportPlanReview({
   };
   const skipReason = (reason: AgentImportSkipReason) =>
     ({
-      runtime: t`Not used by Burrow`,
+      runtime: t`Not used by Gente`,
       invalid_skill: t`Not a valid skill`,
       builtin: t`Built-in`,
-      unsupported: t`Not supported in Burrow`,
+      unsupported: t`Not supported in Gente`,
       connected: t`Already connected`,
       invalid_file: t`Could not read these files`,
       default: defaultNote,

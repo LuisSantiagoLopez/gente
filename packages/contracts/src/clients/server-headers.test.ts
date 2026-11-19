@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { describe, expect, it } from "vitest";
 import { parseServerHeaders, serverHeadersFromRows } from "./server-headers.js";
 
@@ -14,8 +14,8 @@ describe("server request headers", () => {
     expect(serverHeadersFromRows([])).toEqual({});
   });
 
-  it("refuses headers Burrow or the transport own, without echoing values", () => {
-    for (const name of ["Authorization", "Cookie", "Origin", "X-Burrow-Space-Id", "Host"]) {
+  it("refuses headers Gente or the transport own, without echoing values", () => {
+    for (const name of ["Authorization", "Cookie", "Origin", "X-Gente-Space-Id", "Host"]) {
       expect(() => serverHeadersFromRows([{ name, value: "secret" }])).toThrow(
         /^Invalid custom headers$/,
       );

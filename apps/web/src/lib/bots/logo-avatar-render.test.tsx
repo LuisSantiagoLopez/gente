@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 // @vitest-environment jsdom
 import type { ProductEvent } from "@rakazo/contracts";
 import { BotAvatar, BotAvatarActivityProvider } from "@rakazo/ui-web";
@@ -68,7 +68,7 @@ async function mount(status?: string) {
   );
 }
 const live = () => container.querySelector<SVGSVGElement>('[data-testid="live"] svg')!;
-it("projects production feed events into the live avatar and subscribes only live Burrow consumers", async () => {
+it("projects production feed events into the live avatar and subscribes only live Gente consumers", async () => {
   const subscribe = vi.spyOn(webLogoAvatarActivity, "subscribe");
   await mount();
   expect(subscribe).toHaveBeenCalledTimes(1);

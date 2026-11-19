@@ -1,11 +1,11 @@
 # Modifications
 
-Burrow is a fork of [Rakazo](https://github.com/elie222/rakazo) (Apache-2.0), forked at upstream commit `adccb113d`.
+Gente is a fork of [Rakazo](https://github.com/elie222/rakazo) (Apache-2.0), forked at upstream commit `adccb113d`.
 DeskHead Inc. changed the files below in 2026. Text files also carry a notice at the top.
 
 ## What changed
 
-- Name, logo, colors and copy changed to Burrow.
+- Name, logo, colors and copy changed to Gente.
 - One-screen first-run onboarding: installs Ollama, downloads the Swift model with progress, starts the local workspace.
 - Swift (UkisAI) through local Ollama is the default model (`apps/desktop/src/main/burrow/`).
 - Bot computers use the upstream Rakazo `v0.13.0` computer image.

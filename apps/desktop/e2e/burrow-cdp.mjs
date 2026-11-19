@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// Talks to a running Burrow started with --remote-debugging-port=9333.
+// Talks to a running Gente started with --remote-debugging-port=9333.
 //   node e2e/burrow-cdp.mjs shot <file>              screenshot the app window, print its text
 //   node e2e/burrow-cdp.mjs fill <selector> <text>   fill a field
 //   node e2e/burrow-cdp.mjs click <selector>         click (Playwright selector, e.g. "text=Sign up")

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   BackgroundJob,
@@ -1923,7 +1923,7 @@ describe("deliverRun for team chat", () => {
     expect(t.world.externalMessages[0]!.status).toBe("running");
   });
 
-  const failure = "Assistant could not complete that request. Open Burrow for details.";
+  const failure = "Assistant could not complete that request. Open Gente for details.";
   it.each([
     ["a run that failed", "direct", "failed", [["external-message:em-1:failure", failure]]],
     [
@@ -2064,7 +2064,7 @@ describe("delegated team-chat replies", () => {
       [
         "team-chat-run:run-c",
         "slack:C1:1700.1",
-        "Assistant could not complete the delegated request. Open Burrow for details.",
+        "Assistant could not complete the delegated request. Open Gente for details.",
         "sent",
       ],
     ]);

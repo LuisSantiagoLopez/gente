@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// Burrow's "brain": UkisAI's Swift model, run locally through Ollama.
+// Gente's "brain": UkisAI's Swift model, run locally through Ollama.
 // First run: find or install Ollama, pull the best Swift model, load it once.
 // A smaller Swift is tried only after the best one really fails to download or load.
 
@@ -18,7 +18,7 @@ const OLLAMA_ZIP_URL = "https://ollama.com/download/Ollama-darwin.zip";
 export type SwiftModel = {
   /** The Ollama tag pulled from Hugging Face. */
   tag: string;
-  /** The model id Burrow serves (the same weights, with a larger context window). */
+  /** The model id Gente serves (the same weights, with a larger context window). */
   alias: string;
   name: string;
   sizeGB: number;
@@ -51,14 +51,14 @@ const SWIFT_LADDER = [
 ] as const satisfies readonly SwiftModel[];
 export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
 /**
- * The model Burrow uses unless the person picks another: the 27B at IQ2_XXS (8.9 GB file, about
+ * The model Gente uses unless the person picks another: the 27B at IQ2_XXS (8.9 GB file, about
  * 11 GB loaded). Max quality (Q4_K_M) and the small Ornith 9B are one click away in the picker.
  */
 export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[1];
 /** Answers greetings and small talk in about a second while a 27B handles real work. */
 export const QUICK_MODEL: SwiftModel = SWIFT_LADDER[2];
 
-/** Context Burrow asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
+/** Context Gente asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
 export const SWIFT_CONTEXT = 32768;
 
 export type BrainPhase =
@@ -77,7 +77,7 @@ export type BrainState = {
   completedBytes: number;
   totalBytes: number;
   message: string;
-  /** Set when Burrow moved to a smaller Swift after a real failure. */
+  /** Set when Gente moved to a smaller Swift after a real failure. */
   switchedFrom?: string;
   models: readonly SwiftModel[];
 };
@@ -89,7 +89,7 @@ export type SavedBrain = {
   chatAlias?: string;
   installed: string[];
   vision?: string[];
-  /** True when the person picked this model; false when Burrow chose the default. */
+  /** True when the person picked this model; false when Gente chose the default. */
   userPicked?: boolean;
 };
 
@@ -143,7 +143,7 @@ function windowsOllamaDir(): string {
 }
 
 /**
- * Settings Burrow wants from the model server: two requests at once (a chat and a routine) and
+ * Settings Gente wants from the model server: two requests at once (a chat and a routine) and
  * the model kept in memory so replies never wait for a reload.
  */
 export const OLLAMA_SETTINGS = { OLLAMA_NUM_PARALLEL: "2", OLLAMA_KEEP_ALIVE: "-1" } as const;
@@ -182,14 +182,14 @@ export async function startOllama(): Promise<boolean> {
   const env = { ...process.env, ...OLLAMA_SETTINGS };
   if (process.platform === "win32") {
     if (cli === null) return false;
-    // The tray app reads the user's environment, so keep Burrow's settings there too.
+    // The tray app reads the user's environment, so keep Gente's settings there too.
     for (const [name, value] of Object.entries(OLLAMA_SETTINGS)) {
       if (process.env[name] === undefined)
         spawn("setx", [name, value], { stdio: "ignore", windowsHide: true }).unref();
     }
     spawn(cli, ["serve"], { detached: true, stdio: "ignore", windowsHide: true, env }).unref();
   } else if (appPath !== null) {
-    // The Mac app keeps its own settings; Burrow does not change a person's Ollama app.
+    // The Mac app keeps its own settings; Gente does not change a person's Ollama app.
     spawn("/usr/bin/open", ["-g", "-j", appPath], { detached: true, stdio: "ignore" }).unref();
   } else if (cli !== null) {
     spawn(cli, ["serve"], { detached: true, stdio: "ignore", env }).unref();
@@ -230,7 +230,7 @@ function hasTag(tags: string[], tag: string) {
 
 /**
  * Sends the last chat's stable prefix (saved by the server as `data/burrow-warm.json`) to the
- * model with a one-token reply, so the first message after Burrow opens finds it already read.
+ * model with a one-token reply, so the first message after Gente opens finds it already read.
  */
 export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
   const saved = await readSavedBrain(stackDirectory);
@@ -285,7 +285,7 @@ export async function unloadModel(model: string): Promise<void> {
 }
 
 /**
- * Burrow 0.1 builds made the 27B model the default. On launch, move a default that Burrow chose
+ * Gente 0.1 builds made the 27B model the default. On launch, move a default that Gente chose
  * (not one the person picked) to the fast default when that model is already downloaded, and
  * unload the 27B. Returns true when the saved model changed, so the workspace restarts on it.
  */

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 // @vitest-environment jsdom
 
 import type { BotAvatarSet } from "@rakazo/contracts";
@@ -97,7 +97,7 @@ describe("CreateBotDialog", () => {
     expect(onCreate.mock.lastCall?.[0]).not.toHaveProperty("id");
   });
 
-  it("sends the Burrow preview id without an organic family", async () => {
+  it("sends the Gente preview id without an organic family", async () => {
     const onCreate = vi.fn(async (_input: CreateBotDialogInput) => undefined);
     await render(onCreate, "rakazo");
     await typeName("Scout");
@@ -110,7 +110,7 @@ describe("CreateBotDialog", () => {
     expect(input.color?.toUpperCase()).toBe(preview.getAttribute("data-color")?.toUpperCase());
   });
 
-  it("preserves an explicitly chosen Burrow colour through a failed create and retry", async () => {
+  it("preserves an explicitly chosen Gente colour through a failed create and retry", async () => {
     const onCreate = vi
       .fn(async (_input: CreateBotDialogInput) => undefined)
       .mockRejectedValueOnce(new Error("Try again"));

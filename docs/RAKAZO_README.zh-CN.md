@@ -1,4 +1,4 @@
-<!-- Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0). -->
+<!-- Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0). -->
 # Rakazo
 
 [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md)

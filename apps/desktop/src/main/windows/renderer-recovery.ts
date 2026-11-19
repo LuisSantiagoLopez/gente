@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { BrowserWindow } from "electron";
 import { dialog } from "electron";
 import { t } from "../i18n.js";
@@ -25,7 +25,7 @@ export function installRendererRecovery(win: BrowserWindow, isQuitting: () => bo
       // A native window-modal dialog works even with no living renderer.
       const { response } = await dialog.showMessageBox(win, {
         type: "error",
-        message: t("Burrow stopped unexpectedly."),
+        message: t("Gente stopped unexpectedly."),
         buttons: [t("Reload")],
         defaultId: 0,
         cancelId: 0,

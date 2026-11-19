@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import type { OrganizationInvitationPreview } from "@rakazo/contracts";
@@ -91,7 +91,7 @@ export function JoinOrganizationPage() {
         }}
       >
         <Button type="submit" size="xl" className={submitClass}>
-          {state.kind === "error" ? <Trans>Retry</Trans> : <Trans>Open Burrow</Trans>}
+          {state.kind === "error" ? <Trans>Retry</Trans> : <Trans>Open Gente</Trans>}
         </Button>
       </AuthFrame>
     );

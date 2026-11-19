@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentUsage, ModelUsageLookup } from "@rakazo/adapter-kit";
 import { cancelResponseBody, readBoundedJsonResponse } from "@rakazo/core";
 import { z } from "zod";
@@ -21,7 +21,7 @@ export function openRouterInferenceFetch(fetcher: typeof fetch, userId?: string)
           : undefined,
     );
     headers.set("HTTP-Referer", "https://rakazo.com");
-    headers.set("X-OpenRouter-Title", "Burrow");
+    headers.set("X-OpenRouter-Title", "Gente");
     const body = init?.body ?? (input instanceof Request ? await input.clone().text() : undefined);
     if (typeof body !== "string") throw new Error("OpenRouter inference requires a JSON body");
     const payload = JSON.parse(body);

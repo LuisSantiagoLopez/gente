@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { ProviderSettingsField } from "@rakazo/contracts";
 import type { MemoryProviderDefinition } from "../../../memory/memory-provider-descriptor.js";
 import {
@@ -60,14 +60,14 @@ export const honchoMemory: MemoryProviderDefinition = {
         label: "User peer",
         kind: "text",
         required: false,
-        description: "Recall from this peer; save to Burrow’s own peers.",
+        description: "Recall from this peer; save to Gente’s own peers.",
         maxLength: 512,
         checks: [
           RESOURCE_ID,
           {
             // Rakazo writes to these peers, so they cannot be read as the user's own peer.
             pattern: UNRESERVED_HONCHO_PEER_PATTERN,
-            message: "rakazo-shared and IDs starting with bot- are reserved for Burrow.",
+            message: "rakazo-shared and IDs starting with bot- are reserved for Gente.",
           },
         ],
         advanced: true,

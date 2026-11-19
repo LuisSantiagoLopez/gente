@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 // This computer without Docker: the API, worker and web run as the person's own processes on
 // loopback, the database as the official Postgres image in a VM of its own, and bot computers as
 // VMs through the `local-vm` sandbox provider, all through the same computer runtime.
@@ -380,9 +380,9 @@ export class StartFailure extends Error {
 }
 
 export const downloadFailed = () =>
-  t("Downloading Burrow failed. Check the internet connection, then retry.");
+  t("Downloading Gente failed. Check the internet connection, then retry.");
 export const servicesFailed = () =>
-  t("Burrow services did not start. Check the output below, then retry.");
+  t("Gente services did not start. Check the output below, then retry.");
 
 export class NativeStackController extends StackLifecycle {
   private background: AbortController | null = null;
@@ -724,7 +724,7 @@ export class NativeStackController extends StackLifecycle {
     let existing = await this.inspectDatabase(cli, signal);
     if (existing === null && ports.database !== undefined && ports.database !== holder) {
       throw new StartFailure(
-        t("Your Burrow data is in a different computer runtime. Quit the one running, then retry."),
+        t("Your Gente data is in a different computer runtime. Quit the one running, then retry."),
       );
     }
     if (ports.database === undefined) {
@@ -774,7 +774,7 @@ export class NativeStackController extends StackLifecycle {
           POSTGRES_IMAGE,
         ],
         signal,
-        // Burrow: `create` pulls the 152 MB database image first, which is slow on a phone hotspot.
+        // Gente: `create` pulls the 152 MB database image first, which is slow on a phone hotspot.
         { env: { POSTGRES_PASSWORD: password }, timeoutMs: IMAGE_PULL_TIMEOUT_MS },
       );
     }
@@ -830,7 +830,7 @@ export class NativeStackController extends StackLifecycle {
   }
 
   /**
-   * Burrow (modified from Rakazo): on some Macs the runtime's published loopback port accepts and
+   * Gente (modified from Rakazo): on some Macs the runtime's published loopback port accepts and
    * then resets every connection while the database VM's own address works. Try loopback first,
    * then the VM's address on its own network, which only this Mac can reach.
    */
@@ -1071,7 +1071,7 @@ export class NativeStackController extends StackLifecycle {
     const fromFile = Object.fromEntries(
       [...stackEnv].filter(([name, value]) => value !== "" && !COMPOSE_ONLY.test(name)),
     );
-    // Burrow: Swift through the person's local Ollama is the default model.
+    // Gente: Swift through the person's local Ollama is the default model.
     let brain: SavedBrain | null = null;
     try {
       brain = JSON.parse(readFileSync(brainFile(this.deps.stackDir), "utf8")) as SavedBrain;

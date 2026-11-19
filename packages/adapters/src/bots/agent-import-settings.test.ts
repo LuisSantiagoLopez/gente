@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { agentImportUpload, parseGrokBotExport, readAgentImportFolder } from "@rakazo/core";
 import { describe, expect, it } from "vitest";
 import {
@@ -215,7 +215,7 @@ describe("OpenClaw settings", () => {
     });
   });
 
-  it("maps MCP servers and skips what Burrow cannot express", () => {
+  it("maps MCP servers and skips what Gente cannot express", () => {
     const settings = openclaw(false);
     expect(settings.mcpServers.map((server) => [server.title, server.config])).toEqual([
       [

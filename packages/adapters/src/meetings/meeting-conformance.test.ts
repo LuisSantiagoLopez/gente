@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { MeetingJoinRequest, MeetingProvider } from "@rakazo/adapter-kit";
 import { describe, expect, it } from "vitest";
 import { MeetingEmulator } from "../providers/meeting/emulator/meeting-emulator.js";
@@ -19,7 +19,7 @@ const input: MeetingJoinRequest = {
   sessionId: "meeting-session-123",
   platform: "google_meet",
   meetingUrl: "https://meet.google.com/abc-defg-hij",
-  botName: "Atlas · Burrow",
+  botName: "Atlas · Gente",
   expiresAt: new Date("2026-11-19T19:30:00.000Z"),
 };
 const signal = new AbortController().signal;
@@ -193,12 +193,12 @@ it("preserves Teams meeting context and rejects look-alike or non-meeting links"
 it.each([
   {
     voice: false,
-    notice: "Burrow is capturing audio to create a meeting transcript.",
+    notice: "Gente is capturing audio to create a meeting transcript.",
   },
   {
     voice: true,
     notice:
-      "Burrow is capturing audio to create a meeting transcript. It also processes speech in real time with AI services and may reply aloud when addressed by name.",
+      "Gente is capturing audio to create a meeting transcript. It also processes speech in real time with AI services and may reply aloud when addressed by name.",
   },
 ])("discloses whether the branded camera has live voice ($voice)", async ({ voice, notice }) => {
   const emulator = new RecallMeetingEmulator();

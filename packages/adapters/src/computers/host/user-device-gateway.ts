@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHash, createHmac, randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
 import type { IncomingMessage } from "node:http";
 import { networkInterfaces } from "node:os";
@@ -31,9 +31,9 @@ import {
 export const USER_DEVICE_FORWARD_PATH = "/internal/user-devices/request";
 export const USER_DEVICE_DISCONNECT_PATH = "/internal/user-devices/disconnect";
 export const USER_DEVICE_OFFLINE_MESSAGE =
-  "Your computer is not connected. Open the Burrow desktop app.";
+  "Your computer is not connected. Open the Gente desktop app.";
 const DISCONNECTED_MESSAGE = "Your computer disconnected. Check the result before retrying.";
-const REVOKED_MESSAGE = "This computer was disconnected from Burrow.";
+const REVOKED_MESSAGE = "This computer was disconnected from Gente.";
 export const USER_DEVICE_LIMIT = 10;
 const PING_INTERVAL_MS = 25_000;
 /** A connection row older than this has lost its holding process. */

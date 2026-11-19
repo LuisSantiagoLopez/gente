@@ -1,5 +1,5 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
 // "This computer" on Windows with nothing else to install: no Docker, no WSL, no VMs.
 // One download (the Windows server bundle, which carries its own Postgres 16) is unpacked once.

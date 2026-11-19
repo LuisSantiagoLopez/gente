@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { normalizeContext } from "@earendil-works/pi-ai";
 import { WorkspaceTooLargeError } from "@rakazo/adapter-kit";
 import type { MessageBlock } from "@rakazo/contracts";
@@ -1543,7 +1543,7 @@ describe("userTurnInstructions", () => {
       archiveBot,
       "Connected plugins: none",
       "Agent skills",
-      expect.stringContaining("read the Burrow skill"),
+      expect.stringContaining("read the Gente skill"),
       "Taught skills",
       ...stableTail,
       "Group context",

@@ -1,5 +1,5 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { describe, expect, it } from "vitest";
 import { isQuickChat, quickChatBody, userWords } from "./burrow-fast-chat.js";
 
@@ -7,7 +7,7 @@ const time = "\n\n<current_time>\nCurrent date and time: Thursday.\n</current_ti
 const body = (messages: unknown[], effort = "medium") =>
   JSON.stringify({ model: "swift-1.5-27b", reasoning_effort: effort, messages });
 
-describe("Burrow fast chat", () => {
+describe("Gente fast chat", () => {
   it("drops tagged context when reading the person's words", () => {
     expect(userWords(`hey${time}`)).toBe("hey");
   });
@@ -32,8 +32,8 @@ describe("Burrow fast chat", () => {
   });
 });
 
-describe("Burrow small talk", () => {
-  const system = "You run on Burrow.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
+describe("Gente small talk", () => {
+  const system = "You run on Gente.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
   const messages = [
     { role: "system", content: system },
     { role: "user", content: "earlier" },
@@ -60,7 +60,7 @@ describe("Burrow small talk", () => {
   });
 });
 
-describe("Burrow small-talk window", () => {
+describe("Gente small-talk window", () => {
   it("moves in steps so consecutive turns share their start", () => {
     const turns = (n: number) => [
       { role: "system", content: "s" },
@@ -75,7 +75,7 @@ describe("Burrow small-talk window", () => {
   });
 });
 
-describe("Burrow quick-reply model", () => {
+describe("Gente quick-reply model", () => {
   it("sends small talk to BURROW_CHAT_MODEL and keeps everything else on the main model", async () => {
     process.env.BURROW_CHAT_MODEL = "swift-1.5-ornith-9b";
     try {

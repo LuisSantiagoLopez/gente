@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -18,7 +18,7 @@ const packageJson = JSON.parse(
 
 describe("desktop package metadata", () => {
   it("shares the customer-facing name between Electron and electron-builder", () => {
-    expect(packageJson.productName).toBe("Burrow");
+    expect(packageJson.productName).toBe("Gente");
     expect(packageJson.build?.productName).toBeUndefined();
   });
 

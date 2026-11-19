@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 // @vitest-environment jsdom
 
 import type { BotAvatarSet } from "@rakazo/contracts";
@@ -74,18 +74,18 @@ async function render(value: string, avatarSet?: BotAvatarSet, key = "initial") 
 }
 
 describe("selectable bot icon sets", () => {
-  it("keeps a legacy appearance on open, saves a Burrow switch, and restores the saved set on reload", async () => {
+  it("keeps a legacy appearance on open, saves a Gente switch, and restores the saved set on reload", async () => {
     await render("#10B981");
     await click("Customize bot avatar");
     expect(button("Original").getAttribute("aria-selected")).toBe("true");
     expect(document.querySelector(".rakazo-organic-avatar")).not.toBeNull();
     expect(changed).not.toHaveBeenCalled();
-    await click("Burrow");
+    await click("Gente");
     expect(changed).toHaveBeenLastCalledWith("#10B981", "rakazo");
     expect(document.querySelector(".rakazo-logo-avatar")).not.toBeNull();
     await render("#10B981", "rakazo", "reload");
     await click("Customize bot avatar");
-    expect(button("Burrow").getAttribute("aria-selected")).toBe("true");
+    expect(button("Gente").getAttribute("aria-selected")).toBe("true");
     await click("Original");
     expect(changed).toHaveBeenLastCalledWith("#10B981", "organic");
     expect(document.querySelector(".rakazo-organic-avatar")).not.toBeNull();
@@ -99,7 +99,7 @@ describe("selectable bot icon sets", () => {
     await click("Customize bot avatar");
     expect(changed).not.toHaveBeenCalled();
     expect(document.querySelector(`img[src="${photo}"]`)).not.toBeNull();
-    await click("Burrow");
+    await click("Gente");
     expect(changed).toHaveBeenLastCalledWith(DEFAULT_BOT_AVATAR_COLOR, "rakazo");
     expect(document.querySelector(`img[src="${photo}"]`)).toBeNull();
   });
@@ -111,7 +111,7 @@ describe("selectable bot icon sets", () => {
     await click("Color #00C972");
     expect(changed).toHaveBeenLastCalledWith("#00C972::shape_2", undefined);
     expect(button("Original").getAttribute("aria-selected")).toBe("true");
-    await click("Burrow");
+    await click("Gente");
     expect(changed).toHaveBeenLastCalledWith("#00C972", "rakazo");
   });
 });

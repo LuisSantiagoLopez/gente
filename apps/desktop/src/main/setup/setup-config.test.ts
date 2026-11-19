@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_LOCAL_WEB_URL,
@@ -64,7 +64,7 @@ describe("server address normalization", () => {
   });
 
   it.each(["", "   ", "not a url", "ftp://example.com", "file:///etc/passwd", "http://"])(
-    "rejects an address that cannot reach a Burrow server (%s)",
+    "rejects an address that cannot reach a Gente server (%s)",
     (value) => {
       expect(normalizeServerUrl(value)).toBeNull();
     },
@@ -138,7 +138,7 @@ describe("saved setup", () => {
     });
   });
 
-  it("saves Burrow Cloud as an existing server under the exact origin setup matches", () => {
+  it("saves Gente Cloud as an existing server under the exact origin setup matches", () => {
     // The setup window recognizes a saved Cloud choice by comparing against this constant.
     expect(normalizeServerUrl(RAKAZO_CLOUD_URL)).toBe(RAKAZO_CLOUD_URL);
     expect(parseSetupInput({ mode: "existing", serverUrl: RAKAZO_CLOUD_URL })).toEqual({
@@ -165,7 +165,7 @@ describe("server request headers", () => {
     ).toEqual({ mode: "existing", serverUrl: "https://rakazo.example.com" });
   });
 
-  it("refuses headers Burrow owns and headers for a new local instance", () => {
+  it("refuses headers Gente owns and headers for a new local instance", () => {
     expect(parseSetupInput({ ...setup, headers: { Cookie: "a=b" } })).toBeNull();
     expect(parseSetupInput({ ...setup, headers: "x: y" })).toBeNull();
     expect(
@@ -187,7 +187,7 @@ describe("server request headers", () => {
 describe("startup target", () => {
   const saved = { mode: "existing", serverUrl: "https://rakazo.example.com" } as const;
 
-  it("opens setup on a first launch (Burrow runs on this Mac)", () => {
+  it("opens setup on a first launch (Gente runs on this Mac)", () => {
     expect(resolveStartupTarget({})).toEqual({ kind: "setup" });
     expect(resolveStartupTarget({ saved: null })).toEqual({ kind: "setup" });
   });
@@ -267,7 +267,7 @@ describe("remote-content isolation", () => {
   });
 });
 
-describe("Burrow health response", () => {
+describe("Gente health response", () => {
   it("requires the public RPC health contract", () => {
     expect(isRakazoHealth({ json: { ok: true, version: "0.1.0" } })).toBe(true);
     expect(isRakazoHealth({ json: { ok: true } })).toBe(false);

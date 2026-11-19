@@ -24,7 +24,7 @@ export function formatCurrentTimeInstruction(
     : `Current date and time: ${weekdayIn(now, "UTC")}, ${iso} (UTC).`;
   const pause =
     previousMessageAt && previousMessageNote(now, previousMessageAt, local ? timeZone : undefined);
-  // Burrow (modified from Rakazo): a local model reads every token of this on every turn, so keep
+  // Gente (modified from Rakazo): a local model reads every token of this on every turn, so keep
   // only the time itself; the guidance below costs about a second per reply on a laptop.
   if (process.env.BURROW_FAST_CHAT === "on") return [anchor, pause].filter(Boolean).join(" ");
   return [

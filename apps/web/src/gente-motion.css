@@ -1,0 +1,224 @@
+/* Copyright 2026 DeskHead Inc. Gente's motion layer (new file in a fork of Rakazo, Apache-2.0).
+   Only transform, opacity and filter animate, so the compositor does the work and long chats keep
+   their frame rate. Everything here is off for people who ask the system for less motion. */
+:root {
+  --gente-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --gente-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --gente-glow-a: #f5a524;
+  --gente-glow-b: #ef6a3a;
+  --gente-glow-c: #f7d48a;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Small springs on every hover, press and focus. */
+  button,
+  [role="button"],
+  [role="menuitem"],
+  [role="option"],
+  a {
+    transition:
+      transform 220ms var(--gente-spring),
+      background-color 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 200ms ease;
+  }
+  button:not(:disabled):active,
+  [role="button"]:active,
+  [role="menuitem"]:active {
+    transform: scale(0.96);
+    transition-duration: 90ms;
+  }
+  button:not(:disabled):focus-visible,
+  [role="button"]:focus-visible {
+    transform: scale(1.02);
+  }
+
+  /* Messages arrive with a little lift: a slight scale and a blur that clears. */
+  [data-gente-msg] {
+    animation: gente-msg-in 360ms var(--gente-ease-out) both;
+    transform-origin: 50% 100%;
+  }
+  [data-gente-msg="mine"] {
+    transform-origin: 100% 100%;
+  }
+  [data-gente-msg="theirs"] {
+    transform-origin: 0% 100%;
+  }
+
+  /* The "reading…" row while the model reads the prompt: three dots that take turns. */
+  [data-gente-working] {
+    animation: gente-msg-in 300ms var(--gente-ease-out) both;
+  }
+  .gente-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-inline-start: 2px;
+  }
+  .gente-dots > i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: gente-dot 1.2s ease-in-out infinite;
+  }
+  .gente-dots > i:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .gente-dots > i:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* A warm glow travels around the composer while the assistant reads or thinks. */
+  [data-gente-composer-bar] {
+    position: relative;
+    isolation: isolate;
+  }
+  [data-gente-composer-bar]::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from 0deg,
+      var(--gente-glow-a),
+      var(--gente-glow-b),
+      var(--gente-glow-c),
+      var(--gente-glow-a)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 400ms ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+  [data-gente-working-composer] [data-gente-composer-bar]::before {
+    opacity: 0.9;
+    animation: gente-glow-hue 3s linear infinite;
+  }
+  [data-gente-working-composer] [data-gente-composer-bar]::after {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: inherit;
+    background: radial-gradient(60% 80% at 50% 100%, color-mix(in srgb, var(--gente-glow-a) 28%, transparent), transparent 70%);
+    filter: blur(12px);
+    z-index: -2;
+    pointer-events: none;
+    animation: gente-breathe 2.4s ease-in-out infinite;
+  }
+
+  /* The send button springs when pressed and pops once when a message goes out. */
+  [data-gente-send] {
+    transition: transform 260ms var(--gente-spring);
+  }
+  [data-gente-sent] [data-gente-send] {
+    animation: gente-pop 420ms var(--gente-spring);
+  }
+
+  /* The Gente mark breathes while idle and does a small hop when a reply lands. */
+  [data-gente-mark] {
+    animation: gente-breathe 4.8s ease-in-out infinite;
+  }
+  [data-gente-mark][data-gente-hop] {
+    animation: gente-hop 620ms var(--gente-spring);
+  }
+
+  /* Skeletons shimmer instead of sitting flat. */
+  .gente-skeleton,
+  [data-gente-skeleton] {
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--muted) 100%, transparent) 30%,
+      color-mix(in srgb, var(--foreground) 6%, var(--muted)) 50%,
+      color-mix(in srgb, var(--muted) 100%, transparent) 70%
+    );
+    background-size: 300% 100%;
+    animation: gente-shimmer 1.4s ease-in-out infinite;
+  }
+
+  /* Smooth jumps to the newest message. */
+  [data-gente-scroll] {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes gente-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+@keyframes gente-dot {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+@keyframes gente-glow-hue {
+  to {
+    transform: rotate(0deg);
+    filter: hue-rotate(40deg);
+  }
+}
+@keyframes gente-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+@keyframes gente-hop {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-5px) scale(1.08) rotate(-4deg);
+  }
+  70% {
+    transform: translateY(0) scale(0.97) rotate(2deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes gente-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.86);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes gente-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}

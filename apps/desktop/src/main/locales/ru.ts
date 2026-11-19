@@ -1,10 +1,10 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export const RU_MESSAGES: Record<string, string> = {
   "About {name}": "О программе {name}",
   "Check for Updates…": "Проверить обновления…",
   "Computer Access…": "Доступ к компьютеру…",
   "Revoke Local Computer Access": "Отозвать доступ к локальному компьютеру",
-  "Change Burrow Server…": "Сменить сервер Burrow…",
+  "Change Gente Server…": "Сменить сервер Gente…",
   "Hide {name}": "Скрыть {name}",
   "Hide Others": "Скрыть остальные",
   "Show All": "Показать все",
@@ -39,13 +39,13 @@ export const RU_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Проверка обновлений…",
   "Downloading Update…": "Загрузка обновления…",
   "Restart to Update…": "Перезапустить для обновления…",
-  "Downloading Burrow {version}…": "Загрузка Burrow {version}…",
-  "Burrow {version} is ready to install.": "Burrow {version} готов к установке.",
+  "Downloading Gente {version}…": "Загрузка Gente {version}…",
+  "Gente {version} is ready to install.": "Gente {version} готов к установке.",
   Restart: "Перезапустить",
   Later: "Позже",
   "Could not install the update.": "Не удалось установить обновление.",
   "Could not check for updates.": "Не удалось проверить обновления.",
-  "Burrow is up to date.": "У вас последняя версия Burrow.",
+  "Gente is up to date.": "У вас последняя версия Gente.",
   "Version {version}": "Версия {version}",
   "Automatic updates are turned off for this install.":
     "Автоматические обновления отключены для этой установки.",
@@ -53,12 +53,12 @@ export const RU_MESSAGES: Record<string, string> = {
     "Автоматические обновления работают только в установленной версии.",
   "No desktop releases are published for this build yet.":
     "Для этой сборки пока не опубликовано ни одной версии для компьютера.",
-  "Move Burrow to Applications to install updates.":
-    "Переместите Burrow в папку «Программы», чтобы устанавливать обновления.",
+  "Move Gente to Applications to install updates.":
+    "Переместите Gente в папку «Программы», чтобы устанавливать обновления.",
   "Free up disk space to install updates.":
     "Освободите место на диске, чтобы установить обновления.",
-  "This update could not be verified. Reinstall Burrow from a trusted download.":
-    "Не удалось проверить это обновление. Переустановите Burrow из надёжного источника.",
+  "This update could not be verified. Reinstall Gente from a trusted download.":
+    "Не удалось проверить это обновление. Переустановите Gente из надёжного источника.",
   "The update could not be completed. Try again later.":
     "Не удалось завершить обновление. Повторите попытку позже.",
   "Could not reach the update server.": "Не удалось связаться с сервером обновлений.",
@@ -77,13 +77,13 @@ export const RU_MESSAGES: Record<string, string> = {
     "Вход уже выполняется. Отмените его и повторите попытку.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Не удалось открыть вход в браузере. Закройте другие попытки входа и повторите.",
-  "Sign-in callback rejected. Return to Burrow to retry.":
-    "Ответ на вход отклонён. Вернитесь в Burrow, чтобы повторить попытку.",
-  "You can close this tab and return to Burrow.": "Можно закрыть эту вкладку и вернуться в Burrow.",
-  "Set up Burrow": "Настройка Burrow",
-  "Quit Burrow": "Завершить Burrow",
-  "Welcome to Burrow": "Добро пожаловать в Burrow",
-  "Choose where Burrow runs.": "Выберите, где будет работать Burrow.",
+  "Sign-in callback rejected. Return to Gente to retry.":
+    "Ответ на вход отклонён. Вернитесь в Gente, чтобы повторить попытку.",
+  "You can close this tab and return to Gente.": "Можно закрыть эту вкладку и вернуться в Gente.",
+  "Set up Gente": "Настройка Gente",
+  "Quit Gente": "Завершить Gente",
+  "Welcome to Gente": "Добро пожаловать в Gente",
+  "Choose where Gente runs.": "Выберите, где будет работать Gente.",
   Instance: "Экземпляр",
   "This computer": "Этот компьютер",
   "Existing instance": "Существующий экземпляр",
@@ -96,14 +96,14 @@ export const RU_MESSAGES: Record<string, string> = {
   Continue: "Продолжить",
   Retry: "Повторить",
   "Getting ready…": "Подготовка…",
-  "Downloading Burrow…": "Загрузка Burrow…",
-  "Starting Burrow…": "Запуск Burrow…",
+  "Downloading Gente…": "Загрузка Gente…",
+  "Starting Gente…": "Запуск Gente…",
   "Almost ready…": "Почти готово…",
-  "Burrow is ready.": "Burrow готов.",
+  "Gente is ready.": "Gente готов.",
   "{size} downloaded": "Загружено {size}",
   "Connecting…": "Подключение…",
   "Checking…": "Проверка…",
-  "Burrow answered at {url}.": "Burrow ответил по адресу {url}.",
+  "Gente answered at {url}.": "Gente ответил по адресу {url}.",
   "Enter a server address first.": "Сначала введите адрес сервера.",
   "Could not save that address.": "Не удалось сохранить этот адрес.",
   "Could not save that address. Try again.": "Не удалось сохранить этот адрес. Повторите попытку.",
@@ -114,18 +114,18 @@ export const RU_MESSAGES: Record<string, string> = {
   "Could not run the connection check. Try again.":
     "Не удалось проверить подключение. Повторите попытку.",
   "Setup bridge unavailable.": "Мост настройки недоступен.",
-  "Setup could not start. Quit Burrow and try again.":
-    "Не удалось начать настройку. Завершите Burrow и повторите попытку.",
+  "Setup could not start. Quit Gente and try again.":
+    "Не удалось начать настройку. Завершите Gente и повторите попытку.",
   "Enter a server address.": "Введите адрес сервера.",
   "Enter a valid http:// or https:// address.":
     "Введите действительный адрес http:// или https://.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Введите действительный адрес сервера. Публичным серверам нужен HTTPS; новый локальный экземпляр должен использовать localhost.",
   "Invalid custom headers": "Недопустимые пользовательские заголовки",
-  "That address redirects elsewhere. Enter the final Burrow server address.":
-    "Этот адрес перенаправляет в другое место. Введите конечный адрес сервера Burrow.",
-  "That address did not respond like a Burrow server.":
-    "Этот адрес ответил не так, как сервер Burrow.",
+  "That address redirects elsewhere. Enter the final Gente server address.":
+    "Этот адрес перенаправляет в другое место. Введите конечный адрес сервера Gente.",
+  "That address did not respond like a Gente server.":
+    "Этот адрес ответил не так, как сервер Gente.",
   "The server answered with HTTP {status}.": "Сервер ответил с кодом HTTP {status}.",
   "Timed out reaching that address.": "Истекло время ожидания ответа по этому адресу.",
   "Nothing is listening at that address yet.": "По этому адресу пока ничего не отвечает.",
@@ -150,8 +150,8 @@ export const RU_MESSAGES: Record<string, string> = {
     "Не удалось сохранить настройку. Предыдущий экземпляр восстановлен.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Подключение установлено, но настройку не удалось сохранить для следующего запуска. Нажмите «Продолжить» ещё раз.",
-  "The app-managed Burrow services are not ready. Retry setup.":
-    "Службы Burrow, которыми управляет приложение, не готовы. Повторите настройку.",
+  "The app-managed Gente services are not ready. Retry setup.":
+    "Службы Gente, которыми управляет приложение, не готовы. Повторите настройку.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker установлен, но Docker Compose отсутствует. Установите Docker Desktop или docker-compose-plugin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -172,10 +172,10 @@ export const RU_MESSAGES: Record<string, string> = {
     "Docker перестал отвечать. Запустите Docker и повторите попытку.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose отсутствует. Установите Docker Desktop или docker-compose-plugin и повторите попытку.",
-  "Downloading Burrow images failed. Check the output below, then retry.":
-    "Не удалось загрузить образы Burrow. Посмотрите вывод ниже и повторите попытку.",
-  "Burrow services did not start. Check the output below, then retry.":
-    "Службы Burrow не запустились. Посмотрите вывод ниже и повторите попытку.",
+  "Downloading Gente images failed. Check the output below, then retry.":
+    "Не удалось загрузить образы Gente. Посмотрите вывод ниже и повторите попытку.",
+  "Gente services did not start. Check the output below, then retry.":
+    "Службы Gente не запустились. Посмотрите вывод ниже и повторите попытку.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "Стек запущен, но веб-приложение не ответило. Повторите попытку и посмотрите вывод ниже.",
   "Could not prepare the local stack. Retry.":
@@ -199,15 +199,15 @@ export const RU_MESSAGES: Record<string, string> = {
   "Chat Details": "Сведения о чате",
   Help: "Справка",
   "Keyboard Shortcuts": "Сочетания клавиш",
-  "Downloading Burrow failed. Check the internet connection, then retry.":
-    "Не удалось загрузить Burrow. Проверьте подключение к интернету и повторите попытку.",
+  "Downloading Gente failed. Check the internet connection, then retry.":
+    "Не удалось загрузить Gente. Проверьте подключение к интернету и повторите попытку.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Не удалось перенести данные из Docker. Посмотрите вывод ниже и повторите попытку.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "Уже запущенная среда выполнения компьютеров слишком старая. Обновите или закройте её, затем повторите попытку.",
-  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
-    "Ваши данные Burrow находятся в другой среде выполнения компьютеров. Закройте запущенную среду, затем повторите попытку.",
-  "Run Burrow without Docker?": "Запускать Burrow без Docker?",
+  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+    "Ваши данные Gente находятся в другой среде выполнения компьютеров. Закройте запущенную среду, затем повторите попытку.",
+  "Run Gente without Docker?": "Запускать Gente без Docker?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Ваши боты и данные будут перенесены. Docker будет остановлен, но не удалён.",
   Move: "Перенести",
@@ -216,12 +216,12 @@ export const RU_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "Ваши данные остаются на этом компьютере.",
   "Connect to a server you or your team already run.":
     "Подключитесь к серверу, который уже работает у вас или вашей команды.",
-  "Burrow needs Docker Desktop to run on this computer.":
-    "Чтобы Burrow работал на этом компьютере, нужен Docker Desktop.",
-  "Burrow needs Docker to run on this computer.":
-    "Чтобы Burrow работал на этом компьютере, нужен Docker.",
-  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
-    "Docker Desktop — бесплатное приложение, которое запускает Burrow в фоне. Установите и один раз откройте его.",
+  "Gente needs Docker Desktop to run on this computer.":
+    "Чтобы Gente работал на этом компьютере, нужен Docker Desktop.",
+  "Gente needs Docker to run on this computer.":
+    "Чтобы Gente работал на этом компьютере, нужен Docker.",
+  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
+    "Docker Desktop — бесплатное приложение, которое запускает Gente в фоне. Установите и один раз откройте его.",
   "Install Docker Engine and start it.": "Установите Docker Engine и запустите его.",
   "Download Docker Desktop": "Скачать Docker Desktop",
   "Install Docker": "Установить Docker",
@@ -230,14 +230,14 @@ export const RU_MESSAGES: Record<string, string> = {
   "Starting {app}…": "Запуск {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker установлен, но не запущен. Запустите службу Docker, чтобы продолжить.",
-  "Burrow stopped unexpectedly.": "Burrow неожиданно остановился.",
+  "Gente stopped unexpectedly.": "Gente неожиданно остановился.",
   Reload: "Перезагрузить",
   "Mac app control": "Управление приложениями Mac",
   "Set up Mac app control": "Настройка управления приложениями Mac",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
-    "Команды уже работают. Чтобы использовать приложения, разрешите Burrow доступ к Универсальному доступу и Записи экрана в Системных настройках, затем перезапустите Burrow.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
+    "Команды уже работают. Чтобы использовать приложения, разрешите Gente доступ к Универсальному доступу и Записи экрана в Системных настройках, затем перезапустите Gente.",
   "Open System Settings": "Открыть Системные настройки",
-  "Restart Burrow": "Перезапустить Burrow",
+  "Restart Gente": "Перезапустить Gente",
   "Not Now": "Не сейчас",
-  "Restart Burrow to finish setup": "Перезапустите Burrow, чтобы завершить настройку",
+  "Restart Gente to finish setup": "Перезапустите Gente, чтобы завершить настройку",
 };

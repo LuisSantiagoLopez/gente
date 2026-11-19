@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createHash, randomBytes } from "node:crypto";
 import type { Api, Context, Message, Model } from "@earendil-works/pi-ai";
 import type { AdapterContext, AgentRunRequest, AgentUsage } from "@rakazo/adapter-kit";
@@ -488,7 +488,7 @@ export function createRuntimeContextPolicy(
       (message) =>
         (message as Message & OriginalMetadata).rakazoHistory &&
         !(message as Message & OriginalMetadata).rakazoMessageId &&
-        (text(message).startsWith("Burrow-owned compacted context through message sequence ") ||
+        (text(message).startsWith("Gente-owned compacted context through message sequence ") ||
           text(message).startsWith(`${RECALLED_MEMORY_LEAD} `)),
     );
     for (const summary of summaries) {

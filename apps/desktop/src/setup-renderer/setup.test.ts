@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 // @vitest-environment jsdom
 
 import { readFileSync } from "node:fs";
@@ -236,7 +236,7 @@ describe("setup", () => {
     currentCheck.resolve({ ok: true, url: "https://two.example" });
     await flush();
     expect(field.value).toBe("https://two.example");
-    expect(element("status").textContent).toBe("Burrow answered at https://two.example.");
+    expect(element("status").textContent).toBe("Gente answered at https://two.example.");
     expect(element("status").getAttribute("data-tone")).toBe("ok");
     expect(element<HTMLButtonElement>("check").disabled).toBe(false);
     expect(element<HTMLButtonElement>("continue").disabled).toBe(false);
@@ -293,7 +293,7 @@ describe("setup", () => {
     await flush();
 
     expect(element("stack").hidden).toBe(false);
-    expect(element("stack-phase").textContent).toBe("Downloading Burrow…");
+    expect(element("stack-phase").textContent).toBe("Downloading Gente…");
   });
 
   it("locks the address while it is being saved and unlocks it when the save fails", async () => {
@@ -348,7 +348,7 @@ describe("setup", () => {
     await flush();
 
     expect(element<HTMLInputElement>("server-url").value).toBe("https://one.example");
-    expect(element("status").textContent).toBe("Burrow answered at https://one.example.");
+    expect(element("status").textContent).toBe("Gente answered at https://one.example.");
     expect(element("status").getAttribute("data-tone")).toBe("ok");
     expect(element<HTMLButtonElement>("check").disabled).toBe(false);
   });
@@ -399,7 +399,7 @@ describe("setup", () => {
     ui.startResult.resolve(stackState("pulling"));
     await flush();
     expect(element("stack").hidden).toBe(false);
-    expect(element("stack-phase").textContent).toBe("Downloading Burrow…");
+    expect(element("stack-phase").textContent).toBe("Downloading Gente…");
     expect(element<HTMLButtonElement>("continue").disabled).toBe(true);
 
     ui.resolveStackState(stackState("ready"));
@@ -409,7 +409,7 @@ describe("setup", () => {
     ui.resolveSave({ ok: true });
     await flush();
 
-    expect(element("stack-phase").textContent).toBe("Burrow is ready.");
+    expect(element("stack-phase").textContent).toBe("Gente is ready.");
     expect(element("stack-phase").getAttribute("data-tone")).toBe("ok");
     expect(ui.saves).toEqual([{ mode: "new", serverUrl: DEFAULT_LOCAL_URL }]);
     expect(element<HTMLButtonElement>("continue").disabled).toBe(false);
@@ -436,7 +436,7 @@ describe("setup", () => {
     submitForm();
     const missing = {
       ...stackState("docker-missing"),
-      message: "Burrow needs Docker Desktop to run on this computer.",
+      message: "Gente needs Docker Desktop to run on this computer.",
     };
     ui.startResult.resolve(missing);
     await flush();
@@ -460,7 +460,7 @@ describe("setup", () => {
     const ui = await boot(null, ENGLISH, "darwin");
     selectMode("new");
     submitForm();
-    const missing = { ...stackState("docker-missing"), message: "Burrow needs Docker Desktop." };
+    const missing = { ...stackState("docker-missing"), message: "Gente needs Docker Desktop." };
     ui.startResult.resolve(missing);
     await flush();
     ui.resolveStackState(missing);
@@ -491,7 +491,7 @@ describe("setup", () => {
     const ui = await boot(null, ENGLISH, "darwin");
     selectMode("new");
     submitForm();
-    const missing = { ...stackState("docker-missing"), message: "Burrow needs Docker Desktop." };
+    const missing = { ...stackState("docker-missing"), message: "Gente needs Docker Desktop." };
     ui.startResult.resolve(missing);
     await flush();
     ui.resolveStackState(missing);
@@ -517,7 +517,7 @@ describe("setup", () => {
       submitForm();
       ui.startResult.resolve(stackState("pulling"));
       await flush();
-      expect(element("stack-phase").textContent).toBe("Downloading Burrow…");
+      expect(element("stack-phase").textContent).toBe("Downloading Gente…");
 
       if (leaveAfterReady) {
         ui.resolveStackState(stackState("ready"));
@@ -550,7 +550,7 @@ describe("setup", () => {
     const ui = await boot(null, { lang: "es", dir: "ltr", messages: ES_MESSAGES });
     expect(document.documentElement.lang).toBe("es");
     expect(document.documentElement.dir).toBe("ltr");
-    expect(document.querySelector("h1")?.textContent).toBe("Te damos la bienvenida a Burrow");
+    expect(document.querySelector("h1")?.textContent).toBe("Te damos la bienvenida a Gente");
     expect(document.querySelector('label[for="mode-new"] .choice-title')?.textContent).toBe(
       "Esta computadora",
     );
@@ -558,10 +558,10 @@ describe("setup", () => {
       "Tus datos se quedan en esta computadora.",
     );
     expect(document.querySelector('label[for="mode-cloud"] .choice-title')?.textContent).toBe(
-      "Burrow Cloud",
+      "Gente Cloud",
     );
     expect(element("quit").textContent).toBe("Salir");
-    expect(element("quit").title).toBe("Salir de Burrow");
+    expect(element("quit").title).toBe("Salir de Gente");
     expect(element("stack-details").getAttribute("aria-label")).toBe("Detalles técnicos");
     expect(element<HTMLTextAreaElement>("server-headers").placeholder).toBe("Nombre: valor");
     expect(element("continue").textContent).toBe("Continuar");
@@ -574,13 +574,13 @@ describe("setup", () => {
     expect(element("status").textContent).toBe("Comprobando…");
     ui.resolveCheck({ ok: true, url: "https://one.example" });
     await flush();
-    expect(element("status").textContent).toBe("Burrow respondió en https://one.example.");
+    expect(element("status").textContent).toBe("Gente respondió en https://one.example.");
 
     selectMode("new");
     submitForm();
     ui.startResult.resolve({ ...stackState("pulling"), layerBytes: { layer: 2.5e6 } });
     await flush();
-    expect(element("stack-phase").textContent).toBe("Descargando Burrow…");
+    expect(element("stack-phase").textContent).toBe("Descargando Gente…");
     expect(element("stack-detail").textContent).toBe("3 MB descargados");
   });
 
@@ -588,7 +588,7 @@ describe("setup", () => {
     const ui = await boot(null, { lang: "pl", dir: "ltr", messages: PL_MESSAGES });
     expect(document.documentElement.lang).toBe("pl");
     expect(document.documentElement.dir).toBe("ltr");
-    expect(document.querySelector("h1")?.textContent).toBe("Witaj w Burrow");
+    expect(document.querySelector("h1")?.textContent).toBe("Witaj w Gente");
     expect(element("continue").textContent).toBe(PL_MESSAGES.Continue);
     expect(element("stack-details").getAttribute("aria-label")).toBe(
       PL_MESSAGES["Technical details"],
@@ -606,14 +606,14 @@ describe("setup", () => {
     ui.resolveCheck({ ok: true, url: "https://one.example" });
     await flush();
     expect(element("status").textContent).toBe(
-      "Burrow odpowiedziało pod adresem https://one.example.",
+      "Gente odpowiedziało pod adresem https://one.example.",
     );
 
     selectMode("new");
     submitForm();
     ui.startResult.resolve({ ...stackState("pulling"), layerBytes: { layer: 2.5e6 } });
     await flush();
-    expect(element("stack-phase").textContent).toBe(PL_MESSAGES["Downloading Burrow…"]);
+    expect(element("stack-phase").textContent).toBe(PL_MESSAGES["Downloading Gente…"]);
     expect(element("stack-detail").textContent).toBe("Pobrano 3 MB");
   });
 });

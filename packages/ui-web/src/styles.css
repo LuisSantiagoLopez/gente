@@ -10,7 +10,8 @@
    them in one place. Tailwind's default sizes are switched off; use these. A size off the scale
    needs an `off-scale:` comment saying why (see type-scale.test.ts). Mobile sets its own type. */
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Gente: a friendly rounded grotesk; the system one, so nothing is downloaded. */
+  --font-sans: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
     monospace;

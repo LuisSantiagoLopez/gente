@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { createPublicKey, generateKeyPairSync, sign } from "node:crypto";
 import { existsSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -21,7 +21,7 @@ const dirs: string[] = [];
 function appImage(contents = "fake appimage") {
   const dir = mkdtempSync(path.join(tmpdir(), "linux-update-"));
   dirs.push(dir);
-  const file = path.join(dir, "Burrow-1.2.3.AppImage");
+  const file = path.join(dir, "Gente-1.2.3.AppImage");
   writeFileSync(file, contents);
   return file;
 }
@@ -42,7 +42,7 @@ afterEach(() => {
 describe("linuxUpdateSignatureMessage", () => {
   it("is the versioned three-line format the release workflow signs", () => {
     expect(
-      linuxUpdateSignatureMessage("1.2.3", "Burrow-1.2.3.AppImage", "ab12").toString("utf8"),
+      linuxUpdateSignatureMessage("1.2.3", "Gente-1.2.3.AppImage", "ab12").toString("utf8"),
     ).toBe("rakazo-linux-update-v1\n1.2.3\nRakazo-1.2.3.AppImage\nab12\n");
   });
 
@@ -102,7 +102,7 @@ describe("verifyLinuxUpdate", () => {
 describe("fetchLinuxUpdateSignature", () => {
   it("reads the signature beside the AppImage in the official release", async () => {
     const fetchUrl = respond("signature\n");
-    expect(await fetchLinuxUpdateSignature("1.2.3", "Burrow-1.2.3.AppImage", fetchUrl)).toBe(
+    expect(await fetchLinuxUpdateSignature("1.2.3", "Gente-1.2.3.AppImage", fetchUrl)).toBe(
       "signature\n",
     );
     expect(fetchUrl).toHaveBeenCalledWith(
@@ -114,9 +114,9 @@ describe("fetchLinuxUpdateSignature", () => {
   it("refuses versions and names that could point elsewhere", async () => {
     const fetchUrl = respond("signature");
     for (const [version, name] of [
-      ["1.2.3/../../x", "Burrow-1.2.3.AppImage"],
-      ["1.2.3", "../Burrow-1.2.3.AppImage"],
-      ["1.2.3", "Burrow-1.2.3.exe"],
+      ["1.2.3/../../x", "Gente-1.2.3.AppImage"],
+      ["1.2.3", "../Gente-1.2.3.AppImage"],
+      ["1.2.3", "Gente-1.2.3.exe"],
     ] as const) {
       await expect(fetchLinuxUpdateSignature(version, name, fetchUrl)).rejects.toThrow();
     }
@@ -126,7 +126,7 @@ describe("fetchLinuxUpdateSignature", () => {
   it("treats a missing signature as a signature failure", async () => {
     const error = await fetchLinuxUpdateSignature(
       "1.2.3",
-      "Burrow-1.2.3.AppImage",
+      "Gente-1.2.3.AppImage",
       respond("Not Found", { status: 404 }),
     ).catch((caught: unknown) => caught);
     expect(classifyUpdaterFailure(error).kind).toBe("signature");
@@ -141,7 +141,7 @@ describe("fetchLinuxUpdateSignature", () => {
     );
     const error = await fetchLinuxUpdateSignature(
       "1.2.3",
-      "Burrow-1.2.3.AppImage",
+      "Gente-1.2.3.AppImage",
       hanging,
       10,
     ).catch((caught: unknown) => caught);
@@ -152,12 +152,12 @@ describe("fetchLinuxUpdateSignature", () => {
   it("stops reading an oversized signature", async () => {
     const large = "a".repeat(4_096);
     await expect(
-      fetchLinuxUpdateSignature("1.2.3", "Burrow-1.2.3.AppImage", respond(large)),
+      fetchLinuxUpdateSignature("1.2.3", "Gente-1.2.3.AppImage", respond(large)),
     ).rejects.toThrow("too large");
     await expect(
       fetchLinuxUpdateSignature(
         "1.2.3",
-        "Burrow-1.2.3.AppImage",
+        "Gente-1.2.3.AppImage",
         respond("small", { headers: { "content-length": "4096" } }),
       ),
     ).rejects.toThrow("too large");

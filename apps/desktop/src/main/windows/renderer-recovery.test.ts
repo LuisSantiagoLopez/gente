@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { EventEmitter } from "node:events";
 import { deferred } from "@rakazo/core/test-async";
 import type { BrowserWindow } from "electron";
@@ -64,7 +64,7 @@ describe("renderer recovery", () => {
     expect(contents.reload).toHaveBeenCalledTimes(2);
     expect(mocks.showMessageBox).toHaveBeenCalledExactlyOnceWith(
       win,
-      expect.objectContaining({ message: "Burrow stopped unexpectedly.", buttons: ["Reload"] }),
+      expect.objectContaining({ message: "Gente stopped unexpectedly.", buttons: ["Reload"] }),
     );
   });
 

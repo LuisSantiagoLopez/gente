@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 const { contextBridge, ipcRenderer } = require("electron");
 
 // A sandboxed preload can only require electron, so channels are named here as literals.

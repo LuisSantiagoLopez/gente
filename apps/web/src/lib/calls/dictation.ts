@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { t } from "@lingui/core/macro";
 import {
   cancelResponseBody,
@@ -355,7 +355,7 @@ export class Dictation {
         error:
           // macOS asks only once; after a refusal, only System Settings can allow it again.
           code === "not-allowed" && desktopBridge()?.speech
-            ? t`Allow Burrow to use Speech Recognition and the microphone in System Settings.`
+            ? t`Allow Gente to use Speech Recognition and the microphone in System Settings.`
             : code
               ? t`Dictation failed: ${code}`
               : t`Dictation failed.`,

@@ -1,10 +1,10 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export const ZH_TW_MESSAGES: Record<string, string> = {
   "About {name}": "關於 {name}",
   "Check for Updates…": "檢查更新項目…",
   "Computer Access…": "電腦存取權…",
   "Revoke Local Computer Access": "撤銷本機電腦存取權",
-  "Change Burrow Server…": "更換 Burrow 伺服器…",
+  "Change Gente Server…": "更換 Gente 伺服器…",
   "Hide {name}": "隱藏 {name}",
   "Hide Others": "隱藏其他",
   "Show All": "顯示全部",
@@ -39,22 +39,22 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "正在檢查更新項目…",
   "Downloading Update…": "正在下載更新項目…",
   "Restart to Update…": "重新啟動以更新…",
-  "Downloading Burrow {version}…": "正在下載 Burrow {version}…",
-  "Burrow {version} is ready to install.": "Burrow {version} 已可安裝。",
+  "Downloading Gente {version}…": "正在下載 Gente {version}…",
+  "Gente {version} is ready to install.": "Gente {version} 已可安裝。",
   Restart: "重新啟動",
   Later: "稍後",
   "Could not install the update.": "無法安裝更新項目。",
   "Could not check for updates.": "無法檢查更新項目。",
-  "Burrow is up to date.": "Burrow 已是最新版本。",
+  "Gente is up to date.": "Gente 已是最新版本。",
   "Version {version}": "版本 {version}",
   "Automatic updates are turned off for this install.": "此安裝已關閉自動更新。",
   "Automatic updates only run in an installed build.": "自動更新僅在已安裝的版本中執行。",
   "No desktop releases are published for this build yet.": "此版本尚未發佈桌面版。",
-  "Move Burrow to Applications to install updates.":
-    "將 Burrow 移到「應用程式」檔案夾以安裝更新項目。",
+  "Move Gente to Applications to install updates.":
+    "將 Gente 移到「應用程式」檔案夾以安裝更新項目。",
   "Free up disk space to install updates.": "釋放磁碟空間以安裝更新項目。",
-  "This update could not be verified. Reinstall Burrow from a trusted download.":
-    "無法驗證此更新項目。請從可信任的來源重新下載並安裝 Burrow。",
+  "This update could not be verified. Reinstall Gente from a trusted download.":
+    "無法驗證此更新項目。請從可信任的來源重新下載並安裝 Gente。",
   "The update could not be completed. Try again later.": "無法完成更新。請稍後再試一次。",
   "Could not reach the update server.": "無法連線到更新伺服器。",
   "Allow local computer access?": "要允許存取本機電腦嗎？",
@@ -72,12 +72,12 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
     "已有登入正在進行。請取消後再試一次。",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "無法開啟瀏覽器登入。請關閉其他登入嘗試後再試一次。",
-  "Sign-in callback rejected. Return to Burrow to retry.": "登入回應遭拒。請返回 Burrow 再試一次。",
-  "You can close this tab and return to Burrow.": "你可以關閉此分頁並返回 Burrow。",
-  "Set up Burrow": "設定 Burrow",
-  "Quit Burrow": "結束 Burrow",
-  "Welcome to Burrow": "歡迎使用 Burrow",
-  "Choose where Burrow runs.": "選擇 Burrow 的執行位置。",
+  "Sign-in callback rejected. Return to Gente to retry.": "登入回應遭拒。請返回 Gente 再試一次。",
+  "You can close this tab and return to Gente.": "你可以關閉此分頁並返回 Gente。",
+  "Set up Gente": "設定 Gente",
+  "Quit Gente": "結束 Gente",
+  "Welcome to Gente": "歡迎使用 Gente",
+  "Choose where Gente runs.": "選擇 Gente 的執行位置。",
   Instance: "執行個體",
   "This computer": "這台電腦",
   "Existing instance": "現有執行個體",
@@ -90,14 +90,14 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   Continue: "繼續",
   Retry: "重試",
   "Getting ready…": "準備中…",
-  "Downloading Burrow…": "正在下載 Burrow…",
-  "Starting Burrow…": "正在啟動 Burrow…",
+  "Downloading Gente…": "正在下載 Gente…",
+  "Starting Gente…": "正在啟動 Gente…",
   "Almost ready…": "即將完成…",
-  "Burrow is ready.": "Burrow 已就緒。",
+  "Gente is ready.": "Gente 已就緒。",
   "{size} downloaded": "已下載 {size}",
   "Connecting…": "正在連線…",
   "Checking…": "正在檢查…",
-  "Burrow answered at {url}.": "Burrow 已在 {url} 回應。",
+  "Gente answered at {url}.": "Gente 已在 {url} 回應。",
   "Enter a server address first.": "請先輸入伺服器位址。",
   "Could not save that address.": "無法儲存該位址。",
   "Could not save that address. Try again.": "無法儲存該位址。請再試一次。",
@@ -105,15 +105,15 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Could not start the local stack. Try again.": "無法啟動本機服務堆疊。請再試一次。",
   "Could not run the connection check. Try again.": "無法檢查連線。請再試一次。",
   "Setup bridge unavailable.": "無法使用設定橋接。",
-  "Setup could not start. Quit Burrow and try again.": "無法開始設定。請結束 Burrow 後再試一次。",
+  "Setup could not start. Quit Gente and try again.": "無法開始設定。請結束 Gente 後再試一次。",
   "Enter a server address.": "請輸入伺服器位址。",
   "Enter a valid http:// or https:// address.": "請輸入有效的 http:// 或 https:// 位址。",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "請輸入有效的伺服器位址。公開伺服器需要 HTTPS；新的本機執行個體必須使用 localhost。",
   "Invalid custom headers": "自訂標頭無效",
-  "That address redirects elsewhere. Enter the final Burrow server address.":
-    "該位址會重新導向到其他位置。請輸入 Burrow 伺服器的最終位址。",
-  "That address did not respond like a Burrow server.": "該位址的回應不像 Burrow 伺服器。",
+  "That address redirects elsewhere. Enter the final Gente server address.":
+    "該位址會重新導向到其他位置。請輸入 Gente 伺服器的最終位址。",
+  "That address did not respond like a Gente server.": "該位址的回應不像 Gente 伺服器。",
   "The server answered with HTTP {status}.": "伺服器回應了 HTTP {status}。",
   "Timed out reaching that address.": "連線到該位址逾時。",
   "Nothing is listening at that address yet.": "該位址目前沒有任何服務在監聽。",
@@ -136,8 +136,8 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
     "無法儲存設定。已還原先前的執行個體。",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "已連線，但無法為下次啟動儲存設定。請再按一次「繼續」。",
-  "The app-managed Burrow services are not ready. Retry setup.":
-    "由 App 管理的 Burrow 服務尚未就緒。請重新設定。",
+  "The app-managed Gente services are not ready. Retry setup.":
+    "由 App 管理的 Gente 服務尚未就緒。請重新設定。",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "已安裝 Docker，但缺少 Docker Compose。請安裝 Docker Desktop 或 docker-compose-plugin。",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -157,10 +157,10 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
     "Docker 已停止回應。請啟動 Docker 後再試一次。",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "缺少 Docker Compose。請安裝 Docker Desktop 或 docker-compose-plugin 後再試一次。",
-  "Downloading Burrow images failed. Check the output below, then retry.":
-    "無法下載 Burrow 映像檔。請查看下方輸出後再試一次。",
-  "Burrow services did not start. Check the output below, then retry.":
-    "Burrow 服務未能啟動。請查看下方輸出後再試一次。",
+  "Downloading Gente images failed. Check the output below, then retry.":
+    "無法下載 Gente 映像檔。請查看下方輸出後再試一次。",
+  "Gente services did not start. Check the output below, then retry.":
+    "Gente 服務未能啟動。請查看下方輸出後再試一次。",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "服務堆疊已啟動，但網頁 App 沒有回應。請重試並查看下方輸出。",
   "Could not prepare the local stack. Retry.": "無法準備本機服務堆疊。請再試一次。",
@@ -183,15 +183,15 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Chat Details": "聊天詳細資料",
   Help: "說明",
   "Keyboard Shortcuts": "鍵盤快速鍵",
-  "Downloading Burrow failed. Check the internet connection, then retry.":
-    "無法下載 Burrow。請檢查網路連線，然後再試一次。",
+  "Downloading Gente failed. Check the internet connection, then retry.":
+    "無法下載 Gente。請檢查網路連線，然後再試一次。",
   "Could not move your data from Docker. Check the output below, then retry.":
     "無法從 Docker 移轉你的資料。請查看下方輸出，然後再試一次。",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "已在執行的電腦執行環境版本過舊。請更新或結束它，然後再試一次。",
-  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
-    "你的 Burrow 資料位於另一個電腦執行環境中。請結束正在執行的那個，然後再試一次。",
-  "Run Burrow without Docker?": "不使用 Docker 執行 Burrow？",
+  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+    "你的 Gente 資料位於另一個電腦執行環境中。請結束正在執行的那個，然後再試一次。",
+  "Run Gente without Docker?": "不使用 Docker 執行 Gente？",
   "Your bots and data move over. Docker is stopped, not removed.":
     "你的機器人和資料會一併移轉。Docker 只會停止，不會移除。",
   Move: "移轉",
@@ -199,11 +199,11 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Nothing to install.": "無需安裝。",
   "Your data stays on this computer.": "你的資料保留在這台電腦上。",
   "Connect to a server you or your team already run.": "連線到你或你的團隊已在執行的伺服器。",
-  "Burrow needs Docker Desktop to run on this computer.":
-    "Burrow 需要 Docker Desktop 才能在這台電腦上執行。",
-  "Burrow needs Docker to run on this computer.": "Burrow 需要 Docker 才能在這台電腦上執行。",
-  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
-    "Docker Desktop 是一款免費應用程式，可在背景執行 Burrow。安裝並開啟一次即可。",
+  "Gente needs Docker Desktop to run on this computer.":
+    "Gente 需要 Docker Desktop 才能在這台電腦上執行。",
+  "Gente needs Docker to run on this computer.": "Gente 需要 Docker 才能在這台電腦上執行。",
+  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
+    "Docker Desktop 是一款免費應用程式，可在背景執行 Gente。安裝並開啟一次即可。",
   "Install Docker Engine and start it.": "安裝並啟動 Docker Engine。",
   "Download Docker Desktop": "下載 Docker Desktop",
   "Install Docker": "安裝 Docker",
@@ -212,14 +212,14 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Starting {app}…": "正在啟動 {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker 已安裝但未執行。請啟動 Docker 服務以繼續。",
-  "Burrow stopped unexpectedly.": "Burrow 意外停止。",
+  "Gente stopped unexpectedly.": "Gente 意外停止。",
   Reload: "重新載入",
   "Mac app control": "Mac App 控制",
   "Set up Mac app control": "設定 Mac App 控制",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
-    "指令已可使用。若要操作 App，請在系統設定中允許 Burrow 使用輔助使用和螢幕錄製，然後重新啟動 Burrow。",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
+    "指令已可使用。若要操作 App，請在系統設定中允許 Gente 使用輔助使用和螢幕錄製，然後重新啟動 Gente。",
   "Open System Settings": "打開系統設定",
-  "Restart Burrow": "重新啟動 Burrow",
+  "Restart Gente": "重新啟動 Gente",
   "Not Now": "稍後再說",
-  "Restart Burrow to finish setup": "重新啟動 Burrow 以完成設定",
+  "Restart Gente to finish setup": "重新啟動 Gente 以完成設定",
 };

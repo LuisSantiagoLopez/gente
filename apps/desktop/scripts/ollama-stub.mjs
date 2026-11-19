@@ -1,8 +1,8 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+// New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// A small stand-in for Ollama, for testing Burrow without a 17 GB model.
-// Speaks the parts of the Ollama API and the OpenAI-compatible API that Burrow uses.
+// A small stand-in for Ollama, for testing Gente without a 17 GB model.
+// Speaks the parts of the Ollama API and the OpenAI-compatible API that Gente uses.
 //   node apps/desktop/scripts/ollama-stub.mjs [port]
 // Env: STUB_FAIL_LOAD=tag1,tag2   models whose load fails with Ollama's out-of-memory error
 //      STUB_INSTALLED=tag1,tag2   models already present at start

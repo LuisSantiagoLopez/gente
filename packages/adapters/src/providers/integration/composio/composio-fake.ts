@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   ConnectedAccountListParams,
   ConnectedAccountListResponse,
@@ -677,11 +677,11 @@ function seedMailbox(): Mailbox {
       {
         messageId: "18c5f5d1a2b3c4d5",
         threadId: "18c5f5d1a2b3c4d5",
-        subject: "Welcome to Burrow",
+        subject: "Welcome to Gente",
         sender: "hello@rakazo.test",
         to: "me@example.test",
         snippet: "Your inbox is ready for agent workflows.",
-        messageText: "Your inbox is ready for agent workflows.\n\n— Burrow",
+        messageText: "Your inbox is ready for agent workflows.\n\n— Gente",
         labelIds: ["INBOX", "UNREAD"],
         internalDate: String(base),
       },
