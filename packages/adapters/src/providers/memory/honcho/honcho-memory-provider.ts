@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   DurableMemoryScope,
@@ -116,7 +116,7 @@ function parseHonchoConnection(
   }
   // Rakazo writes to its own peers, so a user peer that aliases one would not stay read-only.
   if (userPeerId && isReservedHonchoPeerId(userPeerId)) {
-    throw new Error("userPeerId uses a peer ID reserved for Deskhead");
+    throw new Error("userPeerId uses a peer ID reserved for Burrow");
   }
   // A user peer only exists in a workspace another Honcho app already writes to.
   if (userPeerId && !workspaceId) {

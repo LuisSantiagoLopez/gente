@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -12,8 +12,8 @@ const pkg = JSON.parse(readFileSync(path.join(root, "package.json"), "utf8")) as
 const base = readFileSync(path.join(root, pkg.build.mac.entitlements), "utf8");
 
 describe("associatedPasskeyRpIds", () => {
-  const resourcesPath = "/Applications/Deskhead.app/Contents/Resources";
-  const profile = "/Applications/Deskhead.app/Contents/embedded.provisionprofile";
+  const resourcesPath = "/Applications/Burrow.app/Contents/Resources";
+  const profile = "/Applications/Burrow.app/Contents/embedded.provisionprofile";
 
   it("lists the hosted domain only for a packaged macOS app with an embedded profile", () => {
     const exists = (file: string) => file === profile;
@@ -92,7 +92,7 @@ describe("self-hosted passkey domain", () => {
   });
 
   it("associates the build with RAKAZO_PASSKEY_RP_ID", async () => {
-    const passkeys = await load(" Deskhead.Example.org ");
+    const passkeys = await load(" Burrow.Example.org ");
     expect(passkeys.PASSKEY_RP_ID).toBe("rakazo.example.org");
     expect(passkeys.passkeyEntitlements(base, "ABCDE12345", pkg.build.appId)).toContain(
       "<string>webcredentials:rakazo.example.org</string>",

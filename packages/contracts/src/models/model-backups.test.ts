@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { describe, expect, it } from "vitest";
 import { expectLinearTime } from "../testing/timing.test-support.js";
 import {
@@ -428,7 +428,7 @@ it("offers credit and personal funding for the same model as separate connection
   expect(options).toContainEqual(
     expect.objectContaining({
       creditOfferingId: "offering-example",
-      connectionName: "Deskhead credits",
+      connectionName: "Burrow credits",
     }),
   );
   expect(options).toContainEqual(expect.objectContaining({ credentialId: "personal-example" }));

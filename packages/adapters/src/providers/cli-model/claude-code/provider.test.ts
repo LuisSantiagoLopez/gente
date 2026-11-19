@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import type * as FsPromises from "node:fs/promises";
 import { writeFile } from "node:fs/promises";
@@ -323,7 +323,7 @@ describe.skipIf(process.platform === "win32")("Claude Code CLI provider", () => 
     expect(events.at(-1)?.type).toBe("error");
   });
 
-  it("hands a tool call back to Deskhead and stops the CLI before it goes on", async () => {
+  it("hands a tool call back to Burrow and stops the CLI before it goes on", async () => {
     const cli = fakeClaude("tool");
     const { events, message } = await run(hello);
 
@@ -571,7 +571,7 @@ describe.skipIf(process.platform === "win32")("Claude Code CLI provider", () => 
     ["crash", /exit code 3/],
     ["old-version", /older than \d+\.\d+\.\d+\. Run `claude update`/],
     ["built-in-tools", /its own tools enabled: Bash, Read/],
-    ["no-tool-server", /could not load Deskhead's tools/],
+    ["no-tool-server", /could not load Burrow's tools/],
     ["incomplete-tool", /incomplete content blocks/],
   ])("fails clearly on %s", async (scenario, error) => {
     fakeClaude(scenario);
@@ -656,7 +656,7 @@ describe.skipIf(process.platform === "win32")("Claude Code CLI provider", () => 
     const cli = fakeClaude("reply");
     configureProvider(undefined);
     expect((await run(hello)).message.errorMessage).toMatch(
-      /only inside the Deskhead API and worker/,
+      /only inside the Burrow API and worker/,
     );
     configureProvider(async () => PERSONAL_CLI_SHARED_REFUSAL);
     expect((await run(hello)).message.errorMessage).toBe(PERSONAL_CLI_SHARED_REFUSAL);

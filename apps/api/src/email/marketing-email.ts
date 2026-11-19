@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { TransactionalEmailProvider } from "@rakazo/adapter-kit";
 import { emailLocale, welcomeEmail } from "@rakazo/auth";
@@ -74,7 +74,7 @@ export function marketingEmailRoutes(prisma: PrismaClient, secret: string) {
   app.get(UNSUBSCRIBE_PATH, (c) =>
     verifiedUser(c.req.url)
       ? page(
-          `<form method="post"><button type="submit">Unsubscribe from Deskhead emails</button></form>`,
+          `<form method="post"><button type="submit">Unsubscribe from Burrow emails</button></form>`,
         )
       : page("This link is not valid.", 400),
   );
@@ -94,7 +94,7 @@ export function marketingEmailRoutes(prisma: PrismaClient, secret: string) {
 
 function page(content: string, status = 200): Response {
   return new Response(
-    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Deskhead</title></head><body style="font-family: Arial, sans-serif; max-width: 480px; margin: 48px auto; padding: 0 24px">${content}</body></html>`,
+    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Burrow</title></head><body style="font-family: Arial, sans-serif; max-width: 480px; margin: 48px auto; padding: 0 24px">${content}</body></html>`,
     {
       status,
       headers: { "cache-control": "no-store", "content-type": "text/html; charset=utf-8" },

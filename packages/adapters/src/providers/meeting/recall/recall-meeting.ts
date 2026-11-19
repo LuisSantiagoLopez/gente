@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { MeetingJoinRequest, MeetingObservation, MeetingProvider } from "@rakazo/adapter-kit";
 import { MeetingJoinRejected } from "@rakazo/adapter-kit";
@@ -58,7 +58,7 @@ const MAX_DOWNLOAD_BYTES = 8 * 1024 * 1024;
 
 export function buildRecallBotConfig(input: MeetingJoinRequest) {
   const liveVoice = Boolean(input.mediaUrl && input.liveVoice);
-  const recordingNotice = "Deskhead is capturing audio to create a meeting transcript.";
+  const recordingNotice = "Burrow is capturing audio to create a meeting transcript.";
   const liveNotice =
     " It also processes speech in real time with AI services and may reply aloud when addressed by name.";
   return {

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 /**
  * PTY server started inside the computer beside the screen gateway. Websockify relays each
  * websocket to one Unix socket connection, which gets its own login shell. Output is raw
@@ -27,7 +27,7 @@ def identity(env):
         passwd = source.read()
     with open("/etc/group") as source:
         group = source.read()
-    passwd += "rakazo:x:%d:%d:Deskhead:%s:/bin/bash\\n" % (uid, gid, home)
+    passwd += "rakazo:x:%d:%d:Burrow:%s:/bin/bash\\n" % (uid, gid, home)
     if not any(line.split(":")[2:3] == [str(gid)] for line in group.splitlines()):
         group += "rakazo:x:%d:\\n" % gid
     names = {}

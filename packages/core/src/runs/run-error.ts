@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { RunErrorKind } from "@rakazo/contracts";
 import {
   COMPUTER_PROVIDER_UNAVAILABLE_ERROR,
@@ -37,7 +37,7 @@ export const MISSING_MODEL_RUN_ERROR = "Connect a model in Settings before runni
 
 /** A deployment model run while the organization has not chosen Rakazo credits. */
 export const HOSTED_MODEL_CREDITS_REQUIRED_ERROR =
-  "Connect your own API key in Models or choose Deskhead credits in Billing.";
+  "Connect your own API key in Models or choose Burrow credits in Billing.";
 
 /** A metered model call the organization's Rakazo credits cannot cover. */
 export const MODEL_CREDITS_EXHAUSTED_ERROR =

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHash, randomUUID } from "node:crypto";
 import type {
   AdapterContext,
@@ -114,12 +114,12 @@ function conversationContext(request: SemanticMemoryConversationRequest): string
     ...new Set(request.turns.flatMap((turn) => (turn.speaker ? [turn.speaker] : []))),
   ];
   if (request.conversation === "group") {
-    return `Group chat in Deskhead with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
+    return `Group chat in Burrow with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
   }
   if (speakers.length) {
-    return `Conversation in Deskhead with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
+    return `Conversation in Burrow with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
   }
-  return `Chat in Deskhead between ${request.userName} and ${request.botName}, an AI assistant`;
+  return `Chat in Burrow between ${request.userName} and ${request.botName}, an AI assistant`;
 }
 
 /**
@@ -546,7 +546,7 @@ export class HindsightMemoryProvider implements SemanticMemoryProvider {
     const item = {
       content: truncateUtf8(content, MAX_CONTENT_BYTES),
       context:
-        "A fact a Deskhead AI assistant chose to remember about the people it works for and their work",
+        "A fact a Burrow AI assistant chose to remember about the people it works for and their work",
       timestamp: new Date().toISOString(),
     };
     // The same fact saved again by the same operation, as a retried tool call does, reuses its id,

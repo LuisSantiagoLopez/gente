@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { EmailEmulator } from "@rakazo/adapters";
 import { describe, expect, it, vi } from "vitest";
 import { marketingEmailRoutes, sendWelcomeEmail, unsubscribeUrl } from "./marketing-email.js";
@@ -69,7 +69,7 @@ describe("sendWelcomeEmail", () => {
     const url = unsubscribeUrl(origin, secret, "user-1");
     expect(email.sent[0]).toMatchObject({
       to: "new@example.test",
-      subject: "Welcome to Deskhead",
+      subject: "Welcome to Burrow",
       headers: {
         "List-Unsubscribe": `<${url}>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
@@ -83,7 +83,7 @@ describe("sendWelcomeEmail", () => {
     const { email, deps: welcome } = deps(true);
     await sendWelcomeEmail(welcome, "user-1", new Headers({ "accept-language": "es-CL,es" }));
     await vi.waitFor(() => expect(email.sent).toHaveLength(1));
-    expect(email.sent[0]!.subject).toBe("Te damos la bienvenida a Deskhead");
+    expect(email.sent[0]!.subject).toBe("Te damos la bienvenida a Burrow");
     expect(email.sent[0]!.text).toMatch(/Windows \S+ y Linux/);
   });
 

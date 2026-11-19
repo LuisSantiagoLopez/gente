@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { DesktopMenuCommand, DesktopUpdateState } from "@rakazo/contracts";
 import { app, dialog, Menu } from "electron";
 import { desktop } from "../desktop-state.js";
@@ -28,7 +28,7 @@ async function runMenuUpdateCheck() {
   if (state.phase === "available" || state.phase === "downloading") {
     // Say so now: the download can take minutes, and the menu click has no other answer.
     const downloading = alert({
-      message: t("Downloading Deskhead {version}…", { version: state.availableVersion ?? "" }),
+      message: t("Downloading Burrow {version}…", { version: state.availableVersion ?? "" }),
     });
     state = await desktop.desktopUpdater.download();
     // The result waits for that alert, so the two never show at once.
@@ -36,7 +36,7 @@ async function runMenuUpdateCheck() {
   }
   if (state.phase === "ready") {
     const { response } = await alert({
-      message: t("Deskhead {version} is ready to install.", {
+      message: t("Burrow {version} is ready to install.", {
         version: state.availableVersion ?? "",
       }),
       buttons: [t("Restart"), t("Later")],
@@ -62,7 +62,7 @@ async function runMenuUpdateCheck() {
     });
   } else if (state.phase === "idle") {
     await alert({
-      message: t("Deskhead is up to date."),
+      message: t("Burrow is up to date."),
       detail: t("Version {version}", { version: state.currentVersion }),
     });
   }
@@ -134,7 +134,7 @@ export function applicationMenuInstaller({
     };
     const changeServer: Electron.MenuItemConstructorOptions = {
       id: "change-rakazo-server",
-      label: t("Change Deskhead Server…"),
+      label: t("Change Burrow Server…"),
       accelerator: "CmdOrCtrl+Shift+K",
       click: () => showSetupWindow(),
     };

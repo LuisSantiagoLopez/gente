@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Button, buttonVariants, toast } from "@rakazo/ui-web";
 import { Star } from "lucide-react";
@@ -58,7 +58,7 @@ function GitHubStarPrompt() {
     >
       <p className="flex items-center gap-2 text-body font-medium">
         <Star aria-hidden className="size-4 fill-current text-warning" strokeWidth={1.75} />
-        <Trans>Enjoying Deskhead?</Trans>
+        <Trans>Enjoying Burrow?</Trans>
       </p>
       <div className="mt-3 flex items-center justify-end gap-2">
         <Button variant="ghost" onClick={close}>

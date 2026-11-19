@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { i18n } from "@lingui/core";
 import type { RunErrorTranslator } from "@rakazo/core";
 
@@ -37,10 +37,10 @@ export const translateRunError: RunErrorTranslator = (message, values) => {
         message: "Connect a model in Settings before running bots.",
         values,
       });
-    case "Connect your own API key in Models or choose Deskhead credits in Billing.":
+    case "Connect your own API key in Models or choose Burrow credits in Billing.":
       return i18n._({
-        id: "Connect your own API key in Models or choose Deskhead credits in Billing.",
-        message: "Connect your own API key in Models or choose Deskhead credits in Billing.",
+        id: "Connect your own API key in Models or choose Burrow credits in Billing.",
+        message: "Connect your own API key in Models or choose Burrow credits in Billing.",
         values,
       });
     case "The model provider returned an error.":

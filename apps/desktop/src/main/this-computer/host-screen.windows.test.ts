@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { spawn } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -55,11 +55,11 @@ describe.runIf(process.platform === "win32" && process.env.CI)("Windows screen c
     const editor = /\[(\d+)\] (?:textfield|document)/.exec(before.tree);
     expect(editor, before.tree).not.toBeNull();
     const written = await screen.act(scope, "notepad", [
-      { kind: "set", element: Number(editor![1]), value: "Hello from Deskhead" },
+      { kind: "set", element: Number(editor![1]), value: "Hello from Burrow" },
     ]);
     console.log(JSON.stringify({ ...written, observation: written.observation?.tree }));
     expect(written).toMatchObject({ completed: 1 });
-    expect(written.observation?.tree).toContain("Hello from Deskhead");
+    expect(written.observation?.tree).toContain("Hello from Burrow");
     const selected = await screen.act(scope, "notepad", [
       { kind: "menu", path: ["Edit", "Select All"] },
     ]);

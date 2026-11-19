@@ -1,4 +1,4 @@
-# Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+# Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2026-08-26 00:00+0000\n"
@@ -939,6 +939,10 @@ msgstr "已在 <0>{0}</0> 打开登录页。请在那里输入验证码，这个
 msgid "A weekly digest of what changed on topics you follow"
 msgstr "每周汇总你关注话题的最新变化"
 
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "About"
+msgstr ""
+
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "About {kb} KB of memory no longer reaches the bot."
 msgstr "约 {kb} KB 的记忆不再提供给 Bot。"
@@ -1388,6 +1392,10 @@ msgstr "允许"
 msgid "Allow {name} on mobile"
 msgstr "在手机上允许 {name}"
 
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Burrow to use Speech Recognition and the microphone in System Settings."
+msgstr "请在系统设置中允许 Burrow 使用语音识别和麦克风。"
+
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/shell/bots/bot-panel.tsx
 msgid "Allow cross-space bot communication"
@@ -1410,10 +1418,6 @@ msgstr "允许访问麦克风以进行听写。"
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Allow once"
 msgstr "允许一次"
-
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Deskhead to use Speech Recognition and the microphone in System Settings."
-msgstr "请在系统设置中允许 Deskhead 使用语音识别和麦克风。"
 
 #: apps/mobile/lib/calls/call-session.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -1913,6 +1917,10 @@ msgstr "返回登录"
 msgid "Base URL"
 msgstr "Base URL"
 
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI."
+msgstr ""
+
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "Basic auth"
@@ -2122,6 +2130,16 @@ msgstr "浏览 MCP 服务器"
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "Built-in"
 msgstr "内置"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Burrow"
+msgstr "Burrow"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Burrow credits"
+msgstr "Burrow 额度"
 
 #: apps/mobile/components/cards/ask-receipt.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2543,8 +2561,8 @@ msgstr "选择文件夹"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Deskhead"
-msgstr "选择如何使用 Deskhead"
+msgid "Choose how to use Burrow"
+msgstr "选择如何使用 Burrow"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3018,8 +3036,8 @@ msgstr "连接你的 AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Deskhead credits in Billing."
-msgstr "请在“模型”中连接你自己的 API 密钥，或在“账单”中选择 Deskhead 额度。"
+msgid "Connect your own API key in Models or choose Burrow credits in Billing."
+msgstr "请在“模型”中连接你自己的 API 密钥，或在“账单”中选择 Burrow 额度。"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5326,8 +5344,8 @@ msgid "Ends {day}"
 msgstr "将于 {day} 结束"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Deskhead?"
-msgstr "喜欢 Deskhead 吗？"
+msgid "Enjoying Burrow?"
+msgstr "喜欢 Burrow 吗？"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -5760,6 +5778,7 @@ msgid "Free plan ends {day}"
 msgstr "免费方案将于 {day} 结束"
 
 #: apps/mobile/app/(settings)/billing.tsx
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Free trial"
 msgstr "免费试用"
 
@@ -6113,10 +6132,13 @@ msgstr "其他 Bot 如何了解它"
 msgid "How to check"
 msgstr "如何检查"
 
-#: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Deskhead?"
-msgstr "你会如何使用 Deskhead？"
+msgid "How will you use Burrow?"
+msgstr "你会如何使用 Burrow？"
+
+#: apps/mobile/app/(settings)/signup-survey.tsx
+msgid "How will you use Rakazo?"
+msgstr ""
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -7837,8 +7859,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "不在 {organizationName} 中，只能看到此空间。"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Deskhead's catalog"
-msgstr "不在 Deskhead 目录中"
+msgid "Not in Burrow's catalog"
+msgstr "不在 Burrow 目录中"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -7887,12 +7909,12 @@ msgstr "未发送。轻点重试"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Deskhead"
-msgstr "Deskhead 不支持"
+msgid "Not supported in Burrow"
+msgstr "Burrow 不支持"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Deskhead"
-msgstr "Deskhead 不使用"
+msgid "Not used by Burrow"
+msgstr "Burrow 不使用"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/components/integrations/McpServerHealthLine.tsx
@@ -8070,6 +8092,13 @@ msgstr "打开 {title}"
 msgid "Open <0>{0}</0> and enter this code:"
 msgstr "打开 <0>{0}</0>，输入这个验证码："
 
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Burrow"
+msgstr "打开 Burrow"
+
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Open call"
 msgstr "打开通话"
@@ -8117,13 +8146,6 @@ msgstr "打开链接"
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Open navigation"
 msgstr "打开导航"
-
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Deskhead"
-msgstr "打开 Deskhead"
 
 #: apps/mobile/lib/composer/composer-dictation.ts
 #: apps/mobile/lib/thread/thread-voice.ts
@@ -8380,10 +8402,13 @@ msgstr "逾期未付"
 msgid "Paste a replacement key"
 msgstr "粘贴替换密钥"
 
-#: apps/mobile/components/models/compatible-endpoint-form.tsx
 #: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Deskhead adds /v1 if needed."
-msgstr "粘贴服务器的 OpenAI 兼容地址。需要时 Deskhead 会补上 /v1。"
+msgid "Paste the OpenAI-compatible address from your server. Burrow adds /v1 if needed."
+msgstr "粘贴服务器的 OpenAI 兼容地址。需要时 Burrow 会补上 /v1。"
+
+#: apps/mobile/components/models/compatible-endpoint-form.tsx
+msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
+msgstr ""
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -8509,6 +8534,7 @@ msgstr "普通 HTTP 无法配对此电脑。请使用 HTTPS 或本地回环服�
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Plan"
 msgstr "方案"
 
@@ -8713,21 +8739,17 @@ msgstr "引用所选内容"
 #: apps/mobile/app/(settings)/ai-data-sharing.tsx
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Deskhead"
-msgstr "Deskhead"
+msgid "Rakazo"
+msgstr ""
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Deskhead credits"
-msgstr "Deskhead 额度"
+msgid "Rakazo credits"
+msgstr ""
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Deskhead."
-msgstr "rakazo-shared 和以 bot- 开头的 ID 保留给 Deskhead 使用。"
+msgid "rakazo-shared and IDs starting with bot- are reserved for Burrow."
+msgstr "rakazo-shared 和以 bot- 开头的 ID 保留给 Burrow 使用。"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -8773,8 +8795,8 @@ msgid "Recall from banks"
 msgstr "从记忆库读取"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Deskhead’s own peers."
-msgstr "从此 peer 读取；保存到 Deskhead 自己的 peer。"
+msgid "Recall from this peer; save to Burrow’s own peers."
+msgstr "从此 peer 读取；保存到 Burrow 自己的 peer。"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -9380,6 +9402,11 @@ msgstr "立即重试"
 msgid "Retry screen"
 msgstr "重新连接屏幕"
 
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Burrow"
+msgstr "返回 Burrow"
+
 #. placeholder {0}: call.botName
 #: apps/web/src/components/call/CallCard.tsx
 msgid "Return to call with {0}"
@@ -9388,11 +9415,6 @@ msgstr "返回与 {0} 的通话"
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
 msgstr "返回收件箱"
-
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Deskhead"
-msgstr "返回 Deskhead"
 
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
@@ -10201,10 +10223,13 @@ msgstr "仍然登录"
 msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "在 <0>{0}</0> 登录，然后将代码粘贴到这里。"
 
-#: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Deskhead"
-msgstr "登录 Deskhead"
+msgid "Sign in to Burrow"
+msgstr "登录 Burrow"
+
+#: apps/mobile/app/sign-in.tsx
+msgid "Sign in to Rakazo"
+msgstr ""
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -10235,8 +10260,8 @@ msgid "Sign up"
 msgstr "注册"
 
 #: apps/mobile/app/sign-in.tsx
-msgid "Sign up for Deskhead"
-msgstr "注册 Deskhead"
+msgid "Sign up for Rakazo"
+msgstr ""
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -10566,8 +10591,8 @@ msgid "Start recording"
 msgstr "开始录制"
 
 #: apps/mobile/app/paywall.tsx
-msgid "Start using Deskhead"
-msgstr "开始使用 Deskhead"
+msgid "Start using Rakazo"
+msgstr ""
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -10710,6 +10735,10 @@ msgstr "订阅额度"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Subscribe with your own AI"
 msgstr "使用自己的 AI 订阅"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Subscription"
+msgstr ""
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -10903,8 +10932,8 @@ msgid "That isn't a Grok Bot export. Paste the Bot's whole reply."
 msgstr "这不是 Grok Bot 的导出内容。请粘贴该 Bot 的完整回复。"
 
 #: apps/mobile/lib/api/endpoint.ts
-msgid "That URL did not look like a Deskhead server"
-msgstr "该地址看起来不是 Deskhead 服务器"
+msgid "That URL did not look like a Rakazo server"
+msgstr ""
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11036,10 +11065,13 @@ msgstr "服务器出现问题。请稍后重试。"
 msgid "The shared link stops working"
 msgstr "共享链接将失效"
 
-#: apps/mobile/app/meeting-transcript.tsx
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Deskhead."
-msgstr "文字记录将从 Deskhead 中移除。"
+msgid "The transcript will be removed from Burrow."
+msgstr "文字记录将从 Burrow 中移除。"
+
+#: apps/mobile/app/meeting-transcript.tsx
+msgid "The transcript will be removed from Rakazo."
+msgstr ""
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11198,8 +11230,8 @@ msgid "This device"
 msgstr "本设备"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Deskhead can read. Update Deskhead and try again."
-msgstr "此导出内容的版本比 Deskhead 能读取的更新。请更新 Deskhead 后重试。"
+msgid "This export is newer than Burrow can read. Update Burrow and try again."
+msgstr "此导出内容的版本比 Burrow 能读取的更新。请更新 Burrow 后重试。"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -11372,10 +11404,13 @@ msgstr "此空间使用自己的保管库，因此其 Bot 无法使用账户项�
 msgid "This Space keeps its own vault. Its bots save and use items there, not here: open the Space's settings, then Vault."
 msgstr "此空间有自己的保管库。其中的 Bot 会在那里保存和使用条目，而不是这里：请打开该空间的设置，然后进入保管库。"
 
-#: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Deskhead yet. Use a deployment credential or choose another provider."
-msgstr "此订阅登录在 Deskhead 中尚不可用。请使用部署凭据或选择其他提供商。"
+msgid "This subscription sign-in is not available in Burrow yet. Use a deployment credential or choose another provider."
+msgstr "此订阅登录在 Burrow 中尚不可用。请使用部署凭据或选择其他提供商。"
+
+#: apps/mobile/app/(settings)/model-connection.tsx
+msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
+msgstr ""
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -11771,6 +11806,10 @@ msgstr "即将举行的会议"
 msgid "Update"
 msgstr "更新"
 
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Burrow to connect your calendar from the desktop app."
+msgstr "请更新 Burrow，以便从桌面应用连接日历。"
+
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Update failed"
@@ -11794,10 +11833,6 @@ msgstr "更新指令？"
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Update progress"
 msgstr "更新进度"
-
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Deskhead to connect your calendar from the desktop app."
-msgstr "请更新 Deskhead，以便从桌面应用连接日历。"
 
 #: apps/mobile/lib/api/client-update.ts
 #: apps/web/src/lib/platform/client-update.ts
@@ -11918,6 +11953,10 @@ msgstr "请使用相同邮箱地址的账户"
 msgid "Use an http or https URL"
 msgstr "请使用 http 或 https 地址"
 
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Burrow credits"
+msgstr "使用 Burrow 额度"
+
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Use Connect to verify the key."
 msgstr "请使用“连接”验证密钥。"
@@ -11965,9 +12004,8 @@ msgid "Use Protected input for passwords."
 msgstr "输入密码时请用受保护输入。"
 
 #: apps/mobile/app/(settings)/billing.tsx
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Deskhead credits"
-msgstr "使用 Deskhead 额度"
+msgid "Use Rakazo credits"
+msgstr ""
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12211,11 +12249,14 @@ msgstr "每周"
 msgid "Welcome back"
 msgstr "欢迎回来"
 
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "Welcome to Burrow"
+msgstr "欢迎使用 Burrow"
+
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Deskhead"
-msgstr "欢迎使用 Deskhead"
+msgid "Welcome to Rakazo"
+msgstr ""
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -12225,10 +12266,13 @@ msgstr "它的记忆怎么处理？"
 msgid "What can this space use?"
 msgstr "这个空间可以使用什么？"
 
-#: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Deskhead to help with?"
-msgstr "你最希望 Deskhead 帮你做什么？"
+msgid "What do you most want Burrow to help with?"
+msgstr "你最希望 Burrow 帮你做什么？"
+
+#: apps/mobile/app/(settings)/signup-survey.tsx
+msgid "What do you most want Rakazo to help with?"
+msgstr ""
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

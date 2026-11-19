@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { describe, expect, it } from "vitest";
 import {
   detectRestartSupervisor,
@@ -70,7 +70,7 @@ describe("repoIdentity", () => {
     expect(repoIdentity("https://github.com/elie222/rakazo")).toBe(identity);
     expect(repoIdentity("https://github.com/elie222/rakazo.git")).toBe(identity);
     expect(repoIdentity("git@github.com:elie222/rakazo.git")).toBe(identity);
-    expect(repoIdentity("ssh://git@github.com/Elie222/Deskhead")).toBe(identity);
+    expect(repoIdentity("ssh://git@github.com/Elie222/Burrow")).toBe(identity);
     expect(repoIdentity("not a url")).toBeNull();
   });
 

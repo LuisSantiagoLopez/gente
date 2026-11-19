@@ -1,10 +1,10 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 export const KO_MESSAGES: Record<string, string> = {
   "About {name}": "{name}에 관하여",
   "Check for Updates…": "업데이트 확인…",
   "Computer Access…": "컴퓨터 접근…",
   "Revoke Local Computer Access": "로컬 컴퓨터 접근 취소",
-  "Change Deskhead Server…": "Deskhead 서버 변경…",
+  "Change Burrow Server…": "Burrow 서버 변경…",
   "Hide {name}": "{name} 가리기",
   "Hide Others": "기타 가리기",
   "Show All": "모두 보기",
@@ -39,13 +39,13 @@ export const KO_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "업데이트 확인 중…",
   "Downloading Update…": "업데이트 다운로드 중…",
   "Restart to Update…": "재시작하여 업데이트…",
-  "Downloading Deskhead {version}…": "Deskhead {version} 다운로드 중…",
-  "Deskhead {version} is ready to install.": "Deskhead {version}을(를) 설치할 준비가 되었습니다.",
+  "Downloading Burrow {version}…": "Burrow {version} 다운로드 중…",
+  "Burrow {version} is ready to install.": "Burrow {version}을(를) 설치할 준비가 되었습니다.",
   Restart: "재시동",
   Later: "나중에",
   "Could not install the update.": "업데이트를 설치할 수 없습니다.",
   "Could not check for updates.": "업데이트를 확인할 수 없습니다.",
-  "Deskhead is up to date.": "Deskhead가 최신 버전입니다.",
+  "Burrow is up to date.": "Burrow가 최신 버전입니다.",
   "Version {version}": "버전 {version}",
   "Automatic updates are turned off for this install.":
     "이 설치에서는 자동 업데이트가 꺼져 있습니다.",
@@ -53,11 +53,11 @@ export const KO_MESSAGES: Record<string, string> = {
     "자동 업데이트는 설치된 빌드에서만 실행됩니다.",
   "No desktop releases are published for this build yet.":
     "이 빌드용 데스크톱 릴리스가 아직 게시되지 않았습니다.",
-  "Move Deskhead to Applications to install updates.":
-    "업데이트를 설치하려면 Deskhead를 응용 프로그램 폴더로 옮기세요.",
+  "Move Burrow to Applications to install updates.":
+    "업데이트를 설치하려면 Burrow를 응용 프로그램 폴더로 옮기세요.",
   "Free up disk space to install updates.": "업데이트를 설치하려면 디스크 공간을 확보하세요.",
-  "This update could not be verified. Reinstall Deskhead from a trusted download.":
-    "이 업데이트를 확인할 수 없습니다. 신뢰할 수 있는 다운로드에서 Deskhead를 다시 설치하세요.",
+  "This update could not be verified. Reinstall Burrow from a trusted download.":
+    "이 업데이트를 확인할 수 없습니다. 신뢰할 수 있는 다운로드에서 Burrow를 다시 설치하세요.",
   "The update could not be completed. Try again later.":
     "업데이트를 완료할 수 없습니다. 나중에 다시 시도하세요.",
   "Could not reach the update server.": "업데이트 서버에 연결할 수 없습니다.",
@@ -76,13 +76,13 @@ export const KO_MESSAGES: Record<string, string> = {
     "이미 로그인 시도가 진행 중입니다. 취소한 후 다시 시도하세요.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "브라우저 로그인을 열 수 없습니다. 다른 로그인 시도를 닫고 다시 시도하세요.",
-  "Sign-in callback rejected. Return to Deskhead to retry.":
-    "로그인 응답이 거부되었습니다. Deskhead로 돌아가 다시 시도하세요.",
-  "You can close this tab and return to Deskhead.": "이 탭을 닫고 Deskhead로 돌아가세요.",
-  "Set up Deskhead": "Deskhead 설정",
-  "Quit Deskhead": "Deskhead 종료",
-  "Welcome to Deskhead": "Deskhead에 오신 것을 환영합니다",
-  "Choose where Deskhead runs.": "Deskhead를 실행할 위치를 선택하세요.",
+  "Sign-in callback rejected. Return to Burrow to retry.":
+    "로그인 응답이 거부되었습니다. Burrow로 돌아가 다시 시도하세요.",
+  "You can close this tab and return to Burrow.": "이 탭을 닫고 Burrow로 돌아가세요.",
+  "Set up Burrow": "Burrow 설정",
+  "Quit Burrow": "Burrow 종료",
+  "Welcome to Burrow": "Burrow에 오신 것을 환영합니다",
+  "Choose where Burrow runs.": "Burrow를 실행할 위치를 선택하세요.",
   Instance: "인스턴스",
   "This computer": "이 컴퓨터",
   "Existing instance": "기존 인스턴스",
@@ -95,14 +95,14 @@ export const KO_MESSAGES: Record<string, string> = {
   Continue: "계속",
   Retry: "다시 시도",
   "Getting ready…": "준비 중…",
-  "Downloading Deskhead…": "Deskhead 다운로드 중…",
-  "Starting Deskhead…": "Deskhead 시작 중…",
+  "Downloading Burrow…": "Burrow 다운로드 중…",
+  "Starting Burrow…": "Burrow 시작 중…",
   "Almost ready…": "거의 완료…",
-  "Deskhead is ready.": "Deskhead가 준비되었습니다.",
+  "Burrow is ready.": "Burrow가 준비되었습니다.",
   "{size} downloaded": "{size} 다운로드됨",
   "Connecting…": "연결 중…",
   "Checking…": "확인 중…",
-  "Deskhead answered at {url}.": "Deskhead가 {url}에서 응답했습니다.",
+  "Burrow answered at {url}.": "Burrow가 {url}에서 응답했습니다.",
   "Enter a server address first.": "먼저 서버 주소를 입력하세요.",
   "Could not save that address.": "해당 주소를 저장할 수 없습니다.",
   "Could not save that address. Try again.": "해당 주소를 저장할 수 없습니다. 다시 시도하세요.",
@@ -111,17 +111,17 @@ export const KO_MESSAGES: Record<string, string> = {
   "Could not start the local stack. Try again.": "로컬 스택을 시작할 수 없습니다. 다시 시도하세요.",
   "Could not run the connection check. Try again.": "연결을 확인할 수 없습니다. 다시 시도하세요.",
   "Setup bridge unavailable.": "설정 브리지를 사용할 수 없습니다.",
-  "Setup could not start. Quit Deskhead and try again.":
-    "설정을 시작할 수 없습니다. Deskhead를 종료하고 다시 시도하세요.",
+  "Setup could not start. Quit Burrow and try again.":
+    "설정을 시작할 수 없습니다. Burrow를 종료하고 다시 시도하세요.",
   "Enter a server address.": "서버 주소를 입력하세요.",
   "Enter a valid http:// or https:// address.": "올바른 http:// 또는 https:// 주소를 입력하세요.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "올바른 서버 주소를 입력하세요. 공개 서버는 HTTPS가 필요하며, 새 로컬 인스턴스는 localhost를 사용해야 합니다.",
   "Invalid custom headers": "사용자 지정 헤더가 올바르지 않습니다",
-  "That address redirects elsewhere. Enter the final Deskhead server address.":
-    "해당 주소는 다른 곳으로 리디렉션됩니다. 최종 Deskhead 서버 주소를 입력하세요.",
-  "That address did not respond like a Deskhead server.":
-    "해당 주소가 Deskhead 서버처럼 응답하지 않았습니다.",
+  "That address redirects elsewhere. Enter the final Burrow server address.":
+    "해당 주소는 다른 곳으로 리디렉션됩니다. 최종 Burrow 서버 주소를 입력하세요.",
+  "That address did not respond like a Burrow server.":
+    "해당 주소가 Burrow 서버처럼 응답하지 않았습니다.",
   "The server answered with HTTP {status}.": "서버가 HTTP {status}(으)로 응답했습니다.",
   "Timed out reaching that address.": "해당 주소에 연결하는 중 시간이 초과되었습니다.",
   "Nothing is listening at that address yet.": "해당 주소에서 아직 수신 대기 중인 것이 없습니다.",
@@ -146,8 +146,8 @@ export const KO_MESSAGES: Record<string, string> = {
     "설정을 저장할 수 없습니다. 이전 인스턴스를 복원했습니다.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "연결되었지만 다음 실행을 위해 설정을 저장할 수 없습니다. 계속을 다시 클릭하세요.",
-  "The app-managed Deskhead services are not ready. Retry setup.":
-    "앱에서 관리하는 Deskhead 서비스가 준비되지 않았습니다. 설정을 다시 시도하세요.",
+  "The app-managed Burrow services are not ready. Retry setup.":
+    "앱에서 관리하는 Burrow 서비스가 준비되지 않았습니다. 설정을 다시 시도하세요.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker는 설치되어 있지만 Docker Compose가 없습니다. Docker Desktop 또는 docker-compose-plugin을 설치하세요.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -168,10 +168,10 @@ export const KO_MESSAGES: Record<string, string> = {
     "Docker가 응답하지 않습니다. Docker를 시작한 후 다시 시도하세요.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose가 없습니다. Docker Desktop 또는 docker-compose-plugin을 설치한 후 다시 시도하세요.",
-  "Downloading Deskhead images failed. Check the output below, then retry.":
-    "Deskhead 이미지를 다운로드하지 못했습니다. 아래 출력을 확인한 후 다시 시도하세요.",
-  "Deskhead services did not start. Check the output below, then retry.":
-    "Deskhead 서비스가 시작되지 않았습니다. 아래 출력을 확인한 후 다시 시도하세요.",
+  "Downloading Burrow images failed. Check the output below, then retry.":
+    "Burrow 이미지를 다운로드하지 못했습니다. 아래 출력을 확인한 후 다시 시도하세요.",
+  "Burrow services did not start. Check the output below, then retry.":
+    "Burrow 서비스가 시작되지 않았습니다. 아래 출력을 확인한 후 다시 시도하세요.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "스택은 시작되었지만 웹 앱이 응답하지 않았습니다. 다시 시도하고 아래 출력을 확인하세요.",
   "Could not prepare the local stack. Retry.": "로컬 스택을 준비할 수 없습니다. 다시 시도하세요.",
@@ -194,15 +194,15 @@ export const KO_MESSAGES: Record<string, string> = {
   "Chat Details": "채팅 세부정보",
   Help: "도움말",
   "Keyboard Shortcuts": "키보드 단축키",
-  "Downloading Deskhead failed. Check the internet connection, then retry.":
-    "Deskhead를 다운로드하지 못했습니다. 인터넷 연결을 확인한 다음 다시 시도하세요.",
+  "Downloading Burrow failed. Check the internet connection, then retry.":
+    "Burrow를 다운로드하지 못했습니다. 인터넷 연결을 확인한 다음 다시 시도하세요.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Docker에서 데이터를 옮기지 못했습니다. 아래 출력을 확인한 다음 다시 시도하세요.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "이미 실행 중인 컴퓨터 런타임이 너무 오래되었습니다. 업데이트하거나 종료한 다음 다시 시도하세요.",
-  "Your Deskhead data is in a different computer runtime. Quit the one running, then retry.":
-    "Deskhead 데이터가 다른 컴퓨터 런타임에 있습니다. 실행 중인 런타임을 종료한 다음 다시 시도하세요.",
-  "Run Deskhead without Docker?": "Docker 없이 Deskhead를 실행할까요?",
+  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
+    "Burrow 데이터가 다른 컴퓨터 런타임에 있습니다. 실행 중인 런타임을 종료한 다음 다시 시도하세요.",
+  "Run Burrow without Docker?": "Docker 없이 Burrow를 실행할까요?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "봇과 데이터가 함께 옮겨집니다. Docker는 삭제되지 않고 중지됩니다.",
   Move: "옮기기",
@@ -211,12 +211,12 @@ export const KO_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "데이터가 이 컴퓨터에 보관됩니다.",
   "Connect to a server you or your team already run.":
     "나 또는 팀이 이미 운영 중인 서버에 연결합니다.",
-  "Deskhead needs Docker Desktop to run on this computer.":
-    "이 컴퓨터에서 Deskhead를 실행하려면 Docker Desktop이 필요합니다.",
-  "Deskhead needs Docker to run on this computer.":
-    "이 컴퓨터에서 Deskhead를 실행하려면 Docker가 필요합니다.",
-  "Docker Desktop is a free app that runs Deskhead in the background. Install it and open it once.":
-    "Docker Desktop은 Deskhead를 백그라운드에서 실행하는 무료 앱입니다. 설치하고 한 번 여세요.",
+  "Burrow needs Docker Desktop to run on this computer.":
+    "이 컴퓨터에서 Burrow를 실행하려면 Docker Desktop이 필요합니다.",
+  "Burrow needs Docker to run on this computer.":
+    "이 컴퓨터에서 Burrow를 실행하려면 Docker가 필요합니다.",
+  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
+    "Docker Desktop은 Burrow를 백그라운드에서 실행하는 무료 앱입니다. 설치하고 한 번 여세요.",
   "Install Docker Engine and start it.": "Docker Engine을 설치하고 시작하세요.",
   "Download Docker Desktop": "Docker Desktop 다운로드",
   "Install Docker": "Docker 설치",
@@ -225,14 +225,14 @@ export const KO_MESSAGES: Record<string, string> = {
   "Starting {app}…": "{app} 시작 중…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker가 설치되어 있지만 실행 중이 아닙니다. 계속하려면 Docker 서비스를 시작하세요.",
-  "Deskhead stopped unexpectedly.": "Deskhead가 예기치 않게 중단되었습니다.",
+  "Burrow stopped unexpectedly.": "Burrow가 예기치 않게 중단되었습니다.",
   Reload: "다시 로드",
   "Mac app control": "Mac 앱 제어",
   "Set up Mac app control": "Mac 앱 제어 설정",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Deskhead in System Settings, then restart Deskhead.":
-    "명령은 이미 사용할 수 있습니다. 앱을 사용하려면 시스템 설정에서 Deskhead의 손쉬운 사용 및 화면 기록을 허용한 다음 Deskhead를 재시동하세요.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
+    "명령은 이미 사용할 수 있습니다. 앱을 사용하려면 시스템 설정에서 Burrow의 손쉬운 사용 및 화면 기록을 허용한 다음 Burrow를 재시동하세요.",
   "Open System Settings": "시스템 설정 열기",
-  "Restart Deskhead": "Deskhead 재시동",
+  "Restart Burrow": "Burrow 재시동",
   "Not Now": "나중에",
-  "Restart Deskhead to finish setup": "Deskhead를 재시동하여 설정 완료",
+  "Restart Burrow to finish setup": "Burrow를 재시동하여 설정 완료",
 };

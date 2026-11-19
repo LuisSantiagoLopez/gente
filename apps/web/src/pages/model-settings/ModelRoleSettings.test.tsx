@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 // @vitest-environment jsdom
 import { i18n } from "@lingui/core";
 import type { ModelCatalogEntry, ModelRoleView as Settings } from "@rakazo/contracts";
@@ -549,7 +549,7 @@ it("saves credit and personal routes to the same model without mixing their iden
   const credit = [...document.querySelectorAll<HTMLElement>('[role="option"]')].find(
     (entry) =>
       optionName(entry) === "Chat" &&
-      entry.closest("[cmdk-group]")?.textContent?.startsWith("Deskhead credits"),
+      entry.closest("[cmdk-group]")?.textContent?.startsWith("Burrow credits"),
   );
   await click(credit);
   expect(saved).toEqual({

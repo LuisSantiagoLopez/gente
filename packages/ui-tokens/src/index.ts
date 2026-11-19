@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 export const APPEARANCE_PREFERENCES = ["system", "light", "dark"] as const;
 
 export type AppearancePreference = (typeof APPEARANCE_PREFERENCES)[number];
@@ -191,7 +191,7 @@ export type WebColorTokens = ColorTokens & {
  * `tokens.css`, rendered from these merged palettes. Surfaces are opaque; text, borders, hover
  * and selection are the ink at an opacity, so they read the same on every surface.
  */
-// Deskhead palette (modified from Rakazo): warm ink and paper with a tangerine signal.
+// Burrow palette (modified from Rakazo): warm ink and paper with a tangerine signal.
 export const webDarkOverrides = {
   background: "#0F0D0B",
   dialog: "#191613",

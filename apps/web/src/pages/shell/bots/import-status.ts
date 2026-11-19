@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { useLingui } from "@lingui/react/macro";
 import type { AgentImportNeed, AgentImportStatus } from "@rakazo/contracts";
 
@@ -53,8 +53,8 @@ export function useImportStatusText() {
         return t`Contains code to run`;
       case "unsupported":
         return value.reason === "not_in_catalog"
-          ? t`Not in Deskhead's catalog`
-          : t`Not supported in Deskhead`;
+          ? t`Not in Burrow's catalog`
+          : t`Not supported in Burrow`;
     }
   };
   return { need, status };

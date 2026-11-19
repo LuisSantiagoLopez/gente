@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import type { SpaceInvitePreview } from "@rakazo/contracts";
@@ -102,7 +102,7 @@ export function InvitePage() {
         }}
       >
         <Button type="submit" size="xl" className={submitClass}>
-          {state.kind === "invalid" ? <Trans>Open Deskhead</Trans> : <Trans>Retry</Trans>}
+          {state.kind === "invalid" ? <Trans>Open Burrow</Trans> : <Trans>Retry</Trans>}
         </Button>
       </AuthFrame>
     );

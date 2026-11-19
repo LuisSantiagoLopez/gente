@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Deskhead (a fork of Rakazo by Elie Steinbock).
+// New file in Burrow (a fork of Rakazo by Elie Steinbock).
 //
-// Deskhead's "brain": UkisAI's Swift model, run locally through Ollama.
+// Burrow's "brain": UkisAI's Swift model, run locally through Ollama.
 // First run: find or install Ollama, pull the best Swift model, load it once.
 // A smaller Swift is tried only after the best one really fails to download or load.
 
@@ -17,7 +17,7 @@ const OLLAMA_ZIP_URL = "https://ollama.com/download/Ollama-darwin.zip";
 export type SwiftModel = {
   /** The Ollama tag pulled from Hugging Face. */
   tag: string;
-  /** The model id Deskhead serves (the same weights, with a larger context window). */
+  /** The model id Burrow serves (the same weights, with a larger context window). */
   alias: string;
   name: string;
   sizeGB: number;
@@ -51,7 +51,7 @@ const SWIFT_LADDER = [
 export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
 const BEST_MODEL: SwiftModel = SWIFT_LADDER[0];
 
-/** Context Deskhead asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
+/** Context Burrow asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
 export const SWIFT_CONTEXT = 32768;
 
 export type BrainPhase =
@@ -70,7 +70,7 @@ export type BrainState = {
   completedBytes: number;
   totalBytes: number;
   message: string;
-  /** Set when Deskhead moved to a smaller Swift after a real failure. */
+  /** Set when Burrow moved to a smaller Swift after a real failure. */
   switchedFrom?: string;
   models: readonly SwiftModel[];
 };
@@ -78,7 +78,7 @@ export type BrainState = {
 export type SavedBrain = { model: string; alias: string; installed: string[]; vision?: string[] };
 
 export function brainFile(stackDirectory: string) {
-  return path.join(stackDirectory, "deskhead-model.json");
+  return path.join(stackDirectory, "burrow-model.json");
 }
 
 export async function readSavedBrain(stackDirectory: string): Promise<SavedBrain | null> {
@@ -374,7 +374,7 @@ export class Brain {
     const res = await fetch(OLLAMA_ZIP_URL, { redirect: "follow" });
     if (!res.ok || res.body === null) throw new Error(`download failed (HTTP ${res.status})`);
     const total = Number(res.headers.get("content-length") ?? 0);
-    const tmp = path.join(os.tmpdir(), `deskhead-ollama-${process.pid}.zip`);
+    const tmp = path.join(os.tmpdir(), `burrow-ollama-${process.pid}.zip`);
     const out = createWriteStream(tmp);
     let completed = 0;
     let lastPush = 0;

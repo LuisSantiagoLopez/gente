@@ -1,4 +1,4 @@
-# Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+# Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2026-08-26 00:00+0000\n"
@@ -939,6 +939,10 @@ msgstr "<0>{0}</0> पर एक साइन-इन टैब खुला ह�
 msgid "A weekly digest of what changed on topics you follow"
 msgstr "आपके फ़ॉलो किए गए विषयों में हुए बदलावों का साप्ताहिक सारांश"
 
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "About"
+msgstr ""
+
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "About {kb} KB of memory no longer reaches the bot."
 msgstr "लगभग {kb} KB मेमोरी अब बॉट तक नहीं पहुँचती।"
@@ -1388,6 +1392,10 @@ msgstr "अनुमति दें"
 msgid "Allow {name} on mobile"
 msgstr "मोबाइल पर {name} की अनुमति दें"
 
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Burrow to use Speech Recognition and the microphone in System Settings."
+msgstr "सिस्टम सेटिंग्स में Burrow को स्पीच रिकग्निशन और माइक्रोफ़ोन उपयोग करने की अनुमति दें।"
+
 #: apps/mobile/app/bot-settings.tsx
 #: apps/web/src/pages/shell/bots/bot-panel.tsx
 msgid "Allow cross-space bot communication"
@@ -1410,10 +1418,6 @@ msgstr "बोलकर लिखने के लिए माइक्रो�
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Allow once"
 msgstr "एक बार अनुमति दें"
-
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Deskhead to use Speech Recognition and the microphone in System Settings."
-msgstr "सिस्टम सेटिंग्स में Deskhead को स्पीच रिकग्निशन और माइक्रोफ़ोन उपयोग करने की अनुमति दें।"
 
 #: apps/mobile/lib/calls/call-session.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -1913,6 +1917,10 @@ msgstr "साइन इन पर वापस जाएँ"
 msgid "Base URL"
 msgstr "बेस URL"
 
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI."
+msgstr ""
+
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "Basic auth"
@@ -2122,6 +2130,16 @@ msgstr "MCP सर्वर ब्राउज़ करें"
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "Built-in"
 msgstr "अंतर्निहित"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Burrow"
+msgstr "Burrow"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Burrow credits"
+msgstr "Burrow क्रेडिट"
 
 #: apps/mobile/components/cards/ask-receipt.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2543,8 +2561,8 @@ msgstr "फ़ोल्डर चुनें"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Deskhead"
-msgstr "चुनें कि Deskhead का उपयोग कैसे करें"
+msgid "Choose how to use Burrow"
+msgstr "चुनें कि Burrow का उपयोग कैसे करें"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3018,8 +3036,8 @@ msgstr "अपना AI कनेक्ट करें"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Deskhead credits in Billing."
-msgstr "मॉडल्स में अपनी API कुंजी कनेक्ट करें या बिलिंग में Deskhead क्रेडिट चुनें।"
+msgid "Connect your own API key in Models or choose Burrow credits in Billing."
+msgstr "मॉडल्स में अपनी API कुंजी कनेक्ट करें या बिलिंग में Burrow क्रेडिट चुनें।"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5326,8 +5344,8 @@ msgid "Ends {day}"
 msgstr "{day} को समाप्त"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Deskhead?"
-msgstr "Deskhead पसंद आ रहा है?"
+msgid "Enjoying Burrow?"
+msgstr "Burrow पसंद आ रहा है?"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -5760,6 +5778,7 @@ msgid "Free plan ends {day}"
 msgstr "मुफ़्त प्लान {day} को खत्म होगा"
 
 #: apps/mobile/app/(settings)/billing.tsx
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Free trial"
 msgstr "मुफ़्त ट्रायल"
 
@@ -6113,10 +6132,13 @@ msgstr "दूसरे बॉट इसे कैसे देखते है�
 msgid "How to check"
 msgstr "जांच कैसे करें"
 
-#: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Deskhead?"
-msgstr "आप Deskhead का उपयोग कैसे करेंगे?"
+msgid "How will you use Burrow?"
+msgstr "आप Burrow का उपयोग कैसे करेंगे?"
+
+#: apps/mobile/app/(settings)/signup-survey.tsx
+msgid "How will you use Rakazo?"
+msgstr ""
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -7837,8 +7859,8 @@ msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "{organizationName} में नहीं हैं। वे सिर्फ़ यही कार्यस्थान देखेंगे।"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Deskhead's catalog"
-msgstr "Deskhead के कैटलॉग में नहीं"
+msgid "Not in Burrow's catalog"
+msgstr "Burrow के कैटलॉग में नहीं"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -7887,12 +7909,12 @@ msgstr "नहीं भेजा गया। फिर कोशिश कर�
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Deskhead"
-msgstr "Deskhead में समर्थित नहीं"
+msgid "Not supported in Burrow"
+msgstr "Burrow में समर्थित नहीं"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Deskhead"
-msgstr "Deskhead इसका उपयोग नहीं करता"
+msgid "Not used by Burrow"
+msgstr "Burrow इसका उपयोग नहीं करता"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/components/integrations/McpServerHealthLine.tsx
@@ -8070,6 +8092,13 @@ msgstr "{title} खोलें"
 msgid "Open <0>{0}</0> and enter this code:"
 msgstr "<0>{0}</0> खोलें और यह कोड दर्ज करें:"
 
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Burrow"
+msgstr "Burrow खोलें"
+
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Open call"
 msgstr "कॉल खोलें"
@@ -8117,13 +8146,6 @@ msgstr "लिंक खोलें"
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Open navigation"
 msgstr "नेविगेशन खोलें"
-
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Deskhead"
-msgstr "Deskhead खोलें"
 
 #: apps/mobile/lib/composer/composer-dictation.ts
 #: apps/mobile/lib/thread/thread-voice.ts
@@ -8380,10 +8402,13 @@ msgstr "बकाया"
 msgid "Paste a replacement key"
 msgstr "बदलने के लिए नई कुंजी पेस्ट करें"
 
-#: apps/mobile/components/models/compatible-endpoint-form.tsx
 #: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Deskhead adds /v1 if needed."
-msgstr "अपने सर्वर से OpenAI-संगत पता पेस्ट करें। ज़रूरत होने पर Deskhead /v1 जोड़ देता है।"
+msgid "Paste the OpenAI-compatible address from your server. Burrow adds /v1 if needed."
+msgstr "अपने सर्वर से OpenAI-संगत पता पेस्ट करें। ज़रूरत होने पर Burrow /v1 जोड़ देता है।"
+
+#: apps/mobile/components/models/compatible-endpoint-form.tsx
+msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
+msgstr ""
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -8509,6 +8534,7 @@ msgstr "सादा HTTP इस कंप्यूटर को पेयर �
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Plan"
 msgstr "प्लान"
 
@@ -8713,21 +8739,17 @@ msgstr "चयन उद्धृत करें"
 #: apps/mobile/app/(settings)/ai-data-sharing.tsx
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Deskhead"
-msgstr "Deskhead"
+msgid "Rakazo"
+msgstr ""
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Deskhead credits"
-msgstr "Deskhead क्रेडिट"
+msgid "Rakazo credits"
+msgstr ""
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Deskhead."
-msgstr "rakazo-shared और bot- से शुरू होने वाली ID, Deskhead के लिए आरक्षित हैं।"
+msgid "rakazo-shared and IDs starting with bot- are reserved for Burrow."
+msgstr "rakazo-shared और bot- से शुरू होने वाली ID, Burrow के लिए आरक्षित हैं।"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -8773,8 +8795,8 @@ msgid "Recall from banks"
 msgstr "इन बैंक से याद करें"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Deskhead’s own peers."
-msgstr "इस पीयर से याद करें; Deskhead के अपने पीयर में सहेजें।"
+msgid "Recall from this peer; save to Burrow’s own peers."
+msgstr "इस पीयर से याद करें; Burrow के अपने पीयर में सहेजें।"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -9380,6 +9402,11 @@ msgstr "अभी पुनः प्रयास करें"
 msgid "Retry screen"
 msgstr "स्क्रीन फिर से लोड करें"
 
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Burrow"
+msgstr "Burrow पर लौटें"
+
 #. placeholder {0}: call.botName
 #: apps/web/src/components/call/CallCard.tsx
 msgid "Return to call with {0}"
@@ -9388,11 +9415,6 @@ msgstr "{0} के साथ कॉल पर लौटें"
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
 msgstr "इनबॉक्स पर लौटें"
-
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Deskhead"
-msgstr "Deskhead पर लौटें"
 
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
@@ -10201,10 +10223,13 @@ msgstr "फिर भी साइन इन करें"
 msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "<0>{0}</0> पर साइन इन करें, फिर कोड यहाँ पेस्ट करें।"
 
-#: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Deskhead"
-msgstr "Deskhead में साइन इन करें"
+msgid "Sign in to Burrow"
+msgstr "Burrow में साइन इन करें"
+
+#: apps/mobile/app/sign-in.tsx
+msgid "Sign in to Rakazo"
+msgstr ""
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -10235,8 +10260,8 @@ msgid "Sign up"
 msgstr "साइन अप करें"
 
 #: apps/mobile/app/sign-in.tsx
-msgid "Sign up for Deskhead"
-msgstr "Deskhead के लिए साइन अप करें"
+msgid "Sign up for Rakazo"
+msgstr ""
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -10566,8 +10591,8 @@ msgid "Start recording"
 msgstr "रिकॉर्डिंग शुरू करें"
 
 #: apps/mobile/app/paywall.tsx
-msgid "Start using Deskhead"
-msgstr "Deskhead का उपयोग शुरू करें"
+msgid "Start using Rakazo"
+msgstr ""
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -10710,6 +10735,10 @@ msgstr "क्रेडिट की सदस्यता लें"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Subscribe with your own AI"
 msgstr "अपने AI के साथ सदस्यता लें"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Subscription"
+msgstr ""
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -10903,8 +10932,8 @@ msgid "That isn't a Grok Bot export. Paste the Bot's whole reply."
 msgstr "यह Grok बॉट एक्सपोर्ट नहीं है। बॉट का पूरा जवाब पेस्ट करें।"
 
 #: apps/mobile/lib/api/endpoint.ts
-msgid "That URL did not look like a Deskhead server"
-msgstr "वह URL Deskhead सर्वर जैसा नहीं दिखा"
+msgid "That URL did not look like a Rakazo server"
+msgstr ""
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11036,10 +11065,13 @@ msgstr "सर्वर में कोई समस्या आई। थो�
 msgid "The shared link stops working"
 msgstr "शेयर किया गया लिंक काम करना बंद कर देगा"
 
-#: apps/mobile/app/meeting-transcript.tsx
 #: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Deskhead."
-msgstr "ट्रांसक्रिप्ट Deskhead से हटा दिया जाएगा।"
+msgid "The transcript will be removed from Burrow."
+msgstr "ट्रांसक्रिप्ट Burrow से हटा दिया जाएगा।"
+
+#: apps/mobile/app/meeting-transcript.tsx
+msgid "The transcript will be removed from Rakazo."
+msgstr ""
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11198,8 +11230,8 @@ msgid "This device"
 msgstr "यह डिवाइस"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Deskhead can read. Update Deskhead and try again."
-msgstr "यह एक्सपोर्ट इतना नया है कि Deskhead इसे पढ़ नहीं सकता। Deskhead अपडेट करें और फिर से कोशिश करें।"
+msgid "This export is newer than Burrow can read. Update Burrow and try again."
+msgstr "यह एक्सपोर्ट इतना नया है कि Burrow इसे पढ़ नहीं सकता। Burrow अपडेट करें और फिर से कोशिश करें।"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -11372,10 +11404,13 @@ msgstr "इस कार्यस्थान का अपना वॉल्�
 msgid "This Space keeps its own vault. Its bots save and use items there, not here: open the Space's settings, then Vault."
 msgstr "इस कार्यस्थान का अपना वॉल्ट है। इसके बॉट आइटम वहीं सहेजते और इस्तेमाल करते हैं, यहाँ नहीं: कार्यस्थान की सेटिंग्स खोलें, फिर वॉल्ट।"
 
-#: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Deskhead yet. Use a deployment credential or choose another provider."
-msgstr "यह सब्सक्रिप्शन साइन-इन अभी Deskhead में उपलब्ध नहीं है। किसी डिप्लॉयमेंट क्रेडेंशियल का उपयोग करें या दूसरा प्रोवाइडर चुनें।"
+msgid "This subscription sign-in is not available in Burrow yet. Use a deployment credential or choose another provider."
+msgstr "यह सब्सक्रिप्शन साइन-इन अभी Burrow में उपलब्ध नहीं है। किसी डिप्लॉयमेंट क्रेडेंशियल का उपयोग करें या दूसरा प्रोवाइडर चुनें।"
+
+#: apps/mobile/app/(settings)/model-connection.tsx
+msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
+msgstr ""
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -11771,6 +11806,10 @@ msgstr "आगामी मीटिंग"
 msgid "Update"
 msgstr "अपडेट करें"
 
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Burrow to connect your calendar from the desktop app."
+msgstr "डेस्कटॉप ऐप से अपना कैलेंडर कनेक्ट करने के लिए Burrow अपडेट करें।"
+
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Update failed"
@@ -11794,10 +11833,6 @@ msgstr "निर्देश अपडेट करें?"
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Update progress"
 msgstr "अपडेट की प्रगति"
-
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Deskhead to connect your calendar from the desktop app."
-msgstr "डेस्कटॉप ऐप से अपना कैलेंडर कनेक्ट करने के लिए Deskhead अपडेट करें।"
 
 #: apps/mobile/lib/api/client-update.ts
 #: apps/web/src/lib/platform/client-update.ts
@@ -11918,6 +11953,10 @@ msgstr "उसी ईमेल पते वाला खाता इस्त�
 msgid "Use an http or https URL"
 msgstr "http या https URL उपयोग करें"
 
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Burrow credits"
+msgstr "Burrow क्रेडिट उपयोग करें"
+
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Use Connect to verify the key."
 msgstr "कुंजी जाँचने के लिए कनेक्ट करें का उपयोग करें।"
@@ -11965,9 +12004,8 @@ msgid "Use Protected input for passwords."
 msgstr "पासवर्ड के लिए सुरक्षित इनपुट का उपयोग करें।"
 
 #: apps/mobile/app/(settings)/billing.tsx
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Deskhead credits"
-msgstr "Deskhead क्रेडिट उपयोग करें"
+msgid "Use Rakazo credits"
+msgstr ""
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12211,11 +12249,14 @@ msgstr "हर हफ़्ते"
 msgid "Welcome back"
 msgstr "फिर से स्वागत है"
 
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "Welcome to Burrow"
+msgstr "Burrow में आपका स्वागत है"
+
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Deskhead"
-msgstr "Deskhead में आपका स्वागत है"
+msgid "Welcome to Rakazo"
+msgstr ""
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -12225,10 +12266,13 @@ msgstr "इसकी मेमोरी का क्या करें?"
 msgid "What can this space use?"
 msgstr "यह स्पेस क्या उपयोग कर सकता है?"
 
-#: apps/mobile/app/(settings)/signup-survey.tsx
 #: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Deskhead to help with?"
-msgstr "आप Deskhead से सबसे ज़्यादा किसमें मदद चाहते हैं?"
+msgid "What do you most want Burrow to help with?"
+msgstr "आप Burrow से सबसे ज़्यादा किसमें मदद चाहते हैं?"
+
+#: apps/mobile/app/(settings)/signup-survey.tsx
+msgid "What do you most want Rakazo to help with?"
+msgstr ""
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

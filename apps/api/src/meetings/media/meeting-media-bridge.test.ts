@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { MEETING_MEDIA_PATH } from "@rakazo/adapters/meeting-media";
 import { deferred } from "@rakazo/core/test-async";
 import { Hono } from "hono";
@@ -32,7 +32,7 @@ describe("meeting media bridge", () => {
     const { emulator, app, session, turn } = fixture();
     const page = await app.request(MEETING_MEDIA_PATH);
     expect(page.headers.get("referrer-policy")).toBe("no-referrer");
-    expect(await page.text()).toContain('alt="Deskhead"');
+    expect(await page.text()).toContain('alt="Burrow"');
     expect(await (await session()).json()).toEqual({ botName: "Atlas", voice: true });
 
     const response = await turn();

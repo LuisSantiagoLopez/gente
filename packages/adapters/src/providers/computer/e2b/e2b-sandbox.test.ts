@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createServer } from "node:http";
 import type { CommandResult, EntryInfo } from "@e2b/desktop";
 import {
@@ -296,7 +296,7 @@ describe("E2B computer backend", () => {
     }
   });
 
-  it("creates new computers from the Deskhead computer template", async () => {
+  it("creates new computers from the Burrow computer template", async () => {
     const sdk: E2BSandboxSdk = {
       create: vi.fn().mockResolvedValue({ sandboxId: "fresh" }),
       connect: vi.fn(),

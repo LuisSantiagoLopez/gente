@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { t } from "@lingui/core/macro";
 import {
   DESKTOP_MEETING_CALENDAR_DENIED,
@@ -19,7 +19,7 @@ export async function connectMeetingCalendar(rpc: RpcClient, botId: string, sign
 
   const oauth = desktop.oauth;
   if (!oauth?.open)
-    throw new Error(t`Update Deskhead to connect your calendar from the desktop app.`);
+    throw new Error(t`Update Burrow to connect your calendar from the desktop app.`);
   const value = crypto.getRandomValues(new Uint16Array(1))[0]!;
   const loopbackPort = 49_152 + (value % 16_384);
   const started = await rpc.meetingCalendar.begin({ botId, client: "desktop", loopbackPort });

@@ -1,10 +1,10 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 export const HE_MESSAGES: Record<string, string> = {
   "About {name}": "אודות {name}",
   "Check for Updates…": "בדיקת עדכונים…",
   "Computer Access…": "גישה למחשב…",
   "Revoke Local Computer Access": "ביטול הגישה למחשב המקומי",
-  "Change Deskhead Server…": "החלפת שרת Deskhead…",
+  "Change Burrow Server…": "החלפת שרת Burrow…",
   "Hide {name}": "הסתרת {name}",
   "Hide Others": "הסתרת אחרים",
   "Show All": "הצגת הכל",
@@ -39,23 +39,23 @@ export const HE_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "בודק עדכונים…",
   "Downloading Update…": "מוריד עדכון…",
   "Restart to Update…": "הפעלה מחדש לעדכון…",
-  "Downloading Deskhead {version}…": "מוריד את Deskhead {version}…",
-  "Deskhead {version} is ready to install.": "Deskhead {version} מוכן להתקנה.",
+  "Downloading Burrow {version}…": "מוריד את Burrow {version}…",
+  "Burrow {version} is ready to install.": "Burrow {version} מוכן להתקנה.",
   Restart: "הפעלה מחדש",
   Later: "אחר כך",
   "Could not install the update.": "לא ניתן היה להתקין את העדכון.",
   "Could not check for updates.": "לא ניתן היה לבדוק אם יש עדכונים.",
-  "Deskhead is up to date.": "Deskhead מעודכן.",
+  "Burrow is up to date.": "Burrow מעודכן.",
   "Version {version}": "גרסה {version}",
   "Automatic updates are turned off for this install.": "העדכונים האוטומטיים כבויים בהתקנה הזו.",
   "Automatic updates only run in an installed build.": "עדכונים אוטומטיים פועלים רק בגרסה מותקנת.",
   "No desktop releases are published for this build yet.":
     "עדיין לא פורסמו גרסאות שולחן עבודה עבור ה-build הזה.",
-  "Move Deskhead to Applications to install updates.":
-    "יש להעביר את Deskhead לתיקיית ״יישומים״ כדי להתקין עדכונים.",
+  "Move Burrow to Applications to install updates.":
+    "יש להעביר את Burrow לתיקיית ״יישומים״ כדי להתקין עדכונים.",
   "Free up disk space to install updates.": "יש לפנות מקום בדיסק כדי להתקין עדכונים.",
-  "This update could not be verified. Reinstall Deskhead from a trusted download.":
-    "לא ניתן היה לאמת את העדכון הזה. יש להתקין מחדש את Deskhead מהורדה מהימנה.",
+  "This update could not be verified. Reinstall Burrow from a trusted download.":
+    "לא ניתן היה לאמת את העדכון הזה. יש להתקין מחדש את Burrow מהורדה מהימנה.",
   "The update could not be completed. Try again later.":
     "לא ניתן היה להשלים את העדכון. כדאי לנסות שוב מאוחר יותר.",
   "Could not reach the update server.": "לא ניתן היה להתחבר לשרת העדכונים.",
@@ -74,13 +74,13 @@ export const HE_MESSAGES: Record<string, string> = {
     "כבר מתבצע ניסיון התחברות. יש לבטל אותו ולנסות שוב.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "לא ניתן היה לפתוח התחברות בדפדפן. יש לסגור ניסיונות התחברות אחרים ולנסות שוב.",
-  "Sign-in callback rejected. Return to Deskhead to retry.":
-    "תגובת ההתחברות נדחתה. יש לחזור ל-Deskhead כדי לנסות שוב.",
-  "You can close this tab and return to Deskhead.": "אפשר לסגור את הכרטיסייה הזו ולחזור ל-Deskhead.",
-  "Set up Deskhead": "הגדרת Deskhead",
-  "Quit Deskhead": "יציאה מ-Deskhead",
-  "Welcome to Deskhead": "ברוכים הבאים ל-Deskhead",
-  "Choose where Deskhead runs.": "בחרו איפה Deskhead יפעל.",
+  "Sign-in callback rejected. Return to Burrow to retry.":
+    "תגובת ההתחברות נדחתה. יש לחזור ל-Burrow כדי לנסות שוב.",
+  "You can close this tab and return to Burrow.": "אפשר לסגור את הכרטיסייה הזו ולחזור ל-Burrow.",
+  "Set up Burrow": "הגדרת Burrow",
+  "Quit Burrow": "יציאה מ-Burrow",
+  "Welcome to Burrow": "ברוכים הבאים ל-Burrow",
+  "Choose where Burrow runs.": "בחרו איפה Burrow יפעל.",
   Instance: "מופע",
   "This computer": "המחשב הזה",
   "Existing instance": "מופע קיים",
@@ -93,14 +93,14 @@ export const HE_MESSAGES: Record<string, string> = {
   Continue: "המשך",
   Retry: "ניסיון חוזר",
   "Getting ready…": "מתכוננים…",
-  "Downloading Deskhead…": "מוריד את Deskhead…",
-  "Starting Deskhead…": "מפעיל את Deskhead…",
+  "Downloading Burrow…": "מוריד את Burrow…",
+  "Starting Burrow…": "מפעיל את Burrow…",
   "Almost ready…": "כמעט מוכן…",
-  "Deskhead is ready.": "Deskhead מוכן.",
+  "Burrow is ready.": "Burrow מוכן.",
   "{size} downloaded": "הורדו {size}",
   "Connecting…": "מתחבר…",
   "Checking…": "בודק…",
-  "Deskhead answered at {url}.": "Deskhead הגיב בכתובת {url}.",
+  "Burrow answered at {url}.": "Burrow הגיב בכתובת {url}.",
   "Enter a server address first.": "יש להזין קודם כתובת שרת.",
   "Could not save that address.": "לא ניתן היה לשמור את הכתובת הזו.",
   "Could not save that address. Try again.": "לא ניתן היה לשמור את הכתובת הזו. כדאי לנסות שוב.",
@@ -110,16 +110,16 @@ export const HE_MESSAGES: Record<string, string> = {
     "לא ניתן היה להפעיל את ה-Stack המקומי. כדאי לנסות שוב.",
   "Could not run the connection check. Try again.": "לא ניתן היה לבדוק את החיבור. כדאי לנסות שוב.",
   "Setup bridge unavailable.": "גשר ההגדרה לא זמין.",
-  "Setup could not start. Quit Deskhead and try again.":
-    "לא ניתן היה להתחיל את ההגדרה. יש לצאת מ-Deskhead ולנסות שוב.",
+  "Setup could not start. Quit Burrow and try again.":
+    "לא ניתן היה להתחיל את ההגדרה. יש לצאת מ-Burrow ולנסות שוב.",
   "Enter a server address.": "יש להזין כתובת שרת.",
   "Enter a valid http:// or https:// address.": "יש להזין כתובת http:// או https:// תקינה.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "יש להזין כתובת שרת תקינה. שרתים ציבוריים מחייבים HTTPS; מופע מקומי חדש חייב להשתמש ב-localhost.",
   "Invalid custom headers": "כותרות מותאמות אישית לא תקינות",
-  "That address redirects elsewhere. Enter the final Deskhead server address.":
-    "הכתובת הזו מפנה למקום אחר. יש להזין את הכתובת הסופית של שרת Deskhead.",
-  "That address did not respond like a Deskhead server.": "הכתובת הזו לא הגיבה כמו שרת Deskhead.",
+  "That address redirects elsewhere. Enter the final Burrow server address.":
+    "הכתובת הזו מפנה למקום אחר. יש להזין את הכתובת הסופית של שרת Burrow.",
+  "That address did not respond like a Burrow server.": "הכתובת הזו לא הגיבה כמו שרת Burrow.",
   "The server answered with HTTP {status}.": "השרת הגיב עם HTTP {status}.",
   "Timed out reaching that address.": "תם הזמן לחיבור לכתובת הזו.",
   "Nothing is listening at that address yet.": "עדיין אין שום דבר שמאזין בכתובת הזו.",
@@ -144,8 +144,8 @@ export const HE_MESSAGES: Record<string, string> = {
     "לא ניתן היה לשמור את ההגדרה. המופע הקודם שוחזר.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "החיבור הצליח, אבל לא ניתן היה לשמור את ההגדרה להפעלה הבאה. יש ללחוץ שוב על ״המשך״.",
-  "The app-managed Deskhead services are not ready. Retry setup.":
-    "שירותי Deskhead שהאפליקציה מנהלת אינם מוכנים. יש לנסות את ההגדרה שוב.",
+  "The app-managed Burrow services are not ready. Retry setup.":
+    "שירותי Burrow שהאפליקציה מנהלת אינם מוכנים. יש לנסות את ההגדרה שוב.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker מותקן, אבל Docker Compose חסר. יש להתקין את Docker Desktop או את docker-compose-plugin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -165,10 +165,10 @@ export const HE_MESSAGES: Record<string, string> = {
     "Docker הפסיק להגיב. יש להפעיל את Docker ולנסות שוב.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose חסר. יש להתקין את Docker Desktop או את docker-compose-plugin ולנסות שוב.",
-  "Downloading Deskhead images failed. Check the output below, then retry.":
-    "הורדת האימג׳ים של Deskhead נכשלה. יש לעיין בפלט שלמטה ולנסות שוב.",
-  "Deskhead services did not start. Check the output below, then retry.":
-    "שירותי Deskhead לא הופעלו. יש לעיין בפלט שלמטה ולנסות שוב.",
+  "Downloading Burrow images failed. Check the output below, then retry.":
+    "הורדת האימג׳ים של Burrow נכשלה. יש לעיין בפלט שלמטה ולנסות שוב.",
+  "Burrow services did not start. Check the output below, then retry.":
+    "שירותי Burrow לא הופעלו. יש לעיין בפלט שלמטה ולנסות שוב.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "ה-Stack הופעל, אבל אפליקציית האינטרנט לא הגיבה. יש לנסות שוב ולעיין בפלט שלמטה.",
   "Could not prepare the local stack. Retry.":
@@ -192,15 +192,15 @@ export const HE_MESSAGES: Record<string, string> = {
   "Chat Details": "פרטי הצ׳אט",
   Help: "עזרה",
   "Keyboard Shortcuts": "קיצורי מקלדת",
-  "Downloading Deskhead failed. Check the internet connection, then retry.":
-    "ההורדה של Deskhead נכשלה. בדקו את החיבור לאינטרנט ונסו שוב.",
+  "Downloading Burrow failed. Check the internet connection, then retry.":
+    "ההורדה של Burrow נכשלה. בדקו את החיבור לאינטרנט ונסו שוב.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "לא ניתן להעביר את הנתונים מ-Docker. בדקו את הפלט למטה ונסו שוב.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "סביבת ההרצה של המחשבים שכבר פועלת ישנה מדי. עדכנו או סגרו אותה ונסו שוב.",
-  "Your Deskhead data is in a different computer runtime. Quit the one running, then retry.":
-    "הנתונים שלכם ב-Deskhead נמצאים בסביבת הרצה אחרת של המחשבים. סגרו את זו שפועלת ונסו שוב.",
-  "Run Deskhead without Docker?": "להפעיל את Deskhead בלי Docker?",
+  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
+    "הנתונים שלכם ב-Burrow נמצאים בסביבת הרצה אחרת של המחשבים. סגרו את זו שפועלת ונסו שוב.",
+  "Run Burrow without Docker?": "להפעיל את Burrow בלי Docker?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "הבוטים והנתונים שלכם יועברו. Docker ייעצר, לא יוסר.",
   Move: "העברה",
@@ -209,11 +209,11 @@ export const HE_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "הנתונים שלכם נשארים במחשב הזה.",
   "Connect to a server you or your team already run.":
     "התחברות לשרת שאתם או הצוות שלכם כבר מפעילים.",
-  "Deskhead needs Docker Desktop to run on this computer.":
-    "Deskhead צריך את Docker Desktop כדי לפעול במחשב הזה.",
-  "Deskhead needs Docker to run on this computer.": "Deskhead צריך את Docker כדי לפעול במחשב הזה.",
-  "Docker Desktop is a free app that runs Deskhead in the background. Install it and open it once.":
-    "Docker Desktop היא אפליקציה חינמית שמפעילה את Deskhead ברקע. מתקינים ופותחים אותה פעם אחת.",
+  "Burrow needs Docker Desktop to run on this computer.":
+    "Burrow צריך את Docker Desktop כדי לפעול במחשב הזה.",
+  "Burrow needs Docker to run on this computer.": "Burrow צריך את Docker כדי לפעול במחשב הזה.",
+  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
+    "Docker Desktop היא אפליקציה חינמית שמפעילה את Burrow ברקע. מתקינים ופותחים אותה פעם אחת.",
   "Install Docker Engine and start it.": "מתקינים את Docker Engine ומפעילים אותו.",
   "Download Docker Desktop": "הורדת Docker Desktop",
   "Install Docker": "התקנת Docker",
@@ -222,14 +222,14 @@ export const HE_MESSAGES: Record<string, string> = {
   "Starting {app}…": "{app} מופעל…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker מותקן אבל לא פועל. יש להפעיל את שירות Docker כדי להמשיך.",
-  "Deskhead stopped unexpectedly.": "Deskhead נעצר באופן בלתי צפוי.",
+  "Burrow stopped unexpectedly.": "Burrow נעצר באופן בלתי צפוי.",
   Reload: "טען מחדש",
   "Mac app control": "שליטה ביישומי Mac",
   "Set up Mac app control": "הגדרת שליטה ביישומי Mac",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Deskhead in System Settings, then restart Deskhead.":
-    "פקודות כבר פועלות. כדי להשתמש ביישומים, אפשרו ל-Deskhead גישה לנגישות ולהקלטת מסך בהגדרות המערכת, ואז הפעילו מחדש את Deskhead.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
+    "פקודות כבר פועלות. כדי להשתמש ביישומים, אפשרו ל-Burrow גישה לנגישות ולהקלטת מסך בהגדרות המערכת, ואז הפעילו מחדש את Burrow.",
   "Open System Settings": "פתיחת הגדרות המערכת",
-  "Restart Deskhead": "הפעלה מחדש של Deskhead",
+  "Restart Burrow": "הפעלה מחדש של Burrow",
   "Not Now": "לא עכשיו",
-  "Restart Deskhead to finish setup": "הפעילו מחדש את Deskhead כדי להשלים את ההגדרה",
+  "Restart Burrow to finish setup": "הפעילו מחדש את Burrow כדי להשלים את ההגדרה",
 };

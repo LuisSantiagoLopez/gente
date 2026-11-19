@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import { transcriptTime } from "@rakazo/i18n/meeting";
 import { Button } from "@rakazo/ui-web";
@@ -103,7 +103,7 @@ export function MeetingTranscript({
         <ConfirmDialog
           title={t`Delete this transcript?`}
           confirmLabel={t`Delete transcript`}
-          description={t`The transcript will be removed from Deskhead.`}
+          description={t`The transcript will be removed from Burrow.`}
           busy={removal.pending}
           error={
             removal.error && errorDetails(removal.error, t`Could not delete transcript`).message

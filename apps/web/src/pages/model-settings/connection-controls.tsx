@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Plural, Trans, useLingui } from "@lingui/react/macro";
 import { Button, Disclosure, Input, Label, Switch } from "@rakazo/ui-web";
 import { Check, Copy } from "lucide-react";
@@ -369,7 +369,7 @@ export function ConnectionControls({
       {selected?.auth === "oauth" && !subscriptionSignIn ? (
         <p className="mt-5 text-body-sm leading-[1.5] text-muted-foreground first:mt-0">
           <Trans>
-            This subscription sign-in is not available in Deskhead yet. Use a deployment credential or
+            This subscription sign-in is not available in Burrow yet. Use a deployment credential or
             choose another provider.
           </Trans>
         </p>

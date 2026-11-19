@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 /**
  * Messages that Rakazo, or its model library, adds to a conversation in the user's role
  * are not from the user: screenshots moved out of tool results, nudges to continue,
@@ -6,7 +6,7 @@
  * took them for the user replying, kept going instead of asking, and confused their
  * helpers with the user. Label them plainly.
  */
-export const AUTOMATED_MESSAGE_LABEL = "[Automated message from Deskhead, not from the user]";
+export const AUTOMATED_MESSAGE_LABEL = "[Automated message from Burrow, not from the user]";
 
 export function automated(text: string): string {
   return `${AUTOMATED_MESSAGE_LABEL} ${text}`;

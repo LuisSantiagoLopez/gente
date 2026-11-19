@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Plural, Trans, useLingui } from "@lingui/react/macro";
 import { toggleEnabledModelId } from "@rakazo/core";
 import {
@@ -121,7 +121,7 @@ export function CompatibleModelFields({
           summary={<Trans>Setup help</Trans>}
         >
           <p className="mt-1">
-            {t`Paste the OpenAI-compatible address from your server. Deskhead adds /v1 if needed.`}
+            {t`Paste the OpenAI-compatible address from your server. Burrow adds /v1 if needed.`}
           </p>
         </Disclosure>
       ) : null}

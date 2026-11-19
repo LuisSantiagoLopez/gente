@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { WorkspacePathError } from "../../../computers/screens/computer-support.js";
@@ -6,13 +6,13 @@ import { isAllowedDesktopPath, normalizeDesktopWorkspacePath } from "./desktop-s
 
 describe("desktop sandbox path rules", () => {
   it("compares Windows roots case-insensitively without accepting siblings or other drives", () => {
-    const roots = ["C:\\Users\\Owner\\Deskhead\\bot"];
+    const roots = ["C:\\Users\\Owner\\Burrow\\bot"];
 
     expect(
       isAllowedDesktopPath("c:\\users\\owner\\rakazo\\BOT\\notes.txt", roots, path.win32),
     ).toBe(true);
     expect(
-      isAllowedDesktopPath("C:\\Users\\Owner\\Deskhead\\bot-other\\notes.txt", roots, path.win32),
+      isAllowedDesktopPath("C:\\Users\\Owner\\Burrow\\bot-other\\notes.txt", roots, path.win32),
     ).toBe(false);
     expect(isAllowedDesktopPath("D:\\notes.txt", roots, path.win32)).toBe(false);
   });

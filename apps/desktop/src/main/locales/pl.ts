@@ -1,11 +1,11 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 export const PL_MESSAGES: Record<string, string> = {
   // Menus
   "About {name}": "O {name}",
   "Check for Updates…": "Sprawdź aktualizacje…",
   "Computer Access…": "Dostęp do komputera…",
   "Revoke Local Computer Access": "Cofnij dostęp do lokalnego komputera",
-  "Change Deskhead Server…": "Zmień serwer Deskhead…",
+  "Change Burrow Server…": "Zmień serwer Burrow…",
   "Hide {name}": "Ukryj {name}",
   "Hide Others": "Ukryj pozostałe",
   "Show All": "Pokaż wszystkie",
@@ -42,13 +42,13 @@ export const PL_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Sprawdzanie aktualizacji…",
   "Downloading Update…": "Pobieranie aktualizacji…",
   "Restart to Update…": "Uruchom ponownie, aby zaktualizować…",
-  "Downloading Deskhead {version}…": "Pobieranie Deskhead {version}…",
-  "Deskhead {version} is ready to install.": "Deskhead {version} jest gotowe do zainstalowania.",
+  "Downloading Burrow {version}…": "Pobieranie Burrow {version}…",
+  "Burrow {version} is ready to install.": "Burrow {version} jest gotowe do zainstalowania.",
   Restart: "Uruchom ponownie",
   Later: "Później",
   "Could not install the update.": "Nie udało się zainstalować aktualizacji.",
   "Could not check for updates.": "Nie udało się sprawdzić aktualizacji.",
-  "Deskhead is up to date.": "Deskhead jest aktualne.",
+  "Burrow is up to date.": "Burrow jest aktualne.",
   "Version {version}": "Wersja {version}",
   "Automatic updates are turned off for this install.":
     "Automatyczne aktualizacje są wyłączone w tej instalacji.",
@@ -56,12 +56,12 @@ export const PL_MESSAGES: Record<string, string> = {
     "Automatyczne aktualizacje działają tylko w zainstalowanej aplikacji.",
   "No desktop releases are published for this build yet.":
     "Dla tej kompilacji nie opublikowano jeszcze wersji desktopowej.",
-  "Move Deskhead to Applications to install updates.":
-    "Przenieś Deskhead do folderu Aplikacje, aby instalować aktualizacje.",
+  "Move Burrow to Applications to install updates.":
+    "Przenieś Burrow do folderu Aplikacje, aby instalować aktualizacje.",
   "Free up disk space to install updates.":
     "Zwolnij miejsce na dysku, aby zainstalować aktualizacje.",
-  "This update could not be verified. Reinstall Deskhead from a trusted download.":
-    "Nie udało się zweryfikować aktualizacji. Zainstaluj Deskhead ponownie z zaufanego źródła.",
+  "This update could not be verified. Reinstall Burrow from a trusted download.":
+    "Nie udało się zweryfikować aktualizacji. Zainstaluj Burrow ponownie z zaufanego źródła.",
   "The update could not be completed. Try again later.":
     "Nie udało się dokończyć aktualizacji. Spróbuj ponownie później.",
   "Could not reach the update server.": "Nie udało się połączyć z serwerem aktualizacji.",
@@ -84,15 +84,15 @@ export const PL_MESSAGES: Record<string, string> = {
     "Logowanie już trwa. Anuluj je i spróbuj ponownie.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Nie udało się otworzyć logowania w przeglądarce. Zamknij inne próby logowania i spróbuj ponownie.",
-  "Sign-in callback rejected. Return to Deskhead to retry.":
-    "Odrzucono odpowiedź logowania. Wróć do Deskhead i spróbuj ponownie.",
-  "You can close this tab and return to Deskhead.": "Możesz zamknąć tę kartę i wrócić do Deskhead.",
+  "Sign-in callback rejected. Return to Burrow to retry.":
+    "Odrzucono odpowiedź logowania. Wróć do Burrow i spróbuj ponownie.",
+  "You can close this tab and return to Burrow.": "Możesz zamknąć tę kartę i wrócić do Burrow.",
 
   // Setup window
-  "Set up Deskhead": "Skonfiguruj Deskhead",
-  "Quit Deskhead": "Zakończ Deskhead",
-  "Welcome to Deskhead": "Witaj w Deskhead",
-  "Choose where Deskhead runs.": "Wybierz, gdzie działa Deskhead.",
+  "Set up Burrow": "Skonfiguruj Burrow",
+  "Quit Burrow": "Zakończ Burrow",
+  "Welcome to Burrow": "Witaj w Burrow",
+  "Choose where Burrow runs.": "Wybierz, gdzie działa Burrow.",
   Instance: "Instancja",
   "This computer": "Ten komputer",
   "Existing instance": "Istniejąca instancja",
@@ -105,14 +105,14 @@ export const PL_MESSAGES: Record<string, string> = {
   Continue: "Kontynuuj",
   Retry: "Spróbuj ponownie",
   "Getting ready…": "Przygotowywanie…",
-  "Downloading Deskhead…": "Pobieranie Deskhead…",
-  "Starting Deskhead…": "Uruchamianie Deskhead…",
+  "Downloading Burrow…": "Pobieranie Burrow…",
+  "Starting Burrow…": "Uruchamianie Burrow…",
   "Almost ready…": "Prawie gotowe…",
-  "Deskhead is ready.": "Deskhead jest gotowe.",
+  "Burrow is ready.": "Burrow jest gotowe.",
   "{size} downloaded": "Pobrano {size}",
   "Connecting…": "Łączenie…",
   "Checking…": "Sprawdzanie…",
-  "Deskhead answered at {url}.": "Deskhead odpowiedziało pod adresem {url}.",
+  "Burrow answered at {url}.": "Burrow odpowiedziało pod adresem {url}.",
   "Enter a server address first.": "Najpierw wpisz adres serwera.",
   "Could not save that address.": "Nie udało się zapisać tego adresu.",
   "Could not save that address. Try again.": "Nie udało się zapisać tego adresu. Spróbuj ponownie.",
@@ -123,8 +123,8 @@ export const PL_MESSAGES: Record<string, string> = {
   "Could not run the connection check. Try again.":
     "Nie udało się sprawdzić połączenia. Spróbuj ponownie.",
   "Setup bridge unavailable.": "Moduł konfiguracji jest niedostępny.",
-  "Setup could not start. Quit Deskhead and try again.":
-    "Nie udało się rozpocząć konfiguracji. Zamknij Deskhead i spróbuj ponownie.",
+  "Setup could not start. Quit Burrow and try again.":
+    "Nie udało się rozpocząć konfiguracji. Zamknij Burrow i spróbuj ponownie.",
 
   // Connecting to a server
   "Enter a server address.": "Wpisz adres serwera.",
@@ -132,10 +132,10 @@ export const PL_MESSAGES: Record<string, string> = {
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Wpisz poprawny adres serwera. Serwery publiczne wymagają HTTPS. Nowa lokalna instancja musi używać localhost.",
   "Invalid custom headers": "Nieprawidłowe nagłówki niestandardowe",
-  "That address redirects elsewhere. Enter the final Deskhead server address.":
-    "Ten adres przekierowuje w inne miejsce. Wpisz docelowy adres serwera Deskhead.",
-  "That address did not respond like a Deskhead server.":
-    "Ten adres nie odpowiedział jak serwer Deskhead.",
+  "That address redirects elsewhere. Enter the final Burrow server address.":
+    "Ten adres przekierowuje w inne miejsce. Wpisz docelowy adres serwera Burrow.",
+  "That address did not respond like a Burrow server.":
+    "Ten adres nie odpowiedział jak serwer Burrow.",
   "The server answered with HTTP {status}.": "Serwer odpowiedział kodem HTTP {status}.",
   "Timed out reaching that address.": "Przekroczono czas oczekiwania na połączenie z tym adresem.",
   "Nothing is listening at that address yet.": "Pod tym adresem nie działa jeszcze żadna usługa.",
@@ -160,8 +160,8 @@ export const PL_MESSAGES: Record<string, string> = {
     "Nie udało się zapisać konfiguracji. Przywrócono poprzednią instancję.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Połączono, ale nie udało się zapisać konfiguracji na następne uruchomienie. Kliknij ponownie Kontynuuj.",
-  "The app-managed Deskhead services are not ready. Retry setup.":
-    "Usługi Deskhead zarządzane przez aplikację nie są gotowe. Ponów konfigurację.",
+  "The app-managed Burrow services are not ready. Retry setup.":
+    "Usługi Burrow zarządzane przez aplikację nie są gotowe. Ponów konfigurację.",
 
   // Docker
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
@@ -184,10 +184,10 @@ export const PL_MESSAGES: Record<string, string> = {
     "Docker przestał odpowiadać. Uruchom Docker i spróbuj ponownie.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Brakuje Docker Compose. Zainstaluj Docker Desktop lub docker-compose-plugin i spróbuj ponownie.",
-  "Downloading Deskhead images failed. Check the output below, then retry.":
-    "Nie udało się pobrać obrazów Deskhead. Sprawdź poniższe komunikaty i spróbuj ponownie.",
-  "Deskhead services did not start. Check the output below, then retry.":
-    "Usługi Deskhead nie uruchomiły się. Sprawdź poniższe komunikaty i spróbuj ponownie.",
+  "Downloading Burrow images failed. Check the output below, then retry.":
+    "Nie udało się pobrać obrazów Burrow. Sprawdź poniższe komunikaty i spróbuj ponownie.",
+  "Burrow services did not start. Check the output below, then retry.":
+    "Usługi Burrow nie uruchomiły się. Sprawdź poniższe komunikaty i spróbuj ponownie.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "Usługi uruchomiły się, ale aplikacja webowa nie odpowiedziała. Spróbuj ponownie i sprawdź poniższe komunikaty.",
   "Could not prepare the local stack. Retry.":
@@ -211,15 +211,15 @@ export const PL_MESSAGES: Record<string, string> = {
   "Chat Details": "Szczegóły czatu",
   Help: "Pomoc",
   "Keyboard Shortcuts": "Skróty klawiszowe",
-  "Downloading Deskhead failed. Check the internet connection, then retry.":
-    "Nie udało się pobrać Deskhead. Sprawdź połączenie z internetem i spróbuj ponownie.",
+  "Downloading Burrow failed. Check the internet connection, then retry.":
+    "Nie udało się pobrać Burrow. Sprawdź połączenie z internetem i spróbuj ponownie.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Nie udało się przenieść danych z Dockera. Sprawdź dane wyjściowe poniżej i spróbuj ponownie.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "Uruchomione już środowisko komputerów jest zbyt stare. Zaktualizuj je lub zamknij, a potem spróbuj ponownie.",
-  "Your Deskhead data is in a different computer runtime. Quit the one running, then retry.":
-    "Twoje dane Deskhead są w innym środowisku komputerów. Zamknij to, które jest uruchomione, a potem spróbuj ponownie.",
-  "Run Deskhead without Docker?": "Uruchamiać Deskhead bez Dockera?",
+  "Your Burrow data is in a different computer runtime. Quit the one running, then retry.":
+    "Twoje dane Burrow są w innym środowisku komputerów. Zamknij to, które jest uruchomione, a potem spróbuj ponownie.",
+  "Run Burrow without Docker?": "Uruchamiać Burrow bez Dockera?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Twoje boty i dane zostaną przeniesione. Docker zostanie zatrzymany, nie usunięty.",
   Move: "Przenieś",
@@ -228,12 +228,12 @@ export const PL_MESSAGES: Record<string, string> = {
   "Your data stays on this computer.": "Twoje dane zostają na tym komputerze.",
   "Connect to a server you or your team already run.":
     "Połącz się z serwerem, który Ty lub Twój zespół już prowadzicie.",
-  "Deskhead needs Docker Desktop to run on this computer.":
-    "Deskhead potrzebuje Docker Desktop, aby działać na tym komputerze.",
-  "Deskhead needs Docker to run on this computer.":
-    "Deskhead potrzebuje Dockera, aby działać na tym komputerze.",
-  "Docker Desktop is a free app that runs Deskhead in the background. Install it and open it once.":
-    "Docker Desktop to darmowa aplikacja, która uruchamia Deskhead w tle. Zainstaluj ją i otwórz raz.",
+  "Burrow needs Docker Desktop to run on this computer.":
+    "Burrow potrzebuje Docker Desktop, aby działać na tym komputerze.",
+  "Burrow needs Docker to run on this computer.":
+    "Burrow potrzebuje Dockera, aby działać na tym komputerze.",
+  "Docker Desktop is a free app that runs Burrow in the background. Install it and open it once.":
+    "Docker Desktop to darmowa aplikacja, która uruchamia Burrow w tle. Zainstaluj ją i otwórz raz.",
   "Install Docker Engine and start it.": "Zainstaluj Docker Engine i uruchom go.",
   "Download Docker Desktop": "Pobierz Docker Desktop",
   "Install Docker": "Zainstaluj Dockera",
@@ -242,14 +242,14 @@ export const PL_MESSAGES: Record<string, string> = {
   "Starting {app}…": "Uruchamianie {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker jest zainstalowany, ale nie działa. Uruchom usługę Docker, aby kontynuować.",
-  "Deskhead stopped unexpectedly.": "Deskhead zatrzymał się nieoczekiwanie.",
+  "Burrow stopped unexpectedly.": "Burrow zatrzymał się nieoczekiwanie.",
   Reload: "Odśwież",
   "Mac app control": "Sterowanie aplikacjami na Macu",
   "Set up Mac app control": "Skonfiguruj sterowanie aplikacjami na Macu",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Deskhead in System Settings, then restart Deskhead.":
-    "Polecenia już działają. Aby używać aplikacji, zezwól Deskhead na dostęp do Ułatwień dostępu i Nagrywania ekranu w Ustawieniach systemowych, a następnie uruchom Deskhead ponownie.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.":
+    "Polecenia już działają. Aby używać aplikacji, zezwól Burrow na dostęp do Ułatwień dostępu i Nagrywania ekranu w Ustawieniach systemowych, a następnie uruchom Burrow ponownie.",
   "Open System Settings": "Otwórz Ustawienia systemowe",
-  "Restart Deskhead": "Uruchom Deskhead ponownie",
+  "Restart Burrow": "Uruchom Burrow ponownie",
   "Not Now": "Nie teraz",
-  "Restart Deskhead to finish setup": "Uruchom Deskhead ponownie, aby ukończyć konfigurację",
+  "Restart Burrow to finish setup": "Uruchom Burrow ponownie, aby ukończyć konfigurację",
 };

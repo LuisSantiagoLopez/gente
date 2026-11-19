@@ -1,6 +1,6 @@
 {
   "name": "@rakazo/desktop",
-  "productName": "Deskhead",
+  "productName": "Burrow",
   "version": "0.1.0",
   "author": {
     "name": "DeskHead Inc."
@@ -38,7 +38,7 @@
     "yaml": "2.9.1"
   },
   "build": {
-    "appId": "com.deskhead.app",
+    "appId": "com.burrow.app",
     "directories": {
       "output": "out",
       "buildResources": "assets"
@@ -62,7 +62,7 @@
       }
     ],
     "extraMetadata": {
-      "name": "deskhead",
+      "name": "burrow",
       "main": "dist/main.js"
     },
     "mac": {
@@ -72,8 +72,8 @@
       "entitlements": "assets/entitlements.mac.plist",
       "entitlementsInherit": "assets/entitlements.mac.plist",
       "extendInfo": {
-        "NSMicrophoneUsageDescription": "Deskhead uses the microphone for dictation and voice calls with your bots.",
-        "NSSpeechRecognitionUsageDescription": "Deskhead turns what you say into text for dictation and voice calls with your bots."
+        "NSMicrophoneUsageDescription": "Burrow uses the microphone for dictation and voice calls with your bots.",
+        "NSSpeechRecognitionUsageDescription": "Burrow turns what you say into text for dictation and voice calls with your bots."
       },
       "extraResources": [
         {
@@ -131,7 +131,7 @@
       "verifyUpdateCodeSignature": true
     },
     "linux": {
-      "executableName": "deskhead",
+      "executableName": "burrow",
       "icon": "assets/icon.png",
       "target": [
         "AppImage"
@@ -141,10 +141,10 @@
       {
         "provider": "github",
         "owner": "LuisSantiagoLopez",
-        "repo": "deskhead"
+        "repo": "burrow"
       }
     ],
     "copyright": "Copyright 2026 DeskHead Inc. Based on Rakazo by Elie Steinbock (Apache-2.0)."
   },
-  "description": "Deskhead: private AI coworkers on your Mac, powered by Swift. Based on Rakazo by Elie Steinbock (Apache-2.0)."
+  "description": "Burrow: private AI coworkers on your Mac, powered by Swift. Based on Rakazo by Elie Steinbock (Apache-2.0)."
 }

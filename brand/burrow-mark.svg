@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Burrow mark. Copyright 2026 DeskHead Inc. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF8A4C"/>
+      <stop offset="1" stop-color="#E0461A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="228" fill="url(#bg)"/>
+  <!-- ground line -->
+  <rect x="160" y="716" width="704" height="44" rx="22" fill="#FFF6EC"/>
+  <!-- the burrow: an arch dug into the ground -->
+  <path d="M262 716 V560 A250 250 0 0 1 762 560 V716 Z" fill="#1A0E06"/>
+  <!-- two eyes peeking out -->
+  <circle cx="440" cy="560" r="34" fill="#FFF6EC"/>
+  <circle cx="584" cy="560" r="34" fill="#FFF6EC"/>
+  <circle cx="450" cy="566" r="14" fill="#1A0E06"/>
+  <circle cx="594" cy="566" r="14" fill="#1A0E06"/>
+</svg>

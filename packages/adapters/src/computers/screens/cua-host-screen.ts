@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { setTimeout as sleep } from "node:timers/promises";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import {
@@ -205,7 +205,7 @@ export function createCuaHostScreen(options: CuaHostScreenOptions): HostScreen {
   async function target(query: string, signal: AbortSignal): Promise<Target> {
     const app = matchApp(await listApps(signal), query);
     if (app.running && app.pid === options.selfPid)
-      throw new HostScreenError("Deskhead can't use its own window.");
+      throw new HostScreenError("Burrow can't use its own window.");
     const pid = app.running ? app.pid : await launch(app, signal);
     if (!pid) throw new HostScreenError(`${app.name} did not open.`);
     // An app started in the background may open no window; launching it again asks it to

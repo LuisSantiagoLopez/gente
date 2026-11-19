@@ -1,17 +1,18 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
-// New file in Deskhead (a fork of Rakazo by Elie Steinbock).
+// New file in Burrow (a fork of Rakazo by Elie Steinbock).
 
 import { app } from "electron";
 import { desktop } from "../desktop-state.js";
 import { handleIpc } from "../ipc/ipc.js";
 import { Brain, ollamaInstalled, startOllama } from "./brain.js";
+import { checkEntitlement } from "./entitlement.js";
 
 let brain: Brain | null = null;
 
 export function registerBrainIpc(stackDirectory: string) {
   app.setAboutPanelOptions({
-    applicationName: "Deskhead",
-    applicationVersion: app.getVersion(),
+    applicationName: "Burrow",
+    applicationVersion: `${app.getVersion()} · Plan: ${checkEntitlement().label}`,
     copyright: "Copyright 2026 DeskHead Inc.",
     credits:
       "Based on Rakazo by Elie Steinbock (Apache-2.0), github.com/elie222/rakazo.\n" +

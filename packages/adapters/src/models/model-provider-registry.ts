@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { ModelUsageLookup } from "@rakazo/adapter-kit";
 import type { ModelOAuthSignInMode, ModelRoutingField } from "@rakazo/contracts";
 import { bestEffort } from "@rakazo/logging";
@@ -56,7 +56,7 @@ export const modelProviders = {
       loginLabel: "Sign in with ChatGPT",
       hint: "ChatGPT Plus/Pro",
       billing:
-        "Sign in with ChatGPT Plus or Pro. Uses your OpenAI subscription. Deskhead does not pay.",
+        "Sign in with ChatGPT Plus or Pro. Uses your OpenAI subscription. Burrow does not pay.",
     },
   },
   openai: { recommendedModel: "gpt-6-luna" },
@@ -112,7 +112,7 @@ export const modelProviders = {
       mode: "device-code",
       loginLabel: "Sign in with GitHub Copilot",
       hint: "Copilot",
-      billing: "Sign in with GitHub Copilot. Uses your Copilot subscription. Deskhead does not pay.",
+      billing: "Sign in with GitHub Copilot. Uses your Copilot subscription. Burrow does not pay.",
     },
   },
   xai: {
@@ -120,7 +120,7 @@ export const modelProviders = {
       mode: "device-code",
       loginLabel: "Sign in with SuperGrok or X Premium",
       hint: "SuperGrok / key",
-      billing: "Sign in with SuperGrok or X Premium, or paste an xAI API key. Deskhead does not pay.",
+      billing: "Sign in with SuperGrok or X Premium, or paste an xAI API key. Burrow does not pay.",
     },
   },
   deepseek: {

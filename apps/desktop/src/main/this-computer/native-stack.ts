@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 // This computer without Docker: the API, worker and web run as the person's own processes on
 // loopback, the database as the official Postgres image in a VM of its own, and bot computers as
 // VMs through the `local-vm` sandbox provider, all through the same computer runtime.
@@ -11,7 +11,7 @@ import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promise
 import { connect } from "node:net";
 import path from "node:path";
 import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/contracts";
-import { brainFile, type SavedBrain, swiftServerEnv } from "../deskhead/brain.js";
+import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { t } from "../i18n.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import type { RunDocker } from "./docker-cli.js";
@@ -376,9 +376,9 @@ class StartFailure extends Error {
 }
 
 const downloadFailed = () =>
-  t("Downloading Deskhead failed. Check the internet connection, then retry.");
+  t("Downloading Burrow failed. Check the internet connection, then retry.");
 const servicesFailed = () =>
-  t("Deskhead services did not start. Check the output below, then retry.");
+  t("Burrow services did not start. Check the output below, then retry.");
 
 export class NativeStackController extends StackLifecycle {
   private background: AbortController | null = null;
@@ -720,7 +720,7 @@ export class NativeStackController extends StackLifecycle {
     let existing = await this.inspectDatabase(cli, signal);
     if (existing === null && ports.database !== undefined && ports.database !== holder) {
       throw new StartFailure(
-        t("Your Deskhead data is in a different computer runtime. Quit the one running, then retry."),
+        t("Your Burrow data is in a different computer runtime. Quit the one running, then retry."),
       );
     }
     if (ports.database === undefined) {
@@ -1027,7 +1027,7 @@ export class NativeStackController extends StackLifecycle {
     const fromFile = Object.fromEntries(
       [...stackEnv].filter(([name, value]) => value !== "" && !COMPOSE_ONLY.test(name)),
     );
-    // Deskhead: Swift through the person's local Ollama is the default model.
+    // Burrow: Swift through the person's local Ollama is the default model.
     let brain: SavedBrain | null = null;
     try {
       brain = JSON.parse(readFileSync(brainFile(this.deps.stackDir), "utf8")) as SavedBrain;

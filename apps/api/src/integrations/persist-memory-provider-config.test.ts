@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { lookup } from "node:dns/promises";
 import { MemoryProviderPrivateEndpointRequiredError } from "@rakazo/adapters";
 import type { PrismaClient } from "@rakazo/db";
@@ -794,7 +794,7 @@ describe("updateMemoryProviderConfig", () => {
       [
         "honcho",
         { workspaceId: "team", userPeerId: "bot-1" },
-        "rakazo-shared and IDs starting with bot- are reserved for Deskhead.",
+        "rakazo-shared and IDs starting with bot- are reserved for Burrow.",
       ],
       ["hindsight", { recallBudget: "deepest" }, "recallBudget is not one of its choices"],
       ["serenity", { allowWrites: "false" }, "Serenity endpoint is required."],

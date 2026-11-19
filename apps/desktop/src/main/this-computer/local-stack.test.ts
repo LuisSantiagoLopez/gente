@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -18,7 +18,7 @@ import {
   reduceStackState,
   renderStackEnv,
   resolveImageTag,
-  DESKHEAD_UPSTREAM_IMAGE_TAG,
+  BURROW_UPSTREAM_IMAGE_TAG,
   STACK_COMPOSE_FILE,
   STACK_ENV_FILE,
   STACK_ENV_TEMPLATE,
@@ -96,7 +96,7 @@ describe("stack locations", () => {
 
 describe("resolveImageTag", () => {
   it("pins installed builds to their own version", () => {
-    expect(resolveImageTag({ version: "0.2.0", packaged: true })).toBe(DESKHEAD_UPSTREAM_IMAGE_TAG);
+    expect(resolveImageTag({ version: "0.2.0", packaged: true })).toBe(BURROW_UPSTREAM_IMAGE_TAG);
   });
 
   it("follows edge for development builds and prereleases", () => {
@@ -108,7 +108,7 @@ describe("resolveImageTag", () => {
     expect(resolveImageTag({ version: "0.2.0", packaged: true, override: " v9.9.9 " })).toBe(
       "v9.9.9",
     );
-    expect(resolveImageTag({ version: "0.2.0", packaged: true, override: "" })).toBe(DESKHEAD_UPSTREAM_IMAGE_TAG);
+    expect(resolveImageTag({ version: "0.2.0", packaged: true, override: "" })).toBe(BURROW_UPSTREAM_IMAGE_TAG);
   });
 });
 
@@ -363,11 +363,11 @@ describe("reduceStackState", () => {
   it("records why Docker is unavailable", () => {
     const state = reduceStackState(reduceStackState(start, { type: "check-start" }), {
       type: "docker-missing",
-      message: "Deskhead needs Docker to run on this computer.",
+      message: "Burrow needs Docker to run on this computer.",
     });
     expect(state).toMatchObject({
       phase: "docker-missing",
-      message: "Deskhead needs Docker to run on this computer.",
+      message: "Burrow needs Docker to run on this computer.",
     });
   });
 });
@@ -976,7 +976,7 @@ describe("LocalStackController", () => {
     const state = await stack.start();
     expect(state).toMatchObject({
       phase: "docker-missing",
-      message: "Deskhead needs Docker to run on this computer.",
+      message: "Burrow needs Docker to run on this computer.",
     });
     expect(calls).toEqual([]);
     await expect(stat(path.join(root, "stack", STACK_ENV_FILE))).rejects.toThrow();
@@ -1054,7 +1054,7 @@ describe("LocalStackController", () => {
   it("names Docker Desktop when it is missing on macOS and Windows", async () => {
     const stack = controller({ platform: "darwin", exists: () => false });
     expect((await stack.start()).message).toBe(
-      "Deskhead needs Docker Desktop to run on this computer.",
+      "Burrow needs Docker Desktop to run on this computer.",
     );
   });
 

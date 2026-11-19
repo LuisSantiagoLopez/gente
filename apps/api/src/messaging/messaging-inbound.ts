@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { JobPublisher, MessagingInboundMessage, SandboxProvider } from "@rakazo/adapter-kit";
 import { teamChatEngageJobKey } from "@rakazo/adapter-kit";
 import type { MessagingDelivery, OutboundLane } from "@rakazo/adapters";
@@ -918,7 +918,7 @@ async function handleChannelEvent(
           idempotencyKey: `intro:${channel.id}`,
           kind: "intro",
           threadId: channel.threadId,
-          body: "Hi. This line hosts Deskhead personal agents. Some people in this group haven't messaged it yet; send any message to this line first if you want your own agent here.",
+          body: "Hi. This line hosts Burrow personal agents. Some people in this group haven't messaged it yet; send any message to this line first if you want your own agent here.",
         },
       ]);
       await tx.messagingChannel.update({
@@ -1018,7 +1018,7 @@ async function queueInvite(
     idempotencyKey,
     kind: "dm",
     identityId: identity.id,
-    body: `"${name}" was linked to your Deskhead agent. Reply YES to let your agent join the conversation there, or NO to stay out.`,
+    body: `"${name}" was linked to your Burrow agent. Reply YES to let your agent join the conversation there, or NO to stay out.`,
   });
   return true;
 }

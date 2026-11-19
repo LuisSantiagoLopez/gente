@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { AccountSecurity, BotAvatarSet, SignInProvider } from "@rakazo/contracts";
 import {
@@ -35,6 +35,7 @@ import {
 import { DesktopUpdateSection } from "../../components/DesktopUpdates";
 import { AccountDataSettings } from "../../components/settings/AccountDataSettings";
 import { SettingsGroup, SettingsRow } from "../../components/settings/SettingsRows";
+import { checkEntitlement } from "../../lib/burrow/entitlement";
 import { TrustedLinkSitesSettings } from "../../components/settings/TrustedLinkSitesSettings";
 import { authClient } from "../../lib/auth/auth";
 import { fetchAuthCapabilities } from "../../lib/auth/auth-capabilities";
@@ -281,6 +282,25 @@ export function GeneralSettingsPanels({
         )}
       </SettingsGroup>
 
+      <SettingsGroup title={<Trans>Burrow</Trans>}>
+        <SettingsRow
+          label={<Trans>Plan</Trans>}
+          control={
+            <span className="text-body-sm text-muted-foreground">
+              {checkEntitlement().plan === "free-trial" ? <Trans>Free trial</Trans> : <Trans>Subscription</Trans>}
+            </span>
+          }
+        />
+        <SettingsRow
+          label={<Trans>About</Trans>}
+          control={
+            <span className="text-body-sm text-muted-foreground">
+              <Trans>Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.</Trans>
+            </span>
+          }
+        />
+      </SettingsGroup>
+
       <SettingsGroup title={<Trans>Preferences</Trans>}>
         <SettingsRow
           label={<Trans>Appearance</Trans>}
@@ -327,7 +347,7 @@ export function GeneralSettingsPanels({
                     value="rakazo"
                     className="text-body-sm aria-pressed:bg-background aria-pressed:shadow-sm"
                   >
-                    <Trans>Deskhead</Trans>
+                    <Trans>Burrow</Trans>
                   </ToggleGroupItem>
                 </ToggleGroup>
                 {botStyleError ? (

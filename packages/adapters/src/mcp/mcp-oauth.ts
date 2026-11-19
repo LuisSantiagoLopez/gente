@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { randomUUID } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import type {
@@ -642,7 +642,7 @@ export class StoredMcpOAuthProvider implements OAuthClientProvider {
       : registrationAuthMethod(this.material.oauth?.discoveryState);
     return {
       redirect_uris: [redirectUri],
-      client_name: "Deskhead",
+      client_name: "Burrow",
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],
       ...(authMethod ? { token_endpoint_auth_method: authMethod } : {}),

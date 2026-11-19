@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { i18n, setupI18n } from "@lingui/core";
@@ -48,7 +48,7 @@ describe("lingui catalogs", () => {
       "utf8",
     );
     for (const message of [
-      "Allow Deskhead to use Speech Recognition and the microphone in System Settings.",
+      "Allow Burrow to use Speech Recognition and the microphone in System Settings.",
       "This browser can't detect when you stop talking. Use Chrome, the desktop app, or hold-to-talk in the composer.",
       "Dictation failed: {code}",
       "Transcription request timed out.",
@@ -77,7 +77,7 @@ describe("lingui catalogs", () => {
       "Your model provider",
       "The model provider returned an error.",
       "Connect a model in Settings before running bots.",
-      "Connect your own API key in Models or choose Deskhead credits in Billing.",
+      "Connect your own API key in Models or choose Burrow credits in Billing.",
       "{provider} is rate limiting requests. Try again shortly.",
       "{summary} Resets {date}.",
       "{provider} rejected the API key. Check your connection settings.",

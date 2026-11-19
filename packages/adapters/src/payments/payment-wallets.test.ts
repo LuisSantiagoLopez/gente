@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type {
   PaymentWalletConnectResult,
   PaymentWalletCredential,
@@ -232,7 +232,7 @@ describe("payment wallet connection", () => {
       expiresAt: new Date(NOW.getTime() + 15 * 60_000).toISOString(),
     });
     expect(env.provider?.beginConnect).toHaveBeenCalledWith(
-      { clientName: "Deskhead" },
+      { clientName: "Burrow" },
       expect.objectContaining({ userId: actor.userId }),
     );
     const [row] = env.rows;

@@ -1,4 +1,4 @@
-/* Deskhead onboarding. Modified by DeskHead Inc. from Rakazo's setup styles. */
+/* Burrow onboarding. Modified by DeskHead Inc. from Rakazo's setup styles. */
 * {
   box-sizing: border-box;
 }
@@ -95,35 +95,36 @@ html[data-platform="darwin"] .titlebar {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 0;
   box-shadow: 0 10px 30px -10px #e0461a99;
   margin-bottom: 22px;
   animation: rise 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-.mark-head {
-  width: 19px;
-  height: 19px;
-  border-radius: 50%;
-  background: #fff6ec;
+.mark-hole {
+  width: 30px;
+  height: 20px;
+  margin-top: 8px;
+  border-radius: 15px 15px 0 0;
+  background: #1a0e06;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
 }
 
-.mark-head i {
-  width: 3px;
-  height: 3px;
+.mark-hole i {
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: #1a0e06;
+  background: #fff6ec;
   animation: blink 5s infinite;
 }
 
-.mark-desk {
-  width: 30px;
-  height: 5px;
-  border-radius: 3px;
+.mark-ground {
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
   background: #fff6ec;
 }
 

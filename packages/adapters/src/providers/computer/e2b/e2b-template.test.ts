@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { TemplateClass } from "@e2b/desktop";
 import { Template } from "@e2b/desktop";
 import { describe, expect, it, vi } from "vitest";
@@ -9,7 +9,7 @@ import {
 } from "./e2b-template.js";
 
 describe("E2B computer template", () => {
-  it("builds the stock desktop at 2 vCPU and 4 GB under the Deskhead name", async () => {
+  it("builds the stock desktop at 2 vCPU and 4 GB under the Burrow name", async () => {
     const build = vi.fn(async () => ({ name: E2B_COMPUTER_TEMPLATE }));
 
     await buildE2BComputerTemplate("e2b_test", { build });

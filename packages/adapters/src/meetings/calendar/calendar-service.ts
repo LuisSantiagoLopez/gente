@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHash, createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import type {
   JobPublisher,
@@ -447,7 +447,7 @@ export class MeetingCalendarService {
                 sessionId,
                 meetingUrl: link.url,
                 platform: link.platform,
-                botName: `${bot.name.slice(0, 88)} · Deskhead`,
+                botName: `${bot.name.slice(0, 88)} · Burrow`,
                 expiresAt,
               });
               if ((await selectedCalendarRule(prisma, connectionId, event))?.botId !== bot.id) {

@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHash } from "node:crypto";
 import type { AdapterContext, SemanticMemoryConversationRequest } from "@rakazo/adapter-kit";
 import type { Deferred } from "@rakazo/core/test-async";
@@ -258,7 +258,7 @@ describe("Hindsight saves", () => {
         {
           content: "Prefers tea.",
           context:
-            "A fact a Deskhead AI assistant chose to remember about the people it works for and their work",
+            "A fact a Burrow AI assistant chose to remember about the people it works for and their work",
           timestamp: expect.any(String),
         },
       ],
@@ -735,7 +735,7 @@ describe("Hindsight conversations", () => {
               timestamp: "2026-11-11T10:00:03.000Z",
             },
           ]),
-          context: "Conversation in Deskhead with Sam, Ada and Bob",
+          context: "Conversation in Burrow with Sam, Ada and Bob",
           timestamp: "2026-11-11T10:00:03.000Z",
           document_id: SESSION,
           update_mode: "append",
@@ -995,22 +995,22 @@ describe("Hindsight conversations", () => {
     expect(writes(fake.requests).map((request) => request.body?.items)).toEqual([
       [
         expect.objectContaining({
-          context: "Chat in Deskhead between Sam and Ada, an AI assistant",
+          context: "Chat in Burrow between Sam and Ada, an AI assistant",
         }),
       ],
       [
         expect.objectContaining({
-          context: "Conversation in Deskhead with Sam, Ada and Bob",
+          context: "Conversation in Burrow with Sam, Ada and Bob",
         }),
       ],
       [
         expect.objectContaining({
-          context: "Conversation in Deskhead with Sam, Ada, Bob and Carol",
+          context: "Conversation in Burrow with Sam, Ada, Bob and Carol",
         }),
       ],
       [
         expect.objectContaining({
-          context: "Group chat in Deskhead with Sam, Ada, Bob and Carol",
+          context: "Group chat in Burrow with Sam, Ada, Bob and Carol",
         }),
       ],
     ]);

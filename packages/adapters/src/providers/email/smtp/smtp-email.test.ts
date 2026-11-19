@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createServer, Socket } from "node:net";
 import { EmailRecipientRejectedError } from "@rakazo/adapter-kit";
 import nodemailer from "nodemailer";
@@ -9,7 +9,7 @@ describe("SmtpEmailProvider", () => {
   it("delivers product-authored content through the injected transport", async () => {
     const sendMail = vi.fn(async () => ({ messageId: "message-1" }));
     const provider = new SmtpEmailProvider(
-      { url: "smtps://user:secret@smtp.example.test:465", from: "Deskhead <no-reply@example.test>" },
+      { url: "smtps://user:secret@smtp.example.test:465", from: "Burrow <no-reply@example.test>" },
       { transport: { sendMail } as never },
     );
 
@@ -22,7 +22,7 @@ describe("SmtpEmailProvider", () => {
 
     expect(provider.describe().id).toBe("smtp");
     expect(sendMail).toHaveBeenCalledWith({
-      from: "Deskhead <no-reply@example.test>",
+      from: "Burrow <no-reply@example.test>",
       to: "ada@example.test",
       subject: "Reset password",
       text: "Plain text",

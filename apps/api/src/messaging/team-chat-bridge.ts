@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type {
   JobPublisher,
   MessagingInboundAttachment,
@@ -357,7 +357,7 @@ export class TeamChatBridge {
       conversation.spaceId !== target.spaceId ||
       !conversation.thread
     ) {
-      throw new Error("Team chat conversation belongs to a different Deskhead target");
+      throw new Error("Team chat conversation belongs to a different Burrow target");
     }
     return { ...conversation, thread: conversation.thread };
   }

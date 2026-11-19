@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { describe, expect, it, vi } from "vitest";
 import {
   createMcpAppHost,
@@ -11,7 +11,7 @@ import {
 } from "./mcp-app.js";
 
 describe("MCP app domains", () => {
-  it("keeps public https origins and drops what could reach the person's network or Deskhead", () => {
+  it("keeps public https origins and drops what could reach the person's network or Burrow", () => {
     expect(
       mcpAppDomains(
         [

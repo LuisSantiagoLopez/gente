@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { ToolkitConnectionState } from "@composio/core";
 import type { AdapterContext, ConnectorEvent, ConnectorTool } from "@rakazo/adapter-kit";
 import { createLogger, createTestSink, installLogger } from "@rakazo/logging";
@@ -1585,7 +1585,7 @@ describe("composio tool mapping", () => {
     ).toEqual(["first"]);
   });
 
-  it("only fetches live Composio slugs when a Deskhead row is still pending or errored", () => {
+  it("only fetches live Composio slugs when a Burrow row is still pending or errored", () => {
     expect(needsLivePluginSync([{ status: "connected" }, { status: "revoked" }])).toBe(false);
     expect(needsLivePluginSync([{ status: "pending" }])).toBe(true);
     expect(needsLivePluginSync([{ status: "error" }])).toBe(true);
@@ -1600,7 +1600,7 @@ describe("composio tool mapping", () => {
     ).toEqual([{ provider: "github", displayName: "GitHub" }]);
   });
 
-  it("plans DB sync when Composio is connected but Deskhead is still pending", () => {
+  it("plans DB sync when Composio is connected but Burrow is still pending", () => {
     expect(
       planLiveConnectionSync(
         [

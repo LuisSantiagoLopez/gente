@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { Pool, fetch as pooledFetch } from "undici";
@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 import { OpenRouterUsageLookup, openRouterInferenceFetch } from "./openrouter-usage.js";
 
 describe("OpenRouter attribution and usage recovery", () => {
-  it("sends the normal user id and Deskhead attribution while preserving request controls", async () => {
+  it("sends the normal user id and Burrow attribution while preserving request controls", async () => {
     const fetcher = vi.fn<typeof fetch>(async () => new Response("ok"));
     const controller = new AbortController();
     await openRouterInferenceFetch(fetcher, "user_fixture")(
@@ -21,7 +21,7 @@ describe("OpenRouter attribution and usage recovery", () => {
     const init = fetcher.mock.calls[0]![1]!;
     const headers = new Headers(init.headers);
     expect(headers.get("HTTP-Referer")).toBe("https://rakazo.com");
-    expect(headers.get("X-OpenRouter-Title")).toBe("Deskhead");
+    expect(headers.get("X-OpenRouter-Title")).toBe("Burrow");
     expect(headers.get("Authorization")).toBe("Bearer fixture");
     expect(init.signal).toBe(controller.signal);
     expect(JSON.parse(String(init.body))).toMatchObject({ user: "user_fixture", model: "fixture" });

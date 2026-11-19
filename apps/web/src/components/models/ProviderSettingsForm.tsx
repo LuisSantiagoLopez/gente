@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ProviderSettingsField } from "@rakazo/contracts";
 import type { SettingsFieldProblem } from "@rakazo/core";
@@ -51,12 +51,12 @@ function useFieldText() {
     "MCP endpoint": t`MCP endpoint`,
     Medium: t`Medium`,
     "Organization API key": t`Organization API key`,
-    "rakazo-shared and IDs starting with bot- are reserved for Deskhead.": t`rakazo-shared and IDs starting with bot- are reserved for Deskhead.`,
+    "rakazo-shared and IDs starting with bot- are reserved for Burrow.": t`rakazo-shared and IDs starting with bot- are reserved for Burrow.`,
     "Recall and write": t`Recall and write`,
     "Recall automatically": t`Recall automatically`,
     "Recall depth": t`Recall depth`,
     "Recall from banks": t`Recall from banks`,
-    "Recall from this peer; save to Deskhead’s own peers.": t`Recall from this peer; save to Deskhead’s own peers.`,
+    "Recall from this peer; save to Burrow’s own peers.": t`Recall from this peer; save to Burrow’s own peers.`,
     "Recall only": t`Recall only`,
     "Self-hosted": t`Self-hosted`,
     "Skip unrelated memories": t`Skip unrelated memories`,

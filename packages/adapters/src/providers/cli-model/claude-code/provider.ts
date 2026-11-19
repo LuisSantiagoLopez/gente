@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type {
   Api,
   Model,
@@ -47,7 +47,7 @@ export function claudeCodeProvider(models: Models, options: ClaudeCodeProviderOp
   const assertAllowed = async () => {
     const refusal = options.accessCheck
       ? await options.accessCheck()
-      : "Claude Code runs only inside the Deskhead API and worker.";
+      : "Claude Code runs only inside the Burrow API and worker.";
     if (refusal) throw new Error(refusal);
   };
   const stream = (

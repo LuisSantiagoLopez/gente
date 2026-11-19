@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { BotAvatarSet, BotColorDef } from "@rakazo/contracts";
 import { BOT_COLOR_LIST, BOT_COLORS } from "@rakazo/contracts";
 import type { AvatarEyes, LogoAvatarActivity } from "@rakazo/core";
@@ -400,14 +400,17 @@ export function BotShapePreview({
 export function Wordmark({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      {/* Deskhead mark: a head over a desk. */}
-      <div className="flex h-11 w-11 flex-col items-center justify-center gap-[3px] rounded-[12px] bg-primary">
-        <span className="h-[15px] w-[15px] rounded-full bg-primary-foreground" />
-        <span className="h-[5px] w-[24px] rounded-full bg-primary-foreground" />
+      {/* Burrow mark: two eyes peeking out of a burrow. */}
+      <div className="flex h-11 w-11 flex-col items-center justify-end rounded-[12px] bg-primary pb-[9px]">
+        <span className="flex h-[16px] w-[24px] items-center justify-center gap-[4px] rounded-t-full bg-primary-foreground">
+          <span className="h-[4px] w-[4px] rounded-full bg-primary" />
+          <span className="h-[4px] w-[4px] rounded-full bg-primary" />
+        </span>
+        <span className="h-[3px] w-[32px] rounded-full bg-primary-foreground" />
       </div>
       {/* off-scale: wordmark sized to the 44px logo mark */}
       <span className="font-[Aeonik,ui-sans-serif] text-[28px] tracking-tight text-foreground">
-        Deskhead
+        Burrow
       </span>
     </div>
   );

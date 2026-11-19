@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { describe, expect, it, vi } from "vitest";
 import { conditionalPasskeyAvailable, passkeyErrorText, passkeysSupported } from "./passkeys";
 
@@ -53,7 +53,7 @@ describe("passkeysSupported", () => {
       },
     });
     await expect(passkeysSupported("app.rakazo.com", mac(["app.rakazo.com"]))).resolves.toBe(true);
-    await expect(passkeysSupported("App.Deskhead.com", mac(["app.rakazo.com"]))).resolves.toBe(true);
+    await expect(passkeysSupported("App.Burrow.com", mac(["app.rakazo.com"]))).resolves.toBe(true);
     await expect(passkeysSupported("app.rakazo.com", mac([]))).resolves.toBe(false);
     await expect(passkeysSupported("app.rakazo.com", mac())).resolves.toBe(false);
     await expect(passkeysSupported("app.rakazo.com", mac(new Error("ipc")))).resolves.toBe(false);

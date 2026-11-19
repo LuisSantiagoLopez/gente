@@ -30,13 +30,13 @@ Nous Research, used under the MIT License:
 
 ----------------------------------------------------------------------------
 
-Deskhead
+Burrow
 Copyright 2026 DeskHead Inc.
 
-Deskhead is based on Rakazo by Elie Steinbock and Rakazo contributors,
+Burrow is based on Rakazo by Elie Steinbock and Rakazo contributors,
 https://github.com/elie222/rakazo, used under the Apache License, Version 2.0.
 DeskHead Inc. changed the files listed in MODIFICATIONS.md (branding, colors,
 first-run onboarding, and the local Swift model through Ollama).
 
-Deskhead's default model is Swift by UkisAI, downloaded by the user through
+Burrow's default model is Swift by UkisAI, downloaded by the user through
 Ollama from Hugging Face. The model weights are not part of this repository.

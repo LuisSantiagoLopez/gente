@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { ChildProcess } from "node:child_process";
 import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -491,7 +491,7 @@ describe("shared Linux desktop lifecycle", () => {
         writeFileSync(
           path.join(root, "image-menu"),
           [
-            "[begin] (Deskhead)",
+            "[begin] (Burrow)",
             "  [exec] (Browser) {rakazo-browser}",
             "  [exec] (Docs) {rakazo-browser https://example.test}",
             "  [exec] (Files) {pcmanfm}",
@@ -527,7 +527,7 @@ describe("shared Linux desktop lifecycle", () => {
       expect(readFileSync(path.join(root, "flux-20/.fluxbox/menu"), "utf8")).toBe(
         imageMenu === "readable"
           ? [
-              "[begin] (Deskhead)",
+              "[begin] (Burrow)",
               `  [exec] (Browser) {${launcher}}`,
               `  [exec] (Docs) {${launcher} https://example.test}`,
               "  [exec] (Files) {pcmanfm}",

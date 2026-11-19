@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHash } from "node:crypto";
 import type { AppEnv } from "../env.js";
 
@@ -76,7 +76,7 @@ export type DiagnosticsInput = {
 export function renderDiagnostics(input: DiagnosticsInput): string {
   const { env } = input;
   const lines = [
-    "## Deskhead diagnostics",
+    "## Burrow diagnostics",
     "",
     `- Revision: ${token(env.gitSha, /^[0-9a-f]{7,40}$/) ?? "unknown"}`,
     `- Node: ${token(input.nodeVersion, /^v\d+\.\d+\.\d+$/) ?? "unknown"}`,

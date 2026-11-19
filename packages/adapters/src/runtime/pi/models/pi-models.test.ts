@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { ConnectionSetupError, MODEL_KEY_FORMAT_ERROR } from "@rakazo/contracts";
 import { expectLinearTime } from "@rakazo/contracts/test-timing";
 import { deferred } from "@rakazo/core/test-async";
@@ -277,7 +277,7 @@ describe("Pi model catalog", () => {
         providerName: "OpenAI",
         auth: "api-key",
         subscription: false,
-        billing: "Uses your OpenAI API key. Deskhead does not pay for model usage.",
+        billing: "Uses your OpenAI API key. Burrow does not pay for model usage.",
       });
       expect(entry.oauthLabel).toBeUndefined();
       expect(entry.signIn).toBeUndefined();
@@ -290,7 +290,7 @@ describe("Pi model catalog", () => {
         providerName: "Azure OpenAI",
         auth: "api-key",
         subscription: false,
-        billing: "Uses your Azure OpenAI API key. Deskhead does not pay for model usage.",
+        billing: "Uses your Azure OpenAI API key. Burrow does not pay for model usage.",
       });
     }
   });
@@ -605,7 +605,7 @@ describe("models agents can run", () => {
     expect(offeredCatalog(entries, new Set(["google:gemini-2.5-flash"]))).toEqual([entries[0]]);
   });
 
-  describe("models Deskhead credits cannot price", () => {
+  describe("models Burrow credits cannot price", () => {
     const credits: SpaceCatalogAuth = {
       managedProvider: "openrouter",
       byProvider: { openrouter: "api_key" },

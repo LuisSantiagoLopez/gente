@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
@@ -54,7 +54,7 @@ import {
   writeSetup,
   writeUiLocale,
 } from "./setup/setup-store.js";
-import { registerBrainIpc } from "./deskhead/brain-ipc.js";
+import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
 import { createClipboardHandler } from "./system/clipboard.js";
@@ -214,7 +214,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address redirects elsewhere. Enter the final Deskhead server address."),
+        error: t("That address redirects elsewhere. Enter the final Burrow server address."),
       };
     }
     if (!response.ok) {
@@ -231,7 +231,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address did not respond like a Deskhead server."),
+        error: t("That address did not respond like a Burrow server."),
       };
     }
     return {
@@ -260,7 +260,7 @@ async function offerDockerMove(userStackDir: string): Promise<StackChoice> {
     return "docker";
   const options: Electron.MessageBoxOptions = {
     type: "question",
-    message: t("Run Deskhead without Docker?"),
+    message: t("Run Burrow without Docker?"),
     detail: t("Your bots and data move over. Docker is stopped, not removed."),
     buttons: [t("Move"), t("Keep Docker")],
     defaultId: 0,
@@ -604,16 +604,16 @@ app.whenReady().then(async () => {
         type: "info",
         title: t("Mac app control"),
         message: readyForRestart
-          ? t("Restart Deskhead to finish setup")
+          ? t("Restart Burrow to finish setup")
           : t("Set up Mac app control"),
         detail: readyForRestart
           ? undefined
           : t(
-              "Commands already work. To use apps, allow Accessibility and Screen Recording for Deskhead in System Settings, then restart Deskhead.",
+              "Commands already work. To use apps, allow Accessibility and Screen Recording for Burrow in System Settings, then restart Burrow.",
             ),
         buttons: readyForRestart
-          ? [t("Restart Deskhead"), t("Not Now")]
-          : [t("Open System Settings"), t("Restart Deskhead"), t("Not Now")],
+          ? [t("Restart Burrow"), t("Not Now")]
+          : [t("Open System Settings"), t("Restart Burrow"), t("Not Now")],
         defaultId: 0,
         cancelId: readyForRestart ? 1 : 2,
         noLink: true,

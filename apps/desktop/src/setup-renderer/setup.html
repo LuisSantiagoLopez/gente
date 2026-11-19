@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Modified by DeskHead Inc. from Rakazo's setup page: Deskhead one-screen onboarding. -->
+<!-- Modified by DeskHead Inc. from Rakazo's setup page: Burrow one-screen onboarding. -->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -7,24 +7,24 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; form-action 'none'; base-uri 'none'"
     />
-    <title>Welcome to Deskhead</title>
+    <title>Welcome to Burrow</title>
     <link rel="stylesheet" href="tokens.css" />
     <link rel="stylesheet" href="setup.css" />
   </head>
   <body>
     <header class="titlebar">
-      <span class="titlebar-name">Deskhead</span>
-      <button id="quit" class="titlebar-quit" type="button" title="Quit Deskhead">Quit</button>
+      <span class="titlebar-name">Burrow</span>
+      <button id="quit" class="titlebar-quit" type="button" title="Quit Burrow">Quit</button>
     </header>
 
     <main class="shell">
       <div class="mark" aria-hidden="true">
-        <span class="mark-head"><i></i><i></i></span>
-        <span class="mark-desk"></span>
+        <span class="mark-hole"><i></i><i></i></span>
+        <span class="mark-ground"></span>
       </div>
       <h1 class="heading">Your AI coworkers, on your Mac.</h1>
       <p class="subheading">
-        Deskhead bots chat, use their own computer, and finish work while you do other things.
+        Burrow bots chat, use their own computer, and finish work while you do other things.
         They think with Swift, a private model that runs right here. Nothing leaves this Mac.
       </p>
 
@@ -89,7 +89,7 @@
 
         <section id="panel-existing" class="panel panel-existing" hidden>
           <label class="field-label" for="server-url">Server address</label>
-          <input id="server-url" class="field" type="text" spellcheck="false" autocomplete="off" placeholder="https://deskhead.example.com" />
+          <input id="server-url" class="field" type="text" spellcheck="false" autocomplete="off" placeholder="https://burrow.example.com" />
           <details id="server-headers-section" class="headers">
             <summary>Headers</summary>
             <textarea id="server-headers" class="field" rows="2" spellcheck="false" autocomplete="off" aria-label="Headers" placeholder="Name: value"></textarea>

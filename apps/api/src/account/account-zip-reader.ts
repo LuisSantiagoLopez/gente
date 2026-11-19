@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import type { FileHandle } from "node:fs/promises";
 import { Inflate } from "fflate";
 
@@ -30,7 +30,7 @@ const ZIP64_EXTRA_TAG = 0x0001;
 
 /** An entry failed to parse or to verify; the caller reports it as unreadable. */
 export class ZipFormatError extends Error {
-  constructor(message = "The file is not a readable Deskhead export.") {
+  constructor(message = "The file is not a readable Burrow export.") {
     super(message);
     this.name = "ZipFormatError";
   }

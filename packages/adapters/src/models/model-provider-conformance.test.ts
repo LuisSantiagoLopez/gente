@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { builtinModels } from "@earendil-works/pi-ai/providers/all";
 import { ConnectionSetupError } from "@rakazo/contracts";
 import { describe, expect, it } from "vitest";
@@ -51,7 +51,7 @@ function catalogHosts(provider: string) {
 }
 
 describe.each(entries)("%s model provider", (id, definition) => {
-  it("is a provider the model registry lists, or one Deskhead runs itself", () => {
+  it("is a provider the model registry lists, or one Burrow runs itself", () => {
     expect(catalogIds(id).length > 0 || outsideCatalog.includes(id)).toBe(true);
   });
 

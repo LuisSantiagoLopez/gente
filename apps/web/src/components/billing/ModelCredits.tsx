@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import type { BillingStatus, ByokInterval, ByokTier, HeldCreditAmount } from "@rakazo/contracts";
@@ -484,7 +484,7 @@ export function CreditChoice({
         <AccountMenu disabled={pending} signingOut={signingOut} onLogOut={() => void logOut()} />
       )}
       <h1 className={cn("text-heading1 font-medium", tiers.length > 1 && "text-center")}>
-        <Trans>Choose how to use Deskhead</Trans>
+        <Trans>Choose how to use Burrow</Trans>
       </h1>
       {tiers.length > 1 ? (
         <TierPlans
@@ -1064,7 +1064,7 @@ export function ModelCreditsSettings({
             })
           }
         >
-          <Trans>Use Deskhead credits</Trans>
+          <Trans>Use Burrow credits</Trans>
         </Button>
       ) : null}
       {status.canManage && status.funding !== "byok" && (!recurring || status.cancelAtPeriodEnd) ? (

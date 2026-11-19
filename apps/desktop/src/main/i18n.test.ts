@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { readdirSync, readFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -23,8 +23,8 @@ import { readUiLocale, writeUiLocale } from "./setup/setup-store.js";
 const srcDir = path.resolve(import.meta.dirname, "..");
 /** Product and vendor names the setup page shows as they are. */
 const UNTRANSLATED = new Set([
-  "Deskhead",
-  "Deskhead Cloud",
+  "Burrow",
+  "Burrow Cloud",
   "Docker Desktop",
   "OrbStack",
   "Docker Engine",
@@ -80,8 +80,8 @@ describe("desktop language", () => {
   it("starts in the saved language, ignoring a saved value that is not a language tag", () => {
     expect(startDesktopLocale("es-MX", "en-US")).toBe("es");
     expect(t("Check for Updates…")).toBe("Buscar actualizaciones…");
-    expect(t("Deskhead {version} is ready to install.", { version: "1.2.0" })).toBe(
-      "Deskhead 1.2.0 está listo para instalarse.",
+    expect(t("Burrow {version} is ready to install.", { version: "1.2.0" })).toBe(
+      "Burrow 1.2.0 está listo para instalarse.",
     );
     expect(desktopMessages()).toBe(ES_MESSAGES);
 
@@ -94,8 +94,8 @@ describe("desktop language", () => {
     expect(startDesktopLocale("pl-PL", "en-US")).toBe("pl");
     expect(desktopMessages()).toBe(PL_MESSAGES);
     expect(t("Check for Updates…")).toBe("Sprawdź aktualizacje…");
-    expect(t("Deskhead {version} is ready to install.", { version: "1.2.0" })).toBe(
-      "Deskhead 1.2.0 jest gotowe do zainstalowania.",
+    expect(t("Burrow {version} is ready to install.", { version: "1.2.0" })).toBe(
+      "Burrow 1.2.0 jest gotowe do zainstalowania.",
     );
   });
 

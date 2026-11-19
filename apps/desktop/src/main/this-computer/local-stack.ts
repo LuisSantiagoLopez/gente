@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHash } from "node:crypto";
 import { copyFile, lstat, mkdir, readFile } from "node:fs/promises";
 import { createServer } from "node:net";
@@ -95,8 +95,8 @@ const STABLE_VERSION = /^\d+\.\d+\.\d+$/;
  * Installed builds pin images to their own version so the DMG and the multi-arch
  * images move together; development builds follow `edge`.
  */
-/** The upstream Rakazo release whose published computer image Deskhead runs. */
-export const DESKHEAD_UPSTREAM_IMAGE_TAG = "v0.13.0";
+/** The upstream Rakazo release whose published computer image Burrow runs. */
+export const BURROW_UPSTREAM_IMAGE_TAG = "v0.13.0";
 
 export function resolveImageTag(input: {
   version: string;
@@ -105,8 +105,8 @@ export function resolveImageTag(input: {
 }): string {
   const override = input.override?.trim();
   if (override) return override;
-  // Deskhead: bot computers use the upstream Rakazo computer image this fork is built against.
-  if (input.packaged && STABLE_VERSION.test(input.version)) return DESKHEAD_UPSTREAM_IMAGE_TAG;
+  // Burrow: bot computers use the upstream Rakazo computer image this fork is built against.
+  if (input.packaged && STABLE_VERSION.test(input.version)) return BURROW_UPSTREAM_IMAGE_TAG;
   return "edge";
 }
 
@@ -332,8 +332,8 @@ export function stackFailureMessage(
       );
     case "other":
       return phase === "pulling"
-        ? t("Downloading Deskhead images failed. Check the output below, then retry.")
-        : t("Deskhead services did not start. Check the output below, then retry.");
+        ? t("Downloading Burrow images failed. Check the output below, then retry.")
+        : t("Burrow services did not start. Check the output below, then retry.");
   }
 }
 
@@ -603,8 +603,8 @@ export class LocalStackController extends StackLifecycle {
         type: "docker-missing",
         message:
           this.deps.platform === "linux"
-            ? t("Deskhead needs Docker to run on this computer.")
-            : t("Deskhead needs Docker Desktop to run on this computer."),
+            ? t("Burrow needs Docker to run on this computer.")
+            : t("Burrow needs Docker Desktop to run on this computer."),
       });
       return;
     }

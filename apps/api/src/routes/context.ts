@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { implement, ORPCError } from "@orpc/server";
 import { SecretStoreUnavailableError } from "@rakazo/adapter-kit";
 import type { CatalogReads } from "@rakazo/adapters";
@@ -296,7 +296,7 @@ export function createRouterContext(deps: RouterDeps) {
           ? {
               ...entry,
               managed: true,
-              billing: runsOnHostedCredits(auth, entry) ? "Uses Deskhead credits" : entry.billing,
+              billing: runsOnHostedCredits(auth, entry) ? "Uses Burrow credits" : entry.billing,
             }
           : entry,
       );

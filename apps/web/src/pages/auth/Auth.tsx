@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import { BOT_COLOR_LIST, signInProviders } from "@rakazo/contracts";
 import {
@@ -89,7 +89,7 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
     ) : presented && mode === "in" ? (
       <Trans>Welcome back</Trans>
     ) : mode === "in" ? (
-      <Trans>Sign in to Deskhead</Trans>
+      <Trans>Sign in to Burrow</Trans>
     ) : mode === "up" ? (
       <Trans>Create your account</Trans>
     ) : (

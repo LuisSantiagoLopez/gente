@@ -261,7 +261,7 @@
     stackHint.hidden = phase !== "docker-missing";
     stackHint.textContent = dockerDesktop
       ? t(
-          "On this Mac, Deskhead needs Docker Desktop (a free app) for its workspace. Install it and open it once.",
+          "On this Mac, Burrow needs Docker Desktop (a free app) for its workspace. Install it and open it once.",
         )
       : t("Install Docker Engine and start it.");
   }
@@ -393,7 +393,7 @@
   }
 
 
-  // ---- Deskhead: the local Swift model -------------------------------------------------------
+  // ---- Burrow: the local Swift model -------------------------------------------------------
   let lastBrain = null;
   let brainWaiter = null;
   let chosenModel = null;
@@ -454,7 +454,7 @@
           : `${model.note} ${t("Downloads once, then works offline.")}`;
         break;
       case "ollama-missing":
-        brainStatus.textContent = t("Deskhead runs Swift with Ollama, a free app. Get started installs it for you.");
+        brainStatus.textContent = t("Burrow runs Swift with Ollama, a free app. Get started installs it for you.");
         break;
       case "installing-ollama":
         brainStatus.textContent = t("Installing Ollama…");
@@ -556,7 +556,7 @@
       if (generation !== requestGeneration) return result;
       if (result.ok) {
         serverUrl.value = result.url;
-        setStatus(t("Deskhead answered at {url}.", { url: result.url }), "ok");
+        setStatus(t("Burrow answered at {url}.", { url: result.url }), "ok");
       } else {
         setStatus(result.error ?? t("Could not reach that address."), "error");
       }
@@ -711,7 +711,7 @@
         continueButton.focus();
       }
     } catch {
-      setStatus(t("Setup could not start. Quit Deskhead and try again."), "error");
+      setStatus(t("Setup could not start. Quit Burrow and try again."), "error");
       setBusy(true);
     }
   }

@@ -1,8 +1,8 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { buildSkillMd } from "@rakazo/core";
 
 const RAKAZO_DOCS: ReadonlyArray<readonly [topics: string, url: string]> = [
-  ["Getting started, first bot, what Deskhead does", "https://rakazo.com/docs.md"],
+  ["Getting started, first bot, what Burrow does", "https://rakazo.com/docs.md"],
   [
     "Creating bots, chatting, bot settings, sidebar, search",
     "https://rakazo.com/docs/bots-and-chats.md",
@@ -63,9 +63,9 @@ const SKILLS: Array<{ name: string; description: string; body: string }> = [
 4. Synthesize a verdict: ship, ship after fixes, or do not ship. List the confirmed findings ordered by severity, each with its location and failure scenario, then any open questions. If nothing survived verification, say so plainly instead of inventing nitpicks.`,
   },
   {
-    name: "Deskhead",
-    description: "What Deskhead is and how to use it: chat apps, computers, billing, hosting",
-    body: `Answer questions about Deskhead itself from its docs. Fetch the matching page with web_fetch before answering, then answer briefly in your own words and link the page. If fetching fails or is unavailable, answer only what this index says and link the page. Never invent menus, buttons, or steps the page doesn't show. Account-specific facts (credit balance, plan, usage) aren't in the docs: point to the screen that shows them.
+    name: "Burrow",
+    description: "What Burrow is and how to use it: chat apps, computers, billing, hosting",
+    body: `Answer questions about Burrow itself from its docs. Fetch the matching page with web_fetch before answering, then answer briefly in your own words and link the page. If fetching fails or is unavailable, answer only what this index says and link the page. Never invent menus, buttons, or steps the page doesn't show. Account-specific facts (credit balance, plan, usage) aren't in the docs: point to the screen that shows them.
 
 ${RAKAZO_DOCS.map(([topics, url]) => `- ${topics}: ${url}`).join("\n")}
 

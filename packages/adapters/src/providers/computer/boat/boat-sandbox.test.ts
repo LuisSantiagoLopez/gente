@@ -1,4 +1,4 @@
-// Modified by DeskHead Inc. in 2026 for Deskhead (fork of Rakazo, Apache-2.0).
+// Modified by DeskHead Inc. in 2026 for Burrow (fork of Rakazo, Apache-2.0).
 import { createHash } from "node:crypto";
 import type * as TimersPromises from "node:timers/promises";
 import type { FileUrlResponse, SandboxStateEnum } from "@boatdev/sdk";
@@ -120,7 +120,7 @@ describe("stopped workspace files", () => {
     expect(download).toHaveBeenCalledOnce();
   });
 
-  it("ignores earlier snapshots after a forced stop or a newer Deskhead checkpoint", async () => {
+  it("ignores earlier snapshots after a forced stop or a newer Burrow checkpoint", async () => {
     const download = vi.spyOn(FakeBoatApi.prototype, "getSnapshotFileRaw");
     const { api, computer, provider } = await boat();
     const bytes = new TextEncoder().encode("last saved content");
