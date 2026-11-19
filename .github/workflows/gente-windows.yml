@@ -20,6 +20,8 @@ jobs:
         with:
           node-version: 24.15.0
       - run: npm i -g pnpm@12.18.0
+      - name: Every download address answers (release gate)
+        run: node scripts/gente-check-downloads.mjs
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
       - run: pnpm --filter @rakazo/web build
