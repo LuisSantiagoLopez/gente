@@ -1,6 +1,12 @@
 /* Copyright 2026 DeskHead Inc. Gente's motion layer (new file in a fork of Rakazo, Apache-2.0).
    Only transform, opacity and filter animate, so the compositor does the work and long chats keep
    their frame rate. Everything here is off for people who ask the system for less motion. */
+@property --gente-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 :root {
   --gente-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --gente-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -81,7 +87,7 @@
     border-radius: inherit;
     padding: 2px;
     background: conic-gradient(
-      from 0deg,
+      from var(--gente-angle),
       var(--gente-glow-a),
       var(--gente-glow-b),
       var(--gente-glow-c),
@@ -174,8 +180,7 @@
 }
 @keyframes gente-glow-hue {
   to {
-    transform: rotate(0deg);
-    filter: hue-rotate(40deg);
+    --gente-angle: 360deg;
   }
 }
 @keyframes gente-breathe {
