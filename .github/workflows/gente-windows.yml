@@ -42,7 +42,7 @@ jobs:
           Get-ChildItem "$env:LOCALAPPDATA\Programs" | Out-String
       - name: Seed the verified server bundle (the draft release URL is not public yet)
         run: |
-          v=$(node -p "require('$RUNNER_TEMP/bundle/server-bundle.json'.replace(/\\\\/g,'/')).version")
+          v=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).version)" "$RUNNER_TEMP/bundle/server-bundle.json")
           dir="$APPDATA/Gente/stack/runtime/server-$v"
           mkdir -p "$dir" && 7z x -y "-o$dir" "$RUNNER_TEMP"/bundle/burrow-server-win32-x64-*.zip > /dev/null && touch "$dir/.complete"
       - name: Stand-in model server on 11434
