@@ -82,9 +82,13 @@ const STABLE_RUN_MS = 60_000;
 const LOG_TAIL_LINES = 12;
 
 /** Resolves once Postgres itself answers on the loopback port; a forwarder that only accepts is not enough. */
-export function postgresAnswers(port: number, signal: AbortSignal): Promise<void> {
+export function postgresAnswers(
+  port: number,
+  signal: AbortSignal,
+  host = "127.0.0.1",
+): Promise<void> {
   return new Promise((resolve, reject) => {
-    const socket = connect({ host: "127.0.0.1", port, signal });
+    const socket = connect({ host, port, signal });
     const fail = (error: Error) => {
       socket.destroy();
       reject(error);
@@ -550,10 +554,10 @@ export class NativeStackController extends StackLifecycle {
       .catch((error: Error) => {
         throw new StartFailure(servicesFailed(), [...postgres.tail, error.message]);
       });
-    await this.waitForDatabasePort(databasePort, signal);
+    const endpoint = await this.waitForDatabasePort(runtime.cli, databasePort, signal);
 
     const at = (login: string, secret: string) =>
-      `postgres://${encodeURIComponent(login)}:${encodeURIComponent(secret)}@127.0.0.1:${databasePort}/${encodeURIComponent(database)}`;
+      `postgres://${encodeURIComponent(login)}:${encodeURIComponent(secret)}@${endpoint.host}:${endpoint.port}/${encodeURIComponent(database)}`;
     if (moving && this.deps.importFromDocker) {
       try {
         // A retry restores into an empty database again; the Docker stack is untouched.
@@ -825,20 +829,59 @@ export class NativeStackController extends StackLifecycle {
       throw new DownloadError(`Pulling the database image exited with code ${pulled.code}`);
   }
 
-  private async waitForDatabasePort(port: number, signal: AbortSignal) {
+  /**
+   * Burrow (modified from Rakazo): on some Macs the runtime's published loopback port accepts and
+   * then resets every connection while the database VM's own address works. Try loopback first,
+   * then the VM's address on its own network, which only this Mac can reach.
+   */
+  private async waitForDatabasePort(
+    cli: string,
+    port: number,
+    signal: AbortSignal,
+  ): Promise<{ host: string; port: number }> {
     const answers = this.deps.databaseAnswers ?? postgresAnswers;
     const sleep = this.deps.sleep ?? defaultSleep;
     for (let attempt = 1; ; attempt++) {
       try {
-        return await answers(port, signal);
+        await answers(port, signal);
+        return { host: "127.0.0.1", port };
       } catch (error) {
         if (signal.aborted) throw error;
+        const vmHost = this.deps.databaseAnswers ? null : await this.databaseVmAddress(cli, signal);
+        if (vmHost !== null) {
+          try {
+            await postgresAnswers(5432, signal, vmHost);
+            return { host: vmHost, port: 5432 };
+          } catch {
+            // Fall through to the next attempt.
+          }
+        }
         if (attempt === DATABASE_ANSWER_ATTEMPTS)
           throw new StartFailure(servicesFailed(), [
             `Postgres did not answer on 127.0.0.1:${port}: ${error instanceof Error ? error.message : String(error)}`,
           ]);
         await sleep(HEALTH_POLL_INTERVAL_MS, signal);
       }
+    }
+  }
+
+  private async databaseVmAddress(cli: string, signal: AbortSignal): Promise<string | null> {
+    const result = await this.deps.run(cli, ["inspect", DATABASE_CONTAINER], {
+      cwd: this.deps.stackDir,
+      env: this.baseEnv(),
+      timeoutMs: CLI_TIMEOUT_MS,
+      signal,
+    });
+    if (result.code !== 0) return null;
+    try {
+      const parsed = JSON.parse(result.stdout) as unknown;
+      const entry = (Array.isArray(parsed) ? parsed[0] : parsed) as {
+        status?: { networks?: { ipv4Address?: string }[] };
+      };
+      const address = entry?.status?.networks?.[0]?.ipv4Address?.split("/")[0];
+      return address && /^\d+\.\d+\.\d+\.\d+$/.test(address) ? address : null;
+    } catch {
+      return null;
     }
   }
 
