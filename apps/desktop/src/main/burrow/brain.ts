@@ -11,7 +11,8 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-export const OLLAMA_URL = "http://127.0.0.1:11434";
+/** Ollama's default address. `BURROW_OLLAMA_URL` points tests at a stand-in server. */
+export const OLLAMA_URL = process.env.BURROW_OLLAMA_URL?.trim() || "http://127.0.0.1:11434";
 const OLLAMA_ZIP_URL = "https://ollama.com/download/Ollama-darwin.zip";
 
 export type SwiftModel = {
