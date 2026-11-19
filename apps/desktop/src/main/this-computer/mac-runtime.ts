@@ -50,6 +50,8 @@ export interface ServerBundle {
   version: string;
   /** Gente: the archive's expected SHA-256 when it ships inside the app (`file`). */
   sha256?: string;
+  /** Gente: the server already unpacked inside the app; it runs from there, nothing is copied. */
+  inPlace?: string;
   /** Release builds download and verify this; a development override names a local file. */
   download?: PinnedDownload;
   file?: string;
@@ -79,7 +81,11 @@ export async function readServerBundle(input: {
   if (raw === null) return null;
   try {
     const { url, sha256, size, version } = JSON.parse(raw) as Record<string, unknown>;
-    // Gente: the server ships inside the app; nothing of ours is downloaded on first run.
+    // Gente: the server ships unpacked inside the app and runs from there: no download, no unpack.
+    const inPlace = path.join(input.resourcesPath, "rakazo-server");
+    if (typeof version === "string" && (await stat(path.join(inPlace, "manifest.json")).catch(() => null))?.isFile())
+      return { version, inPlace };
+    // Otherwise a server archive may ship inside the app; nothing of ours is downloaded on first run.
     const shipped = typeof url === "string" ? path.join(input.resourcesPath, path.basename(new URL(url).pathname)) : "";
     if (
       shipped &&
@@ -255,6 +261,18 @@ export function serverDirName(bundle: ServerBundle): string {
   return sha ? `server-${bundle.version}-${sha.slice(0, 12)}` : `server-${bundle.version}`;
 }
 
+/** Reads and checks an unpacked server's manifest. */
+export async function readServerManifest(dir: string): Promise<{ dir: string; manifest: ServerManifest }> {
+  const manifest = JSON.parse(await readFile(path.join(dir, "manifest.json"), "utf8")) as ServerManifest;
+  for (const entry of ["api", "worker", "web", "migrate"] as const) {
+    const file = manifest.entrypoints?.[entry];
+    const resolved = typeof file === "string" ? path.resolve(dir, file) : "";
+    if (!resolved.startsWith(`${dir}${path.sep}`))
+      throw new DownloadError(`The server names no ${entry} entrypoint inside itself`);
+  }
+  return { dir, manifest };
+}
+
 /** Gente: a shipped archive is checked before it is unpacked, like a download would be. */
 export async function verifyFileSha256(file: string, expected: string): Promise<void> {
   const hash = createHash("sha256");
@@ -267,6 +285,7 @@ export async function installServerBundle(
   deps: RuntimeDeps,
   bundle: ServerBundle,
 ): Promise<{ dir: string; manifest: ServerManifest }> {
+  if (bundle.inPlace) return readServerManifest(bundle.inPlace);
   const source = bundle.download ?? (bundle.file ? { file: bundle.file } : null);
   if (source === null) throw new Error("No server bundle is configured");
   if (bundle.file && bundle.sha256) await verifyFileSha256(bundle.file, bundle.sha256);

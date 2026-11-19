@@ -93,11 +93,8 @@
           "to": "server-bundle.json"
         },
         {
-          "from": "build/server/",
-          "to": ".",
-          "filter": [
-            "*.tar.xz"
-          ]
+          "from": "build/server-dir/rakazo-server",
+          "to": "rakazo-server"
         }
       ],
       "target": [
