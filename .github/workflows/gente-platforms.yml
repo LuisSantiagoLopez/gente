@@ -84,6 +84,10 @@ jobs:
           cat "$RUNNER_TEMP/e2e/install.json"
       - name: Stand-in model server on 11434
         run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
+      - name: Where the main process is after 45 s (diagnostic)
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node apps/desktop/e2e/main-hang-probe.mjs "$APP" 45 | tee "$RUNNER_TEMP/e2e/main-probe.txt"
       - name: Smoke test (memory check → setup → sign up → first reply)
         run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
       - name: Collect logs
