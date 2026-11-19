@@ -428,7 +428,8 @@ async function ensureDefaultKernel(deps: ResolveRuntimeDeps, system: RunningSyst
     deps,
     system.cli,
     ["system", "kernel", "set", "--recommended", "--force"],
-    RUNTIME_TIMEOUT_MS,
+    // Burrow: the recommended kernel is a 676 MB download.
+    SYSTEM_START_PROCESS_TIMEOUT_MS,
   );
 }
 
