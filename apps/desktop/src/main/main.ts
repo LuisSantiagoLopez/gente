@@ -56,6 +56,7 @@ import {
 } from "./setup/setup-store.js";
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
+import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
 import { createClipboardHandler } from "./system/clipboard.js";
@@ -781,8 +782,33 @@ app.whenReady().then(async () => {
       importFromDocker: moving ? (target) => moveDockerStack(moveDeps, target) : undefined,
     });
   };
+  // Burrow: Windows runs the server as plain processes with its own Postgres; no Docker needed.
+  const windowsBundle = windowsStackEligible({ platform: process.platform })
+    ? await readServerBundle({
+        resourcesPath: process.resourcesPath,
+        packaged: app.isPackaged,
+        override: process.env.RAKAZO_SERVER_BUNDLE,
+      })
+    : null;
   desktop.localStack =
-    choice === "native" && serverBundle !== null
+    windowsBundle !== null
+      ? new WindowsStackController({
+          hostComputer: desktop.hostComputer?.connection,
+          stackDir: userStackDir,
+          resourceDir,
+          localWebUrl,
+          imageTag,
+          serverBundle: windowsBundle,
+          nodeBinary: process.execPath,
+          env: process.env,
+          run: runDocker,
+          fetch: (url, init) => net.fetch(url, { ...init, bypassCustomProtocolHandlers: true }),
+          exists: existsSync,
+          probe,
+          randomHex,
+          onState,
+        })
+      : choice === "native" && serverBundle !== null
       ? await nativeStack(serverBundle)
       : new LocalStackController({
           hostComputer: desktop.hostComputer?.connection,

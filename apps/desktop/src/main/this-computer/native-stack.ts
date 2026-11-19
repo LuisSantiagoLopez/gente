@@ -72,7 +72,7 @@ const POSTGRES_READY_TIMEOUT_MS = 120_000;
 const DATABASE_ANSWER_ATTEMPTS = 30;
 const DATABASE_ANSWER_TIMEOUT_MS = 1_000;
 /** Postgres's SSLRequest: a length of 8 and the code 80877103, answered with one byte, S or N. */
-const SSL_REQUEST = Buffer.from([0, 0, 0, 8, 4, 210, 22, 47]);
+export const SSL_REQUEST = Buffer.from([0, 0, 0, 8, 4, 210, 22, 47]);
 const MIGRATE_TIMEOUT_MS = 10 * 60_000;
 const CLI_TIMEOUT_MS = 60_000;
 const IMAGE_PULL_TIMEOUT_MS = 60 * 60_000;
@@ -119,7 +119,7 @@ export type SpawnProcess = (
 const spawnProcess: SpawnProcess = (command, args, options) =>
   spawn(command, args, { ...options, stdio: ["ignore", "pipe", "pipe"], shell: false });
 
-interface ServiceSpec {
+export interface ServiceSpec {
   name: string;
   command: string;
   args: string[];
@@ -130,7 +130,7 @@ interface ServiceSpec {
 }
 
 /** One supervised process: output to its log file, restarted with backoff while the stack is up. */
-class Service {
+export class Service {
   private child: ChildProcess | null = null;
   private log: WriteStream | null = null;
   private stopping = false;
@@ -333,10 +333,10 @@ const INHERITED_ENV = [
   "no_proxy",
 ];
 /** `.env` lines only Compose reads; the database owner login never reaches the API or worker. */
-const COMPOSE_ONLY =
+export const COMPOSE_ONLY =
   /^(?:POSTGRES_\w+|DATABASE_MIGRATION_URL|SANDBOX_SUPERVISOR_TOKEN|RAKAZO_(?:COMPUTER_)?IMAGE(?:_TAG)?|BUSYBOX_IMAGE|RAKAZO_WEB_BIND)$/;
 /** What Compose hands the web service from `.env`. */
-const WEB_ENV = [
+export const WEB_ENV = [
   "RAKAZO_HOST",
   "RAKAZO_ALLOWED_HOSTS",
   "RAKAZO_CSP_SCRIPT_SRC",
@@ -370,7 +370,7 @@ export async function choosePort(
   return port;
 }
 
-class StartFailure extends Error {
+export class StartFailure extends Error {
   constructor(
     readonly userMessage: string,
     readonly output: string[] = [],
@@ -379,9 +379,9 @@ class StartFailure extends Error {
   }
 }
 
-const downloadFailed = () =>
+export const downloadFailed = () =>
   t("Downloading Burrow failed. Check the internet connection, then retry.");
-const servicesFailed = () =>
+export const servicesFailed = () =>
   t("Burrow services did not start. Check the output below, then retry.");
 
 export class NativeStackController extends StackLifecycle {

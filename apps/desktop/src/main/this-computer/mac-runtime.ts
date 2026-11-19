@@ -188,7 +188,7 @@ async function runChecked(deps: RuntimeDeps, binary: string, args: string[], tim
  * Downloads (or reuses) one pinned version: fetch into `downloads/`, unpack into a scratch
  * directory, and rename that into `<dir>/<name>` only once it is complete.
  */
-async function installVersion(
+export async function installVersion(
   deps: RuntimeDeps,
   name: string,
   source: PinnedDownload | { file: string },
