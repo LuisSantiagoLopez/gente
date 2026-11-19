@@ -24,7 +24,8 @@
 4. Click **Get started**. Burrow then, by itself:
    - installs [Ollama](https://ollama.com) if you don't have it,
    - downloads the Swift model with a progress bar (17 GB, one time),
-   - starts your private workspace,
+   - downloads and starts your private workspace (about 450 MB; bot computers add about 1.6 GB
+     in the background),
    - opens a chat.
 5. Create your local account (it never leaves this Mac) and say hi to your first bot.
 
