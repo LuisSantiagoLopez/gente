@@ -13,6 +13,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { DesktopLocalStackPhase } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
+import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
@@ -89,6 +90,8 @@ interface WindowsPorts {
 }
 
 export interface WindowsStackDeps {
+  /** Seals the workspace's master secrets with Windows DPAPI (Electron safeStorage). */
+  sealer?: Sealer;
   stackDir: string;
   resourceDir: string;
   localWebUrl: string;
@@ -255,7 +258,15 @@ export class WindowsStackController extends StackLifecycle {
     const template = await readFile(path.join(this.deps.resourceDir, STACK_ENV_TEMPLATE), "utf8");
     await ensureStackEnv(this.deps.stackDir, template, this.deps.randomHex);
     const stackToken = await ensureStackToken(this.deps.stackDir, this.deps.randomHex);
-    const stackEnv = parseStackEnv(await readFile(this.dir(STACK_ENV_FILE), "utf8"));
+    // Gente: the vault key and sign-in secret live in the OS keychain, not in the plain .env.
+    if (this.deps.sealer) await sealStackSecrets(this.deps.stackDir, this.deps.sealer);
+    const stackEnv = this.deps.sealer
+      ? await unsealStackEnv(
+          this.deps.stackDir,
+          parseStackEnv(await readFile(this.dir(STACK_ENV_FILE), "utf8")),
+          this.deps.sealer,
+        )
+      : parseStackEnv(await readFile(this.dir(STACK_ENV_FILE), "utf8"));
 
     this.push({ type: "pull-start" });
     let server: { dir: string; manifest: ServerManifest };

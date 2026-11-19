@@ -719,6 +719,13 @@ app.whenReady().then(async () => {
   const probe = (url: string, signal: AbortSignal, token: string) =>
     probeManagedStack(url, token, signal);
   const randomHex = (bytes: number) => randomBytes(bytes).toString("hex");
+  // Gente: Keychain on macOS, DPAPI on Windows. Without it, secrets stay in .env as before.
+  const sealer = safeStorage.isEncryptionAvailable()
+    ? {
+        seal: (value: string) => safeStorage.encryptString(value),
+        unseal: (sealed: Buffer) => safeStorage.decryptString(sealed),
+      }
+    : undefined;
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
@@ -784,6 +791,7 @@ app.whenReady().then(async () => {
       randomHex,
       onState,
       importFromDocker: moving ? (target) => moveDockerStack(moveDeps, target) : undefined,
+      sealer,
     });
   };
   // Gente: Windows runs the server as plain processes with its own Postgres; no Docker needed.
@@ -811,6 +819,7 @@ app.whenReady().then(async () => {
           probe,
           randomHex,
           onState,
+          sealer,
         })
       : choice === "native" && serverBundle !== null
       ? await nativeStack(serverBundle)
