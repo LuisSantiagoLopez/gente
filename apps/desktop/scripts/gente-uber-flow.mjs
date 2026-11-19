@@ -10,7 +10,7 @@
 //      never this script's.
 // Keys come from the macOS Keychain (account "gente"): BROWSERBASE_API_KEY, BROWSERBASE_PROJECT_ID.
 // The session is always released, and no more than 3 run at once (the project's limit).
-//   node apps/desktop/scripts/gente-uber-flow.mjs --pickup "..." --dropoff "..." [--out dir] [--wait-login-s 300]
+//   node apps/desktop/scripts/gente-uber-flow.mjs --pickup "..." --dropoff "..."  (Santi: pickup in San Francisco) [--out dir] [--wait-login-s 300]
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -42,7 +42,17 @@ const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 const running = await bb(`/sessions?status=RUNNING`).catch(() => []);
 if (Array.isArray(running) && running.length >= 3) throw new Error("3 Browserbase sessions already running; wait for one to finish.");
 
-const session = await bb("/sessions", { method: "POST", body: JSON.stringify({ projectId, keepAlive: false }) });
+// One saved browser profile per user: log in to Uber once, stay logged in after.
+let contextId = "";
+try { contextId = keychain("BROWSERBASE_CONTEXT_ID"); } catch {}
+if (!contextId) {
+  contextId = (await bb("/contexts", { method: "POST", body: JSON.stringify({ projectId }) })).id;
+  execFileSync("/usr/bin/security", ["add-generic-password", "-U", "-a", "gente", "-s", "BROWSERBASE_CONTEXT_ID", "-w", contextId]);
+}
+const session = await bb("/sessions", {
+  method: "POST",
+  body: JSON.stringify({ projectId, keepAlive: false, timeout: 1800, browserSettings: { context: { id: contextId, persist: true } } }),
+});
 log("session", session.id, session.status ?? "", session.region ?? "");
 let frame = 0;
 const shot = async (page, name) => {
@@ -56,7 +66,7 @@ try {
   writeFileSync(path.join(out, "live-view.txt"), `${live.debuggerFullscreenUrl}\n`);
   const browser = await chromium.connectOverCDP(session.connectUrl);
   const context = browser.contexts()[0] ?? (await browser.newContext());
-  const page = context.pages()[0] ?? (await context.newPage());
+  let page = context.pages()[0] ?? (await context.newPage());
   await page.setViewportSize({ width: 430, height: 860 }).catch(() => {});
   await page.goto("https://m.uber.com/go/home", { waitUntil: "domcontentloaded", timeout: 60_000 });
   await page.waitForTimeout(4000);
@@ -71,9 +81,25 @@ try {
   const signedIn = async () =>
     !/auth\.uber\.com|login/i.test(page.url()) &&
     (await page.getByRole("button", { name: /^log ?in$/i }).or(page.getByRole("link", { name: /^log ?in$/i })).count()) === 0;
-  const until = Date.now() + waitMs;
-  while (!(await signedIn()) && Date.now() < until) {
+  // Santi's rule: never leave the person on the home page when signed out; open Uber's login.
+  if (waitMs > 0 && !(await signedIn())) {
+    await page.getByRole("button", { name: /^log ?in$/i }).or(page.getByRole("link", { name: /^log ?in$/i })).first().click({ timeout: 5000 }).catch(() => {});
     await page.waitForTimeout(3000);
+    log("login page:", page.url());
+  }
+  const until = Date.now() + waitMs;
+  while (Date.now() < until) {
+    // Another viewer (the live view, or a helper over CDP) may open or close tabs: follow the newest.
+    if (page.isClosed()) {
+      const open = context.pages().filter((p) => !p.isClosed());
+      if (open.length === 0) {
+        log("the browser tab was closed; stopping");
+        break;
+      }
+      page = open.at(-1);
+    }
+    if (await signedIn().catch(() => false)) break;
+    await new Promise((r) => setTimeout(r, 3000));
     if (frame < 40) await shot(page, "waiting-login");
   }
   if (!(await signedIn())) {
