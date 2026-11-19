@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createHmac } from "node:crypto";
 import { onError } from "@orpc/server";
@@ -186,6 +187,7 @@ import { mountScriptAssets } from "./http/script-assets.js";
 import { SYSTEM_CONTEXT_PATHS } from "./http/system-context-routes.js";
 import { moveMcpArgsIntoSecrets } from "./integrations/mcp-args-migration.js";
 import { pluginSubmissionRoutes } from "./integrations/plugin-submissions.js";
+import { createSkillLearningModel } from "./learning/skill-learning-model.js";
 import { mountMeetingCalendarHttp } from "./meetings/calendar/calendar-routes.js";
 import { createMeetingAnswers } from "./meetings/meeting-answers.js";
 import { mountMeetingWebhook } from "./meetings/meeting-routes.js";
@@ -870,6 +872,11 @@ async function buildApp(overrides: CreateAppOverrides): Promise<AppHandles> {
               resolveModel: executor.resolveModel,
             }),
           },
+    skillLearningModel: createSkillLearningModel({
+      prisma,
+      runtime,
+      resolveModel: executor.resolveModel,
+    }),
     analytics,
     pluginRepoFetcher,
     pluginMarketplaceRead,

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AnyContractProcedure,
   InferContractRouterInputs,
@@ -15,6 +16,7 @@ import { meetingsRpc } from "../meetings/meetings.js";
 import { modelsRpc } from "../models/models-rpc.js";
 import { routinesRpc } from "../routines/routines-rpc.js";
 import { runsRpc } from "../runs/runs-rpc.js";
+import { skillLearningRpc } from "../skills/skill-learning-rpc.js";
 import { skillsRpc } from "../skills/skills-rpc.js";
 import { spacesRpc } from "../spaces/spaces-rpc.js";
 import { threadsRpc } from "../threads/threads-rpc.js";
@@ -33,6 +35,7 @@ export const appContract = {
   ...routinesRpc,
   ...artifactsRpc,
   ...skillsRpc,
+  ...skillLearningRpc,
   ...integrationsRpc,
   ...runsRpc,
 };

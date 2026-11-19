@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { ORPCError } from "@orpc/server";
 import { MemoryRevisionConflictError } from "@rakazo/adapter-kit";
 import {
@@ -29,7 +30,8 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             spaceId: context.actor.spaceId,
             ...(input.botId ? { botId: input.botId } : {}),
-            ...(input.scope ? { scope: input.scope } : {}),
+            // Other scopes (such as learned skills) have their own pages.
+            scope: input.scope ?? { in: ["bot", "user"] },
           },
         });
         return docs.map((doc) => ({
@@ -60,6 +62,7 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             id: input.documentId,
             spaceId: context.actor.spaceId,
+            scope: { in: ["bot", "user"] },
           },
         });
         if (!doc) throw new IsolationError();
@@ -101,6 +104,7 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             id: input.documentId,
             spaceId: context.actor.spaceId,
+            scope: { in: ["bot", "user"] },
           },
         });
         if (!doc) throw new IsolationError();

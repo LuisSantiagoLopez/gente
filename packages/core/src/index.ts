@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export * from "./account/ai-consent.js";
 export * from "./account/email-typo.js";
 export * from "./account/organizations.js";
@@ -132,6 +133,11 @@ export * from "./runs/run-error.js";
 export * from "./runs/run-state.js";
 export * from "./runs/stuck-work.js";
 export * from "./runs/tool-activity.js";
+export * from "./skill-learning/skill-change.js";
+export * from "./skill-learning/skill-diff.js";
+export * from "./skill-learning/skill-guard.js";
+export * from "./skill-learning/skill-learning.prompt.js";
+export * from "./skill-learning/skill-replay.js";
 export * from "./skills/agent-skill.js";
 export * from "./skills/agent-skill.prompt.js";
 export * from "./skills/teach-playbook.js";

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export * from "./analytics/product-analytics.js";
 export * from "./approvals/auto-review.js";
 export {
@@ -103,6 +104,7 @@ export { purgeClearedConversationMemory } from "./memory/conversation-memory-cle
 export { readAgentMemory } from "./memory/memory-context.js";
 export { AGENT_MEMORY_MAX_BYTES, buildAgentMemoryPrompt } from "./memory/memory-context.prompt.js";
 export * from "./memory/memory-provider-factory.js";
+export * from "./memory/skill-learning-store.js";
 export * from "./messaging/bot-messages.js";
 export * from "./messaging/chat-sdk-surface.js";
 export * from "./messaging/installed-messaging-surface.js";

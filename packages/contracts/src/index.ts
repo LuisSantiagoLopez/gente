@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export * from "./account/account-export.js";
 export * from "./account/ai-consent.js";
 export * from "./account/analytics.js";
@@ -74,6 +75,7 @@ export * from "./rpc/app-contract.js";
 export * from "./runs/runs.js";
 export * from "./settings-scope.js";
 export * from "./skills/agent-skills.js";
+export * from "./skills/skill-learning.js";
 export * from "./skills/taught-skills.js";
 export * from "./spaces/groups.js";
 export * from "./spaces/organization.js";
