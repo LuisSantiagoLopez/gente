@@ -59,3 +59,18 @@ describe("Burrow small talk", () => {
     expect(body.messages[0].content).not.toContain("operating manual");
   });
 });
+
+describe("Burrow small-talk window", () => {
+  it("moves in steps so consecutive turns share their start", () => {
+    const turns = (n: number) => [
+      { role: "system", content: "s" },
+      ...Array.from({ length: n }, (_, i) => ({ role: i % 2 ? "assistant" : "user", content: `m${i}` })),
+      { role: "user", content: "hey" },
+    ];
+    const first = (n: number) => JSON.parse(quickChatBody(JSON.stringify({ messages: turns(n) }))!.body).messages[1].content;
+    expect(first(10)).toBe("m0");
+    expect(first(20)).toBe(first(21));
+    expect(first(21)).toBe(first(22));
+    expect(JSON.parse(quickChatBody(JSON.stringify({ messages: turns(40) }))!.body).messages.length).toBeLessThanOrEqual(22);
+  });
+});

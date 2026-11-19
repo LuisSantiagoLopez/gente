@@ -80,12 +80,15 @@ export function smallTalkBody(parsed: {
   const text = turns
     .filter((m) => (m.role === "user" || m.role === "assistant") && !m.tool_calls)
     .map((m) => ({ role: m.role, content: messageText(m.content) }))
-    .filter((m) => m.content.trim() !== "")
-    .slice(-SMALL_TALK_HISTORY);
+    .filter((m) => m.content.trim() !== "");
+  // The window moves in steps, not every turn, so the prompt's start stays the same and the
+  // model server reuses what it already read.
+  const startAt = Math.max(0, Math.floor((text.length - SMALL_TALK_HISTORY) / 8 + 1) * 8);
+  const window = text.length > SMALL_TALK_HISTORY ? text.slice(startAt) : text;
   const { tools: _tools, tool_choice: _choice, parallel_tool_calls: _parallel, ...rest2 } = parsed;
   return {
     ...rest2,
-    messages: [...system, ...text, parsed.messages.at(-1)],
+    messages: [...system, ...window, parsed.messages.at(-1)],
     ...(parsed.reasoning_effort !== undefined ? { reasoning_effort: "none" } : {}),
   };
 }

@@ -14,7 +14,7 @@ type Stub = {
 };
 
 const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M";
-const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q3_K_M";
+const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ3_XXS";
 const SMALL = "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M";
 
 let stub: Stub | null = null;
@@ -69,13 +69,13 @@ describe("Burrow brain", () => {
     const state = brain.current();
     expect(state.phase).toBe("ready");
     expect(state.model.tag).toBe(COMPACT);
-    expect(state.switchedFrom).toBe("Swift 1.5 27B");
+    expect(state.switchedFrom).toBe("Swift 1.5 27B Max");
     expect(pulled(calls)).toEqual([BEST, COMPACT]);
     const loads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive !== 0).map((c) => c.body.model);
-    expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-compact"]);
+    expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-iq3"]);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved.alias).toBe("swift-1.5-27b-compact");
-    expect(saved.installed).toEqual(["swift-1.5-27b-compact"]);
+    expect(saved.alias).toBe("swift-1.5-27b-iq3");
+    expect(saved.installed).toEqual(["swift-1.5-27b-iq3"]);
   });
 
   it("does not download again when the model is already there", async () => {
@@ -86,7 +86,7 @@ describe("Burrow brain", () => {
   });
 
   it("reports a failure when no Swift can run", async () => {
-    const { brain } = await setup({ failLoad: [BEST, COMPACT, SMALL] });
+    const { brain } = await setup({ failLoad: [BEST, COMPACT, "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_M", SMALL] });
     await brain.start({ model: BEST });
     expect(brain.current().phase).toBe("failed");
     expect(brain.current().message).toContain("No Swift model could run");
