@@ -62,7 +62,7 @@ import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.j
 import { startWatchdogs } from "./burrow/watchdogs.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
-import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
+import { plainStackEligible, postgresBin, WindowsStackController } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
 import { createClipboardHandler } from "./system/clipboard.js";
@@ -807,14 +807,24 @@ app.whenReady().then(async () => {
       telegramToken: () => readTelegramToken(),
     });
   };
-  // Gente: Windows runs the server as plain processes with its own Postgres; no Docker needed.
-  const windowsBundle = windowsStackEligible({ platform: process.platform })
+  // Gente: Windows, Intel Macs and Macs without Apple container run the server as plain
+  // processes with the Postgres the app ships; no Docker, nothing downloaded or unpacked.
+  const plainBundle = plainStackEligible({
+    platform: process.platform,
+    appleContainer: serverBundle !== null,
+  })
     ? await readServerBundle({
         resourcesPath: process.resourcesPath,
         packaged: app.isPackaged,
         override: process.env.RAKAZO_SERVER_BUNDLE,
       })
     : null;
+  const windowsBundle =
+    plainBundle !== null &&
+    (process.platform === "win32" ||
+      (plainBundle.inPlace !== undefined && existsSync(postgresBin(plainBundle.inPlace, "pg_ctl"))))
+      ? plainBundle
+      : null;
   desktop.localStack =
     windowsBundle !== null
       ? new WindowsStackController({

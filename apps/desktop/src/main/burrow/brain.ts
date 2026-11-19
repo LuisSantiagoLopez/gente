@@ -386,7 +386,7 @@ export class Brain {
   private async run(options: { installOllama?: boolean; model?: string }) {
     this.set({ phase: "checking", message: "", completedBytes: 0, totalBytes: 0 });
     // A friendly check before anything downloads: the 27B needs about 11 GB on its own.
-    if (os.totalmem() < MIN_MEMORY_BYTES) {
+    if (totalMemory() < MIN_MEMORY_BYTES) {
       this.set({ phase: "failed", message: CALM.smallComputer });
       return;
     }
@@ -669,6 +669,15 @@ export const CALM = {
   space: (gb: number) =>
     `Gente needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
 } as const;
+/**
+ * The computer's memory. CI runners with less than 16 GB (the 7 GB macOS arm64 runner) set
+ * GENTE_E2E_MEMORY_GB to get past the check against the stand-in model server.
+ */
+export function totalMemory(env = process.env): number {
+  const forced = Number(env.GENTE_E2E_MEMORY_GB);
+  return Number.isFinite(forced) && forced > 0 ? forced * 1024 ** 3 : os.totalmem();
+}
+
 /** 16 GB machines report a little less than 16 GiB; allow for that. */
 export const MIN_MEMORY_BYTES = 15 * 1024 ** 3;
 

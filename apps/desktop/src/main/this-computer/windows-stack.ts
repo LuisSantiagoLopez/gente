@@ -87,11 +87,25 @@ const INHERITED_ENV = [
   "HTTP_PROXY",
   "HTTPS_PROXY",
   "NO_PROXY",
+  // macOS (the same plain-process stack runs on Intel Macs and Macs without Apple container).
+  "HOME",
+  "USER",
+  "LOGNAME",
+  "TMPDIR",
+  "LANG",
 ];
 
 /** Windows is supported on x64 (and arm64 through x64 emulation) with a bundle for it. */
 export function windowsStackEligible(input: { platform: string }): boolean {
   return input.platform === "win32";
+}
+
+/**
+ * The plain-process stack (server on Electron's Node, Postgres from the app's own resources):
+ * every Windows PC, and every Mac that cannot run Apple container (Intel, or macOS before 26).
+ */
+export function plainStackEligible(input: { platform: string; appleContainer: boolean }): boolean {
+  return input.platform === "win32" || (input.platform === "darwin" && !input.appleContainer);
 }
 
 interface WindowsPorts {
@@ -167,8 +181,8 @@ export async function installWindowsServerBundle(
 }
 
 /** Postgres's own programs inside the bundle. */
-export function postgresBin(serverDir: string, program: string) {
-  return path.join(serverDir, "postgres", "bin", `${program}.exe`);
+export function postgresBin(serverDir: string, program: string, platform = process.platform) {
+  return path.join(serverDir, "postgres", "bin", platform === "win32" ? `${program}.exe` : program);
 }
 
 /**
@@ -357,7 +371,10 @@ export class WindowsStackController extends StackLifecycle {
         "-t",
         "120",
         "-o",
-        `-p ${ports.postgres} -c listen_addresses=127.0.0.1`,
+        // On a Mac the socket goes in the data folder, never a shared /tmp another Postgres uses.
+        process.platform === "win32"
+          ? `-p ${ports.postgres} -c listen_addresses=127.0.0.1`
+          : `-p ${ports.postgres} -c listen_addresses=127.0.0.1 -k "${pgdata}"`,
       ],
       { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: 150_000, signal },
     );
