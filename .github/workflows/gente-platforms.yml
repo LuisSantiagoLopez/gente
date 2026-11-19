@@ -1,0 +1,130 @@
+name: gente-platforms
+# Builds Gente on real Windows and macOS runners with the server and its Postgres inside the app,
+# installs the installer, then runs memory check → setup → sign up → "hey" → reply against a
+# stand-in model server. Uploads screenshots, logs and step times; on success, attaches the
+# installer to the draft release (never publishes it).
+on:
+  workflow_dispatch:
+  push:
+    branches: [platforms]
+permissions:
+  contents: write
+concurrency:
+  group: gente-platforms-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  DRAFT_TAG: v0.1.0
+jobs:
+  gente:
+    name: ${{ matrix.label }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-2025, label: windows-x64, arch: x64, kind: win }
+          - { os: windows-11-arm, label: windows-arm64, arch: arm64, kind: win }
+          - { os: macos-15, label: macos-arm64, arch: arm64, kind: mac }
+          - { os: macos-15-intel, label: macos-intel, arch: x64, kind: mac }
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - name: Every download address answers (release gate)
+        run: node scripts/gente-check-downloads.mjs
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle inside the app (with embedded Postgres)
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle"
+          node scripts/gente-embed-server.mjs "$RUNNER_TEMP/bundle"
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+      - name: Windows installer
+        if: matrix.kind == 'win'
+        working-directory: apps/desktop
+        run: >-
+          npx electron-builder --win nsis --${{ matrix.arch }} --publish never
+          -c.win.verifyUpdateCodeSignature=false
+          '-c.nsis.artifactName=${productName}-Setup-${version}-${arch}.${ext}'
+      - name: Mac disk image
+        if: matrix.kind == 'mac'
+        working-directory: apps/desktop
+        env: { CSC_IDENTITY_AUTO_DISCOVERY: "false" }
+        run: >-
+          npx electron-builder --mac dmg --${{ matrix.arch }} --publish never
+          -c.mac.identity=null -c.mac.notarize=false
+          '-c.dmg.artifactName=${productName}-${version}-${arch}.${ext}'
+      - name: Install (timed)
+        run: |
+          mkdir -p "$RUNNER_TEMP/e2e"
+          start=$(date +%s)
+          if [ "${{ matrix.kind }}" = win ]; then
+            exe=$(ls apps/desktop/out/*.exe | head -1)
+            powershell -NoProfile -Command "Start-Process -Wait -FilePath '$(cygpath -w "$exe")' -ArgumentList '/S'"
+            app="$LOCALAPPDATA/Programs/Gente/Gente.exe"
+          else
+            dmg=$(ls apps/desktop/out/*.dmg | head -1)
+            mnt=$(hdiutil attach -nobrowse -readonly "$dmg" | tail -1 | cut -f3-)
+            cp -R "$mnt/Gente.app" /Applications/
+            hdiutil detach "$mnt" -quiet || true
+            app=/Applications/Gente.app/Contents/MacOS/Gente
+          fi
+          test -x "$app" || test -f "$app"
+          echo "{\"install\": $(( $(date +%s) - start ))}" > "$RUNNER_TEMP/e2e/install.json"
+          echo "APP=$app" >> "$GITHUB_ENV"
+          cat "$RUNNER_TEMP/e2e/install.json"
+      - name: Stand-in model server on 11434
+        run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
+      - name: Smoke test (memory check → setup → sign up → first reply)
+        run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
+      - name: Collect logs
+        if: always()
+        run: |
+          for d in "$APPDATA/Gente" "$APPDATA/Burrow" "$HOME/Library/Application Support/Gente" "$HOME/Library/Application Support/Burrow"; do
+            [ -d "$d/stack/logs" ] && cp -r "$d/stack/logs" "$RUNNER_TEMP/e2e/stack-logs" || true
+            [ -d "$d/logs" ] && cp -r "$d/logs" "$RUNNER_TEMP/e2e/app-logs" || true
+          done
+          cp "$RUNNER_TEMP/stub.log" "$RUNNER_TEMP/e2e/" 2>/dev/null || true
+      - name: Step times
+        if: always()
+        run: |
+          node -e '
+            const fs = require("fs"), dir = process.argv[1];
+            const read = (f) => { try { return JSON.parse(fs.readFileSync(dir + "/" + f, "utf8")); } catch { return {}; } };
+            const t = { ...read("install.json"), ...read("timings.json") };
+            const s = (v) => (v === undefined ? "not reached" : `${v}s`);
+            const row = `| ${process.argv[2]} | ${s(t.install)} | ${s(t["workspace-ready"] - (t["setup-shown"] ?? 0) || undefined)} | ${s(t["first-reply"])} | ${s(t["reply-seconds"])} |`;
+            const out = ["| OS | install | setup (Get started → app) | launch → first reply | reply |", "|---|---|---|---|---|", row].join("\n");
+            console.log(out);
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, out + "\n");
+            fs.writeFileSync(dir + "/times.json", JSON.stringify(t, null, 2));
+          ' "$RUNNER_TEMP/e2e" "${{ matrix.label }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gente-${{ matrix.label }}
+          path: ${{ runner.temp }}/e2e
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: installer-${{ matrix.label }}
+          path: |
+            apps/desktop/out/*.exe
+            apps/desktop/out/*.dmg
+      - name: Attach the installer to the draft release (never published)
+        if: success()
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          test "$(gh release view "$DRAFT_TAG" --json isDraft -q .isDraft)" = true
+          for f in apps/desktop/out/*.exe apps/desktop/out/*.dmg; do
+            [ -f "$f" ] && gh release upload "$DRAFT_TAG" "$f" --clobber
+          done
