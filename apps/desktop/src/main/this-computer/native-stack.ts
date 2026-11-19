@@ -13,6 +13,7 @@ import path from "node:path";
 import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
+import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { t } from "../i18n.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import type { RunDocker } from "./docker-cli.js";
@@ -277,6 +278,8 @@ export interface DockerImportTarget {
 }
 
 export interface NativeStackDeps {
+  /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
+  cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
   composioKey?: () => Promise<string | undefined>;
   /** Seals the workspace's master secrets with the OS keychain (Electron safeStorage). */
@@ -629,12 +632,17 @@ export class NativeStackController extends StackLifecycle {
     const computerImage = `${stackEnv.get("RAKAZO_COMPUTER_IMAGE") || COMPUTER_IMAGE}:${this.deps.imageTag}`;
     const composioKey = (await this.deps.composioKey?.().catch(() => undefined)) ??
       (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
+    const e2bKey =
+      (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
+      (stackEnv.get("E2B_API_KEY") || undefined);
+    const computer = computerEnv(e2bKey, await readComputerChoice(this.deps.stackDir), "local-vm");
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,
       LOCAL_VM_CLI: runtime.cli,
       LOCAL_VM_COMPUTER_IMAGE: computerImage,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
       ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
+      ...computer,
     });
     const entry = (name: keyof ServerManifest["entrypoints"]) =>
       path.join(server.dir, server.manifest.entrypoints[name]);
@@ -701,7 +709,8 @@ export class NativeStackController extends StackLifecycle {
           path.basename(path.dirname(server.dir)),
           ...(await this.runtimeRoot(runtime.cli)),
         ]).catch(() => undefined);
-        this.pullComputerImage(runtime.cli, computerImage);
+        // Gente: a cloud computer needs no local image.
+        if (computer.SANDBOX_PROVIDER === "local-vm") this.pullComputerImage(runtime.cli, computerImage);
         return;
       }
       if (Date.now() >= deadline) break;

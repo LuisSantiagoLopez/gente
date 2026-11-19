@@ -14,6 +14,7 @@ import path from "node:path";
 import type { DesktopLocalStackPhase } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
+import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
@@ -90,6 +91,8 @@ interface WindowsPorts {
 }
 
 export interface WindowsStackDeps {
+  /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
+  cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
   composioKey?: () => Promise<string | undefined>;
   /** Seals the workspace's master secrets with Windows DPAPI (Electron safeStorage). */
@@ -399,10 +402,15 @@ export class WindowsStackController extends StackLifecycle {
 
     const composioKey = (await this.deps.composioKey?.().catch(() => undefined)) ??
       (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
+    const e2bKey =
+      (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
+      (stackEnv.get("E2B_API_KEY") || undefined);
+    const computer = computerEnv(e2bKey, await readComputerChoice(this.deps.stackDir), "none");
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
       ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
+      ...computer,
     });
     const entry = (name: keyof ServerManifest["entrypoints"]) =>
       path.join(server.dir, server.manifest.entrypoints[name]);

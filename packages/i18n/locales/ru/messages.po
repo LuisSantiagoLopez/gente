@@ -1144,6 +1144,10 @@ msgstr "Добавить еще"
 msgid "Add another {name}"
 msgstr "Добавить ещё {name}"
 
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "Add Context7 docs"
+msgstr ""
+
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Add credits"
@@ -11215,6 +11219,10 @@ msgstr "Это невозможно отменить."
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "this computer"
 msgstr "этот компьютер"
+
+#: apps/web/src/pages/shell/computers/computer-panel.tsx
+msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr ""
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"

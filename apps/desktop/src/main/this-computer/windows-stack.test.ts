@@ -29,7 +29,7 @@ function fakeChild(): ChildProcess {
   return child;
 }
 
-async function setup(options: { pgVersion?: boolean } = {}) {
+async function setup(options: { pgVersion?: boolean; e2b?: string } = {}) {
   const stackDir = await mkdtemp(path.join(os.tmpdir(), "burrow-win-"));
   const resourceDir = await mkdtemp(path.join(os.tmpdir(), "burrow-win-res-"));
   await writeFile(
@@ -71,6 +71,7 @@ async function setup(options: { pgVersion?: boolean } = {}) {
       let next = 50000;
       return async () => next++;
     })(),
+    cloudComputerKey: async () => options.e2b,
     installServer: async () => ({
       dir: serverDir,
       manifest: { version: "1", entrypoints: { api: "api.js", worker: "worker.js", web: "web.js", migrate: "migrate.js" } },
@@ -119,4 +120,11 @@ describe("Windows stack (no Docker, embedded Postgres)", () => {
 
   });
 
+  it("gives bots an E2B cloud computer when the keychain has a key", async () => {
+    const { controller, spawned } = await setup({ e2b: "e2b_test_key" });
+    await controller.start();
+    const api = spawned.find((s) => s.args.some((a) => a.endsWith("api.js")));
+    expect(api?.env.SANDBOX_PROVIDER).toBe("e2b");
+    expect(api?.env.E2B_API_KEY).toBe("e2b_test_key");
+  });
 });

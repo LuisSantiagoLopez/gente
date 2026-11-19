@@ -135,6 +135,14 @@ function ComputerPreview({
     : "";
   return (
     <div>
+      {computer?.kind === "e2b" ? (
+        <p className="mb-2 text-body-sm text-muted-foreground">
+          <Trans>
+            This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take
+            control to sign in yourself.
+          </Trans>
+        </p>
+      ) : null}
       <div
         data-testid="computer-preview"
         data-state={

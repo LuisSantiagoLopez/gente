@@ -424,6 +424,25 @@ export function PluginsOverlay({
             >
               <Trans>Turn on Composio apps</Trans>
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="ms-2 mt-2"
+              disabled={pending !== null}
+              onClick={() => {
+                // Gente: Context7's up-to-date library docs for coding work; free, no key.
+                setPending("install-source");
+                void rpc.mcp.servers
+                  .create(customMcpServerInput("Context7 docs", "https://mcp.context7.com/mcp"))
+                  .then(() => refresh())
+                  .catch((error: unknown) =>
+                    setSourceError(error instanceof Error ? error.message : String(error)),
+                  )
+                  .finally(() => setPending(null));
+              }}
+            >
+              <Trans>Add Context7 docs</Trans>
+            </Button>
           </div>
           <div className="flex items-center gap-2">
             {browsing && appCount > 0 ? (

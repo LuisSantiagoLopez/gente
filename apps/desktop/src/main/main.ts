@@ -57,7 +57,7 @@ import {
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
-import { readComposioKey } from "./burrow/composio.js";
+import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
 import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
@@ -794,6 +794,7 @@ app.whenReady().then(async () => {
       importFromDocker: moving ? (target) => moveDockerStack(moveDeps, target) : undefined,
       sealer,
       composioKey: () => readComposioKey(),
+      cloudComputerKey: () => readKeychainSecret("E2B_API_KEY"),
     });
   };
   // Gente: Windows runs the server as plain processes with its own Postgres; no Docker needed.
@@ -823,6 +824,7 @@ app.whenReady().then(async () => {
           onState,
           sealer,
           composioKey: () => readComposioKey(),
+          cloudComputerKey: () => readKeychainSecret("E2B_API_KEY"),
         })
       : choice === "native" && serverBundle !== null
       ? await nativeStack(serverBundle)
