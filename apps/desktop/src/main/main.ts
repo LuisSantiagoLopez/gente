@@ -80,6 +80,7 @@ import {
   createComputerPermissionSetup,
   waitForComputerSetupReturn,
 } from "./this-computer/computer-permissions.js";
+import { createComputerUseControl } from "./this-computer/computer-use-pill.js";
 import { launchDockerApp, resolveDockerBinary, runDocker } from "./this-computer/docker-cli.js";
 import type { StackChoice } from "./this-computer/docker-move.js";
 import {
@@ -165,6 +166,7 @@ const updaterEnvironment = {
 };
 let requestingComputerAccess = false;
 let hostScreen: HostScreen | undefined;
+let computerUse: ReturnType<typeof createComputerUseControl> | undefined;
 markOnce("rk:main:module-evaluated");
 if (PERFORMANCE_USER_DATA) {
   app.setPath("userData", PERFORMANCE_USER_DATA);
@@ -659,7 +661,7 @@ app.whenReady().then(async () => {
       app.quit();
     },
   });
-  hostScreen =
+  const driven =
     screenDriver &&
     createDesktopHostScreen({
       platform: process.platform,
@@ -681,6 +683,11 @@ app.whenReady().then(async () => {
         return { png: fitted.toPNG(), ...fitted.getSize() };
       },
     });
+  // Shown while Gente drives the screen, with a Stop button and a stop key.
+  if (driven) {
+    computerUse = createComputerUseControl(process.platform);
+    hostScreen = computerUse.wrap(driven);
+  }
   try {
     desktop.hostComputer = await prepareHostComputer(userDataDir, hostScreen);
   } catch {
@@ -1170,5 +1177,6 @@ app.on("before-quit", (event) => {
   void desktop.hostComputer?.close();
   desktop.userDevices?.close();
   void hostScreen?.close();
+  computerUse?.dispose();
   desktop.localStack?.abort();
 });

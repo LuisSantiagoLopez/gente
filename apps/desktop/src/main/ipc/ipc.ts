@@ -31,16 +31,16 @@ export type IpcHandler<Name extends IpcChannelName> = (
  */
 export function sentFrom(window: IpcWindow, event: IpcCaller): boolean {
   try {
-    if (window !== "setup")
+    if (window !== "setup" && window !== "computerPill")
       return (
         fromAppFrame(permissionTarget(), event) ||
         (window === "appOrReplaced" && fromAppFrame(replacedAppTarget(), event))
       );
-    const setup = desktop.setupWindow;
+    const own = window === "setup" ? desktop.setupWindow : desktop.computerPillWindow;
     return (
-      setup !== null &&
-      !setup.isDestroyed() &&
-      event.sender === setup.webContents &&
+      own !== null &&
+      !own.isDestroyed() &&
+      event.sender === own.webContents &&
       event.senderFrame !== null &&
       event.senderFrame === event.sender.mainFrame
     );

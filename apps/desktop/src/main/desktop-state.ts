@@ -11,6 +11,7 @@ export const desktop = {
   mainWindow: null,
   replacedAppWindow: null,
   setupWindow: null,
+  computerPillWindow: null,
   currentSetup: null,
   currentTargetUrl: null,
   setupError: null,
@@ -32,6 +33,8 @@ export const desktop = {
    */
   replacedAppWindow: BrowserWindow | null;
   setupWindow: BrowserWindow | null;
+  /** The "Gente is using your computer" pill, once it was first shown. */
+  computerPillWindow: BrowserWindow | null;
   currentSetup: DesktopSetup | null;
   currentTargetUrl: string | null;
   setupError: string | null;

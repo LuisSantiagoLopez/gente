@@ -1,8 +1,8 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import path from "node:path";
 import type { AgentToolExecutionResult, ProcessEvent } from "@rakazo/adapter-kit";
-import type { ApprovalMode } from "@rakazo/core";
-import { redactSecrets } from "@rakazo/core";
+import type { ApprovalMode, ScreenActionRisk } from "@rakazo/core";
+import { redactSecrets, screenActionRisk, screenElementLabels } from "@rakazo/core";
 import { sandboxCommandTimeoutMs } from "@rakazo/core/node/sandbox-command";
 import { z } from "zod";
 import type { HostComputerEnvironment } from "../../computers/host/host-computer-protocol.js";
@@ -25,8 +25,13 @@ import type {
   HostScreenActResult,
   HostScreenObservation,
 } from "../../computers/screens/host-screen.js";
-import { HOST_SCREEN_MAX_ACTIONS, hostScreenAction } from "../../computers/screens/host-screen.js";
+import {
+  HOST_SCREEN_MAX_ACTIONS,
+  hostScreenAction,
+  isHostScreenStopped,
+} from "../../computers/screens/host-screen.js";
 import type { RunContext } from "../assembly/run-context.js";
+import { cancelActiveRun } from "../lifecycle/run-stop.js";
 import type { ToolCall } from "./run-tool-gate.js";
 
 export {
@@ -61,11 +66,15 @@ export function userComputerOwner(input: {
 }
 
 /**
- * The user's own computer asks a person first in Ask and Auto, whatever the rules allow, until they
- * choose "Allow in this space"; Never ask runs it, since pairing was consent, and a block refuses it. These tools run
- * only in the user's own runs (see userComputerOwner), so any effect of them past "intended" in
- * this space traces back to that approval. Removing every paired computer ends it, so pairing again
- * asks again. Screen control is approved per app.
+ * The shell on the user's own computer asks a person first in Ask and Auto, whatever the rules
+ * allow, until they run one; Never ask runs it, since pairing was consent, and a block refuses
+ * it. These tools run only in the user's own runs (see userComputerOwner). Removing every paired
+ * computer ends it, so pairing again asks again.
+ *
+ * Screen control is autonomous: pairing, and turning on "Let bots use this computer" in the
+ * desktop app, was consent to look and act. It asks only for an action that spends money, sends
+ * something as the user, deletes their data or agrees to legal terms (see screenActionRisk), and
+ * asks for each of those every time, whatever the user allowed before.
  */
 export async function userComputerGate(
   ctx: RunContext,
@@ -77,48 +86,48 @@ export async function userComputerGate(
   if (blocked) return "deny";
   // Pairing the desktop was the owner's consent; Never ask does not ask again.
   if (mode === "never") return "allow";
+  if (USER_COMPUTER_SCREEN_TOOLS.has(name))
+    return name === USER_COMPUTER_ACT_TOOL && userComputerActRisk(ctx, args) ? "ask" : "allow";
   const { deps, run } = ctx;
   const pairedSince = await deps.userDevices?.pairedSince(run.userId);
   if (!pairedSince) return "ask";
-  const where = {
-    spaceId: run.spaceId,
-    status: { in: ["approved", "executing", "completed", "uncertain"] },
-    createdAt: { gte: pairedSince },
-    run: { userId: run.userId },
-  };
-  if (!USER_COMPUTER_SCREEN_TOOLS.has(name)) {
-    const allowed = await deps.prisma.externalEffect.findFirst({
-      where: { ...where, kind: USER_COMPUTER_SHELL_TOOL },
-      select: { id: true },
-    });
-    return allowed ? "allow" : "ask";
-  }
-  const app = userComputerAppName(args.app).toLowerCase();
-  if (!app) return "ask";
-  // Every screen action records an effect, so page through them rather than cap the search.
-  let cursor: string | undefined;
-  for (;;) {
-    const page = await deps.prisma.externalEffect.findMany({
-      where: { ...where, kind: { in: [...USER_COMPUTER_SCREEN_TOOLS] } },
-      select: { id: true, request: true },
-      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-      take: SCREEN_APPROVAL_PAGE,
-      ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-    });
-    if (
-      page.some(
-        (effect) =>
-          userComputerAppName((effect.request as { app?: unknown } | null)?.app).toLowerCase() ===
-          app,
-      )
-    )
-      return "allow";
-    if (page.length < SCREEN_APPROVAL_PAGE) return "ask";
-    cursor = page.at(-1)!.id;
-  }
+  const allowed = await deps.prisma.externalEffect.findFirst({
+    where: {
+      spaceId: run.spaceId,
+      status: { in: ["approved", "executing", "completed", "uncertain"] },
+      createdAt: { gte: pairedSince },
+      run: { userId: run.userId },
+      kind: USER_COMPUTER_SHELL_TOOL,
+    },
+    select: { id: true },
+  });
+  return allowed ? "allow" : "ask";
 }
 
-const SCREEN_APPROVAL_PAGE = 200;
+/** Element names from this run's latest look at each app, by lowercased app name. */
+const seenLabels = new WeakMap<RunContext, Map<string, Map<number, string>>>();
+
+function rememberLabels(ctx: RunContext, app: string, observation: HostScreenObservation) {
+  const apps = seenLabels.get(ctx) ?? new Map<string, Map<number, string>>();
+  seenLabels.set(ctx, apps);
+  apps.set(app.toLowerCase(), screenElementLabels(observation.tree));
+}
+
+/** Which of the four things a person always decides this act call does, if any. */
+export function userComputerActRisk(
+  ctx: RunContext,
+  args: Record<string, unknown>,
+): ScreenActionRisk | null {
+  const app = userComputerAppName(args.app);
+  const actions = screenActions.safeParse(args.actions);
+  if (!actions.success) return null;
+  return screenActionRisk({
+    app,
+    actions: actions.data,
+    purpose: typeof args.purpose === "string" ? args.purpose : undefined,
+    labels: seenLabels.get(ctx)?.get(app.toLowerCase()),
+  });
+}
 
 /** The working directory on the user's computer: their home or a folder inside it. */
 export function userComputerCwd(environment: HostComputerEnvironment, cwd: unknown): string {
@@ -283,9 +292,12 @@ async function userComputerScreen(ctx: RunContext, call: ToolCall, request: Scre
         deviceId,
       ),
     );
-    if (request.method === "screenObserve")
+    if (request.method === "screenObserve") {
+      rememberLabels(ctx, request.app, value as HostScreenObservation);
       return call.finish(screenToolResult(ctx, value as HostScreenObservation, "observed"));
+    }
     const acted = value as HostScreenActResult;
+    if (acted.observation) rememberLabels(ctx, request.app, acted.observation);
     const total = request.actions.length;
     const note = `completed ${acted.completed} of ${total} action${total === 1 ? "" : "s"}${
       acted.error ? `; stopped: ${redactSecrets(acted.error, ctx.secrets)}` : ""
@@ -297,6 +309,11 @@ async function userComputerScreen(ctx: RunContext, call: ToolCall, request: Scre
     );
   } catch (error) {
     if (signal.aborted) throw error;
+    // The person pressed Stop on their computer: end this run the way the chat's Stop does.
+    if (isHostScreenStopped(error)) {
+      await cancelActiveRun(ctx.deps, ctx.run);
+      return call.finish({ error: (error as Error).message });
+    }
     const reason = redactSecrets(
       error instanceof Error ? error.message : "screen control failed",
       ctx.secrets,

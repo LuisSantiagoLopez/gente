@@ -279,7 +279,7 @@ export const computerTools: ConnectorTool[] = [
   {
     name: "user_computer_act",
     description:
-      'Act in one app on the user\'s own computer, in the background, and return its window afterwards. Observe it first. Up to 24 ordered actions: click (element, or x,y in screenshot pixels; button, double), type (text, into element or the focused field), set (value of element: a pop-up\'s choice, a field\'s whole text), key (key such as return, tab, escape, up, a; modifiers cmd, shift, option, ctrl), scroll (direction, amount, at element or x,y), menu (path from the menu bar, like ["File","New"]; use it instead of shortcuts), wait (ms). Element numbers come from the latest observation of that app.',
+      'Act in one app on the user\'s own computer, in the background, and return its window afterwards. Observe it first. Up to 24 ordered actions: click (element, or x,y in screenshot pixels; button, double), type (text, into element or the focused field), set (value of element: a pop-up\'s choice, a field\'s whole text), key (key such as return, tab, escape, up, a; modifiers cmd, shift, option, ctrl), scroll (direction, amount, at element or x,y), menu (path from the menu bar, like ["File","New"]; use it instead of shortcuts), wait (ms). Element numbers come from the latest observation of that app. Say what the actions do in purpose; the user approves spending money, sending as them, deleting their data and agreeing to terms.',
     inputSchema: {
       type: "object",
       properties: {
@@ -320,6 +320,12 @@ export const computerTools: ConnectorTool[] = [
             },
             required: ["kind"],
           },
+        },
+        purpose: {
+          type: "string",
+          maxLength: 300,
+          description:
+            "What these actions do, in plain words (for example: send the reply, buy the ticket, delete the old drafts).",
         },
       },
       required: ["app", "actions"],

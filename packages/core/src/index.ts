@@ -131,6 +131,7 @@ export * from "./runs/action-approval.js";
 export * from "./runs/activity-sections.js";
 export * from "./runs/run-error.js";
 export * from "./runs/run-state.js";
+export * from "./runs/screen-action-risk.js";
 export * from "./runs/stuck-work.js";
 export * from "./runs/tool-activity.js";
 export * from "./skill-learning/skill-change.js";

@@ -14,6 +14,10 @@ const STATIC_FILES = [
   "telegram-renderer/telegram.html",
   "telegram-renderer/telegram.css",
   "telegram-renderer/telegram.js",
+  "preload/computer-pill-preload.cjs",
+  "computer-pill-renderer/computer-pill.html",
+  "computer-pill-renderer/computer-pill.css",
+  "computer-pill-renderer/computer-pill.js",
 ];
 const TOKENS_FILE = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
