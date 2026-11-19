@@ -1,0 +1,68 @@
+name: gente-windows
+# Builds the Windows installer and server bundle on real Windows, then installs the app and runs
+# the onboarding → workspace → chat smoke test against a stand-in model server.
+on:
+  workflow_dispatch:
+  push:
+    branches: [windows-ci]
+permissions:
+  contents: write
+jobs:
+  windows:
+    runs-on: windows-2025
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle (with embedded Postgres)
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
+          node scripts/burrow-windows-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
+          mkdir -p apps/desktop/build && cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+      - name: NSIS installer
+        working-directory: apps/desktop
+        run: npx electron-builder --win nsis --x64 --publish never -c.win.verifyUpdateCodeSignature=false
+      - name: Install silently
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem apps/desktop/out/*.exe | Select-Object -First 1
+          Start-Process -Wait -FilePath $exe.FullName -ArgumentList "/S"
+          Get-ChildItem "$env:LOCALAPPDATA\Programs" | Out-String
+      - name: Seed the verified server bundle (the draft release URL is not public yet)
+        run: |
+          v=$(node -p "require('$RUNNER_TEMP/bundle/server-bundle.json'.replace(/\\\\/g,'/')).version")
+          dir="$APPDATA/Gente/stack/runtime/server-$v"
+          mkdir -p "$dir" && 7z x -y "-o$dir" "$RUNNER_TEMP"/bundle/burrow-server-win32-x64-*.zip > /dev/null && touch "$dir/.complete"
+      - name: Stand-in model server on 11434
+        run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
+      - name: Smoke test on real Windows
+        run: |
+          exe=$(ls "$LOCALAPPDATA/Programs/Gente/Gente.exe" 2>/dev/null || ls "$LOCALAPPDATA"/Programs/*/Gente.exe | head -1)
+          node apps/desktop/e2e/burrow-windows-smoke.mjs "$exe" "$RUNNER_TEMP/e2e"
+      - name: Collect logs
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/e2e/stack-logs"
+          cp -r "$APPDATA/Gente/stack/logs" "$RUNNER_TEMP/e2e/stack-logs/" 2>/dev/null || true
+          cp "$RUNNER_TEMP/stub.log" "$RUNNER_TEMP/e2e/" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gente-windows
+          path: |
+            ${{ runner.temp }}/e2e
+            apps/desktop/out/*.exe
+            ${{ runner.temp }}/bundle/burrow-server-win32-x64-*.zip
+            ${{ runner.temp }}/bundle/server-bundle.json

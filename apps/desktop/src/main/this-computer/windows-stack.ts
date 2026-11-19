@@ -124,7 +124,7 @@ export interface WindowsStackDeps {
 export async function installWindowsServerBundle(
   deps: RuntimeDeps,
   bundle: ServerBundle,
-  tar = "tar.exe",
+  tar = path.join(process.env.SystemRoot ?? "C:\\Windows", "System32", "tar.exe"),
 ): Promise<{ dir: string; manifest: ServerManifest }> {
   const source = bundle.download ?? (bundle.file ? { file: bundle.file } : null);
   if (source === null) throw new Error("No server bundle is configured");

@@ -192,7 +192,11 @@ fs.writeFileSync(
 fs.mkdirSync(outDir, { recursive: true });
 const archive = path.join(outDir, `${name}.tar.xz`);
 fs.rmSync(archive, { force: true });
-execFileSync("tar", ["-C", work, "-cJf", archive, "rakazo-server"], { stdio: "inherit" });
+// Relative archive name: GNU tar on Windows reads "D:\\..." as a remote host.
+execFileSync("tar", ["-C", work, "-cJf", path.basename(archive), "rakazo-server"], {
+  cwd: outDir,
+  stdio: "inherit",
+});
 fs.rmSync(work, { recursive: true, force: true });
 
 const sha256 = createHash("sha256").update(fs.readFileSync(archive)).digest("hex");
