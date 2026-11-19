@@ -238,36 +238,37 @@ function hasTag(tags: string[], tag: string) {
 export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
   const saved = await readSavedBrain(stackDirectory);
   if (saved === null) return false;
-  // Small talk first: its slim prompt is quick to read, and "hey" is the usual first message.
-  let warmed = false;
-  for (const file of ["burrow-warm-chat.json", "burrow-warm.json"]) {
-    try {
-      const prefix = JSON.parse(
-        await readFile(path.join(stackDirectory, "data", file), "utf8"),
-      ) as { messages?: unknown[] };
-      if (!Array.isArray(prefix.messages) || prefix.messages.length === 0) continue;
-      const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          ...prefix,
-          stream_options: undefined,
-          // Always the current default: a prefix saved under another model would load that one.
-          model: saved.alias,
-          stream: false,
-          max_completion_tokens: 1,
-          max_tokens: 1,
-          reasoning_effort: "none",
-        }),
-        signal: AbortSignal.timeout(10 * 60_000),
-      });
-      await res.text();
-      warmed ||= res.ok;
-    } catch {
-      // Nothing saved yet, or the model server is busy; the first reply reads it instead.
-    }
+  // Only the short small-talk prompt, on the quick model: it reads in about a second, so the first
+  // "hey" after launch finds it ready. Warming the long task prompt here would hold the model
+  // server for minutes and make that first "hey" wait behind it.
+  const model = saved.chatAlias ?? saved.alias;
+  try {
+    const prefix = JSON.parse(
+      await readFile(path.join(stackDirectory, "data", "burrow-warm-chat.json"), "utf8"),
+    ) as { messages?: unknown[] };
+    const body =
+      Array.isArray(prefix.messages) && prefix.messages.length > 0
+        ? { ...prefix, stream_options: undefined }
+        : { messages: [{ role: "user", content: "hi" }] };
+    const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        ...body,
+        model,
+        stream: false,
+        max_completion_tokens: 1,
+        max_tokens: 1,
+        reasoning_effort: "none",
+      }),
+      signal: AbortSignal.timeout(5 * 60_000),
+    });
+    await res.text();
+    return res.ok;
+  } catch {
+    // No chat yet, or the model server is busy: the first reply reads the prompt instead.
+    return false;
   }
-  return warmed;
 }
 
 /** Asks Ollama to drop a model from memory now. */

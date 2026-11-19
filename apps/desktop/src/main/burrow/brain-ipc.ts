@@ -4,7 +4,7 @@
 import { app } from "electron";
 import { desktop } from "../desktop-state.js";
 import { handleIpc } from "../ipc/ipc.js";
-import { Brain, ollamaInstalled, startOllama } from "./brain.js";
+import { Brain, ollamaInstalled, prewarmSwift, startOllama } from "./brain.js";
 import { checkEntitlement } from "./entitlement.js";
 
 let brain: Brain | null = null;
@@ -38,6 +38,8 @@ export function registerBrainIpc(stackDirectory: string) {
     });
     return (brain as Brain).current();
   });
-  // On a later launch the person's Ollama may not be running yet; bots need it.
-  if (ollamaInstalled()) void startOllama();
+  // On a later launch the person's Ollama may not be running yet; bots need it. Then have the
+  // quick model read the small-talk prompt, so the first "hey" answers at once.
+  if (ollamaInstalled())
+    void startOllama().then((up) => (up ? prewarmSwift(stackDirectory) : false));
 }
