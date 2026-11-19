@@ -62,8 +62,10 @@ jobs:
           cp -r "$APPDATA/Gente/stack/logs" "$RUNNER_TEMP/e2e/first-launch-stack-logs" 2>/dev/null || true
           taskkill //F //IM Gente.exe || true
           sleep 5
-          tail -50 "$RUNNER_TEMP/e2e/first-launch.log" || true
-          cat "$RUNNER_TEMP/e2e/processes.txt" || true
+          echo "--- first-launch output"; tail -50 "$RUNNER_TEMP/e2e/first-launch.log" || true
+          echo "--- processes"; cat "$RUNNER_TEMP/e2e/processes.txt" || true
+          echo "--- user data"; cat "$RUNNER_TEMP/e2e/userdata.txt" || true
+          echo "--- app logs"; find "$APPDATA/Gente" "$LOCALAPPDATA/Gente" -name "*.log" 2>/dev/null | while read f; do echo "== $f"; tail -40 "$f"; done
       - name: Smoke test on real Windows
         run: |
           exe=$(ls "$LOCALAPPDATA/Programs/Gente/Gente.exe" 2>/dev/null || ls "$LOCALAPPDATA"/Programs/*/Gente.exe | head -1)
