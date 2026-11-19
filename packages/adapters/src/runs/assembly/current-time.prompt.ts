@@ -22,9 +22,14 @@ export function formatCurrentTimeInstruction(
   const anchor = local
     ? `Current date and time for the user: ${local} (${timeZone}). That is ${iso} (UTC).`
     : `Current date and time: ${weekdayIn(now, "UTC")}, ${iso} (UTC).`;
+  const pause =
+    previousMessageAt && previousMessageNote(now, previousMessageAt, local ? timeZone : undefined);
+  // Burrow (modified from Rakazo): a local model reads every token of this on every turn, so keep
+  // only the time itself; the guidance below costs about a second per reply on a laptop.
+  if (process.env.BURROW_FAST_CHAT === "on") return [anchor, pause].filter(Boolean).join(" ");
   return [
     anchor,
-    previousMessageAt && previousMessageNote(now, previousMessageAt, local ? timeZone : undefined),
+    pause,
     local
       ? "Use the user's time zone for times you mention unless they ask otherwise, judge what is past, upcoming, or overdue from it, and write absolute dates rather than relative ones."
       : "Use it to judge what is past, upcoming, or overdue, convert it to the user's time zone when one is known, and write absolute dates rather than relative ones.",

@@ -54,6 +54,7 @@ import {
   writeSetup,
   writeUiLocale,
 } from "./setup/setup-store.js";
+import { prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
@@ -710,7 +711,14 @@ app.whenReady().then(async () => {
   const randomHex = (bytes: number) => randomBytes(bytes).toString("hex");
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
+  let prewarmed = false;
   const onState = (state: DesktopLocalStackState) => {
+    // Burrow: once the workspace is up, have the model read the last chat's prompt ahead of time.
+    if (state.phase === "ready" && !prewarmed) {
+      prewarmed = true;
+      void prewarmSwift(userStackDir);
+    }
+    if (state.phase !== "ready") prewarmed = false;
     if (desktop.setupWindow !== null && !desktop.setupWindow.isDestroyed()) {
       desktop.setupWindow.webContents.send("desktop.setup.stack.changed", state);
     }

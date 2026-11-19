@@ -102,6 +102,7 @@ export function swiftServerEnv(saved: SavedBrain | null): Record<string, string>
     RAKAZO_LOCAL_MAX_TOKENS: "8192",
     RAKAZO_LOCAL_REASONING_MODELS: installed.join(","),
     RAKAZO_LOCAL_VISION_MODELS: (saved.vision ?? []).join(","),
+    BURROW_FAST_CHAT: "on",
     PI_DEFAULT_PROVIDER: "local",
     PI_DEFAULT_MODEL: saved.alias,
     PI_DEFAULT_CREDENTIALS: "host",
@@ -183,6 +184,39 @@ async function hasVision(model: string): Promise<boolean> {
 
 function hasTag(tags: string[], tag: string) {
   return tags.some((name) => name === tag || name === `${tag}:latest`);
+}
+
+/**
+ * Sends the last chat's stable prefix (saved by the server as `data/burrow-warm.json`) to the
+ * model with a one-token reply, so the first message after Burrow opens finds it already read.
+ */
+export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
+  try {
+    const saved = await readSavedBrain(stackDirectory);
+    if (saved === null) return false;
+    const prefix = JSON.parse(
+      await readFile(path.join(stackDirectory, "data", "burrow-warm.json"), "utf8"),
+    ) as { model?: string; messages?: unknown[]; tools?: unknown[] };
+    if (!Array.isArray(prefix.messages) || prefix.messages.length === 0) return false;
+    const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        ...prefix,
+        stream_options: undefined,
+        model: prefix.model ?? saved.alias,
+        stream: false,
+        max_completion_tokens: 1,
+        max_tokens: 1,
+        reasoning_effort: "none",
+      }),
+      signal: AbortSignal.timeout(10 * 60_000),
+    });
+    await res.text();
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
 export class Brain {

@@ -1,0 +1,33 @@
+// Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
+// New file in Burrow (a fork of Rakazo by Elie Steinbock).
+import { describe, expect, it } from "vitest";
+import { isQuickChat, quickChatBody, userWords } from "./burrow-fast-chat.js";
+
+const time = "\n\n<current_time>\nCurrent date and time: Thursday.\n</current_time>";
+const body = (messages: unknown[], effort = "medium") =>
+  JSON.stringify({ model: "swift-1.5-27b", reasoning_effort: effort, messages });
+
+describe("Burrow fast chat", () => {
+  it("drops tagged context when reading the person's words", () => {
+    expect(userWords(`hey${time}`)).toBe("hey");
+  });
+
+  it("turns thinking off for a short hello", () => {
+    const out = quickChatBody(body([{ role: "system", content: "s" }, { role: "user", content: `hey${time}` }]));
+    expect(JSON.parse(out!.body).reasoning_effort).toBe("none");
+    expect((out!.prefix as { messages: unknown[] }).messages).toHaveLength(1);
+  });
+
+  it("keeps thinking for tasks, long messages and tool follow-ups", () => {
+    expect(isQuickChat([{ role: "user", content: "create a routine that reminds me to stretch" }])).toBe(false);
+    expect(isQuickChat([{ role: "user", content: "x".repeat(200) }])).toBe(false);
+    expect(isQuickChat([{ role: "user", content: "hi" }, { role: "tool", content: "ok" }])).toBe(false);
+    const out = quickChatBody(body([{ role: "user", content: "please research flights to Tokyo" }]));
+    expect(JSON.parse(out!.body).reasoning_effort).toBe("medium");
+  });
+
+  it("leaves a model without reasoning effort alone", () => {
+    const out = quickChatBody(JSON.stringify({ messages: [{ role: "user", content: "hey" }] }));
+    expect(JSON.parse(out!.body).reasoning_effort).toBeUndefined();
+  });
+});

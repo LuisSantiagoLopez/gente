@@ -8,6 +8,7 @@ import { declaredVisionModelIds, inputModalities } from "../../../models/model-m
 import { fetchPairedWithDispatcher } from "../../../network/undici-fetch.js";
 import { MODEL_STREAM_AGENT_TIMEOUTS } from "../pi-runtime-limits.js";
 import { splitLeadingThinkBlock } from "../stream/pi-think-tags.js";
+import { burrowFastChatInit } from "./burrow-fast-chat.js";
 import { LOCAL_PROVIDER_ID, localModelIds, localModelsApiKey } from "./pi-local-provider-id.js";
 
 /** Reasoning effort names for an OpenAI-style chat completions server that accepts them. */
@@ -100,8 +101,12 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
     : new Agent(MODEL_STREAM_AGENT_TIMEOUTS);
   const dispatcher = localDispatcher;
   const transport = fetchPairedWithDispatcher(baseFetch);
+  // Burrow (modified from Rakazo): quick chat without thinking, and a saved prefix to prewarm.
   return (input, init) =>
-    transport(input, { ...init, dispatcher } as RequestInit & { dispatcher: Dispatcher });
+    transport(input, {
+      ...burrowFastChatInit(init),
+      dispatcher,
+    } as RequestInit & { dispatcher: Dispatcher });
 }
 
 function localApi(): ProviderStreams {
