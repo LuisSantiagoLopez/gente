@@ -31,3 +31,31 @@ describe("Burrow fast chat", () => {
     expect(JSON.parse(out!.body).reasoning_effort).toBeUndefined();
   });
 });
+
+describe("Burrow small talk", () => {
+  const system = "You run on Burrow.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
+  const messages = [
+    { role: "system", content: system },
+    { role: "user", content: "earlier" },
+    { role: "assistant", content: null, tool_calls: [{ id: "1" }] },
+    { role: "tool", content: "result" },
+    { role: "assistant", content: "done" },
+    { role: "user", content: `hey${time}` },
+  ];
+
+  it("answers greetings with a slim prompt and no tools", async () => {
+    const { isSmallTalk } = await import("./burrow-fast-chat.js");
+    expect(isSmallTalk([{ role: "user", content: `hey${time}` }])).toBe(true);
+    expect(isSmallTalk([{ role: "user", content: "thanks!" }])).toBe(true);
+    expect(isSmallTalk([{ role: "user", content: "how are you?" }])).toBe(true);
+    expect(isSmallTalk([{ role: "user", content: "hey can you research the best flights to Tokyo next week" }])).toBe(false);
+    expect(isSmallTalk([{ role: "user", content: "what's on my calendar" }])).toBe(false);
+    const out = quickChatBody(JSON.stringify({ model: "m", reasoning_effort: "medium", tools: [{}], messages }));
+    const body = JSON.parse(out!.body);
+    expect(body.tools).toBeUndefined();
+    expect(body.reasoning_effort).toBe("none");
+    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user", "assistant", "user"]);
+    expect(body.messages[0].content).toContain("Favorite color is green.");
+    expect(body.messages[0].content).not.toContain("operating manual");
+  });
+});

@@ -428,6 +428,9 @@
   function renderBrain(state) {
     lastBrain = state;
     renderModelChoices(state);
+    if (chosenModel === null) {
+      for (const input of brainModelList.querySelectorAll("input")) input.checked = input.value === state.model.tag;
+    }
     const { phase, model } = state;
     brainSize.textContent = `${model.name} · ${model.sizeGB} GB`;
     brainModels.hidden = busyBrain || !["checking", "failed", "ollama-missing", "ready"].includes(phase);

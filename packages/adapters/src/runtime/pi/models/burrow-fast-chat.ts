@@ -17,7 +17,13 @@ export const QUICK_CHAT_MAX_CHARS = 140;
 const TASK_WORDS =
   /\b(create|make|build|write|research|find|search|schedule|remind|routine|every|daily|weekly|compare|analy[sz]e|plan|fix|debug|code|file|summari[sz]e|draft|email|book|order|calculate|step|steps)\b/i;
 
-type ChatMessage = { role?: string; content?: unknown };
+type ChatMessage = { role?: string; content?: unknown; tool_calls?: unknown };
+
+/** Greetings, thanks and short acknowledgements: answered with a slim prompt and no tools. */
+const SMALL_TALK =
+  /^(hi+|hey+|hello|yo|sup|hiya|howdy|thanks|thank you|thx|ty|ok|okay|k|cool|nice|great|perfect|awesome|lol|haha+|bye|good (morning|afternoon|evening|night)|gm|gn|how are you( doing)?|how's it going|what'?s up|hola|gracias|buenos d[ií]as|buenas)\b[\s!.?,]*(\w+[\s!.?,]*){0,3}$/i;
+/** Text messages of earlier turns kept in a slim small-talk prompt. */
+const SMALL_TALK_HISTORY = 12;
 
 function messageText(content: unknown): string {
   if (typeof content === "string") return content;
@@ -43,8 +49,51 @@ export function isQuickChat(messages: readonly ChatMessage[]): boolean {
   return words.length > 0 && words.length <= QUICK_CHAT_MAX_CHARS && !TASK_WORDS.test(words);
 }
 
+export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
+  const last = messages.at(-1);
+  if (!last || last.role !== "user") return false;
+  const words = userWords(last.content);
+  return words.length > 0 && words.length <= 40 && SMALL_TALK.test(words);
+}
+
+/**
+ * The bot's identity and memory without the long operating manual: the first two paragraphs
+ * (platform and the bot's own profile) and the durable memory block.
+ */
+export function slimSystemPrompt(system: string): string {
+  const head = system.split(/\n\s*\n/).slice(0, 2).join("\n\n");
+  const memoryAt = system.indexOf("<durable_memory>");
+  const memory = memoryAt >= 0 ? system.slice(memoryAt) : "";
+  return [head, "Reply briefly and naturally, like a friendly coworker.", memory]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+/** A small-talk request: slim system prompt, recent text turns only, no tools, no thinking. */
+export function smallTalkBody(parsed: {
+  messages: ChatMessage[];
+  [key: string]: unknown;
+}): Record<string, unknown> {
+  const [first, ...rest] = parsed.messages;
+  const system = first?.role === "system" ? [{ role: "system", content: slimSystemPrompt(messageText(first.content)) }] : [];
+  const turns = (first?.role === "system" ? rest : parsed.messages).slice(0, -1);
+  const text = turns
+    .filter((m) => (m.role === "user" || m.role === "assistant") && !m.tool_calls)
+    .map((m) => ({ role: m.role, content: messageText(m.content) }))
+    .filter((m) => m.content.trim() !== "")
+    .slice(-SMALL_TALK_HISTORY);
+  const { tools: _tools, tool_choice: _choice, parallel_tool_calls: _parallel, ...rest2 } = parsed;
+  return {
+    ...rest2,
+    messages: [...system, ...text, parsed.messages.at(-1)],
+    ...(parsed.reasoning_effort !== undefined ? { reasoning_effort: "none" } : {}),
+  };
+}
+
 /** Rewrites one chat-completions body; returns null when nothing should change. */
-export function quickChatBody(body: string): { body: string; prefix: unknown } | null {
+export function quickChatBody(
+  body: string,
+): { body: string; prefix: unknown; chatPrefix?: unknown } | null {
   let parsed: { messages?: ChatMessage[]; reasoning_effort?: string; stream?: boolean };
   try {
     parsed = JSON.parse(body);
@@ -53,22 +102,23 @@ export function quickChatBody(body: string): { body: string; prefix: unknown } |
   }
   if (!Array.isArray(parsed.messages)) return null;
   const prefix = { ...parsed, messages: parsed.messages.slice(0, -1) };
+  if (isSmallTalk(parsed.messages)) {
+    const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
+    const messages = slim.messages as unknown[];
+    return { body: JSON.stringify(slim), prefix, chatPrefix: { ...slim, messages: messages.slice(0, -1) } };
+  }
   if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
     parsed.reasoning_effort = "none";
   }
   return { body: JSON.stringify(parsed), prefix };
 }
 
-let lastSaved = 0;
-function savePrefix(prefix: unknown) {
+function savePrefix(prefix: unknown, file = "burrow-warm.json") {
   const dir = process.env.DATA_DIR?.trim();
   if (!dir) return;
-  const now = Date.now();
-  if (now - lastSaved < 2000) return;
-  lastSaved = now;
   try {
     mkdirSync(dir, { recursive: true });
-    writeFileSync(path.join(dir, "burrow-warm.json"), JSON.stringify(prefix));
+    writeFileSync(path.join(dir, file), JSON.stringify(prefix));
   } catch {
     // Warming is an optimization; never fail a model call over it.
   }
@@ -80,6 +130,7 @@ export function burrowFastChatInit(init: RequestInit | undefined): RequestInit |
   if (!init || typeof init.body !== "string") return init;
   const rewritten = quickChatBody(init.body);
   if (rewritten === null) return init;
-  savePrefix(rewritten.prefix);
+  if (rewritten.chatPrefix) savePrefix(rewritten.chatPrefix, "burrow-warm-chat.json");
+  else savePrefix(rewritten.prefix);
   return { ...init, body: rewritten.body };
 }

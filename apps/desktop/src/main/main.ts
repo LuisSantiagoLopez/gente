@@ -54,7 +54,7 @@ import {
   writeSetup,
   writeUiLocale,
 } from "./setup/setup-store.js";
-import { prewarmSwift } from "./burrow/brain.js";
+import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
@@ -569,6 +569,11 @@ app.whenReady().then(async () => {
   if (!hasSingleInstanceLock) return;
   installSessionPermissions(session.defaultSession, permissionTarget);
   const userDataDir = app.getPath("userData");
+  // Burrow: move a default Burrow chose to the fast model before the workspace starts on it.
+  const movedToFastModel = await Promise.race([
+    moveToFastDefault(stackDir(userDataDir)),
+    new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 15_000)),
+  ]);
   startDesktopLocale(
     await readUiLocale(userDataDir),
     app.getPreferredSystemLanguages()[0] ?? app.getLocale(),
@@ -1034,6 +1039,8 @@ app.whenReady().then(async () => {
   if (target.kind === "setup") {
     showSetupWindow();
   } else if (target.source === "saved" && desktop.currentSetup?.mode === "new") {
+    // A workspace left running on the old default model restarts on the new one.
+    if (movedToFastModel && desktop.localStack.managedStackRunning()) await desktop.localStack.stop();
     const managedUrl = managedLocalOpenUrl(target.url, desktop.localStack.webUrl());
     const managedStackReady =
       managedUrl !== null ? await desktop.localStack.matchesDesiredStack() : false;

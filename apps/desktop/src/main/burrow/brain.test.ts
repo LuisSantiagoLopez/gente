@@ -42,64 +42,44 @@ const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
 describe("Burrow brain", () => {
-  it("uses the best Swift when it loads, and never touches a smaller one", async () => {
+  it("uses the fast default (Ornith 9B) when the person picks nothing", async () => {
     const { brain, dir, states, calls } = await setup();
     await brain.start();
     expect(brain.current().phase).toBe("ready");
+    expect(brain.current().model.tag).toBe(SMALL);
+    expect(pulled(calls)).toEqual([SMALL]);
+    const create = calls.find((c) => c.path === "/api/create");
+    expect(create?.body).toMatchObject({ model: "swift-1.5-ornith-9b", from: SMALL, parameters: { num_ctx: 32768 } });
+    expect(states.some((s) => s.phase === "pulling" && s.totalBytes === 1000)).toBe(true);
+    const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
+    expect(saved).toMatchObject({ model: SMALL, alias: "swift-1.5-ornith-9b", userPicked: false });
+  });
+
+  it("uses the picked 27B, and never touches a smaller one when it loads", async () => {
+    const { brain, calls } = await setup();
+    await brain.start({ model: BEST });
     expect(brain.current().model.tag).toBe(BEST);
     expect(brain.current().switchedFrom).toBeUndefined();
     expect(pulled(calls)).toEqual([BEST]);
-    const create = calls.find((c) => c.path === "/api/create");
-    expect(create?.body).toMatchObject({ model: "swift-1.5-27b", from: BEST, parameters: { num_ctx: 32768 } });
-    expect(states.some((s) => s.phase === "pulling" && s.totalBytes === 1000)).toBe(true);
-    const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved).toMatchObject({ model: BEST, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"] });
   });
 
-  it("switches to the next smaller Swift only after the best one really fails to load", async () => {
+  it("switches to the next smaller Swift only after the picked one really fails to load", async () => {
     const { brain, dir, calls } = await setup({ failLoad: [BEST] });
-    await brain.start();
+    await brain.start({ model: BEST });
     const state = brain.current();
     expect(state.phase).toBe("ready");
     expect(state.model.tag).toBe(COMPACT);
     expect(state.switchedFrom).toBe("Swift 1.5 27B");
-    // The best was tried first: pulled and loaded, and its load failed.
     expect(pulled(calls)).toEqual([BEST, COMPACT]);
-    const loads = calls.filter((c) => c.path === "/api/generate").map((c) => c.body.model);
+    const loads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive !== 0).map((c) => c.body.model);
     expect(loads).toEqual(["swift-1.5-27b", "swift-1.5-27b-compact"]);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
     expect(saved.alias).toBe("swift-1.5-27b-compact");
-    // The model that failed to load is not offered as a choice afterwards.
     expect(saved.installed).toEqual(["swift-1.5-27b-compact"]);
   });
 
-  it("restarts the workspace only when the person switches to another model", async () => {
-    const { brainModule, dir } = await setup();
-    let restarts = 0;
-    const brain = new brainModule.Brain(dir, () => {}, async () => {
-      restarts++;
-    });
-    await brain.start();
-    expect(restarts).toBe(0);
-    await brain.start();
-    expect(restarts).toBe(0);
-    await brain.start({ model: SMALL });
-    expect(brain.current().model.tag).toBe(SMALL);
-    expect(restarts).toBe(1);
-    const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved.alias).toBe("swift-1.5-ornith-9b");
-    expect(saved.installed).toEqual(["swift-1.5-27b", "swift-1.5-ornith-9b"]);
-  });
-
-  it("starts from the model the person picks", async () => {
-    const { brain, calls } = await setup();
-    await brain.start({ model: SMALL });
-    expect(brain.current().model.tag).toBe(SMALL);
-    expect(pulled(calls)).toEqual([SMALL]);
-  });
-
   it("does not download again when the model is already there", async () => {
-    const { brain, calls } = await setup({ installed: [BEST] });
+    const { brain, calls } = await setup({ installed: [SMALL] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(pulled(calls)).toEqual([]);
@@ -107,24 +87,54 @@ describe("Burrow brain", () => {
 
   it("reports a failure when no Swift can run", async () => {
     const { brain } = await setup({ failLoad: [BEST, COMPACT, SMALL] });
-    await brain.start();
+    await brain.start({ model: BEST });
     expect(brain.current().phase).toBe("failed");
     expect(brain.current().message).toContain("No Swift model could run");
+  });
+
+  it("restarts the workspace and unloads the old model only when the person switches", async () => {
+    const { brainModule, dir, calls } = await setup();
+    let restarts = 0;
+    const brain = new brainModule.Brain(dir, () => {}, async () => {
+      restarts++;
+    });
+    await brain.start();
+    await brain.start();
+    expect(restarts).toBe(0);
+    await brain.start({ model: BEST });
+    expect(brain.current().model.tag).toBe(BEST);
+    expect(restarts).toBe(1);
+    const unloads = calls.filter((c) => c.path === "/api/generate" && c.body.keep_alive === 0);
+    expect(unloads.map((c) => c.body.model)).toEqual(["swift-1.5-ornith-9b"]);
+    // A picked model stays picked when setup runs again without a new pick.
+    await brain.start();
+    expect(brain.current().model.tag).toBe(BEST);
+  });
+
+  it("moves a default Burrow chose (27B) to the fast model on launch, but never a picked one", async () => {
+    const { brainModule, dir } = await setup({ installed: [SMALL] });
+    const file = path.join(dir, "burrow-model.json");
+    const { writeFile } = await import("node:fs/promises");
+    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"] }));
+    expect(await brainModule.moveToFastDefault(dir)).toBe(true);
+    expect(JSON.parse(await readFile(file, "utf8"))).toMatchObject({ alias: "swift-1.5-ornith-9b", userPicked: false });
+    await writeFile(file, JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: [], userPicked: true }));
+    expect(await brainModule.moveToFastDefault(dir)).toBe(false);
   });
 
   it("makes the saved Swift every bot's default model", async () => {
     const { brainModule } = await setup();
     const env = brainModule.swiftServerEnv({
-      model: BEST,
-      alias: "swift-1.5-27b",
-      installed: ["swift-1.5-27b", "swift-1.5-ornith-9b"],
+      model: SMALL,
+      alias: "swift-1.5-ornith-9b",
+      installed: ["swift-1.5-ornith-9b", "swift-1.5-27b"],
       vision: [],
     });
     expect(env).toMatchObject({
       PI_DEFAULT_PROVIDER: "local",
-      PI_DEFAULT_MODEL: "swift-1.5-27b",
-      PI_DEFAULT_CREDENTIALS: "host",
-      RAKAZO_LOCAL_MODELS: "swift-1.5-27b,swift-1.5-ornith-9b",
+      PI_DEFAULT_MODEL: "swift-1.5-ornith-9b",
+      BURROW_FAST_CHAT: "on",
+      RAKAZO_LOCAL_MODELS: "swift-1.5-ornith-9b,swift-1.5-27b",
     });
     expect(brainModule.swiftServerEnv(null)).toEqual({});
   });

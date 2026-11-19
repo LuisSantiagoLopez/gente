@@ -25,6 +25,7 @@ export function registerBrainIpc(stackDirectory: string) {
     // The API and worker read the default model when they start.
     if (desktop.localStack.managedStackRunning()) await desktop.localStack.stop();
   });
+  void brain.loadSaved();
   handleIpc("desktop.setup.brain.state", () => (brain as Brain).current());
   handleIpc("desktop.setup.brain.start", (_event, options) => {
     const opts =

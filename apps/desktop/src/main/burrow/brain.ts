@@ -32,7 +32,7 @@ const SWIFT_LADDER = [
     alias: "swift-1.5-27b",
     name: "Swift 1.5 27B",
     sizeGB: 17.4,
-    note: "Best quality. Needs a Mac with 32 GB memory.",
+    note: "Smartest, for long multi-step work. Slower; needs 32 GB memory.",
   },
   {
     tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q3_K_M",
@@ -46,11 +46,15 @@ const SWIFT_LADDER = [
     alias: "swift-1.5-ornith-9b",
     name: "Swift 1.5 Ornith 9B",
     sizeGB: 5.8,
-    note: "Fast and light, for 16 GB Macs.",
+    note: "Fast replies. The default.",
   },
 ] as const satisfies readonly SwiftModel[];
 export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
-const BEST_MODEL: SwiftModel = SWIFT_LADDER[0];
+/**
+ * The model Burrow uses unless the person picks another: Ornith 9B starts replying in about a
+ * second and leaves room in memory. The 27B models are one click away in the picker.
+ */
+export const DEFAULT_MODEL: SwiftModel = SWIFT_LADDER[2];
 
 /** Context Burrow asks Ollama to load. Bots send long tool lists, so the 4K default is too small. */
 export const SWIFT_CONTEXT = 32768;
@@ -76,7 +80,14 @@ export type BrainState = {
   models: readonly SwiftModel[];
 };
 
-export type SavedBrain = { model: string; alias: string; installed: string[]; vision?: string[] };
+export type SavedBrain = {
+  model: string;
+  alias: string;
+  installed: string[];
+  vision?: string[];
+  /** True when the person picked this model; false when Burrow chose the default. */
+  userPicked?: boolean;
+};
 
 export function brainFile(stackDirectory: string) {
   return path.join(stackDirectory, "burrow-model.json");
@@ -191,29 +202,104 @@ function hasTag(tags: string[], tag: string) {
  * model with a one-token reply, so the first message after Burrow opens finds it already read.
  */
 export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
+  const saved = await readSavedBrain(stackDirectory);
+  if (saved === null) return false;
+  // Small talk first: its slim prompt is quick to read, and "hey" is the usual first message.
+  let warmed = false;
+  for (const file of ["burrow-warm-chat.json", "burrow-warm.json"]) {
+    try {
+      const prefix = JSON.parse(
+        await readFile(path.join(stackDirectory, "data", file), "utf8"),
+      ) as { messages?: unknown[] };
+      if (!Array.isArray(prefix.messages) || prefix.messages.length === 0) continue;
+      const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          ...prefix,
+          stream_options: undefined,
+          // Always the current default: a prefix saved under another model would load that one.
+          model: saved.alias,
+          stream: false,
+          max_completion_tokens: 1,
+          max_tokens: 1,
+          reasoning_effort: "none",
+        }),
+        signal: AbortSignal.timeout(10 * 60_000),
+      });
+      await res.text();
+      warmed ||= res.ok;
+    } catch {
+      // Nothing saved yet, or the model server is busy; the first reply reads it instead.
+    }
+  }
+  return warmed;
+}
+
+/** Asks Ollama to drop a model from memory now. */
+export async function unloadModel(model: string): Promise<void> {
   try {
-    const saved = await readSavedBrain(stackDirectory);
-    if (saved === null) return false;
-    const prefix = JSON.parse(
-      await readFile(path.join(stackDirectory, "data", "burrow-warm.json"), "utf8"),
-    ) as { model?: string; messages?: unknown[]; tools?: unknown[] };
-    if (!Array.isArray(prefix.messages) || prefix.messages.length === 0) return false;
-    const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        ...prefix,
-        stream_options: undefined,
-        model: prefix.model ?? saved.alias,
-        stream: false,
-        max_completion_tokens: 1,
-        max_tokens: 1,
-        reasoning_effort: "none",
-      }),
-      signal: AbortSignal.timeout(10 * 60_000),
-    });
-    await res.text();
-    return res.ok;
+    await ollama(
+      "/api/generate",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ model, keep_alive: 0, stream: false }),
+      },
+      30_000,
+    );
+  } catch {
+    // Already gone, or Ollama is down; either way it holds no memory.
+  }
+}
+
+/**
+ * Burrow 0.1 builds made the 27B model the default. On launch, move a default that Burrow chose
+ * (not one the person picked) to the fast default when that model is already downloaded, and
+ * unload the 27B. Returns true when the saved model changed, so the workspace restarts on it.
+ */
+export async function moveToFastDefault(stackDirectory: string): Promise<boolean> {
+  const saved = await readSavedBrain(stackDirectory);
+  if (saved === null || saved.userPicked === true || saved.alias === DEFAULT_MODEL.alias) return false;
+  try {
+    if (!(await ollamaRunning()) && !(await startOllama())) return false;
+    let tags = await installedTags();
+    if (!hasTag(tags, DEFAULT_MODEL.tag)) return false;
+    if (!hasTag(tags, DEFAULT_MODEL.alias)) {
+      const res = await ollama(
+        "/api/create",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            model: DEFAULT_MODEL.alias,
+            from: DEFAULT_MODEL.tag,
+            parameters: { num_ctx: SWIFT_CONTEXT },
+            stream: false,
+          }),
+        },
+        120_000,
+      );
+      if (!res.ok) return false;
+      tags = await installedTags();
+    }
+    const installed = [
+      DEFAULT_MODEL.alias,
+      ...saved.installed.filter((alias) => alias !== DEFAULT_MODEL.alias),
+    ];
+    const vision = (await hasVision(DEFAULT_MODEL.alias))
+      ? [DEFAULT_MODEL.alias, ...(saved.vision ?? [])]
+      : (saved.vision ?? []);
+    const next: SavedBrain = {
+      model: DEFAULT_MODEL.tag,
+      alias: DEFAULT_MODEL.alias,
+      installed,
+      vision,
+      userPicked: false,
+    };
+    await writeFile(brainFile(stackDirectory), `${JSON.stringify(next, null, 2)}\n`);
+    await unloadModel(saved.alias);
+    return true;
   } catch {
     return false;
   }
@@ -231,12 +317,19 @@ export class Brain {
   ) {
     this.state = {
       phase: "checking",
-      model: BEST_MODEL,
+      model: DEFAULT_MODEL,
       completedBytes: 0,
       totalBytes: 0,
       message: "",
       models: SWIFT_MODELS,
     };
+  }
+
+  /** Shows the saved model on the setup screen before anything runs. */
+  async loadSaved(): Promise<void> {
+    const saved = await readSavedBrain(this.stackDirectory);
+    const model = SWIFT_MODELS.find((m) => m.alias === saved?.alias);
+    if (model && this.state.phase === "checking") this.set({ model });
   }
 
   current(): BrainState {
@@ -282,13 +375,15 @@ export class Brain {
       }
     }
 
-    const start = Math.max(
-      0,
-      SWIFT_MODELS.findIndex((m) => m.tag === options.model || m.alias === options.model),
+    const before = await readSavedBrain(this.stackDirectory);
+    const picked = SWIFT_MODELS.findIndex(
+      (m) => m.tag === options.model || m.alias === options.model,
     );
+    // Without a new pick, keep a model the person picked before; otherwise the default.
+    const kept = before?.userPicked ? SWIFT_MODELS.findIndex((m) => m.tag === before.model) : -1;
+    const start = picked >= 0 ? picked : kept >= 0 ? kept : SWIFT_MODELS.indexOf(DEFAULT_MODEL);
     let firstFailure: string | undefined;
     const failed = new Set<string>();
-    const before = await readSavedBrain(this.stackDirectory);
     for (let i = start; i < SWIFT_MODELS.length; i++) {
       const model = SWIFT_MODELS[i];
       if (model === undefined) break;
@@ -308,10 +403,20 @@ export class Brain {
         ).map((m) => m.alias);
         const vision: string[] = [];
         for (const alias of installed) if (await hasVision(alias)) vision.push(alias);
-        const saved: SavedBrain = { model: model.tag, alias: model.alias, installed, vision };
+        const saved: SavedBrain = {
+          model: model.tag,
+          alias: model.alias,
+          installed,
+          vision,
+          userPicked: picked >= 0 || kept >= 0,
+        };
         await mkdir(this.stackDirectory, { recursive: true });
         await writeFile(brainFile(this.stackDirectory), `${JSON.stringify(saved, null, 2)}\n`);
-        if (before !== null && before.alias !== saved.alias) await this.onModelChanged();
+        if (before !== null && before.alias !== saved.alias) {
+          await this.onModelChanged();
+          // Free the memory the previous model held; it loads again if picked.
+          await unloadModel(before.alias);
+        }
         this.set({ phase: "ready" });
         return;
       } catch (error) {
