@@ -119,6 +119,26 @@ const payloadSchemas = {
   }),
   "purchase.poll": z.object({ purchaseId: z.string().min(1) }),
   "media.poll": z.object({ jobId: z.string().min(1) }),
+  "brain.distill": z
+    .object({
+      spaceId: z.string().min(1),
+      userId: z.string().min(1),
+      runId: z.string().min(1).optional(),
+      projectId: z.string().min(1).optional(),
+      feedback: z.string().min(1).max(1000).optional(),
+    })
+    .refine((payload) => Boolean(payload.runId || payload.projectId), "runId or projectId"),
+  "proactive.cycle": z.object({
+    spaceId: z.string().min(1),
+    userId: z.string().min(1),
+    event: z
+      .object({
+        trigger: z.enum(["email", "calendar", "price_drop", "project_stalled", "deadline_near"]),
+        goalId: z.string().min(1).max(40).optional(),
+        summary: z.string().min(1).max(300),
+      })
+      .optional(),
+  }),
   "push.receipt": z.object({
     userId: z.string().min(1),
     ticketId: z.string().min(1),
@@ -487,6 +507,45 @@ export function purchasePollJob(purchaseId: string, availableAt?: Date): Backgro
     payload: { purchaseId },
     replaceKey: `purchase.poll:${purchaseId}`,
     ...(availableAt ? { availableAt } : {}),
+  };
+}
+
+/** How often a distillation is tried: the model may be busy, but it never needs many tries. */
+export const BRAIN_DISTILL_MAX_ATTEMPTS = 3;
+
+/**
+ * Distil a finished research run, or one round of a project's feedback, into topic brains. The
+ * key is the run or the feedback round, so a replayed completion queues it once.
+ */
+export function brainDistillJob(
+  payload: BackgroundJobPayloads["brain.distill"],
+  key: string,
+): BackgroundJob {
+  return {
+    name: "brain.distill",
+    payload,
+    replaceKey: `brain.distill:${key}`,
+    maxAttempts: BRAIN_DISTILL_MAX_ATTEMPTS,
+  };
+}
+
+/** A proactive pass is cheap to retry: the engine's caps and nonces keep it from acting twice. */
+export const PROACTIVE_CYCLE_MAX_ATTEMPTS = 3;
+
+/**
+ * One proactive pass for one person, on the hourly schedule or when an event arrives (a new
+ * email, a calendar change, a price drop). The key names the hour or the event, so a replayed
+ * signal queues it once.
+ */
+export function proactiveCycleJob(
+  payload: BackgroundJobPayloads["proactive.cycle"],
+  key: string,
+): BackgroundJob {
+  return {
+    name: "proactive.cycle",
+    payload,
+    replaceKey: `proactive.cycle:${payload.spaceId}:${payload.userId}:${key}`,
+    maxAttempts: PROACTIVE_CYCLE_MAX_ATTEMPTS,
   };
 }
 

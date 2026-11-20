@@ -13,6 +13,7 @@ const PRELOADS = {
   appOrReplaced: "preload/preload.cjs",
   setup: "preload/setup-preload.cjs",
   support: "preload/support-preload.cjs",
+  computerPill: "preload/computer-pill-preload.cjs",
 } as const satisfies Record<IpcWindow, string>;
 type Preload = (typeof PRELOADS)[IpcWindow];
 
@@ -53,6 +54,7 @@ describe("desktop IPC channels", () => {
     "preload/preload.cjs",
     "preload/setup-preload.cjs",
     "preload/support-preload.cjs",
+    "preload/computer-pill-preload.cjs",
   ] as const)("exposes in %s exactly its window's channels", (file) => {
     const mapped = (sync: boolean) =>
       channels

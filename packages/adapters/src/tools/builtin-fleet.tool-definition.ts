@@ -81,7 +81,7 @@ export const fleetTools: ConnectorTool[] = [
   {
     name: "skill_update",
     description:
-      "Update a user-created skill by name or id. Builtin and plugin skills are read-only.",
+      "Update a user-created skill by name or id, for example after the user corrects how you did something. Builtin and plugin skills are read-only. Changes are versioned and can be undone; a change that would let the skill spend, act as the user, delete data, accept terms or skip asking is refused.",
     inputSchema: {
       type: "object",
       properties: {
@@ -91,6 +91,17 @@ export const fleetTools: ConnectorTool[] = [
         description: { type: "string" },
         body: { type: "string" },
         content: { type: "string", description: "Optional full replacement SKILL.md." },
+        reason: {
+          type: "string",
+          description:
+            "One short plain sentence the user will read: what you changed and why (e.g. what their feedback asked for).",
+        },
+        learnedFrom: {
+          type: "string",
+          enum: ["user_feedback", "web_content", "run_outcome"],
+          description:
+            "Where the lesson came from: the user's words, something read on the web, or how a run turned out.",
+        },
       },
     },
   },

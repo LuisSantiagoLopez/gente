@@ -124,6 +124,20 @@ describe("sentFrom", () => {
     expect(sentFrom("setup", app.event)).toBe(false);
   });
 
+  it("accepts the computer pill's own page only for its own channels", () => {
+    const { app, setup } = open();
+    const pill = fakeWindow("file:///resources/dist/computer-pill.html");
+    desktop.computerPillWindow = pill.win;
+    expect(sentFrom("computerPill", pill.event)).toBe(true);
+    expect(sentFrom("computerPill", app.event)).toBe(false);
+    expect(sentFrom("computerPill", setup.event)).toBe(false);
+    expect(sentFrom("app", pill.event)).toBe(false);
+    expect(sentFrom("setup", pill.event)).toBe(false);
+    for (const [, event] of strangers(pill)) expect(sentFrom("computerPill", event)).toBe(false);
+    desktop.computerPillWindow = null;
+    expect(sentFrom("computerPill", pill.event)).toBe(false);
+  });
+
   it("refuses other windows, subframes and missing frames", () => {
     const { app, setup } = open();
     for (const [, event] of strangers(app)) expect(sentFrom("app", event)).toBe(false);

@@ -70,7 +70,8 @@ export interface HostScreenActResult {
   observation?: HostScreenObservation;
 }
 
-export type HostScreenScope = { botId: string; signal: AbortSignal };
+/** `runId` is the run asking, when its server sends one; a stop on this computer refuses that run. */
+export type HostScreenScope = { botId: string; runId?: string; signal: AbortSignal };
 
 /**
  * Drives apps on the person's own computer without taking their pointer, keyboard focus, or
@@ -96,6 +97,24 @@ export class HostScreenError extends Error {
     super(message.length > 500 ? `${message.slice(0, 500)}…` : message);
     this.name = "HostScreenError";
   }
+}
+
+/**
+ * The person stopped the assistant from using their computer. The run that was using it is
+ * cancelled and may not use the screen again; the exact text is how the server recognizes it.
+ */
+export const HOST_SCREEN_STOPPED_MESSAGE =
+  "The user stopped you from using their computer. Do not use it again unless they ask.";
+
+export class HostScreenStoppedError extends HostScreenError {
+  constructor() {
+    super(HOST_SCREEN_STOPPED_MESSAGE);
+    this.name = "HostScreenStoppedError";
+  }
+}
+
+export function isHostScreenStopped(error: unknown): boolean {
+  return error instanceof Error && error.message === HOST_SCREEN_STOPPED_MESSAGE;
 }
 
 /** Caps the tree the model reads and says when rows were left out. */

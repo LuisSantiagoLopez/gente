@@ -244,8 +244,16 @@ export const ZH_CN_MESSAGES: Record<string, string> = {
   "Workspace ready.": "工作区已就绪。",
   "Your AI": "你的 AI",
   "Your AI is ready.": "你的 AI 已就绪。",
-  "Your AI lives on your computer. Your chats never leave it.": "你的 AI 住在你的电脑上。你的聊天永远不会离开它。",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "你的 AI 住在你的电脑上。你的聊天永远不会离开它。",
   "Sign In to Gente…": "登录 Gente…",
   "Sign Out of Gente": "退出 Gente",
   "Gente Support…": "Gente 支持…",
+  // Computer use pill
+  "Gente is using your computer": "Gente 正在使用你的电脑",
+  "Press {key} to stop": "按 {key} 停止",
+  Stop: "停止",
+  Stopped: "已停止",
+  "Stop Meeting Notes": "停止会议笔记",
+  "Take Meeting Notes…": "记录会议笔记…",
 };

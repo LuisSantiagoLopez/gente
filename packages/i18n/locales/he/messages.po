@@ -43,6 +43,11 @@ msgstr "{0, plural, one {חודש חינם אחד} two {# חודשים חינם}
 msgid "{0, plural, one {# more} other {# more}}"
 msgstr "{0, plural, one {עוד אחד} two {עוד #} other {עוד #}}"
 
+#. placeholder {0}: brain.facts.length
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "{0, plural, one {# note} other {# notes}}"
+msgstr "{0, plural, one {הערה אחת} two {# הערות} other {# הערות}}"
+
 #. placeholder {0}: skillCount(install)
 #: apps/web/src/components/integrations/skills-dialog.tsx
 msgid "{0, plural, one {# skill} other {# skills}}"
@@ -165,10 +170,28 @@ msgstr "שעות סיכום של {0}"
 msgid "{0} TB"
 msgstr "{0} TB"
 
+#. placeholder {0}: metrics.actions
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "{0} things done so far."
+msgstr "{0} דברים בוצעו עד עכשיו."
+
+#. placeholder {0}: metrics.actions
+#. placeholder {1}: percent(metrics.acceptanceRate)
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "{0} things done, you kept {1}."
+msgstr "{0} דברים בוצעו, שמרת {1}."
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
 msgstr "{0}, מושהית עד להפעלה"
+
+#. placeholder {0}: task.title
+#. placeholder {1}: statusLabel(task.status)
+#. placeholder {2}: statusLabel(NEXT_STATUS[task.status])
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "{0}: {1}. Move to {2}"
+msgstr "{0}: {1}. העברה אל {2}"
 
 #. placeholder {0}: Math.round(used)
 #: apps/web/src/components/billing/PlanUsage.tsx
@@ -368,6 +391,11 @@ msgstr "{days} ימים בחינם, ואז {price} / שנה. אפשר לבטל �
 #: apps/web/src/lib/locale/relative-time.ts
 msgid "{days}d ago"
 msgstr "לפני {days} ימים"
+
+#. placeholder {0}: project.tasks.length
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "{done} of {0} done"
+msgstr "{done} מתוך {0} בוצעו"
 
 #: apps/mobile/components/thread/message-bubble.tsx
 msgid "{from} messaged {to}"
@@ -763,6 +791,23 @@ msgstr "@{name}"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**$6,250 overdue across 3 invoices**\n"
+"\n"
+"1. Acme, $3,000, 12 days late. Second reminder drafted.\n"
+"2. Lumen Studio, $2,400, 4 days late. Friendly nudge drafted.\n"
+"3. Ode Cafe, $850, 31 days late. Firm reminder drafted.\n"
+"\n"
+"3 Gmail drafts saved. Nothing sent."
+msgstr "**$6,250 באיחור ב-3 חשבוניות**\n"
+"\n"
+"1. Acme, $3,000, איחור של 12 ימים. נכתבה תזכורת שנייה.\n"
+"2. Lumen Studio, $2,400, איחור של 4 ימים. נכתבה תזכורת ידידותית.\n"
+"3. Ode Cafe, $850, איחור של 31 ימים. נכתבה תזכורת נחרצת.\n"
+"\n"
+"3 טיוטות נשמרו ב-Gmail. שום דבר לא נשלח."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "**12 new since 8:00**\n"
 "\n"
 "**Reply needed**\n"
@@ -786,6 +831,36 @@ msgstr "**12 הודעות חדשות מאז 8:00**\n"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 booking requests**\n"
+"\n"
+"1. Jon wants a deep clean Thursday. Free: Thu 10:00 or 14:00. Draft ready.\n"
+"2. Sofia asks the price for a 3-bedroom. Quote from your price list: $180. Draft ready.\n"
+"\n"
+"Gmail drafts saved. Nothing booked until a client picks a time."
+msgstr "**2 בקשות הזמנה**\n"
+"\n"
+"1. Jon רוצה ניקיון יסודי ביום חמישי. פנוי: חמישי 10:00 או 14:00. טיוטה מוכנה.\n"
+"2. Sofia שואלת על המחיר לדירת 3 חדרים. הצעה לפי המחירון שלך: $180. טיוטה מוכנה.\n"
+"\n"
+"הטיוטות נשמרו ב-Gmail. שום דבר לא ייקבע עד שהלקוח יבחר שעה."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 new leads**\n"
+"\n"
+"1. Maya, 14 Oak St listing, pre-approved. Showing times offered: Sat 11:00 or Sun 15:00. Draft ready.\n"
+"2. Chris, 'looking in Eastside under $600k'. 3 matching listings from your sheet. Draft ready.\n"
+"\n"
+"Both added to your Leads sheet."
+msgstr "**2 לידים חדשים**\n"
+"\n"
+"1. Maya, הנכס ב-14 Oak St, עם אישור עקרוני למשכנתא. הוצעו מועדי סיור: שבת 11:00 או ראשון 15:00. טיוטה מוכנה.\n"
+"2. Chris, 'מחפש באיסטסייד עד $600k'. 3 נכסים מתאימים מהגיליון שלך. טיוטה מוכנה.\n"
+"\n"
+"שניהם נוספו לגיליון הלידים שלך."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "**2 pull requests are waiting on you**\n"
 "\n"
 "**#482 Add retry to webhook delivery**\n"
@@ -806,6 +881,203 @@ msgstr "**2 pull requests ממתינים לך**\n"
 "\n"
 "**#479 תיקון פענוח תאריכים בדוחות**\n"
 "נראה טוב. סקירה מוצעת: אישור."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**28 transactions to sort, 24 suggested**\n"
+"\n"
+"- 18 software and ads, matched to past categories\n"
+"- 6 meals and travel\n"
+"- 4 unclear: listed below with questions\n"
+"\n"
+"Missing receipts: 3. Reminder drafted to you."
+msgstr "**28 תנועות למיון, 24 עם הצעה**\n"
+"\n"
+"- 18 תוכנה ופרסום, הותאמו לקטגוריות קודמות\n"
+"- 6 ארוחות ונסיעות\n"
+"- 4 לא ברורות: מופיעות למטה עם שאלות\n"
+"\n"
+"קבלות חסרות: 3. נכתבה לך תזכורת."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**3 new reviews this week**\n"
+"\n"
+"1. ★★★★★ Marta: \"Best haircut in years.\" Draft: \"Thank you, Marta! See you next time.\"\n"
+"2. ★★☆☆☆ Leo: \"Waited 40 minutes.\" Draft: \"Sorry for the wait, Leo. We've added a second chair on Saturdays.\"\n"
+"3. ★★★★☆ Ana. Draft ready.\n"
+"\n"
+"Approve to post, or edit any draft."
+msgstr "**3 ביקורות חדשות השבוע**\n"
+"\n"
+"1. ★★★★★ Marta: \"התספורת הכי טובה מזה שנים.\" טיוטה: \"תודה, Marta! נתראה בפעם הבאה.\"\n"
+"2. ★★☆☆☆ Leo: \"חיכיתי 40 דקות.\" טיוטה: \"מצטערים על ההמתנה, Leo. הוספנו כיסא שני בשבתות.\"\n"
+"3. ★★★★☆ Ana. טיוטה מוכנה.\n"
+"\n"
+"אפשר לאשר לפרסום, או לערוך כל טיוטה."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**4 customer emails**\n"
+"\n"
+"1. #1042 Where is my order? Shipped Monday, arriving Thursday. Draft ready.\n"
+"2. #1039 Wrong size. Exchange policy applies. Draft ready.\n"
+"3. #1051 Refund request, $64.00. Needs your OK.\n"
+"4. Wholesale question. Draft ready."
+msgstr "**4 מיילים מלקוחות**\n"
+"\n"
+"1. #1042 איפה ההזמנה שלי? נשלחה ביום שני, תגיע ביום חמישי. טיוטה מוכנה.\n"
+"2. #1039 מידה לא נכונה. חלה מדיניות ההחלפה. טיוטה מוכנה.\n"
+"3. #1051 בקשת החזר, $64.00. צריך את האישור שלך.\n"
+"4. שאלה על סיטונאות. טיוטה מוכנה."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 deals need a nudge**\n"
+"\n"
+"1. Northwind, $12k, no reply in 9 days. Follow-up drafted.\n"
+"2. Bluebird, $4k, demo done Tuesday. Recap drafted.\n"
+"3. Kite Labs, $30k, contract sent 6 days ago. Check-in drafted.\n"
+"\n"
+"Notes logged on each deal in your CRM."
+msgstr "**5 עסקאות צריכות דחיפה**\n"
+"\n"
+"1. Northwind, $12k, אין תשובה כבר 9 ימים. נכתב מייל מעקב.\n"
+"2. Bluebird, $4k, הדגמה בוצעה ביום שלישי. נכתב סיכום.\n"
+"3. Kite Labs, $30k, החוזה נשלח לפני 6 ימים. נכתבה בדיקת מצב.\n"
+"\n"
+"הערות נרשמו בכל עסקה ב-CRM שלך."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 new jobs that fit**\n"
+"\n"
+"1. Product Designer, Lumen (remote, $120-140k). Cover letter drafted.\n"
+"2. UX Lead, Kite Labs (NYC). CV tailored: Kite Labs CV (Docs).\n"
+"3. Follow-up due: Northwind, applied 8 days ago. Draft ready.\n"
+"\n"
+"Tracker sheet updated."
+msgstr "**5 משרות חדשות שמתאימות**\n"
+"\n"
+"1. Product Designer, Lumen (מרחוק, $120-140k). נכתב מכתב מקדים.\n"
+"2. UX Lead, Kite Labs (ניו יורק). קורות החיים הותאמו: Kite Labs CV (Docs).\n"
+"3. הגיע זמן מעקב: Northwind, הגשת לפני 8 ימים. טיוטה מוכנה.\n"
+"\n"
+"גיליון המעקב עודכן."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery check-in, Thu 10:00**\n"
+"\n"
+"**Decisions**\n"
+"- Online ordering goes ahead on the store app\n"
+"\n"
+"**Action items**\n"
+"- You: send the setup quote by Friday\n"
+"- You: share the analytics report on Monday\n"
+"\n"
+"**Open**: delivery zones at launch or January?\n"
+"\n"
+"Recap email drafted. Next check-in Thu 10:00 waits for your OK."
+msgstr "**פגישת מעקב עם Bluebird Bakery, חמישי 10:00**\n"
+"\n"
+"**החלטות**\n"
+"- הזמנות אונליין יוצאות לדרך באפליקציית החנות\n"
+"\n"
+"**משימות**\n"
+"- אתה: לשלוח את הצעת המחיר להקמה עד שישי\n"
+"- אתה: לשתף את דוח הנתונים ביום שני\n"
+"\n"
+"**פתוח**: אזורי משלוח בהשקה או בינואר?\n"
+"\n"
+"נכתב מייל סיכום. פגישת המעקב הבאה, חמישי 10:00, מחכה לאישור שלך."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery: week of 10 Nov**\n"
+"\n"
+"- Visits 4,210 (+8%), orders from search 61 (+14%)\n"
+"- Top page: Holiday cakes, 1,020 visits\n"
+"- Search: 'custom cakes near me' moved from 9th to 4th\n"
+"- Next: add a holiday FAQ page\n"
+"\n"
+"Report doc and email draft saved."
+msgstr "**Bluebird Bakery: השבוע של 10 בנובמבר**\n"
+"\n"
+"- ביקורים 4,210 (+8%), הזמנות מחיפוש 61 (+14%)\n"
+"- הדף המוביל: עוגות חג, 1,020 ביקורים\n"
+"- חיפוש: 'עוגות בהזמנה אישית לידי' עלה מהמקום ה-9 למקום ה-4\n"
+"- הבא בתור: להוסיף דף שאלות נפוצות לחגים\n"
+"\n"
+"מסמך הדוח וטיוטת המייל נשמרו."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**From your video: '5 mistakes new runners make'**\n"
+"\n"
+"- X thread: 6 posts\n"
+"- LinkedIn post: 180 words\n"
+"- Instagram caption with 8 hashtags\n"
+"- 3 short clip ideas with timestamps\n"
+"\n"
+"All saved to your Content calendar in Notion. Nothing posted."
+msgstr "**מהסרטון שלך: '5 טעויות של רצים מתחילים'**\n"
+"\n"
+"- שרשור ב-X: 6 פוסטים\n"
+"- פוסט ב-LinkedIn: 180 מילים\n"
+"- כיתוב ל-Instagram עם 8 האשטגים\n"
+"- 3 רעיונות לקליפים קצרים עם חותמות זמן\n"
+"\n"
+"הכול נשמר בלוח התוכן שלך ב-Notion. שום דבר לא פורסם."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Listing draft: Hand-thrown mug, speckled glaze**\n"
+"\n"
+"Title: Speckled Ceramic Mug, 12 oz, Handmade Stoneware Coffee Cup\n"
+"Tags: handmade mug, ceramic, stoneware, coffee lover gift, speckled\n"
+"Description: 3 short paragraphs, care notes, size.\n"
+"\n"
+"Saved as a draft product in your store. Not published."
+msgstr "**טיוטת מוצר: ספל בעבודת יד, זיגוג מנוקד**\n"
+"\n"
+"כותרת: ספל קרמיקה מנוקד, 12 oz, כוס קפה מחרס בעבודת יד\n"
+"תגיות: ספל בעבודת יד, קרמיקה, חרס, מתנה לאוהבי קפה, מנוקד\n"
+"תיאור: 3 פסקאות קצרות, הוראות טיפול, מידה.\n"
+"\n"
+"נשמר כטיוטת מוצר בחנות שלך. לא פורסם."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Proposal ready for Lumen Studio**\n"
+"\n"
+"- Scope: new website, 6 pages, 3 weeks\n"
+"- Price: $4,800 in two payments (from your rate card)\n"
+"- Doc: Proposal - Lumen Studio (Google Docs)\n"
+"\n"
+"Reply draft saved in Gmail with the link. Not sent."
+msgstr "**הצעת מחיר מוכנה ל-Lumen Studio**\n"
+"\n"
+"- היקף: אתר חדש, 6 עמודים, 3 שבועות\n"
+"- מחיר: $4,800 בשני תשלומים (לפי המחירון שלך)\n"
+"- מסמך: Proposal - Lumen Studio (Google Docs)\n"
+"\n"
+"טיוטת תשובה עם הקישור נשמרה ב-Gmail. לא נשלחה."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Senior designer role: 6 candidates**\n"
+"\n"
+"- 4 outreach drafts, each naming one thing from their portfolio\n"
+"- 2 replied yes: interview times offered (Tue 11:00, Wed 15:00)\n"
+"\n"
+"Pipeline sheet updated. Nothing sent."
+msgstr "**משרת מעצב בכיר: 6 מועמדים**\n"
+"\n"
+"- 4 טיוטות פנייה, כל אחת מזכירה דבר אחד מתיק העבודות\n"
+"- 2 ענו כן: הוצעו מועדי ראיון (שלישי 11:00, רביעי 15:00)\n"
+"\n"
+"גיליון המועמדים עודכן. שום דבר לא נשלח."
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
@@ -858,6 +1130,38 @@ msgstr "**יום חמישי**\n"
 "**כדאי לדעת**\n"
 "- גשם קל אחרי 16:00\n"
 "- שתי כתבות על הנושאים שבמעקב שלך"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tomorrow 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n"
+"\n"
+"- Deal: $30k, contract sent last week\n"
+"- Last email: asked about onboarding time\n"
+"- News: Kite Labs raised a Series A on Monday\n"
+"- Ask: who signs, and by when?"
+msgstr "**מחר 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n"
+"\n"
+"- עסקה: $30k, החוזה נשלח בשבוע שעבר\n"
+"- מייל אחרון: שאלה כמה זמן לוקחת ההטמעה\n"
+"- חדשות: Kite Labs גייסה סבב A ביום שני\n"
+"- לשאול: מי חותם, ועד מתי?"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tuesday: $2,340 from 31 orders** (up 12% on last Tuesday)\n"
+"\n"
+"- Best seller: Linen shirt, 9 sold\n"
+"- Refunds: 1, $48\n"
+"- Low stock: Linen shirt (4 left), Canvas tote (2 left)\n"
+"\n"
+"Added to your Sales sheet, row 212."
+msgstr "**שלישי: $2,340 מ-31 הזמנות** (עלייה של 12% לעומת שלישי שעבר)\n"
+"\n"
+"- הנמכר ביותר: חולצת פשתן, 9 נמכרו\n"
+"- החזרים: 1, $48\n"
+"- מלאי נמוך: חולצת פשתן (נשארו 4), תיק בד (נשארו 2)\n"
+"\n"
+"נוסף לגיליון המכירות שלך, שורה 212."
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "/ month"
@@ -926,6 +1230,10 @@ msgstr "קצת מהכול"
 msgid "A command's output"
 msgstr "פלט של פקודה"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "a file"
+msgstr "קובץ"
+
 #: apps/mobile/app/(settings)/labs.tsx
 #: apps/web/src/pages/settings/LabsSettingsPanel.tsx
 msgid "A kanban board of tickets your bots can work on"
@@ -935,6 +1243,11 @@ msgstr "לוח קנבן של כרטיסים שהבוטים שלך יכולים �
 #: apps/web/src/components/settings/ApprovalRulesSettings.tsx
 msgid "A model approves routine actions and asks you about the rest."
 msgstr "מודל מאשר פעולות שגרתיות ושואל אותך לגבי השאר."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A one-page brief before every client or sales call"
+msgstr "תקציר בעמוד אחד לפני כל שיחה עם לקוח או שיחת מכירה"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "A sign-in page opened — enter this code there:"
@@ -950,6 +1263,11 @@ msgstr "נפתחה לשונית התחברות בכתובת <0>{0}</0>. יש ל�
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "A weekly digest of what changed on topics you follow"
 msgstr "סיכום שבועי של מה שהשתנה בנושאים שבמעקב שלך"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A weekly marketing report per client, with a draft email"
+msgstr "דוח שיווק שבועי לכל לקוח, עם טיוטת מייל"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "About"
@@ -1041,6 +1359,7 @@ msgid "Actions for space"
 msgstr "פעולות למרחב"
 
 #: apps/mobile/app/routine.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Active"
@@ -1070,6 +1389,8 @@ msgstr "יומן פעילות"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 #: apps/web/src/components/messages/SecretAskCard.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/plugins/domain-search.tsx
 #: apps/web/src/pages/plugins/parts.tsx
 #: apps/web/src/pages/space/ScratchpadSection.tsx
@@ -1118,6 +1439,10 @@ msgstr "יש להוסיף שם שרת."
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
 msgid "Add a stdio command."
 msgstr "יש להוסיף פקודת stdio."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Add a task"
+msgstr "הוספת משימה"
 
 #: apps/mobile/app/routine.tsx
 #: apps/web/src/pages/shell/use-routine-editor.ts
@@ -1370,6 +1695,10 @@ msgstr "כל ה-{price} הולכים לשימוש במודלים."
 msgid "All bots"
 msgstr "כל הבוטים"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "All brains"
+msgstr "כל המוחות"
+
 #: apps/mobile/app/artifacts.tsx
 #: apps/web/src/pages/space/Artifacts.tsx
 msgid "All files"
@@ -1378,6 +1707,14 @@ msgstr "כל הקבצים"
 #: apps/web/src/pages/settings/UsageSettingsPanel.tsx
 msgid "All models"
 msgstr "כל המודלים"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "All projects"
+msgstr "כל הפרויקטים"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "All skills"
+msgstr "כל המיומנויות"
 
 #: apps/mobile/components/settings/space-availability.tsx
 #: apps/web/src/components/integrations/space-availability.tsx
@@ -1580,6 +1917,16 @@ msgstr "נענה"
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Answered: {answer}"
 msgstr "נענה: {answer}"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers booking and quote requests with your open times"
+msgstr "עונה לבקשות הזמנה והצעות מחיר לפי השעות הפנויות שלך"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers new property leads in minutes and books showings"
+msgstr "עונה ללידים חדשים לנכסים תוך דקות וקובע סיורים"
 
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
 msgid "Anthropic API"
@@ -1991,6 +2338,7 @@ msgstr "לחסום"
 #: apps/mobile/app/(settings)/approvals.tsx
 #: apps/mobile/lib/board/board.ts
 #: apps/web/src/components/settings/ApprovalRulesSettings.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/space/ticket-status.ts
 msgid "Blocked"
 msgstr "חסום"
@@ -2004,9 +2352,19 @@ msgstr "חסום"
 msgid "Board"
 msgstr "לוח"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Booking desk"
+msgstr "דלפק הזמנות"
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Bookkeeping"
 msgstr "הנהלת חשבונות"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Books tidy-up"
+msgstr "סידור הספרים"
 
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
@@ -2132,9 +2490,22 @@ msgstr "בוטים עם מודל משלהם"
 msgid "Bound to bots"
 msgstr "מקושר לבוטים"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Brain file"
+msgstr "קובץ מוח"
+
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Brain label"
 msgstr "תווית Brain"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Brains"
+msgstr "מוחות"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Brains and skills"
+msgstr "מוחות ומיומנויות"
 
 #: apps/mobile/app/(settings)/skills.tsx
 #: apps/web/src/components/integrations/skills-dialog.tsx
@@ -2297,6 +2668,9 @@ msgstr "לא ניתן לקרוא תמונות"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/onboarding/model-step.tsx
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
@@ -2356,6 +2730,11 @@ msgstr "בוטל"
 #: apps/web/src/pages/shell/composer/composer-error.tsx
 msgid "Cancelled trials have no computer hours."
 msgstr "לתקופות ניסיון שבוטלו אין שעות מחשב."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Candidate outreach"
+msgstr "פנייה למועמדים"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -2650,6 +3029,11 @@ msgstr "ניקוי מסננים"
 msgid "Clearing…"
 msgstr "מנקה…"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Client report"
+msgstr "דוח ללקוח"
+
 #: apps/mobile/app/new-group.tsx
 #: apps/mobile/app/page.tsx
 #: apps/mobile/app/paywall.tsx
@@ -2660,6 +3044,7 @@ msgstr "מנקה…"
 #: apps/mobile/components/native/sheet-close-button.tsx
 #: apps/web/src/components/ErrorBoundary.tsx
 #: apps/web/src/components/WindowChrome.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
@@ -2675,6 +3060,10 @@ msgstr "סגירה"
 msgid "Close bot templates"
 msgstr "סגירת תבניות הבוטים"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Close brains"
+msgstr "סגירת המוחות"
+
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "Close chart"
 msgstr "סגירת התרשים"
@@ -2687,6 +3076,10 @@ msgstr "סגירת ארגון הצ׳אטים"
 #: apps/web/src/pages/shell/computers/computer-overlay.tsx
 msgid "Close computer"
 msgstr "סגירת המחשב"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Close goals"
+msgstr "סגירת היעדים"
 
 #: apps/mobile/components/media/image-artifact-viewer.tsx
 msgid "Close image"
@@ -2731,6 +3124,10 @@ msgstr "סגירת החלונית"
 #: apps/web/src/components/messages/ArtifactFileCard.tsx
 msgid "Close preview"
 msgstr "סגירת התצוגה המקדימה"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Close projects"
+msgstr "סגירת הפרויקטים"
 
 #: apps/web/src/components/integrations/skills-dialog.tsx
 msgid "Close skills"
@@ -3132,7 +3529,7 @@ msgstr "חיבור"
 
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Consultant or agency"
-msgstr "ייעוץ או סוכנות"
+msgstr "יועץ או סוכנות"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -3149,6 +3546,11 @@ msgstr "אנשי קשר"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Contains code to run"
 msgstr "מכיל קוד להרצה"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Content repurposer"
+msgstr "ממחזר תוכן"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -4425,9 +4827,21 @@ msgstr "לא ניתן לעדכן את הארנק"
 msgid "Could not verify computer setup ({failureMessage}). Fix the connection, then check again."
 msgstr "לא ניתן לאמת את הגדרת המחשב ({failureMessage}). יש לתקן את החיבור ולבדוק שוב."
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't confirm that. Try again."
+msgstr "לא ניתן לאשר. יש לנסות שוב."
+
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Couldn't copy. Select the link and copy it."
 msgstr "לא ניתן להעתיק. סמנו את הקישור והעתיקו אותו."
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't delete that. Try again."
+msgstr "לא ניתן למחוק. יש לנסות שוב."
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't dismiss that. Try again."
+msgstr "לא ניתן לסגור את זה. יש לנסות שוב."
 
 #: apps/web/src/pages/auth/AdminAccessPage.tsx
 msgid "Couldn't load grants"
@@ -4449,13 +4863,33 @@ msgstr "לא ניתן לטעון את ההגשות"
 msgid "Couldn't load this page. Try again."
 msgstr "לא ניתן היה לטעון את הדף. נסו שוב."
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't load your brains. Try again."
+msgstr "לא ניתן לטעון את המוחות שלך. יש לנסות שוב."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Couldn't load your goals. Try again."
+msgstr "לא ניתן לטעון את היעדים שלך. יש לנסות שוב."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Couldn't load your projects. Try again."
+msgstr "לא ניתן לטעון את הפרויקטים שלך. יש לנסות שוב."
+
 #: apps/web/src/pages/settings/PaymentWalletSettingsPanel.tsx
 msgid "Couldn't load your wallet"
 msgstr "לא ניתן לטעון את הארנק"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't open what I learned. Try again in a moment."
+msgstr "לא ניתן לפתוח את מה שלמדתי. יש לנסות שוב בעוד רגע."
+
 #: apps/mobile/components/thread/thread-error-notice.tsx
 msgid "Couldn't refresh — showing the last loaded messages."
 msgstr "לא ניתן לרענן — מוצגות ההודעות האחרונות שנטענו."
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't save. Open it again and retry."
+msgstr "לא ניתן לשמור. יש לפתוח שוב ולנסות מחדש."
 
 #: apps/mobile/app/computer.tsx
 msgid "Couldn't start the computer"
@@ -4465,6 +4899,10 @@ msgstr "לא ניתן להפעיל את המחשב"
 #: apps/web/src/components/messages/OutgoingDraftCard.tsx
 msgid "Couldn’t submit the draft"
 msgstr "לא ניתן לשלוח את הטיוטה"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't undo that. Try again."
+msgstr "לא ניתן לבטל את הפעולה. יש לנסות שוב."
 
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
@@ -4720,6 +5158,11 @@ msgstr "עבודה יומיומית"
 msgid "days"
 msgstr "ימים"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Deal follow-up"
+msgstr "מעקב עסקאות"
+
 #: apps/mobile/app/(settings)/messaging.tsx
 #: apps/mobile/components/calls/IncomingCall.tsx
 #: apps/mobile/components/cards/ToolQuestionCard.tsx
@@ -4794,6 +5237,7 @@ msgstr "היקף ברירת מחדל"
 #: apps/web/src/components/account/PasskeySettings.tsx
 #: apps/web/src/components/pages/PagesList.tsx
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/OrganizationSettingsPanel.tsx
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
@@ -4863,6 +5307,11 @@ msgstr "למחוק את {name}?"
 msgid "Delete account"
 msgstr "מחיקת החשבון"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Delete for good"
+msgstr "מחיקה לצמיתות"
+
 #: apps/mobile/app/group-settings.tsx
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "Delete group"
@@ -4879,6 +5328,10 @@ msgstr "מחיקת הזיכרונות גם כן"
 #: apps/web/src/pages/settings/OrganizationSettingsPanel.tsx
 msgid "Delete organization"
 msgstr "מחיקת הארגון"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Delete project"
+msgstr "מחיקת הפרויקט"
 
 #: apps/mobile/app/routine.tsx
 msgid "Delete routine"
@@ -5148,6 +5601,7 @@ msgstr "מנתק…"
 #: apps/web/src/components/messages/SecretAskCard.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
 msgid "Dismiss"
@@ -5189,6 +5643,10 @@ msgstr "תיעוד"
 msgid "Document changed. Reopen to edit the latest version."
 msgstr "המסמך השתנה. יש לפתוח אותו מחדש כדי לערוך את הגרסה העדכנית."
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Doing"
+msgstr "בעבודה"
+
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Don’t have an account?"
@@ -5207,6 +5665,8 @@ msgstr "אין חשבון?"
 #: apps/web/src/components/messages/ToolActivityDisclosure.tsx
 #: apps/web/src/components/settings/AccountDataSettings.tsx
 #: apps/web/src/components/vault/VaultImport.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
 #: apps/web/src/pages/shell/bots/import-setup-card.tsx
 #: apps/web/src/pages/space/ActivityList.tsx
@@ -5253,6 +5713,16 @@ msgstr "מוריד…"
 msgid "Draft skill"
 msgstr "טיוטת מיומנות"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts a reply to every new Google review"
+msgstr "כותב טיוטת תשובה לכל ביקורת חדשה ב-Google"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts replies to customer emails using real order data"
+msgstr "כותב טיוטות תשובה למיילים של לקוחות לפי נתוני הזמנות אמיתיים"
+
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
 msgid "Drag, drop, or paste an image"
 msgstr "אפשר לגרור, לשחרר או להדביק תמונה"
@@ -5273,6 +5743,7 @@ msgstr "ניתן להשתמש בכל שם פעם אחת בלבד."
 #: apps/web/src/components/messages/AskCard.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/settings/MemorySettingsOverlay.tsx
 msgid "Edit"
@@ -5670,6 +6141,10 @@ msgstr "מהיר"
 msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
 msgstr "מצב מהיר שולח את ההודעות שלך לשרתים שלנו כדי לענות מהר. אנחנו לא שומרים אותן ולא מאמנים עליהן."
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Feedback"
+msgstr "משוב"
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "שדות להשוואה (אופציונלי)"
@@ -5681,6 +6156,10 @@ msgstr "שדות להשוואה (אופציונלי)"
 #: apps/web/src/pages/space/SpaceSearch.tsx
 msgid "File"
 msgstr "קובץ"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Files and assets"
+msgstr "קבצים ונכסים"
 
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Files or folders on the computer"
@@ -5741,6 +6220,21 @@ msgstr "חיפוש מודלים"
 #: apps/web/src/pages/onboarding/model-step.tsx
 msgid "Finding…"
 msgstr "מחפש…"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds fitting jobs, tailors your CV, and tracks applications"
+msgstr "מוצא משרות מתאימות, מתאים את קורות החיים שלך ועוקב אחרי המועמדויות"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds stalled deals and drafts the next email"
+msgstr "מוצא עסקאות תקועות וכותב טיוטה למייל הבא"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds unpaid invoices and drafts polite reminders"
+msgstr "מוצא חשבוניות שלא שולמו וכותב תזכורות מנומסות"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/mobile/app/(settings)/plugin.tsx
@@ -5847,6 +6341,18 @@ msgstr "מ-{0}"
 msgid "From GitHub"
 msgstr "מ-GitHub"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From how a task went"
+msgstr "ממה שקרה במשימה"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From outside content"
+msgstr "מתוכן חיצוני"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From what you said"
+msgstr "ממה שאמרת"
+
 #: apps/mobile/app/paywall.tsx
 msgid "Full access, nothing to pay"
 msgstr "גישה מלאה, בלי לשלם"
@@ -5893,6 +6399,22 @@ msgstr "Gente"
 msgid "Gente credits"
 msgstr "קרדיטים של Gente"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Gente is easing off this one for now."
+msgstr "Gente מאט את הקצב עם היעד הזה בינתיים."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Gente keeps each project's tasks up to date as it works."
+msgstr "Gente מעדכן את המשימות של כל פרויקט תוך כדי עבודה."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Gente works toward these on its own and tells you what it did."
+msgstr "Gente פועל לקראתם בעצמו ומספר לך מה עשה."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Gente:"
+msgstr "Gente:"
+
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "קבלו חודש חינם על כל חבר שמתחיל תקופת ניסיון."
@@ -5937,6 +6459,14 @@ msgstr "אירוע Git"
 msgid "Give a friend {weeks} weeks free"
 msgstr "תנו לחבר {weeks} שבועות בחינם"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Go ahead"
+msgstr "קדימה"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Go hard"
+msgstr "במלוא הכוח"
+
 #: apps/web/src/pages/NotFound.tsx
 msgid "Go home"
 msgstr "לדף הבית"
@@ -5944,6 +6474,15 @@ msgstr "לדף הבית"
 #: apps/web/src/pages/shell/keyboard-shortcuts-dialog.tsx
 msgid "Go to bot"
 msgstr "מעבר לבוט"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Goal"
+msgstr "יעד"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Goals"
+msgstr "יעדים"
 
 #: apps/web/src/pages/auth/AdminAccessPage.tsx
 msgid "Grant"
@@ -6068,6 +6607,10 @@ msgstr "שלום {name}, כאן {bot}."
 msgid "Hello, {bot} here."
 msgstr "שלום, כאן {bot}."
 
+#: apps/web/src/pages/Shell.tsx
+msgid "Here is the transcript of the call I just finished, recorded and transcribed on this computer. Write the notes (summary, decisions, action items, open questions), remember the decisions and my action items, and save drafts of the follow-ups. Lines marked You: are me; Them: are the others."
+msgstr "זה התמלול של השיחה שסיימתי עכשיו, שהוקלטה ותומללה במחשב הזה. כתוב את הסיכום (תקציר, החלטות, משימות, שאלות פתוחות), זכור את ההחלטות ואת המשימות שלי, ושמור טיוטות של הודעות המעקב. שורות שמסומנות You: הן שלי; Them: הן של האחרים."
+
 #: apps/mobile/app/bot-settings.tsx
 msgid "Hi, I'm {name}."
 msgstr "היי, אני {name}."
@@ -6110,6 +6653,10 @@ msgstr "הסתרת המקלדת"
 #: apps/web/src/components/I18nBootstrap.tsx
 msgid "Hide password"
 msgstr "הסתרת הסיסמה"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Hide the change"
+msgstr "הסתרת השינוי"
 
 #: apps/mobile/components/calls/VoiceChatCard.tsx
 #: apps/web/src/components/call/VoiceChatCard.tsx
@@ -6177,6 +6724,11 @@ msgstr "תדירות"
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "How other bots see it"
 msgstr "איך בוטים אחרים רואים אותו"
+
+#. placeholder {0}: goal.title
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "How proactive for {0}"
+msgstr "כמה יוזמה עבור {0}"
 
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "How to check"
@@ -6290,6 +6842,10 @@ msgstr "בפגישה"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "In this bot"
 msgstr "בבוט הזה"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "In use"
+msgstr "בשימוש"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -6446,6 +7002,11 @@ msgstr "הזמנת אנשים"
 msgid "Invited"
 msgstr "הוזמן"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Invoice chaser"
+msgstr "גובה חשבוניות"
+
 #: apps/web/src/pages/settings/MemorySettingsOverlay.tsx
 msgid "Isolated"
 msgstr "מבודד"
@@ -6461,6 +7022,22 @@ msgstr "לא ניתן לפתוח אותו. כדאי לנסות שוב מהסרג
 #: apps/web/src/components/pages/PageViewHost.tsx
 msgid "It may have been deleted, or it belongs to someone else."
 msgstr "ייתכן שהוא נמחק או שהוא שייך למישהו אחר."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would agree to terms"
+msgstr "הפעולה תסכים לתנאים בשמך"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would delete your data"
+msgstr "הפעולה תמחק את הנתונים שלך"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would send something as you"
+msgstr "הפעולה תשלח משהו בשמך"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would spend money"
+msgstr "הפעולה תוציא כסף"
 
 #: apps/mobile/lib/inbox/sections/confirm-delete-section.ts
 #: apps/web/src/pages/shell/shell-dialogs.tsx
@@ -6482,6 +7059,11 @@ msgstr "הקישור שלו יפסיק לעבוד. אי אפשר לבטל את �
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Its shared link stops working and its cards in chat show it as deleted. This can't be undone."
 msgstr "הקישור המשותף יפסיק לעבוד והכרטיסים שלו בצ'אט יוצגו כמחוקים. אי אפשר לבטל את הפעולה."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Job hunt"
+msgstr "חיפוש עבודה"
 
 #: apps/web/src/pages/auth/Invite.tsx
 #: apps/web/src/pages/auth/JoinOrganization.tsx
@@ -6536,6 +7118,7 @@ msgstr "הרגע"
 
 #. Keeps the account's current timezone instead of switching
 #: apps/mobile/lib/i18n/device-timezone.ts
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/shell/timezone-prompt.tsx
 msgid "Keep"
 msgstr "להשאיר"
@@ -6617,6 +7200,11 @@ msgstr "שימוש אחרון"
 #: apps/web/src/components/DesktopUpdates.tsx
 msgid "Later"
 msgstr "מאוחר יותר"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Lead responder"
+msgstr "מענה ללידים"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Learn from conversations"
@@ -6707,6 +7295,11 @@ msgstr "מאזין"
 #: apps/web/src/pages/shell/composer/hold-to-talk.tsx
 msgid "Listening…"
 msgstr "מקשיב…"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Listing writer"
+msgstr "כותב מודעות מוצר"
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Live update settings"
@@ -6966,6 +7559,10 @@ msgstr "סימון כלא נקראה"
 msgid "Mark as Unread"
 msgstr "סימון כלא נקראה"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Mark done"
+msgstr "סימון כבוצע"
+
 #: apps/web/src/components/messages/markdown-copy.tsx
 msgid "Markdown table"
 msgstr "טבלת Markdown"
@@ -7048,6 +7645,16 @@ msgstr "הצטרפות לפגישות אינה זמינה."
 #: apps/web/src/pages/shell/meetings/meetings-dialog.tsx
 msgid "Meeting link"
 msgstr "קישור לפגישה"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting notes"
+msgstr "סיכומי פגישות"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting prep"
+msgstr "הכנה לפגישה"
 
 #: apps/mobile/app/_layout.tsx
 #: apps/mobile/app/bot-profile.tsx
@@ -7541,6 +8148,10 @@ msgstr "מחשבים חדשים רצים על"
 msgid "New contact"
 msgstr "איש קשר חדש"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "New goal"
+msgstr "יעד חדש"
+
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "New group"
 msgstr "קבוצה חדשה"
@@ -7593,6 +8204,10 @@ msgstr "סיסמה חדשה"
 msgid "New private space"
 msgstr "מרחב פרטי חדש"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "New project"
+msgstr "פרויקט חדש"
+
 #: apps/mobile/app/routine.tsx
 #: apps/mobile/app/routines.tsx
 #: apps/web/src/pages/routines/RoutineList.tsx
@@ -7616,6 +8231,10 @@ msgstr "מיומנות חדשה"
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "New space"
 msgstr "מרחב חדש"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "New task"
+msgstr "משימה חדשה"
 
 #: apps/web/src/pages/space/Board.tsx
 msgid "New ticket"
@@ -7698,6 +8317,10 @@ msgstr "אין בוטים תואמים"
 #: packages/i18n/src/computer-usage.ts
 msgid "No computer hours used yet"
 msgstr "עדיין לא נוצלו שעות מחשב"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "No goals yet. Tell Gente what you want, or add one here."
+msgstr "אין עדיין יעדים. אפשר לספר ל-Gente מה אתה רוצה, או להוסיף יעד כאן."
 
 #: apps/mobile/components/cards/OutgoingDraftCard.tsx
 #: apps/mobile/components/thread/message-bubble.tsx
@@ -7784,6 +8407,10 @@ msgstr "אין תוכנית או מפתח? אפשר להשתמש בקרדיטי�
 #: apps/mobile/components/media/video-preview.tsx
 msgid "No preview for this file type."
 msgstr "אין תצוגה מקדימה לסוג הקובץ הזה."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "No projects yet. Start one, or ask Gente to start one in a chat."
+msgstr "אין עדיין פרויקטים. אפשר להתחיל אחד, או לבקש מ-Gente להתחיל אחד בצ'אט."
 
 #: apps/web/src/components/integrations/IntegrationSetup.tsx
 msgid "No remote MCP servers found"
@@ -7878,6 +8505,7 @@ msgstr "לא נמצאו עמודות של אתר וסיסמה."
 msgid "None"
 msgstr "ללא"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/space/ticket-priority.ts
 msgid "Normal"
 msgstr "רגיל"
@@ -7925,6 +8553,11 @@ msgstr "לא בקטלוג של Gente"
 msgid "Not in the plugin catalog"
 msgstr "לא נמצא בקטלוג התוספים"
 
+#. placeholder {0}: earlier.length
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Not in use ({0})"
+msgstr "לא בשימוש ({0})"
+
 #: apps/mobile/components/cards/McpApprovalCard.tsx
 #: apps/mobile/lib/auth/passkey.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -7970,6 +8603,10 @@ msgstr "לא נשלחה. הקשה לניסיון חוזר"
 msgid "Not supported in Gente"
 msgstr "לא נתמך ב-Gente"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Not this"
+msgstr "לא את זה"
+
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Not used by Gente"
 msgstr "לא בשימוש ב-Gente"
@@ -7979,6 +8616,15 @@ msgstr "לא בשימוש ב-Gente"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "לא עובד"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Notes, decisions and follow-ups from every call, kept on your computer"
+msgstr "הערות, החלטות והודעות מעקב מכל שיחה, נשמרים במחשב שלך"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Nothing here yet. When Gente researches something or hears your feedback, it keeps notes here."
+msgstr "אין כאן עדיין כלום. כש-Gente חוקר משהו או שומע את המשוב שלך, הוא שומר כאן הערות."
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -7996,6 +8642,10 @@ msgstr "עדיין כלום. כדאי לבדוק שהקוד נשלח לצ'אט �
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
 msgstr "עדיין כלום. WhatsApp צריך אפליקציה עסקית של Meta וכתובת ש-Meta יכולה להגיע אליה, ו-Meta עדיין לא מאפשרת עוזרי AI כלליים בכל המדינות. Telegram עובד מיד: בתפריט של Gente, בוחרים חיבור Telegram."
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Nothing yet. When you tell me how you like things done, it shows up here."
+msgstr "עדיין כלום. כשתספר לי איך אתה אוהב שדברים נעשים, זה יופיע כאן."
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
@@ -8495,11 +9145,14 @@ msgstr "יש להדביק את מפתח ה-API ולבדוק שוב."
 
 #: apps/mobile/components/calls/voice-player-bar.tsx
 #: apps/mobile/components/media/audio-attachment.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "Pause"
 msgstr "השהיה"
 
 #: apps/mobile/lib/cards/import-setup.ts
 #: apps/mobile/lib/routines/routine.ts
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineList.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Paused"
@@ -8534,6 +9187,11 @@ msgstr "פרסונה"
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "Personal"
 msgstr "אישי"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Personal outreach drafts and interview times for your shortlist"
+msgstr "טיוטות פנייה אישיות ומועדי ראיון לרשימה הקצרה שלך"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -8753,11 +9411,33 @@ msgstr "פרופיל"
 msgid "Program: {name}"
 msgstr "תוכנה: {name}"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Progress"
+msgstr "התקדמות"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "project feedback"
+msgstr "משוב על פרויקט"
+
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/onboarding/model-step.tsx
 msgid "Project ID"
 msgstr "מזהה פרויקט"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Project name"
+msgstr "שם הפרויקט"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Projects"
+msgstr "פרויקטים"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Proposal writer"
+msgstr "כותב הצעות מחיר"
 
 #: apps/web/src/components/teach/TeachRecordingChrome.tsx
 msgid "Protected input"
@@ -8805,6 +9485,10 @@ msgstr "שאלות, אישורים, השתלטות"
 #: apps/web/src/pages/space/ActivityList.tsx
 msgid "Queued"
 msgstr "בתור"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Quiet"
+msgstr "שקט"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/mobile/components/thread/quote-sheet.tsx
@@ -8859,7 +9543,7 @@ msgstr "מוכן"
 
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Real estate"
-msgstr "נדל״ן"
+msgstr "נדל\"ן"
 
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
 msgid "Reason"
@@ -9002,7 +9686,7 @@ msgstr "יוצר מחדש את המחשב"
 
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Recruiting"
-msgstr "גיוס"
+msgstr "גיוס עובדים"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -9091,6 +9775,7 @@ msgstr "שרת MCP מרוחק"
 #: apps/web/src/components/vault/LoginFieldsInput.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/plugins/connector-detail.tsx
 #: apps/web/src/pages/plugins/manage-view.tsx
@@ -9441,6 +10126,10 @@ msgstr "שוחזר"
 msgid "Restoring your workspace"
 msgstr "משחזר את סביבת העבודה"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Resume"
+msgstr "המשך"
+
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/components/inbox/inbox-swipe-row.ios.tsx
 msgid "Resume notifications"
@@ -9473,6 +10162,8 @@ msgstr "חידוש ההתראות"
 #: apps/web/src/pages/auth/Auth.tsx
 #: apps/web/src/pages/auth/Invite.tsx
 #: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/plugins/manage-view.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -9510,6 +10201,11 @@ msgstr "חזרה לתיבת הדואר הנכנס"
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
 msgstr "יש לבדוק את הגדרות הספק ולבדוק שוב."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Review replies"
+msgstr "תשובות לביקורות"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
@@ -9645,6 +10341,11 @@ msgstr "מכירות"
 msgid "Sales & CRM"
 msgstr "מכירות ו-CRM"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sales digest"
+msgstr "סיכום מכירות"
+
 #: apps/mobile/app/(settings)/team-conversation.tsx
 msgid "Same as {bot}"
 msgstr "כמו {bot}"
@@ -9692,6 +10393,7 @@ msgstr "שבת"
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
@@ -9956,6 +10658,10 @@ msgstr "אבטחה ותפעול"
 msgid "Security code"
 msgstr "קוד אבטחה"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "See the change"
+msgstr "הצגת השינוי"
+
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Select a bot"
 msgstr "בחירת בוט"
@@ -10014,6 +10720,10 @@ msgstr "שליחה כקובץ"
 #: apps/web/src/components/account/AccountAccess.tsx
 msgid "Send deletion code"
 msgstr "שליחת קוד מחיקה"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Send feedback"
+msgstr "שליחת משוב"
 
 #: apps/web/src/pages/shell/composer/hold-to-talk.tsx
 msgid "Send recording"
@@ -10430,6 +11140,7 @@ msgstr "מיומנות {position}"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 #: apps/web/src/components/integrations/skills-dialog.tsx
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
 #: apps/web/src/pages/shell/sidebar/sidebar-footer.tsx
 #: apps/web/src/pages/shell/use-palette-actions.ts
 msgid "Skills"
@@ -10439,6 +11150,7 @@ msgstr "מיומנויות"
 #: apps/mobile/app/new-group.tsx
 #: apps/mobile/components/cards/ComputerCard.tsx
 #: apps/web/src/components/computers/ComputerCard.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/shell/computers/computer-release-actions.tsx
 msgid "Skip"
 msgstr "דילוג"
@@ -10574,6 +11286,11 @@ msgstr "מוין לפי {column}, בסדר יורד"
 msgid "Sorts new email and drafts the replies"
 msgstr "ממיין אימיילים חדשים ומנסח טיוטות לתשובות"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sorts uncategorized transactions and lists missing receipts"
+msgstr "ממיין תנועות בלי קטגוריה ומפרט קבלות חסרות"
+
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Sounds"
 msgstr "צלילים"
@@ -10657,6 +11374,7 @@ msgstr "SSO אינו זמין כרגע. אפשר לנסות שוב."
 msgid "Star on GitHub"
 msgstr "כוכב ב-GitHub"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/shell/computers/computer-overlay.tsx
 msgid "Start"
 msgstr "הפעלה"
@@ -10738,6 +11456,10 @@ msgstr "מחוז או אזור"
 msgid "Status"
 msgstr "סטטוס"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Stays on this computer. Undo anything."
+msgstr "נשאר במחשב הזה. אפשר לבטל כל דבר."
+
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "Steps"
 msgstr "שלבים"
@@ -10778,6 +11500,11 @@ msgstr "נעצר"
 #: apps/web/src/lib/platform/browser-notifications.ts
 msgid "Stopped."
 msgstr "נעצר."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Store support"
+msgstr "תמיכה לחנות"
 
 #: apps/web/src/pages/integrations/McpServerForm.tsx
 msgid "Stored encrypted"
@@ -10950,6 +11677,10 @@ msgstr "הקשה לפתיחה"
 msgid "Target"
 msgstr "יעד"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Tasks"
+msgstr "משימות"
+
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 msgid "Teach a task"
 msgstr "לימוד משימה"
@@ -10978,6 +11709,10 @@ msgstr "הודעת Teams"
 #: apps/mobile/components/cards/run-error-sheet.tsx
 msgid "Technical details"
 msgstr "פרטים טכניים"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Tell Gente what to keep or change"
+msgstr "אפשר לספר ל-Gente מה לשמור או לשנות"
 
 #: apps/web/src/components/computers/ComputerProviderSettings.tsx
 msgid "Template"
@@ -11018,6 +11753,11 @@ msgstr "בודק…"
 #: apps/web/src/components/BotEmailAddressField.tsx
 msgid "That address isn't available"
 msgstr "הכתובת הזו לא זמינה"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "That didn't go through. Try again."
+msgstr "זה לא עבר. יש לנסות שוב."
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That doesn’t look like a URL"
@@ -11537,6 +12277,10 @@ msgstr "יום חמישי"
 msgid "Time of day"
 msgstr "שעה ביום"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Timeline"
+msgstr "ציר זמן"
+
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Timezone"
 msgstr "אזור זמן"
@@ -11567,6 +12311,7 @@ msgid "To add"
 msgstr "להוספה"
 
 #: apps/mobile/lib/board/board.ts
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/space/ticket-status.ts
 msgid "To do"
 msgstr "לביצוע"
@@ -11578,6 +12323,7 @@ msgstr "אל:"
 
 #: apps/mobile/app/paywall.tsx
 #: apps/mobile/components/thread/time-separator.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/settings/UsageSettingsPanel.tsx
 #: apps/web/src/pages/shell/chat/chat-context.tsx
 #: apps/web/src/pages/space/Artifacts.tsx
@@ -11787,6 +12533,21 @@ msgstr "כיבוי"
 msgid "Turn on"
 msgstr "הפעלה"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns a client inquiry into a proposal and a reply draft"
+msgstr "הופך פנייה של לקוח להצעת מחיר ולטיוטת תשובה"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns product notes into ready listings with titles and tags"
+msgstr "הופך הערות על מוצרים למודעות מוכנות עם כותרות ותגיות"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns your latest video into posts for every channel"
+msgstr "הופך את הסרטון האחרון שלך לפוסטים לכל ערוץ"
+
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
@@ -11817,8 +12578,22 @@ msgstr "ללא שיוך"
 
 #: apps/mobile/components/cards/change-undo.tsx
 #: apps/web/src/components/messages/AskCard.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Undo"
 msgstr "ביטול"
+
+#. placeholder {0}: action.title
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Undo {0}"
+msgstr "ביטול {0}"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Undone"
+msgstr "בוטל"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Undone."
+msgstr "בוטל."
 
 #: apps/mobile/components/integrations/integration-detail.tsx
 #: apps/web/src/pages/plugins/connector-detail.tsx
@@ -12082,6 +12857,10 @@ msgstr "שימוש בקרדיטים של Gente"
 msgid "Use in this bot"
 msgstr "שימוש בבוט הזה"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Use it"
+msgstr "להשתמש בזה"
+
 #: apps/mobile/app/(settings)/memory-note.tsx
 msgid "Use latest"
 msgstr "שימוש בגרסה העדכנית"
@@ -12284,6 +13063,10 @@ msgstr "ממתין להתחברות — תוקף הקישור יפוג בעוד 
 msgid "Waiting for this bot’s response."
 msgstr "ממתין לתשובה של הבוט הזה."
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Waiting for you"
+msgstr "מחכה לך"
+
 #: apps/web/src/lib/chat/roster-status.ts
 msgid "Waiting in line…"
 msgstr "ממתין בתור…"
@@ -12306,6 +13089,10 @@ msgstr "הער"
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Wallet"
 msgstr "ארנק"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "web search"
+msgstr "חיפוש באינטרנט"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Web, desktop and mobile"
@@ -12366,6 +13153,10 @@ msgstr "ברוכים הבאים ל-Gente"
 msgid "What about its memories?"
 msgstr "ומה עם הזיכרונות שלו?"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "What are you working on?"
+msgstr "על מה אתה עובד?"
+
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What can this space use?"
 msgstr "במה המרחב הזה יכול להשתמש?"
@@ -12385,6 +13176,18 @@ msgstr "במה הכי חשוב לך ש-Gente יעזור?"
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"
 msgstr "במה להתחיל קודם?"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "What do you want? For example, land a job"
+msgstr "מה אתה רוצה? למשל, למצוא עבודה"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "What Gente learned on each topic, with where it learned it. Stays on this computer."
+msgstr "מה Gente למד על כל נושא, ומאיפה למד את זה. נשאר במחשב הזה."
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "What I learned about you"
+msgstr "מה למדתי עליך"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "What it remembers"
@@ -12583,6 +13386,15 @@ msgstr "שנתי −{percent}%"
 msgid "Yesterday"
 msgstr "אתמול"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Yesterday's sales, refunds and low stock in one message"
+msgstr "המכירות, ההחזרים והמלאי הנמוך של אתמול בהודעה אחת"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "you"
+msgstr "אתה"
+
 #: apps/mobile/app/index.tsx
 #: apps/mobile/app/page-share.tsx
 #: apps/mobile/components/calls/CallCard.tsx
@@ -12617,6 +13429,10 @@ msgstr "דחית"
 #: apps/web/src/components/spaces/InviteDialog.tsx
 msgid "You get a free month when they start their trial with a new card."
 msgstr "אתם מקבלים חודש חינם כשהם מתחילים את תקופת הניסיון עם כרטיס חדש."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "You:"
+msgstr "אתה:"
 
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
@@ -12663,6 +13479,10 @@ msgstr "הכרטיס שלך יחויב היום בהפרש היחסי."
 msgid "Your card was not charged"
 msgstr "הכרטיס שלך לא חויב"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "your chat"
+msgstr "הצ'אט שלך"
+
 #: apps/mobile/app/computer.tsx
 #: apps/web/src/pages/Shell.tsx
 msgid "Your computer's disk is nearly full. Free up space by removing build output and caches you no longer need."
@@ -12688,6 +13508,10 @@ msgstr "כתובת האימייל"
 #: apps/mobile/app/paywall.tsx
 msgid "Your free trial has started"
 msgstr "תקופת הניסיון החינמית התחילה"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your goals"
+msgstr "היעדים שלך"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts

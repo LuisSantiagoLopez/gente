@@ -6,9 +6,10 @@ import type { GenteSupportBridge } from "../support/bridge.js";
  * The window whose own page may call a channel. Its main frame only, and for an app window
  * only while that frame shows the server the window was opened for. `appOrReplaced` also
  * takes the window a server switch is replacing: only for a channel whose handler acts on
- * the window that sent the call and on nothing else.
+ * the window that sent the call and on nothing else. `computerPill` is the small "Gente is using
+ * your computer" window, whose page may only ask to stop and say where the pointer is.
  */
-export type IpcWindow = "app" | "appOrReplaced" | "setup" | "support";
+export type IpcWindow = "app" | "appOrReplaced" | "setup" | "support" | "computerPill";
 
 type BridgeMethod = (...args: never[]) => unknown;
 
@@ -70,6 +71,17 @@ const setupPageSync = <Method extends BridgeMethod>(): IpcChannel<Method> & { sy
   refused: null,
 });
 
+const computerPillPage = <Method extends BridgeMethod>(
+  refused: Refused<Method>,
+): IpcChannel<Method> => ({ from: "computerPill", refused });
+
+/** The bridge the "Gente is using your computer" pill's page is written against. */
+export interface ComputerPillBridge {
+  stop(): Promise<void>;
+  /** Over the Stop button the window takes clicks; everywhere else they pass through. */
+  hover(over: boolean): Promise<void>;
+}
+
 const SETUP_NOT_ACTIVE = { ok: false, error: "Setup is not active." };
 /** Gente's support window: only its own page may call. */
 const supportPage = <Method extends BridgeMethod>(
@@ -122,6 +134,8 @@ export const ipcChannels = {
     fullScreen: false,
   }),
   "desktop.window.toggleMaximize": ownWindow<Desktop["window"]["toggleMaximize"]>(undefined),
+  "desktop.computerPill.stop": computerPillPage<ComputerPillBridge["stop"]>(undefined),
+  "desktop.computerPill.hover": computerPillPage<ComputerPillBridge["hover"]>(undefined),
   "desktop.setup.brain.start": setupPage<RakazoSetup["brain"]["start"]>(REJECTS),
   "desktop.setup.brain.state": setupPage<RakazoSetup["brain"]["state"]>(REJECTS),
   "desktop.setup.locale": setupPageSync<() => RakazoSetup["locale"]>(),

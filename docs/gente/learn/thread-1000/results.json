@@ -1,0 +1,109 @@
+{
+  "model": "swift-1.5-27b",
+  "numCtx": 32768,
+  "turns": 1000,
+  "plantedTurn": 20,
+  "plantedCodeName": "MARIGOLD-7",
+  "question": "Quick check: what was the project code name I gave you?",
+  "summarizer": "scripted, forgetful (writes only the newest batch); real ledger merge",
+  "loadedBefore": [
+    {
+      "name": "swift-1.5-27b:latest",
+      "model": "swift-1.5-27b:latest",
+      "size": 11378129632,
+      "digest": "9bfd23876b9efc05f43ced86b354caad5a0498f5e01e0dfde3c0c56f9fe03eca",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen35",
+        "families": ["qwen35"],
+        "parameter_size": "27.3B",
+        "quantization_level": "IQ2_XXS"
+      },
+      "expires_at": "2319-03-01T15:33:18.852144807-08:00",
+      "size_vram": 11378129632,
+      "context_length": 32768,
+      "runner": "llamacpp"
+    }
+  ],
+  "loadedAfter": [
+    {
+      "name": "swift-1.5-27b:latest",
+      "model": "swift-1.5-27b:latest",
+      "size": 11378129632,
+      "digest": "9bfd23876b9efc05f43ced86b354caad5a0498f5e01e0dfde3c0c56f9fe03eca",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen35",
+        "families": ["qwen35"],
+        "parameter_size": "27.3B",
+        "quantization_level": "IQ2_XXS"
+      },
+      "expires_at": "2319-03-01T15:33:18.852144807-08:00",
+      "size_vram": 11378129632,
+      "context_length": 32768,
+      "runner": "llamacpp"
+    }
+  ],
+  "ranAt": "2026-11-19T23:47:54.330Z",
+  "samples": [
+    {
+      "turn": 100,
+      "mode": "gente",
+      "messagesInChat": 198,
+      "recentMessagesSent": 98,
+      "contextChars": 5865,
+      "assembleMs": 1.927,
+      "answer": "The project code name is MARIGOLD-7.",
+      "recalled": true,
+      "wallMs": 28606,
+      "promptTokens": 2511,
+      "promptEvalMs": 25035,
+      "outputTokens": 12,
+      "loadMs": 2
+    },
+    {
+      "turn": 500,
+      "mode": "gente",
+      "messagesInChat": 998,
+      "recentMessagesSent": 98,
+      "contextChars": 5948,
+      "assembleMs": 4.826,
+      "answer": "The project code name is MARIGOLD-7.",
+      "recalled": true,
+      "wallMs": 29541,
+      "promptTokens": 2606,
+      "promptEvalMs": 25044,
+      "outputTokens": 12,
+      "loadMs": 2
+    },
+    {
+      "turn": 1000,
+      "mode": "gente",
+      "messagesInChat": 1998,
+      "recentMessagesSent": 98,
+      "contextChars": 5969,
+      "assembleMs": 5.24,
+      "answer": "The project code name is MARIGOLD-7.",
+      "recalled": true,
+      "wallMs": 27268,
+      "promptTokens": 2615,
+      "promptEvalMs": 23491,
+      "outputTokens": 12,
+      "loadMs": 111
+    },
+    {
+      "turn": 1000,
+      "mode": "last-50-only baseline",
+      "recentMessagesSent": 50,
+      "answer": "I don't have a record of a specific project code name in our conversation.",
+      "recalled": false,
+      "wallMs": 17234,
+      "promptTokens": 1185,
+      "promptEvalMs": 12726,
+      "outputTokens": 17,
+      "loadMs": 16
+    }
+  ]
+}

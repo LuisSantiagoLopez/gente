@@ -31,11 +31,13 @@ import { emailTools } from "./run-tools-email.js";
 import { feedbackTools } from "./run-tools-feedback.js";
 import { fileTools } from "./run-tools-files.js";
 import { fleetTools } from "./run-tools-fleet.js";
+import { goalToolHandlers } from "./run-tools-goals.js";
 import { cloudAgentTool, connectorTool, integrationTools } from "./run-tools-integrations.js";
 import { memoryTools } from "./run-tools-memory.js";
 import { messagingTools } from "./run-tools-messaging.js";
 import { pageTools } from "./run-tools-pages.js";
 import { preferenceTools } from "./run-tools-preferences.js";
+import { projectTools } from "./run-tools-projects.js";
 import { purchaseTools } from "./run-tools-purchases.js";
 import { secretTools } from "./run-tools-secrets.js";
 import { taskTools } from "./run-tools-tasks.js";
@@ -79,6 +81,8 @@ const TOOL_HANDLERS = new Map<string, ToolHandler>([
   [USER_COMPUTER_ACT_TOOL, userComputerAct],
   ...Object.entries(purchaseTools),
   ...Object.entries(preferenceTools),
+  ...Object.entries(projectTools),
+  ...Object.entries(goalToolHandlers),
   ...Object.entries(feedbackTools),
   ...Object.entries(emailTools),
   ...[...PAGE_BROWSER_TOOL_NAMES].map((name) => [name, pageBrowserTool] as const),

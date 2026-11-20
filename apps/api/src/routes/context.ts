@@ -63,6 +63,7 @@ import { createBotRemoval } from "../bots/bot-removal.js";
 import { rosterChangeFor } from "../bots/roster-procedures.js";
 import { createTaughtSkillsService } from "../bots/taught-skills.js";
 import { createMcpServers } from "../integrations/mcp-servers.js";
+import { createSkillLearningService } from "../learning/skill-learning.js";
 import { createModelConnector, prepareAllowedThinkingLevels } from "../models/model-credentials.js";
 import type { RouterDeps } from "../router.js";
 import { createRoutineAnnouncer } from "../routines/routines.js";
@@ -598,6 +599,11 @@ export function createRouterContext(deps: RouterDeps) {
     dataDir: deps.dataDir,
   });
   const agentSkills = createAgentSkillsService(deps.prisma);
+  const skillLearning = createSkillLearningService({
+    prisma: deps.prisma,
+    agentSkills,
+    model: deps.skillLearningModel,
+  });
 
   const signedIn = os.middleware(async ({ context, next }) => {
     const actor = context.actor;
@@ -665,6 +671,7 @@ export function createRouterContext(deps: RouterDeps) {
     groupRepos,
     taughtSkills,
     agentSkills,
+    skillLearning,
     authed,
     callsEnabled,
     boardEnabled,

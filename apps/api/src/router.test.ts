@@ -1284,7 +1284,8 @@ describe("memory documents", () => {
     });
     await expect(client.memory.remove({ documentId: "doc-1" })).resolves.toEqual({ ok: true });
     expect(memoryDocument.findFirst).toHaveBeenCalledWith({
-      where: { id: "doc-1", spaceId: "space-1" },
+      // Brains and projects are memory documents too, removed only through their own routes.
+      where: { id: "doc-1", spaceId: "space-1", scope: { in: ["bot", "user"] } },
     });
     expect(memory.remove).toHaveBeenCalledWith(
       { id: "doc-1", scope: "bot", botId: "bot-1", path: "projects/retired.md" },

@@ -43,6 +43,11 @@ msgstr "{0, plural, one {# Gratismonat} other {# Gratismonate}}"
 msgid "{0, plural, one {# more} other {# more}}"
 msgstr "{0, plural, one {# weiterer} other {# weitere}}"
 
+#. placeholder {0}: brain.facts.length
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "{0, plural, one {# note} other {# notes}}"
+msgstr "{0, plural, one {# Notiz} other {# Notizen}}"
+
 #. placeholder {0}: skillCount(install)
 #: apps/web/src/components/integrations/skills-dialog.tsx
 msgid "{0, plural, one {# skill} other {# skills}}"
@@ -165,10 +170,28 @@ msgstr "Zusammenfassungsintervall in Stunden für {0}"
 msgid "{0} TB"
 msgstr "{0} TB"
 
+#. placeholder {0}: metrics.actions
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "{0} things done so far."
+msgstr "Bisher {0} Dinge erledigt."
+
+#. placeholder {0}: metrics.actions
+#. placeholder {1}: percent(metrics.acceptanceRate)
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "{0} things done, you kept {1}."
+msgstr "{0} Dinge erledigt, du hast {1} behalten."
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
 msgstr "{0}, pausiert, bis du sie einschaltest"
+
+#. placeholder {0}: task.title
+#. placeholder {1}: statusLabel(task.status)
+#. placeholder {2}: statusLabel(NEXT_STATUS[task.status])
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "{0}: {1}. Move to {2}"
+msgstr "{0}: {1}. Verschieben nach {2}"
 
 #. placeholder {0}: Math.round(used)
 #: apps/web/src/components/billing/PlanUsage.tsx
@@ -368,6 +391,11 @@ msgstr "{days} Tage kostenlos, danach {price} / Jahr. Jederzeit kündbar."
 #: apps/web/src/lib/locale/relative-time.ts
 msgid "{days}d ago"
 msgstr "vor {days} T."
+
+#. placeholder {0}: project.tasks.length
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "{done} of {0} done"
+msgstr "{done} von {0} erledigt"
 
 #: apps/mobile/components/thread/message-bubble.tsx
 msgid "{from} messaged {to}"
@@ -763,6 +791,23 @@ msgstr "@{name}"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**$6,250 overdue across 3 invoices**\n"
+"\n"
+"1. Acme, $3,000, 12 days late. Second reminder drafted.\n"
+"2. Lumen Studio, $2,400, 4 days late. Friendly nudge drafted.\n"
+"3. Ode Cafe, $850, 31 days late. Firm reminder drafted.\n"
+"\n"
+"3 Gmail drafts saved. Nothing sent."
+msgstr "**6.250 $ überfällig bei 3 Rechnungen**\n"
+"\n"
+"1. Acme, 3.000 $, 12 Tage überfällig. Zweite Erinnerung entworfen.\n"
+"2. Lumen Studio, 2.400 $, 4 Tage überfällig. Freundlicher Hinweis entworfen.\n"
+"3. Ode Cafe, 850 $, 31 Tage überfällig. Deutliche Erinnerung entworfen.\n"
+"\n"
+"3 Gmail-Entwürfe gespeichert. Nichts gesendet."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "**12 new since 8:00**\n"
 "\n"
 "**Reply needed**\n"
@@ -786,6 +831,36 @@ msgstr "**12 neue seit 8:00**\n"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 booking requests**\n"
+"\n"
+"1. Jon wants a deep clean Thursday. Free: Thu 10:00 or 14:00. Draft ready.\n"
+"2. Sofia asks the price for a 3-bedroom. Quote from your price list: $180. Draft ready.\n"
+"\n"
+"Gmail drafts saved. Nothing booked until a client picks a time."
+msgstr "**2 Buchungsanfragen**\n"
+"\n"
+"1. Jon möchte am Donnerstag eine Grundreinigung. Frei: Do 10:00 oder 14:00. Entwurf bereit.\n"
+"2. Sofia fragt nach dem Preis für 3 Zimmer. Angebot aus deiner Preisliste: 180 $. Entwurf bereit.\n"
+"\n"
+"Gmail-Entwürfe gespeichert. Nichts wird gebucht, bis ein Kunde eine Zeit wählt."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 new leads**\n"
+"\n"
+"1. Maya, 14 Oak St listing, pre-approved. Showing times offered: Sat 11:00 or Sun 15:00. Draft ready.\n"
+"2. Chris, 'looking in Eastside under $600k'. 3 matching listings from your sheet. Draft ready.\n"
+"\n"
+"Both added to your Leads sheet."
+msgstr "**2 neue Interessenten**\n"
+"\n"
+"1. Maya, Objekt 14 Oak St, Finanzierung zugesagt. Besichtigungen angeboten: Sa 11:00 oder So 15:00. Entwurf bereit.\n"
+"2. Chris, 'sucht in Eastside unter 600.000 $'. 3 passende Objekte aus deiner Tabelle. Entwurf bereit.\n"
+"\n"
+"Beide in deiner Leads-Tabelle eingetragen."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "**2 pull requests are waiting on you**\n"
 "\n"
 "**#482 Add retry to webhook delivery**\n"
@@ -806,6 +881,203 @@ msgstr "**2 Pull Requests warten auf dich**\n"
 "\n"
 "**#479 Datums-Parsing in Berichten korrigieren**\n"
 "Sieht gut aus. Empfohlenes Review: genehmigen."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**28 transactions to sort, 24 suggested**\n"
+"\n"
+"- 18 software and ads, matched to past categories\n"
+"- 6 meals and travel\n"
+"- 4 unclear: listed below with questions\n"
+"\n"
+"Missing receipts: 3. Reminder drafted to you."
+msgstr "**28 Buchungen zu sortieren, 24 vorgeschlagen**\n"
+"\n"
+"- 18 Software und Werbung, passend zu früheren Kategorien\n"
+"- 6 Essen und Reisen\n"
+"- 4 unklar: unten mit Fragen aufgelistet\n"
+"\n"
+"Fehlende Belege: 3. Erinnerung an dich entworfen."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**3 new reviews this week**\n"
+"\n"
+"1. ★★★★★ Marta: \"Best haircut in years.\" Draft: \"Thank you, Marta! See you next time.\"\n"
+"2. ★★☆☆☆ Leo: \"Waited 40 minutes.\" Draft: \"Sorry for the wait, Leo. We've added a second chair on Saturdays.\"\n"
+"3. ★★★★☆ Ana. Draft ready.\n"
+"\n"
+"Approve to post, or edit any draft."
+msgstr "**3 neue Bewertungen diese Woche**\n"
+"\n"
+"1. ★★★★★ Marta: \"Bester Haarschnitt seit Jahren.\" Entwurf: \"Danke, Marta! Bis zum nächsten Mal.\"\n"
+"2. ★★☆☆☆ Leo: \"40 Minuten gewartet.\" Entwurf: \"Sorry für die Wartezeit, Leo. Samstags gibt es jetzt einen zweiten Stuhl.\"\n"
+"3. ★★★★☆ Ana. Entwurf bereit.\n"
+"\n"
+"Zum Veröffentlichen freigeben oder einen Entwurf bearbeiten."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**4 customer emails**\n"
+"\n"
+"1. #1042 Where is my order? Shipped Monday, arriving Thursday. Draft ready.\n"
+"2. #1039 Wrong size. Exchange policy applies. Draft ready.\n"
+"3. #1051 Refund request, $64.00. Needs your OK.\n"
+"4. Wholesale question. Draft ready."
+msgstr "**4 Kunden-E-Mails**\n"
+"\n"
+"1. #1042 Wo ist meine Bestellung? Montag verschickt, kommt Donnerstag an. Entwurf bereit.\n"
+"2. #1039 Falsche Größe. Umtauschregel gilt. Entwurf bereit.\n"
+"3. #1051 Rückerstattung, 64,00 $. Braucht dein OK.\n"
+"4. Frage zum Großhandel. Entwurf bereit."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 deals need a nudge**\n"
+"\n"
+"1. Northwind, $12k, no reply in 9 days. Follow-up drafted.\n"
+"2. Bluebird, $4k, demo done Tuesday. Recap drafted.\n"
+"3. Kite Labs, $30k, contract sent 6 days ago. Check-in drafted.\n"
+"\n"
+"Notes logged on each deal in your CRM."
+msgstr "**5 Deals brauchen einen Anstoß**\n"
+"\n"
+"1. Northwind, 12.000 $, seit 9 Tagen keine Antwort. Nachfass-Mail entworfen.\n"
+"2. Bluebird, 4.000 $, Demo am Dienstag. Zusammenfassung entworfen.\n"
+"3. Kite Labs, 30.000 $, Vertrag vor 6 Tagen gesendet. Nachfrage entworfen.\n"
+"\n"
+"Notizen bei jedem Deal in deinem CRM eingetragen."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 new jobs that fit**\n"
+"\n"
+"1. Product Designer, Lumen (remote, $120-140k). Cover letter drafted.\n"
+"2. UX Lead, Kite Labs (NYC). CV tailored: Kite Labs CV (Docs).\n"
+"3. Follow-up due: Northwind, applied 8 days ago. Draft ready.\n"
+"\n"
+"Tracker sheet updated."
+msgstr "**5 neue passende Jobs**\n"
+"\n"
+"1. Product Designer, Lumen (remote, 120-140k $). Anschreiben entworfen.\n"
+"2. UX Lead, Kite Labs (NYC). Lebenslauf angepasst: Kite Labs CV (Docs).\n"
+"3. Nachfassen fällig: Northwind, vor 8 Tagen beworben. Entwurf bereit.\n"
+"\n"
+"Tracker-Tabelle aktualisiert."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery check-in, Thu 10:00**\n"
+"\n"
+"**Decisions**\n"
+"- Online ordering goes ahead on the store app\n"
+"\n"
+"**Action items**\n"
+"- You: send the setup quote by Friday\n"
+"- You: share the analytics report on Monday\n"
+"\n"
+"**Open**: delivery zones at launch or January?\n"
+"\n"
+"Recap email drafted. Next check-in Thu 10:00 waits for your OK."
+msgstr "**Bluebird Bakery Check-in, Do 10:00**\n"
+"\n"
+"**Entscheidungen**\n"
+"- Online-Bestellung kommt in die Shop-App\n"
+"\n"
+"**Aufgaben**\n"
+"- Du: Angebot für die Einrichtung bis Freitag senden\n"
+"- Du: Analysebericht am Montag teilen\n"
+"\n"
+"**Offen**: Liefergebiete zum Start oder im Januar?\n"
+"\n"
+"Zusammenfassung per E-Mail entworfen. Nächstes Check-in Do 10:00 wartet auf dein OK."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery: week of 10 Nov**\n"
+"\n"
+"- Visits 4,210 (+8%), orders from search 61 (+14%)\n"
+"- Top page: Holiday cakes, 1,020 visits\n"
+"- Search: 'custom cakes near me' moved from 9th to 4th\n"
+"- Next: add a holiday FAQ page\n"
+"\n"
+"Report doc and email draft saved."
+msgstr "**Bluebird Bakery: Woche ab 10. Nov.**\n"
+"\n"
+"- Besuche 4.210 (+8 %), Bestellungen über die Suche 61 (+14 %)\n"
+"- Top-Seite: Festtagstorten, 1.020 Besuche\n"
+"- Suche: 'Torten nach Wunsch in der Nähe' von Platz 9 auf 4\n"
+"- Als Nächstes: FAQ-Seite für die Feiertage anlegen\n"
+"\n"
+"Bericht und E-Mail-Entwurf gespeichert."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**From your video: '5 mistakes new runners make'**\n"
+"\n"
+"- X thread: 6 posts\n"
+"- LinkedIn post: 180 words\n"
+"- Instagram caption with 8 hashtags\n"
+"- 3 short clip ideas with timestamps\n"
+"\n"
+"All saved to your Content calendar in Notion. Nothing posted."
+msgstr "**Aus deinem Video: '5 Fehler, die Laufanfänger machen'**\n"
+"\n"
+"- X-Thread: 6 Posts\n"
+"- LinkedIn-Post: 180 Wörter\n"
+"- Instagram-Text mit 8 Hashtags\n"
+"- 3 Ideen für kurze Clips mit Zeitstempeln\n"
+"\n"
+"Alles in deinem Content-Kalender in Notion gespeichert. Nichts gepostet."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Listing draft: Hand-thrown mug, speckled glaze**\n"
+"\n"
+"Title: Speckled Ceramic Mug, 12 oz, Handmade Stoneware Coffee Cup\n"
+"Tags: handmade mug, ceramic, stoneware, coffee lover gift, speckled\n"
+"Description: 3 short paragraphs, care notes, size.\n"
+"\n"
+"Saved as a draft product in your store. Not published."
+msgstr "**Angebotsentwurf: Handgedrehte Tasse, gesprenkelte Glasur**\n"
+"\n"
+"Titel: Gesprenkelte Keramiktasse, 350 ml, handgemachte Kaffeetasse aus Steinzeug\n"
+"Tags: handgemachte Tasse, Keramik, Steinzeug, Geschenk für Kaffeefans, gesprenkelt\n"
+"Beschreibung: 3 kurze Absätze, Pflegehinweise, Größe.\n"
+"\n"
+"Als Produktentwurf in deinem Shop gespeichert. Nicht veröffentlicht."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Proposal ready for Lumen Studio**\n"
+"\n"
+"- Scope: new website, 6 pages, 3 weeks\n"
+"- Price: $4,800 in two payments (from your rate card)\n"
+"- Doc: Proposal - Lumen Studio (Google Docs)\n"
+"\n"
+"Reply draft saved in Gmail with the link. Not sent."
+msgstr "**Angebot für Lumen Studio bereit**\n"
+"\n"
+"- Umfang: neue Website, 6 Seiten, 3 Wochen\n"
+"- Preis: 4.800 $ in zwei Raten (aus deiner Preisliste)\n"
+"- Dokument: Angebot - Lumen Studio (Google Docs)\n"
+"\n"
+"Antwortentwurf mit Link in Gmail gespeichert. Nicht gesendet."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Senior designer role: 6 candidates**\n"
+"\n"
+"- 4 outreach drafts, each naming one thing from their portfolio\n"
+"- 2 replied yes: interview times offered (Tue 11:00, Wed 15:00)\n"
+"\n"
+"Pipeline sheet updated. Nothing sent."
+msgstr "**Stelle Senior Designer: 6 Kandidaten**\n"
+"\n"
+"- 4 Anschreiben-Entwürfe, jeder nennt etwas aus dem Portfolio\n"
+"- 2 haben zugesagt: Gesprächstermine angeboten (Di 11:00, Mi 15:00)\n"
+"\n"
+"Pipeline-Tabelle aktualisiert. Nichts gesendet."
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
@@ -858,6 +1130,38 @@ msgstr "**Donnerstag**\n"
 "**Gut zu wissen**\n"
 "- Leichter Regen ab 16 Uhr\n"
 "- Zwei Artikel zu Themen, denen du folgst"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tomorrow 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n"
+"\n"
+"- Deal: $30k, contract sent last week\n"
+"- Last email: asked about onboarding time\n"
+"- News: Kite Labs raised a Series A on Monday\n"
+"- Ask: who signs, and by when?"
+msgstr "**Morgen 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n"
+"\n"
+"- Deal: 30.000 $, Vertrag letzte Woche gesendet\n"
+"- Letzte E-Mail: Frage zur Einarbeitungszeit\n"
+"- News: Kite Labs hat am Montag eine Series A abgeschlossen\n"
+"- Frage: Wer unterschreibt, und bis wann?"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tuesday: $2,340 from 31 orders** (up 12% on last Tuesday)\n"
+"\n"
+"- Best seller: Linen shirt, 9 sold\n"
+"- Refunds: 1, $48\n"
+"- Low stock: Linen shirt (4 left), Canvas tote (2 left)\n"
+"\n"
+"Added to your Sales sheet, row 212."
+msgstr "**Dienstag: 2.340 $ aus 31 Bestellungen** (12 % mehr als letzten Dienstag)\n"
+"\n"
+"- Bestseller: Leinenhemd, 9 verkauft\n"
+"- Rückerstattungen: 1, 48 $\n"
+"- Wenig auf Lager: Leinenhemd (noch 4), Canvas-Tasche (noch 2)\n"
+"\n"
+"In deiner Verkaufstabelle eingetragen, Zeile 212."
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "/ month"
@@ -926,6 +1230,10 @@ msgstr "Ein bisschen von allem"
 msgid "A command's output"
 msgstr "Ausgabe eines Befehls"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "a file"
+msgstr "eine Datei"
+
 #: apps/mobile/app/(settings)/labs.tsx
 #: apps/web/src/pages/settings/LabsSettingsPanel.tsx
 msgid "A kanban board of tickets your bots can work on"
@@ -935,6 +1243,11 @@ msgstr "Ein Kanban-Board mit Tickets, die deine Bots bearbeiten können"
 #: apps/web/src/components/settings/ApprovalRulesSettings.tsx
 msgid "A model approves routine actions and asks you about the rest."
 msgstr "Ein Modell genehmigt Routineaktionen und fragt dich bei allem anderen."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A one-page brief before every client or sales call"
+msgstr "Eine Seite Briefing vor jedem Kunden- oder Verkaufsgespräch"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "A sign-in page opened — enter this code there:"
@@ -950,6 +1263,11 @@ msgstr "Ein Anmelde-Tab wurde unter <0>{0}</0> geöffnet. Gib dort diesen Code e
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "A weekly digest of what changed on topics you follow"
 msgstr "Ein wöchentlicher Überblick, was sich bei deinen Themen getan hat"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A weekly marketing report per client, with a draft email"
+msgstr "Ein wöchentlicher Marketingbericht pro Kunde, mit E-Mail-Entwurf"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "About"
@@ -1041,6 +1359,7 @@ msgid "Actions for space"
 msgstr "Aktionen für Space"
 
 #: apps/mobile/app/routine.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Active"
@@ -1070,6 +1389,8 @@ msgstr "Aktivitätsprotokoll"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 #: apps/web/src/components/messages/SecretAskCard.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/plugins/domain-search.tsx
 #: apps/web/src/pages/plugins/parts.tsx
 #: apps/web/src/pages/space/ScratchpadSection.tsx
@@ -1118,6 +1439,10 @@ msgstr "Gib einen Servernamen ein."
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
 msgid "Add a stdio command."
 msgstr "Gib einen stdio-Befehl ein."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Add a task"
+msgstr "Aufgabe hinzufügen"
 
 #: apps/mobile/app/routine.tsx
 #: apps/web/src/pages/shell/use-routine-editor.ts
@@ -1370,6 +1695,10 @@ msgstr "Die vollen {price} fließen in die Modellnutzung."
 msgid "All bots"
 msgstr "Alle Bots"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "All brains"
+msgstr "Alle Brains"
+
 #: apps/mobile/app/artifacts.tsx
 #: apps/web/src/pages/space/Artifacts.tsx
 msgid "All files"
@@ -1378,6 +1707,14 @@ msgstr "Alle Dateien"
 #: apps/web/src/pages/settings/UsageSettingsPanel.tsx
 msgid "All models"
 msgstr "Alle Modelle"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "All projects"
+msgstr "Alle Projekte"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "All skills"
+msgstr "Alle Skills"
 
 #: apps/mobile/components/settings/space-availability.tsx
 #: apps/web/src/components/integrations/space-availability.tsx
@@ -1580,6 +1917,16 @@ msgstr "Beantwortet"
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Answered: {answer}"
 msgstr "Beantwortet: {answer}"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers booking and quote requests with your open times"
+msgstr "Beantwortet Buchungs- und Preisanfragen mit deinen freien Zeiten"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers new property leads in minutes and books showings"
+msgstr "Antwortet neuen Immobilien-Interessenten in Minuten und plant Besichtigungen"
 
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
 msgid "Anthropic API"
@@ -1991,6 +2338,7 @@ msgstr "Blockieren"
 #: apps/mobile/app/(settings)/approvals.tsx
 #: apps/mobile/lib/board/board.ts
 #: apps/web/src/components/settings/ApprovalRulesSettings.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/space/ticket-status.ts
 msgid "Blocked"
 msgstr "Blockiert"
@@ -2004,9 +2352,19 @@ msgstr "Blockiert"
 msgid "Board"
 msgstr "Board"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Booking desk"
+msgstr "Buchungen"
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Bookkeeping"
 msgstr "Buchhaltung"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Books tidy-up"
+msgstr "Buchhaltung aufräumen"
 
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
@@ -2132,9 +2490,22 @@ msgstr "Bots mit eigenem Modell"
 msgid "Bound to bots"
 msgstr "An Bots gebunden"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Brain file"
+msgstr "Brain-Datei"
+
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Brain label"
 msgstr "Brain-Bezeichnung"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Brains"
+msgstr "Brains"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Brains and skills"
+msgstr "Brains und Skills"
 
 #: apps/mobile/app/(settings)/skills.tsx
 #: apps/web/src/components/integrations/skills-dialog.tsx
@@ -2297,6 +2668,9 @@ msgstr "Kann keine Bilder lesen"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/onboarding/model-step.tsx
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
@@ -2356,6 +2730,11 @@ msgstr "Abgebrochen"
 #: apps/web/src/pages/shell/composer/composer-error.tsx
 msgid "Cancelled trials have no computer hours."
 msgstr "Gekündigte Testzeiträume haben keine Computerstunden."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Candidate outreach"
+msgstr "Kandidaten ansprechen"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -2650,6 +3029,11 @@ msgstr "Filter zurücksetzen"
 msgid "Clearing…"
 msgstr "Wird geleert…"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Client report"
+msgstr "Kundenbericht"
+
 #: apps/mobile/app/new-group.tsx
 #: apps/mobile/app/page.tsx
 #: apps/mobile/app/paywall.tsx
@@ -2660,6 +3044,7 @@ msgstr "Wird geleert…"
 #: apps/mobile/components/native/sheet-close-button.tsx
 #: apps/web/src/components/ErrorBoundary.tsx
 #: apps/web/src/components/WindowChrome.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
@@ -2675,6 +3060,10 @@ msgstr "Schließen"
 msgid "Close bot templates"
 msgstr "Bot-Vorlagen schließen"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Close brains"
+msgstr "Brains schließen"
+
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "Close chart"
 msgstr "Diagramm schließen"
@@ -2687,6 +3076,10 @@ msgstr "Chat-Organisation schließen"
 #: apps/web/src/pages/shell/computers/computer-overlay.tsx
 msgid "Close computer"
 msgstr "Computer schließen"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Close goals"
+msgstr "Ziele schließen"
 
 #: apps/mobile/components/media/image-artifact-viewer.tsx
 msgid "Close image"
@@ -2731,6 +3124,10 @@ msgstr "Panel schließen"
 #: apps/web/src/components/messages/ArtifactFileCard.tsx
 msgid "Close preview"
 msgstr "Vorschau schließen"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Close projects"
+msgstr "Projekte schließen"
 
 #: apps/web/src/components/integrations/skills-dialog.tsx
 msgid "Close skills"
@@ -3149,6 +3546,11 @@ msgstr "Kontakte"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Contains code to run"
 msgstr "Enthält ausführbaren Code"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Content repurposer"
+msgstr "Inhalte wiederverwerten"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -4425,9 +4827,21 @@ msgstr "Wallet konnte nicht aktualisiert werden"
 msgid "Could not verify computer setup ({failureMessage}). Fix the connection, then check again."
 msgstr "Computer-Einrichtung konnte nicht geprüft werden ({failureMessage}). Behebe die Verbindung und prüfe dann erneut."
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't confirm that. Try again."
+msgstr "Bestätigen hat nicht geklappt. Versuch es noch mal."
+
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Couldn't copy. Select the link and copy it."
 msgstr "Kopieren nicht möglich. Markiere den Link und kopiere ihn."
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't delete that. Try again."
+msgstr "Löschen hat nicht geklappt. Versuch es noch mal."
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't dismiss that. Try again."
+msgstr "Ausblenden hat nicht geklappt. Versuch es noch mal."
 
 #: apps/web/src/pages/auth/AdminAccessPage.tsx
 msgid "Couldn't load grants"
@@ -4449,13 +4863,33 @@ msgstr "Einreichungen konnten nicht geladen werden"
 msgid "Couldn't load this page. Try again."
 msgstr "Diese Seite konnte nicht geladen werden. Versuche es erneut."
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't load your brains. Try again."
+msgstr "Deine Brains konnten nicht geladen werden. Versuch es noch mal."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Couldn't load your goals. Try again."
+msgstr "Deine Ziele konnten nicht geladen werden. Versuch es noch mal."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Couldn't load your projects. Try again."
+msgstr "Deine Projekte konnten nicht geladen werden. Versuch es noch mal."
+
 #: apps/web/src/pages/settings/PaymentWalletSettingsPanel.tsx
 msgid "Couldn't load your wallet"
 msgstr "Deine Wallet konnte nicht geladen werden"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't open what I learned. Try again in a moment."
+msgstr "Was ich gelernt habe, ließ sich nicht öffnen. Versuch es gleich noch mal."
+
 #: apps/mobile/components/thread/thread-error-notice.tsx
 msgid "Couldn't refresh — showing the last loaded messages."
 msgstr "Aktualisierung fehlgeschlagen – die zuletzt geladenen Nachrichten werden angezeigt."
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't save. Open it again and retry."
+msgstr "Speichern hat nicht geklappt. Öffne es erneut und versuch es noch mal."
 
 #: apps/mobile/app/computer.tsx
 msgid "Couldn't start the computer"
@@ -4465,6 +4899,10 @@ msgstr "Der Computer konnte nicht gestartet werden"
 #: apps/web/src/components/messages/OutgoingDraftCard.tsx
 msgid "Couldn’t submit the draft"
 msgstr "Der Entwurf konnte nicht gesendet werden"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't undo that. Try again."
+msgstr "Rückgängig machen hat nicht geklappt. Versuch es noch mal."
 
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
@@ -4720,6 +5158,11 @@ msgstr "Alltagsarbeit"
 msgid "days"
 msgstr "Tage"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Deal follow-up"
+msgstr "Deals nachfassen"
+
 #: apps/mobile/app/(settings)/messaging.tsx
 #: apps/mobile/components/calls/IncomingCall.tsx
 #: apps/mobile/components/cards/ToolQuestionCard.tsx
@@ -4794,6 +5237,7 @@ msgstr "Standardbereich"
 #: apps/web/src/components/account/PasskeySettings.tsx
 #: apps/web/src/components/pages/PagesList.tsx
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/OrganizationSettingsPanel.tsx
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
@@ -4863,6 +5307,11 @@ msgstr "{name} löschen?"
 msgid "Delete account"
 msgstr "Konto löschen"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Delete for good"
+msgstr "Endgültig löschen"
+
 #: apps/mobile/app/group-settings.tsx
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "Delete group"
@@ -4879,6 +5328,10 @@ msgstr "Erinnerungen ebenfalls löschen"
 #: apps/web/src/pages/settings/OrganizationSettingsPanel.tsx
 msgid "Delete organization"
 msgstr "Organisation löschen"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Delete project"
+msgstr "Projekt löschen"
 
 #: apps/mobile/app/routine.tsx
 msgid "Delete routine"
@@ -5148,6 +5601,7 @@ msgstr "Verbindung wird getrennt…"
 #: apps/web/src/components/messages/SecretAskCard.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
 msgid "Dismiss"
@@ -5189,6 +5643,10 @@ msgstr "Dokumentation"
 msgid "Document changed. Reopen to edit the latest version."
 msgstr "Das Dokument wurde geändert. Öffne es erneut, um die neueste Version zu bearbeiten."
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Doing"
+msgstr "In Arbeit"
+
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Don’t have an account?"
@@ -5207,6 +5665,8 @@ msgstr "Du hast noch kein Konto?"
 #: apps/web/src/components/messages/ToolActivityDisclosure.tsx
 #: apps/web/src/components/settings/AccountDataSettings.tsx
 #: apps/web/src/components/vault/VaultImport.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
 #: apps/web/src/pages/shell/bots/import-setup-card.tsx
 #: apps/web/src/pages/space/ActivityList.tsx
@@ -5253,6 +5713,16 @@ msgstr "Wird heruntergeladen…"
 msgid "Draft skill"
 msgstr "Skill-Entwurf"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts a reply to every new Google review"
+msgstr "Entwirft eine Antwort auf jede neue Google-Bewertung"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts replies to customer emails using real order data"
+msgstr "Entwirft Antworten auf Kunden-E-Mails mit echten Bestelldaten"
+
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
 msgid "Drag, drop, or paste an image"
 msgstr "Bild ziehen, ablegen oder einfügen"
@@ -5273,6 +5743,7 @@ msgstr "Jeder Name kann nur einmal verwendet werden."
 #: apps/web/src/components/messages/AskCard.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/settings/MemorySettingsOverlay.tsx
 msgid "Edit"
@@ -5670,6 +6141,10 @@ msgstr "Schnell"
 msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
 msgstr "Der Schnellmodus schickt deine Nachrichten an unsere Server, damit die Antwort schnell kommt. Wir speichern sie nicht und trainieren nicht damit."
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Feedback"
+msgstr "Feedback"
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "Zu vergleichende Felder (optional)"
@@ -5681,6 +6156,10 @@ msgstr "Zu vergleichende Felder (optional)"
 #: apps/web/src/pages/space/SpaceSearch.tsx
 msgid "File"
 msgstr "Datei"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Files and assets"
+msgstr "Dateien und Materialien"
 
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Files or folders on the computer"
@@ -5741,6 +6220,21 @@ msgstr "Modelle suchen"
 #: apps/web/src/pages/onboarding/model-step.tsx
 msgid "Finding…"
 msgstr "Suche läuft…"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds fitting jobs, tailors your CV, and tracks applications"
+msgstr "Findet passende Jobs, passt deinen Lebenslauf an und behält Bewerbungen im Blick"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds stalled deals and drafts the next email"
+msgstr "Findet festgefahrene Deals und entwirft die nächste E-Mail"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds unpaid invoices and drafts polite reminders"
+msgstr "Findet offene Rechnungen und entwirft freundliche Erinnerungen"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/mobile/app/(settings)/plugin.tsx
@@ -5823,7 +6317,7 @@ msgstr "Kostenlos bis {date}"
 
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Freelancer"
-msgstr "Freiberuflich"
+msgstr "Freelancer"
 
 #: apps/mobile/lib/routines/cron.ts
 #: apps/web/src/lib/routines/cron.ts
@@ -5846,6 +6340,18 @@ msgstr "Von {0}"
 #: apps/web/src/pages/plugins/github-import.tsx
 msgid "From GitHub"
 msgstr "Von GitHub"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From how a task went"
+msgstr "Aus dem Verlauf einer Aufgabe"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From outside content"
+msgstr "Aus externen Inhalten"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From what you said"
+msgstr "Aus dem, was du gesagt hast"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Full access, nothing to pay"
@@ -5893,6 +6399,22 @@ msgstr "Gente"
 msgid "Gente credits"
 msgstr "Gente-Guthaben"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Gente is easing off this one for now."
+msgstr "Gente hält sich hier vorerst zurück."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Gente keeps each project's tasks up to date as it works."
+msgstr "Gente hält die Aufgaben jedes Projekts bei der Arbeit aktuell."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Gente works toward these on its own and tells you what it did."
+msgstr "Gente arbeitet selbst auf diese Ziele hin und sagt dir, was es getan hat."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Gente:"
+msgstr "Gente:"
+
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "Erhalte einen Gratismonat für jeden Freund, der eine Testphase startet."
@@ -5937,6 +6459,14 @@ msgstr "Git-Ereignis"
 msgid "Give a friend {weeks} weeks free"
 msgstr "Schenk einem Freund {weeks} Wochen gratis"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Go ahead"
+msgstr "Mach weiter"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Go hard"
+msgstr "Volle Kraft"
+
 #: apps/web/src/pages/NotFound.tsx
 msgid "Go home"
 msgstr "Zur Startseite"
@@ -5944,6 +6474,15 @@ msgstr "Zur Startseite"
 #: apps/web/src/pages/shell/keyboard-shortcuts-dialog.tsx
 msgid "Go to bot"
 msgstr "Zu Bot wechseln"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Goal"
+msgstr "Ziel"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Goals"
+msgstr "Ziele"
 
 #: apps/web/src/pages/auth/AdminAccessPage.tsx
 msgid "Grant"
@@ -6068,6 +6607,10 @@ msgstr "Hallo {name}, hier ist {bot}."
 msgid "Hello, {bot} here."
 msgstr "Hallo, hier ist {bot}."
 
+#: apps/web/src/pages/Shell.tsx
+msgid "Here is the transcript of the call I just finished, recorded and transcribed on this computer. Write the notes (summary, decisions, action items, open questions), remember the decisions and my action items, and save drafts of the follow-ups. Lines marked You: are me; Them: are the others."
+msgstr "Hier ist das Transkript des Gesprächs, das ich gerade beendet habe, aufgenommen und transkribiert auf diesem Computer. Schreib die Notizen (Zusammenfassung, Entscheidungen, Aufgaben, offene Fragen), merk dir die Entscheidungen und meine Aufgaben und speichere Entwürfe für die Nachfass-Mails. Zeilen mit You: bin ich; Them: sind die anderen."
+
 #: apps/mobile/app/bot-settings.tsx
 msgid "Hi, I'm {name}."
 msgstr "Hallo, ich bin {name}."
@@ -6110,6 +6653,10 @@ msgstr "Tastatur ausblenden"
 #: apps/web/src/components/I18nBootstrap.tsx
 msgid "Hide password"
 msgstr "Passwort verbergen"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Hide the change"
+msgstr "Änderung ausblenden"
 
 #: apps/mobile/components/calls/VoiceChatCard.tsx
 #: apps/web/src/components/call/VoiceChatCard.tsx
@@ -6177,6 +6724,11 @@ msgstr "Wie oft"
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "How other bots see it"
 msgstr "So sehen andere Bots ihn"
+
+#. placeholder {0}: goal.title
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "How proactive for {0}"
+msgstr "Wie proaktiv bei {0}"
 
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "How to check"
@@ -6290,6 +6842,10 @@ msgstr "Im Meeting"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "In this bot"
 msgstr "In diesem Bot"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "In use"
+msgstr "In Verwendung"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -6446,6 +7002,11 @@ msgstr "Personen einladen"
 msgid "Invited"
 msgstr "Eingeladen"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Invoice chaser"
+msgstr "Rechnungs-Erinnerer"
+
 #: apps/web/src/pages/settings/MemorySettingsOverlay.tsx
 msgid "Isolated"
 msgstr "Isoliert"
@@ -6461,6 +7022,22 @@ msgstr "Er konnte nicht geöffnet werden. Versuche es erneut über die Seitenlei
 #: apps/web/src/components/pages/PageViewHost.tsx
 msgid "It may have been deleted, or it belongs to someone else."
 msgstr "Sie wurde vielleicht gelöscht oder gehört jemand anderem."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would agree to terms"
+msgstr "Es würde Bedingungen zustimmen"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would delete your data"
+msgstr "Es würde deine Daten löschen"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would send something as you"
+msgstr "Es würde etwas in deinem Namen senden"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would spend money"
+msgstr "Es würde Geld ausgeben"
 
 #: apps/mobile/lib/inbox/sections/confirm-delete-section.ts
 #: apps/web/src/pages/shell/shell-dialogs.tsx
@@ -6482,6 +7059,11 @@ msgstr "Der Link funktioniert dann nicht mehr. Das kann nicht rückgängig gemac
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Its shared link stops working and its cards in chat show it as deleted. This can't be undone."
 msgstr "Der geteilte Link funktioniert dann nicht mehr und die Karten im Chat zeigen sie als gelöscht. Das lässt sich nicht rückgängig machen."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Job hunt"
+msgstr "Jobsuche"
 
 #: apps/web/src/pages/auth/Invite.tsx
 #: apps/web/src/pages/auth/JoinOrganization.tsx
@@ -6536,6 +7118,7 @@ msgstr "gerade eben"
 
 #. Keeps the account's current timezone instead of switching
 #: apps/mobile/lib/i18n/device-timezone.ts
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/shell/timezone-prompt.tsx
 msgid "Keep"
 msgstr "Beibehalten"
@@ -6617,6 +7200,11 @@ msgstr "Zuletzt verwendet"
 #: apps/web/src/components/DesktopUpdates.tsx
 msgid "Later"
 msgstr "Später"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Lead responder"
+msgstr "Lead-Antworten"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Learn from conversations"
@@ -6707,6 +7295,11 @@ msgstr "Hört zu"
 #: apps/web/src/pages/shell/composer/hold-to-talk.tsx
 msgid "Listening…"
 msgstr "Hört zu…"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Listing writer"
+msgstr "Produkttexte"
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Live update settings"
@@ -6966,6 +7559,10 @@ msgstr "Als ungelesen markieren"
 msgid "Mark as Unread"
 msgstr "Als ungelesen markieren"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Mark done"
+msgstr "Als erledigt markieren"
+
 #: apps/web/src/components/messages/markdown-copy.tsx
 msgid "Markdown table"
 msgstr "Markdown-Tabelle"
@@ -7048,6 +7645,16 @@ msgstr "Meeting-Beitritte sind nicht verfügbar."
 #: apps/web/src/pages/shell/meetings/meetings-dialog.tsx
 msgid "Meeting link"
 msgstr "Meeting-Link"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting notes"
+msgstr "Meeting-Notizen"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting prep"
+msgstr "Meeting-Vorbereitung"
 
 #: apps/mobile/app/_layout.tsx
 #: apps/mobile/app/bot-profile.tsx
@@ -7541,6 +8148,10 @@ msgstr "Neue Computer laufen auf"
 msgid "New contact"
 msgstr "Neuer Kontakt"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "New goal"
+msgstr "Neues Ziel"
+
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "New group"
 msgstr "Neue Gruppe"
@@ -7593,6 +8204,10 @@ msgstr "Neues Passwort"
 msgid "New private space"
 msgstr "Neuer privater Space"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "New project"
+msgstr "Neues Projekt"
+
 #: apps/mobile/app/routine.tsx
 #: apps/mobile/app/routines.tsx
 #: apps/web/src/pages/routines/RoutineList.tsx
@@ -7616,6 +8231,10 @@ msgstr "Neuer Skill"
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "New space"
 msgstr "Neuer Space"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "New task"
+msgstr "Neue Aufgabe"
 
 #: apps/web/src/pages/space/Board.tsx
 msgid "New ticket"
@@ -7698,6 +8317,10 @@ msgstr "Keine passenden Bots"
 #: packages/i18n/src/computer-usage.ts
 msgid "No computer hours used yet"
 msgstr "Noch keine Computerstunden genutzt"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "No goals yet. Tell Gente what you want, or add one here."
+msgstr "Noch keine Ziele. Sag Gente, was du willst, oder füge hier eins hinzu."
 
 #: apps/mobile/components/cards/OutgoingDraftCard.tsx
 #: apps/mobile/components/thread/message-bubble.tsx
@@ -7784,6 +8407,10 @@ msgstr "Kein Plan oder Schlüssel? Nutze Guthaben"
 #: apps/mobile/components/media/video-preview.tsx
 msgid "No preview for this file type."
 msgstr "Keine Vorschau für diesen Dateityp."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "No projects yet. Start one, or ask Gente to start one in a chat."
+msgstr "Noch keine Projekte. Starte eins oder bitte Gente im Chat darum."
 
 #: apps/web/src/components/integrations/IntegrationSetup.tsx
 msgid "No remote MCP servers found"
@@ -7878,6 +8505,7 @@ msgstr "Keine Spalten für Website und Passwort gefunden."
 msgid "None"
 msgstr "Keine"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/space/ticket-priority.ts
 msgid "Normal"
 msgstr "Normal"
@@ -7925,6 +8553,11 @@ msgstr "Nicht im Katalog von Gente"
 msgid "Not in the plugin catalog"
 msgstr "Nicht im Plugin-Katalog"
 
+#. placeholder {0}: earlier.length
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Not in use ({0})"
+msgstr "Nicht in Verwendung ({0})"
+
 #: apps/mobile/components/cards/McpApprovalCard.tsx
 #: apps/mobile/lib/auth/passkey.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -7970,6 +8603,10 @@ msgstr "Nicht gesendet. Zum Wiederholen tippen"
 msgid "Not supported in Gente"
 msgstr "In Gente nicht unterstützt"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Not this"
+msgstr "Lieber nicht"
+
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Not used by Gente"
 msgstr "Wird von Gente nicht verwendet"
@@ -7979,6 +8616,15 @@ msgstr "Wird von Gente nicht verwendet"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "Funktioniert nicht"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Notes, decisions and follow-ups from every call, kept on your computer"
+msgstr "Notizen, Entscheidungen und Nachfass-Mails aus jedem Gespräch, gespeichert auf deinem Computer"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Nothing here yet. When Gente researches something or hears your feedback, it keeps notes here."
+msgstr "Hier ist noch nichts. Wenn Gente etwas recherchiert oder dein Feedback hört, notiert es das hier."
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -7996,6 +8642,10 @@ msgstr "Noch nichts. Prüfe, ob du den Code genau wie angezeigt an den richtigen
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
 msgstr "Noch nichts. WhatsApp braucht eine Meta-Business-App und eine Adresse, die Meta erreichen kann, und Meta erlaubt allgemeine KI-Assistenten noch nicht in jedem Land. Telegram funktioniert sofort: Wähle im Gente-Menü Telegram verbinden."
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Nothing yet. When you tell me how you like things done, it shows up here."
+msgstr "Noch nichts. Wenn du mir sagst, wie du Dinge gern hättest, erscheint es hier."
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
@@ -8495,11 +9145,14 @@ msgstr "Füge deinen API-Schlüssel ein und teste erneut."
 
 #: apps/mobile/components/calls/voice-player-bar.tsx
 #: apps/mobile/components/media/audio-attachment.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "Pause"
 msgstr "Pause"
 
 #: apps/mobile/lib/cards/import-setup.ts
 #: apps/mobile/lib/routines/routine.ts
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineList.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Paused"
@@ -8534,6 +9187,11 @@ msgstr "Persona"
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "Personal"
 msgstr "Privat"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Personal outreach drafts and interview times for your shortlist"
+msgstr "Persönliche Anschreiben und Gesprächstermine für deine Auswahlliste"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -8753,11 +9411,33 @@ msgstr "Profil"
 msgid "Program: {name}"
 msgstr "Programm: {name}"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "project feedback"
+msgstr "Projekt-Feedback"
+
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/onboarding/model-step.tsx
 msgid "Project ID"
 msgstr "Projekt-ID"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Project name"
+msgstr "Projektname"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Projects"
+msgstr "Projekte"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Proposal writer"
+msgstr "Angebote schreiben"
 
 #: apps/web/src/components/teach/TeachRecordingChrome.tsx
 msgid "Protected input"
@@ -8805,6 +9485,10 @@ msgstr "Fragen, Freigaben, Übernahme"
 #: apps/web/src/pages/space/ActivityList.tsx
 msgid "Queued"
 msgstr "In Warteschlange"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Quiet"
+msgstr "Ruhig"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/mobile/components/thread/quote-sheet.tsx
@@ -9091,6 +9775,7 @@ msgstr "Remote-MCP-Server"
 #: apps/web/src/components/vault/LoginFieldsInput.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/plugins/connector-detail.tsx
 #: apps/web/src/pages/plugins/manage-view.tsx
@@ -9441,6 +10126,10 @@ msgstr "Wiederhergestellt"
 msgid "Restoring your workspace"
 msgstr "Dein Arbeitsbereich wird wiederhergestellt"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Resume"
+msgstr "Fortsetzen"
+
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/components/inbox/inbox-swipe-row.ios.tsx
 msgid "Resume notifications"
@@ -9473,6 +10162,8 @@ msgstr "Benachrichtigungen wieder einschalten"
 #: apps/web/src/pages/auth/Auth.tsx
 #: apps/web/src/pages/auth/Invite.tsx
 #: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/plugins/manage-view.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -9510,6 +10201,11 @@ msgstr "Zurück zur Übersicht"
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
 msgstr "Prüfe die Anbietereinstellungen und teste erneut."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Review replies"
+msgstr "Antworten auf Bewertungen"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
@@ -9645,6 +10341,11 @@ msgstr "Vertrieb"
 msgid "Sales & CRM"
 msgstr "Vertrieb & CRM"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sales digest"
+msgstr "Verkaufsübersicht"
+
 #: apps/mobile/app/(settings)/team-conversation.tsx
 msgid "Same as {bot}"
 msgstr "Wie {bot}"
@@ -9692,6 +10393,7 @@ msgstr "Samstag"
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
@@ -9956,6 +10658,10 @@ msgstr "Sicherheit & Betrieb"
 msgid "Security code"
 msgstr "Sicherheitscode"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "See the change"
+msgstr "Änderung ansehen"
+
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Select a bot"
 msgstr "Bot auswählen"
@@ -10014,6 +10720,10 @@ msgstr "Als Datei senden"
 #: apps/web/src/components/account/AccountAccess.tsx
 msgid "Send deletion code"
 msgstr "Löschcode senden"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Send feedback"
+msgstr "Feedback senden"
 
 #: apps/web/src/pages/shell/composer/hold-to-talk.tsx
 msgid "Send recording"
@@ -10430,6 +11140,7 @@ msgstr "Skill {position}"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 #: apps/web/src/components/integrations/skills-dialog.tsx
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
 #: apps/web/src/pages/shell/sidebar/sidebar-footer.tsx
 #: apps/web/src/pages/shell/use-palette-actions.ts
 msgid "Skills"
@@ -10439,6 +11150,7 @@ msgstr "Skills"
 #: apps/mobile/app/new-group.tsx
 #: apps/mobile/components/cards/ComputerCard.tsx
 #: apps/web/src/components/computers/ComputerCard.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/shell/computers/computer-release-actions.tsx
 msgid "Skip"
 msgstr "Überspringen"
@@ -10574,6 +11286,11 @@ msgstr "Nach {column} sortiert, absteigend"
 msgid "Sorts new email and drafts the replies"
 msgstr "Sortiert neue E-Mails und entwirft die Antworten"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sorts uncategorized transactions and lists missing receipts"
+msgstr "Sortiert unkategorisierte Buchungen und listet fehlende Belege auf"
+
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Sounds"
 msgstr "Töne"
@@ -10657,6 +11374,7 @@ msgstr "SSO ist vorübergehend nicht verfügbar. Versuche es erneut."
 msgid "Star on GitHub"
 msgstr "Auf GitHub einen Stern geben"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/shell/computers/computer-overlay.tsx
 msgid "Start"
 msgstr "Starten"
@@ -10738,6 +11456,10 @@ msgstr "Bundesland oder Region"
 msgid "Status"
 msgstr "Status"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Stays on this computer. Undo anything."
+msgstr "Bleibt auf diesem Computer. Alles lässt sich rückgängig machen."
+
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "Steps"
 msgstr "Schritte"
@@ -10778,6 +11500,11 @@ msgstr "Gestoppt"
 #: apps/web/src/lib/platform/browser-notifications.ts
 msgid "Stopped."
 msgstr "Gestoppt."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Store support"
+msgstr "Shop-Support"
 
 #: apps/web/src/pages/integrations/McpServerForm.tsx
 msgid "Stored encrypted"
@@ -10950,6 +11677,10 @@ msgstr "Zum Öffnen tippen"
 msgid "Target"
 msgstr "Ziel"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Tasks"
+msgstr "Aufgaben"
+
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 msgid "Teach a task"
 msgstr "Aufgabe anlernen"
@@ -10978,6 +11709,10 @@ msgstr "Teams-Nachricht"
 #: apps/mobile/components/cards/run-error-sheet.tsx
 msgid "Technical details"
 msgstr "Technische Details"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Tell Gente what to keep or change"
+msgstr "Sag Gente, was bleiben oder sich ändern soll"
 
 #: apps/web/src/components/computers/ComputerProviderSettings.tsx
 msgid "Template"
@@ -11018,6 +11753,11 @@ msgstr "Wird getestet…"
 #: apps/web/src/components/BotEmailAddressField.tsx
 msgid "That address isn't available"
 msgstr "Diese Adresse ist nicht verfügbar"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "That didn't go through. Try again."
+msgstr "Das hat nicht geklappt. Versuch es noch mal."
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That doesn’t look like a URL"
@@ -11537,6 +12277,10 @@ msgstr "Donnerstag"
 msgid "Time of day"
 msgstr "Uhrzeit"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Timeline"
+msgstr "Verlauf"
+
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Timezone"
 msgstr "Zeitzone"
@@ -11567,6 +12311,7 @@ msgid "To add"
 msgstr "Hinzuzufügen"
 
 #: apps/mobile/lib/board/board.ts
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/space/ticket-status.ts
 msgid "To do"
 msgstr "Zu erledigen"
@@ -11578,6 +12323,7 @@ msgstr "An:"
 
 #: apps/mobile/app/paywall.tsx
 #: apps/mobile/components/thread/time-separator.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/settings/UsageSettingsPanel.tsx
 #: apps/web/src/pages/shell/chat/chat-context.tsx
 #: apps/web/src/pages/space/Artifacts.tsx
@@ -11787,6 +12533,21 @@ msgstr "Ausschalten"
 msgid "Turn on"
 msgstr "Einschalten"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns a client inquiry into a proposal and a reply draft"
+msgstr "Macht aus einer Kundenanfrage ein Angebot und einen Antwortentwurf"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns product notes into ready listings with titles and tags"
+msgstr "Macht aus Produktnotizen fertige Angebote mit Titeln und Tags"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns your latest video into posts for every channel"
+msgstr "Macht aus deinem neuesten Video Posts für jeden Kanal"
+
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
@@ -11817,8 +12578,22 @@ msgstr "Nicht zugewiesen"
 
 #: apps/mobile/components/cards/change-undo.tsx
 #: apps/web/src/components/messages/AskCard.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Undo"
 msgstr "Rückgängig"
+
+#. placeholder {0}: action.title
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Undo {0}"
+msgstr "{0} rückgängig machen"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Undone"
+msgstr "Rückgängig gemacht"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Undone."
+msgstr "Rückgängig gemacht."
 
 #: apps/mobile/components/integrations/integration-detail.tsx
 #: apps/web/src/pages/plugins/connector-detail.tsx
@@ -12082,6 +12857,10 @@ msgstr "Gente-Guthaben verwenden"
 msgid "Use in this bot"
 msgstr "In diesem Bot verwenden"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Use it"
+msgstr "Verwenden"
+
 #: apps/mobile/app/(settings)/memory-note.tsx
 msgid "Use latest"
 msgstr "Neueste verwenden"
@@ -12284,6 +13063,10 @@ msgstr "Warte auf Anmeldung — der Link läuft in etwa {minutes} Minuten ab."
 msgid "Waiting for this bot’s response."
 msgstr "Warten auf die Antwort dieses Bots."
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Waiting for you"
+msgstr "Wartet auf dich"
+
 #: apps/web/src/lib/chat/roster-status.ts
 msgid "Waiting in line…"
 msgstr "Wartet in der Warteschlange…"
@@ -12306,6 +13089,10 @@ msgstr "Aufwecken"
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Wallet"
 msgstr "Wallet"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "web search"
+msgstr "Websuche"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Web, desktop and mobile"
@@ -12366,13 +13153,17 @@ msgstr "Willkommen bei Gente"
 msgid "What about its memories?"
 msgstr "Was soll mit seinen Erinnerungen geschehen?"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "What are you working on?"
+msgstr "Woran arbeitest du?"
+
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What can this space use?"
 msgstr "Was darf dieser Space nutzen?"
 
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "What do you do?"
-msgstr "Was machst du?"
+msgstr "Was machst du beruflich?"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "What do you most want Gente to help with?"
@@ -12385,6 +13176,18 @@ msgstr "Wobei soll Gente dir am meisten helfen?"
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"
 msgstr "Womit soll ich anfangen?"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "What do you want? For example, land a job"
+msgstr "Was willst du erreichen? Zum Beispiel einen Job finden"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "What Gente learned on each topic, with where it learned it. Stays on this computer."
+msgstr "Was Gente zu jedem Thema gelernt hat und woher. Bleibt auf diesem Computer."
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "What I learned about you"
+msgstr "Was ich über dich gelernt habe"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "What it remembers"
@@ -12583,6 +13386,15 @@ msgstr "Jährlich −{percent} %"
 msgid "Yesterday"
 msgstr "Gestern"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Yesterday's sales, refunds and low stock in one message"
+msgstr "Verkäufe, Rückerstattungen und knappe Bestände von gestern in einer Nachricht"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "you"
+msgstr "du"
+
 #: apps/mobile/app/index.tsx
 #: apps/mobile/app/page-share.tsx
 #: apps/mobile/components/calls/CallCard.tsx
@@ -12617,6 +13429,10 @@ msgstr "Du hast abgelehnt"
 #: apps/web/src/components/spaces/InviteDialog.tsx
 msgid "You get a free month when they start their trial with a new card."
 msgstr "Du bekommst einen Gratismonat, wenn sie ihre Testphase mit einer neuen Karte starten."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "You:"
+msgstr "Du:"
 
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
@@ -12663,6 +13479,10 @@ msgstr "Deine Karte wird heute mit der anteiligen Differenz belastet."
 msgid "Your card was not charged"
 msgstr "Deine Karte wurde nicht belastet"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "your chat"
+msgstr "dein Chat"
+
 #: apps/mobile/app/computer.tsx
 #: apps/web/src/pages/Shell.tsx
 msgid "Your computer's disk is nearly full. Free up space by removing build output and caches you no longer need."
@@ -12688,6 +13508,10 @@ msgstr "Deine E-Mail-Adresse"
 #: apps/mobile/app/paywall.tsx
 msgid "Your free trial has started"
 msgstr "Deine kostenlose Testphase hat begonnen"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your goals"
+msgstr "Deine Ziele"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts

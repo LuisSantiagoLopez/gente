@@ -34,6 +34,23 @@ const catalog = (locale: string) =>
     })
     .filter((entry) => entry.id);
 
+/** The templates gallery's "What do you do?" picker, translated with the recipes. */
+const ROLE_PICKER_STRINGS = [
+  "What do you do?",
+  "Local business",
+  "Online store",
+  "Freelancer",
+  "Sales",
+  "Real estate",
+  "Bookkeeping",
+  "Consultant or agency",
+  "Creator",
+  "Marketing",
+  "Recruiting",
+  "Developer",
+  "Looking for work",
+];
+
 describe("bot template translations", () => {
   it("has every bot template string translated in every language", () => {
     const ids = catalog("en")
@@ -45,9 +62,16 @@ describe("bot template translations", () => {
       )
       .map((entry) => entry.id);
     expect(ids.length).toBeGreaterThanOrEqual(20);
+    // Gente: recipes ship in English, Spanish and Portuguese first; other languages follow.
+    const recipeStrings = new Set([
+      ...MONEY_RECIPES.flatMap((recipe) => [recipe.name, recipe.summary, recipe.sample]),
+      ...ROLE_PICKER_STRINGS,
+    ]);
     for (const locale of UI_LOCALES.filter((item) => item !== "en")) {
       const texts = new Map(catalog(locale).map((entry) => [entry.id, entry.text]));
-      const blank = ids.filter((id) => !texts.get(id));
+      const required =
+        locale === "es" || locale === "pt-BR" ? ids : ids.filter((id) => !recipeStrings.has(id));
+      const blank = required.filter((id) => !texts.get(id));
       expect(blank, locale).toEqual([]);
     }
   });

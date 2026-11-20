@@ -4494,7 +4494,7 @@ describe("user computer screen control", () => {
     expect(f.offeredTools()).not.toContain("user_computer_shell");
   });
 
-  it("asks per app, then uses an allowed app across this space", async () => {
+  it("looks and acts without asking, and asks for sending, every time", async () => {
     const { gateway, requests } = devices();
     const f = fixture({
       ...ownRun,
@@ -4503,19 +4503,13 @@ describe("user computer screen control", () => {
     });
     f.setCalls([observe("TextEdit")]);
     await f.run();
-    expect(isApprovalPausedResult(f.results[0])).toBe(true);
-    expect(f.pauseRunForInput.mock.calls[0]).toEqual([card("TextEdit")]);
-    expect(requests).toEqual([]);
-
-    f.effects[0]!.status = "approved";
-    await f.run();
+    expect(f.pauseRunForInput).not.toHaveBeenCalled();
     expect(requests).toEqual([
       { method: "screenObserve", app: "TextEdit", botId: "bot-1", runId: "run-1" },
     ]);
     const text = JSON.stringify(f.results.at(-1));
     expect(text).toContain("AXTextArea");
     expect(text).not.toContain("sk-fake-secret");
-    expect(f.effects[0]!.result).toEqual({ app: "TextEdit", title: "Notes for [redacted]" });
 
     f.setCalls([
       {
@@ -4525,7 +4519,7 @@ describe("user computer screen control", () => {
       },
     ]);
     await f.run();
-    expect(f.pauseRunForInput).toHaveBeenCalledOnce();
+    expect(f.pauseRunForInput).not.toHaveBeenCalled();
     expect(requests.at(-1)).toMatchObject({
       method: "screenAct",
       app: "textedit",
@@ -4535,10 +4529,45 @@ describe("user computer screen control", () => {
       "completed 1 of 1 action; stopped: Nothing was sent.",
     );
 
-    f.setCalls([observe("Mail", "call-3")]);
+    const sendReply = (executionId: string, to = "Ana") => ({
+      name: "user_computer_act",
+      args: {
+        app: "Mail",
+        purpose: `Send the reply to ${to}`,
+        actions: [{ kind: "key", key: "d", modifiers: ["cmd", "shift"] }],
+      },
+      executionId,
+    });
+    f.setCalls([sendReply("call-3")]);
+    await f.run();
+    expect(isApprovalPausedResult(f.results.at(-1))).toBe(true);
+    expect(f.pauseRunForInput.mock.calls[0]).toEqual([
+      expect.objectContaining({
+        blocks: [
+          expect.objectContaining({
+            kind: "ask",
+            text: "Use Mail on your computer?",
+            detail: expect.stringContaining("Send the reply to Ana"),
+            actions: [
+              { id: "allow", label: "Allow" },
+              { id: "deny", label: "Deny" },
+            ],
+          }),
+        ],
+      }),
+    ]);
+    expect(requests.at(-1)?.method).toBe("screenAct");
+    expect(requests).toHaveLength(2);
+
+    f.effects.at(-1)!.status = "approved";
+    await f.run();
+    expect(requests).toHaveLength(3);
+
+    // An approved send does not approve the next one.
+    f.setCalls([sendReply("call-4", "Bo")]);
     await f.run();
     expect(f.pauseRunForInput).toHaveBeenCalledTimes(2);
-    expect(f.pauseRunForInput.mock.calls[1]).toEqual([card("Mail")]);
+    expect(requests).toHaveLength(3);
   });
 
   it("refuses malformed actions before reaching the computer", async () => {

@@ -46,6 +46,7 @@ import {
 } from "../../models/deployment-model.js";
 import { ExpoPushProvider } from "../../notifications/expo-push.js";
 import { reconcilePurchases } from "../../payments/purchase-poll.js";
+import { createProactiveReconciler } from "../../proactive/proactive-reconciler.js";
 import { T3CodeConnections } from "../../providers/cloud-agent/t3code/t3code-connections.js";
 import { composioConnectFallback } from "../../providers/integration/composio/composio-connect-fallback.js";
 import type { ComposioProvider } from "../../providers/integration/composio/composio-connector.js";
@@ -407,6 +408,7 @@ export function createRunReconciler(
       jobs,
       billingEnabled: deps.billingEnabled,
     }),
+    reconcileProactive: createProactiveReconciler({ prisma, jobs }),
     reconcileCloudAgents: () =>
       reconcileCloudAgents({ prisma, jobs, cloudAgent, userCloudAgents: deps.userCloudAgents }),
     reconcilePurchases: () => reconcilePurchases({ prisma, jobs, paymentWallet }),

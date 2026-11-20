@@ -12,6 +12,7 @@ export const desktop = {
   replacedAppWindow: null,
   setupWindow: null,
   supportWindow: null,
+  computerPillWindow: null,
   currentSetup: null,
   currentTargetUrl: null,
   setupError: null,
@@ -35,6 +36,8 @@ export const desktop = {
   setupWindow: BrowserWindow | null;
   /** Gente's support window, while open. */
   supportWindow: BrowserWindow | null;
+  /** The "Gente is using your computer" pill, once it was first shown. */
+  computerPillWindow: BrowserWindow | null;
   currentSetup: DesktopSetup | null;
   currentTargetUrl: string | null;
   setupError: string | null;

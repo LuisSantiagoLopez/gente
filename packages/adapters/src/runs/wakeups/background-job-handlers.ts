@@ -43,6 +43,7 @@ import {
 } from "../../computers/screens/computer-control.js";
 import { retryConnectionCleanup } from "../../integrations/connection-cleanup.js";
 import type { ConnectorRegistry } from "../../integrations/connector-registry.js";
+import { distillIntoBrains } from "../../knowledge/brain-distillation.js";
 import { pollMediaVideo } from "../../media/media-video-poll.js";
 import {
   abandonRetainedConversation,
@@ -55,6 +56,7 @@ import type { MessagingDelivery } from "../../messaging/messaging-delivery.js";
 import type { TeamChat } from "../../messaging/team-chat/team-chat.js";
 import type { ExpoPushProvider } from "../../notifications/expo-push.js";
 import { pollPurchase } from "../../payments/purchase-poll.js";
+import { runProactiveForOwner } from "../../proactive/proactive-runtime.js";
 import { compactHistory } from "../../runtime/context/history-compaction.js";
 import { expireRunSecrets } from "../../secrets/run-secrets-expiry.js";
 import { retrySecretCleanup } from "../../secrets/secret-cleanup.js";
@@ -305,6 +307,43 @@ export function createBackgroundJobHandlers(deps: {
     "media.poll": asOwner(mediaJob, async (payload) => {
       await pollMediaVideo(deps, payload);
     }),
+    // The payload names the owner it was queued for, as connection cleanup's does.
+    "brain.distill": asOwner(
+      async (payload: BackgroundJobPayloads["brain.distill"]) => payload,
+      async (payload) => {
+        await distillIntoBrains(
+          {
+            prisma: deps.prisma,
+            runtime: deps.runtime,
+            events: deps.events,
+            deploymentModelKey: deps.deploymentModelKey,
+            deploymentModelConfigured: deps.deploymentModelConfigured,
+            ...(deps.executor.resolveModel ? { resolveModel: deps.executor.resolveModel } : {}),
+          },
+          payload,
+        );
+      },
+    ),
+    // The payload names the person the pass works for.
+    "proactive.cycle": asOwner(
+      async (payload: BackgroundJobPayloads["proactive.cycle"]) => payload,
+      async (payload) => {
+        await runProactiveForOwner(
+          {
+            prisma: deps.prisma,
+            runtime: deps.runtime,
+            jobs: deps.jobs,
+            events: deps.events,
+            ...(delivery ? { messagingDelivery: delivery } : {}),
+            deploymentModelKey: deps.deploymentModelKey,
+            deploymentModelConfigured: deps.deploymentModelConfigured,
+            ...(deps.executor.resolveModel ? { resolveModel: deps.executor.resolveModel } : {}),
+          },
+          { spaceId: payload.spaceId, userId: payload.userId },
+          payload.event ? [payload.event] : [],
+        );
+      },
+    ),
     // A receipt belongs to a device's push token, not to a Space.
     "push.receipt": async (payload) => {
       await runAsSystem("check a push receipt", () => deps.notifications?.checkReceipt(payload));

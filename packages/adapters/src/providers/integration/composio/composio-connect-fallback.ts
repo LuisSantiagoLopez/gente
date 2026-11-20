@@ -11,5 +11,5 @@ export function composioConnectFallback(
   key = process.env.GENTE_COMPOSIO_KEY?.trim(),
 ): ComposioConnectConnector | undefined {
   if (!key || isVitestRuntime()) return undefined;
-  return new ComposioConnectConnector({ key });
+  return new ComposioConnectConnector({ auth: { consumerKey: key } });
 }

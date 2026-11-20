@@ -273,4 +273,11 @@ export const DE_MESSAGES: Record<string, string> = {
   "Sign In to Gente…": "Bei Gente anmelden…",
   "Sign Out of Gente": "Von Gente abmelden",
   "Gente Support…": "Gente-Hilfe…",
+  // Computer use pill
+  "Gente is using your computer": "Gente nutzt deinen Computer",
+  "Press {key} to stop": "Drücke {key} zum Stoppen",
+  Stop: "Stopp",
+  Stopped: "Gestoppt",
+  "Stop Meeting Notes": "Besprechungsnotizen beenden",
+  "Take Meeting Notes…": "Besprechungsnotizen aufnehmen…",
 };

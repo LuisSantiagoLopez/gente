@@ -71,7 +71,7 @@ export function createHostComputerRunner(options: { root: string; screen?: HostS
     context: AdapterContext,
   ): AsyncIterable<unknown> {
     const computer = ref(input.botId);
-    const scope = { botId: input.botId, signal: context.signal };
+    const scope = { botId: input.botId, runId: input.runId, signal: context.signal };
     switch (input.method) {
       case "screenObserve":
         yield await screen().observe(scope, input.app, { query: input.query });

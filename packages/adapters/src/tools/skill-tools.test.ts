@@ -88,7 +88,50 @@ function makePrisma(rows: Array<Record<string, unknown>> = []) {
         return { count: 1 };
       }),
     },
+    ...learningDocuments(),
     _store: store,
+  };
+}
+
+/** Enough of memory documents for the skill change log. */
+function learningDocuments() {
+  const docs: Array<Record<string, unknown> & { id: string; revision: number }> = [];
+  const matches = (doc: Record<string, unknown>, where: Record<string, unknown>) =>
+    Object.entries(where).every(([key, value]) => doc[key] === value);
+  const memoryDocument = {
+    findFirst: vi.fn(
+      async ({ where }: { where: Record<string, unknown> }) =>
+        docs.find((doc) => matches(doc, where)) ?? null,
+    ),
+    findMany: vi.fn(async ({ where }: { where: Record<string, unknown> }) =>
+      docs.filter((doc) => matches(doc, where)),
+    ),
+    updateMany: vi.fn(
+      async ({
+        where,
+        data,
+      }: {
+        where: Record<string, unknown>;
+        data: Record<string, unknown>;
+      }) => {
+        const hits = docs.filter((doc) => matches(doc, where));
+        for (const doc of hits) Object.assign(doc, data);
+        return { count: hits.length };
+      },
+    ),
+    create: vi.fn(async ({ data }: { data: Record<string, unknown> }) => {
+      const doc = { id: `doc-${docs.length + 1}`, revision: 1, botId: null, ...data };
+      docs.push(doc);
+      return doc;
+    }),
+  };
+  const memoryRevision = { create: vi.fn(async ({ data }: { data: unknown }) => data) };
+  return {
+    memoryDocument,
+    memoryRevision,
+    $transaction: async (work: (tx: unknown) => unknown) =>
+      work({ memoryDocument, memoryRevision }),
+    _docs: docs,
   };
 }
 
@@ -386,5 +429,66 @@ describe("skill tools", () => {
         newName: longName,
       }),
     ).toEqual({ error: "Skill name must be at most 80 characters." });
+  });
+
+  describe("learning", () => {
+    const seed = () =>
+      makePrisma([
+        {
+          id: "s1",
+          spaceId: owner.spaceId,
+          userId: owner.userId,
+          name: "report",
+          description: "Weekly report",
+          content: buildSkillMd({
+            name: "report",
+            description: "Weekly report",
+            body: "Three bullets.\n",
+          }),
+          source: "user",
+        },
+      ]);
+    const logOf = (prisma: ReturnType<typeof makePrisma>) =>
+      JSON.parse(String(prisma._docs[0]?.content)) as { changes: Array<Record<string, unknown>> };
+
+    it("versions a safe edit with its reason", async () => {
+      const prisma = seed();
+      const result = await skillUpdateFromTool(prisma as never, owner, {
+        name: "report",
+        body: "Three bullets.\nWarm tone.\n",
+        reason: "You asked for a warmer tone.",
+      });
+      expect(result).toMatchObject({ ok: true });
+      const [change] = logOf(prisma).changes;
+      expect(change).toMatchObject({
+        status: "live",
+        version: 1,
+        reason: "You asked for a warmer tone.",
+      });
+      expect(String(change?.diff)).toContain("+Warm tone.");
+    });
+
+    it("refuses an edit that would let the skill spend money", async () => {
+      const prisma = seed();
+      const result = await skillUpdateFromTool(prisma as never, owner, {
+        name: "report",
+        body: "Three bullets.\nBuy the premium template for $10.\n",
+      });
+      expect(result.error).toMatch(/can't learn that/);
+      expect(String(prisma._store[0]?.content)).not.toContain("premium");
+      expect(logOf(prisma).changes[0]?.status).toBe("rejected");
+    });
+
+    it("holds a web-learned edit without changing the skill", async () => {
+      const prisma = seed();
+      const result = await skillUpdateFromTool(prisma as never, owner, {
+        name: "report",
+        body: "Three bullets.\nLead with the biggest win.\n",
+        learnedFrom: "web_content",
+      });
+      expect(result).toMatchObject({ ok: true, held: true });
+      expect(String(prisma._store[0]?.content)).not.toContain("biggest win");
+      expect(logOf(prisma).changes[0]?.status).toBe("quarantined");
+    });
   });
 });

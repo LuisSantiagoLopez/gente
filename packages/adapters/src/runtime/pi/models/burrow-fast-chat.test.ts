@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { describe, expect, it } from "vitest";
-import { isQuickChat, quickChatBody, userWords } from "./burrow-fast-chat.js";
+import { codingBody, isCodingTurn, isPlainQuestion, isQuickChat, quickChatBody, userWords } from "./burrow-fast-chat.js";
 
 const time = "\n\n<current_time>\nCurrent date and time: Thursday.\n</current_time>";
 const body = (messages: unknown[], effort = "medium") =>
@@ -86,5 +86,41 @@ describe("Gente quick-reply model", () => {
     } finally {
       delete process.env.BURROW_CHAT_MODEL;
     }
+  });
+});
+
+// Gente routing: coding turns and plain questions after a tool-using turn.
+
+describe("Gente routing", () => {
+  const tools = ["shell", "read_file", "write_file", "schedule_create", "request_secret", "web_search"].map((name) => ({
+    type: "function",
+    function: { name },
+  }));
+  it("gives a coding turn only the code tools and light thinking, for every request of the turn", () => {
+    const ask = [{ role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." }, { role: "user", content: "Write a Python function that reverses a string." }];
+    expect(isCodingTurn(ask)).toBe(true);
+    const body = codingBody({ messages: ask, tools, reasoning_effort: "medium" });
+    expect((body.tools as { function: { name: string } }[]).map((t) => t.function.name)).toEqual(["shell", "read_file", "write_file", "web_search"]);
+    expect(body.reasoning_effort).toBe("low");
+    // A tool follow-up in the same turn keeps the same shape.
+    const followUp = [...ask, { role: "assistant", content: "", tool_calls: [{ id: "1" }] }, { role: "tool", content: "ok" }];
+    expect(isCodingTurn(followUp)).toBe(true);
+  });
+
+  it("treats a short question after a tool-using turn as plain", () => {
+    const messages = [
+      { role: "system", content: "s" },
+      { role: "user", content: "write a file" },
+      { role: "assistant", content: "", tool_calls: [{ id: "1" }] },
+      { role: "tool", content: "done" },
+      { role: "assistant", content: "Saved." },
+      { role: "user", content: "¿Cuál es la capital de Australia?" },
+    ];
+    expect(isPlainQuestion(messages)).toBe(true);
+  });
+
+  it("routes a coding request through quickChatBody with fast chat on", () => {
+    const out = quickChatBody(JSON.stringify({ messages: [{ role: "system", content: "a\n\nb\n\nc" }, { role: "user", content: "fix this bug in my JavaScript" }], tools, reasoning_effort: "medium" }));
+    expect(JSON.parse(out!.body).tools).toHaveLength(4);
   });
 });
