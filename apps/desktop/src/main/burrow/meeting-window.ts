@@ -55,7 +55,7 @@ async function askConsent(app_: CallApp | "call"): Promise<boolean> {
     cancelId: 1,
     message: `Take private notes of ${where}?`,
     detail:
-      "Gente records your microphone and the call's sound on this computer, writes notes and drafts follow-ups. The audio never leaves this computer. Let the others in the call know you're taking notes.",
+      "Your AI records your microphone and the call's sound on this computer, writes notes and drafts follow-ups. The audio never leaves this computer. Let the others in the call know you're taking notes.",
   });
   return response === 0;
 }
@@ -146,14 +146,14 @@ export function startMeetingNotetaker(
       if (!lines)
         new Notification({
           title: "Meeting notes",
-          body: "Your call is saved on this computer. Gente will write the notes once speech-to-text finishes setting up.",
+          body: "Your call is saved on this computer. Your AI will write the notes once speech-to-text finishes setting up.",
         }).show();
       return lines;
     },
     deliver: ({ lines }) => {
       new Notification({
         title: "Meeting notes",
-        body: "Your call is transcribed. Gente is writing the notes.",
+        body: "Your call is transcribed. Your AI is writing the notes.",
       }).show();
       deliver(transcriptText(lines), lines);
     },

@@ -21,7 +21,7 @@ import {
 import { assertSafeWebUrl, withAbort } from "../../../web/web-ssrf.js";
 
 const ENDPOINT = "https://search.parallel.ai/mcp";
-const USER_AGENT = "Gente/0.2 (web tools)";
+const USER_AGENT = "Your AI/0.2 (web tools)";
 const MAX_SNIPPET_CHARS = 8_000;
 const pageSchema = z.object({
   url: z.string().max(8_192),

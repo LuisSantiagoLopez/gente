@@ -102,7 +102,7 @@ export function InvitePage() {
         }}
       >
         <Button type="submit" size="xl" className={submitClass}>
-          {state.kind === "invalid" ? <Trans>Open Gente</Trans> : <Trans>Retry</Trans>}
+          {state.kind === "invalid" ? <Trans>Open Your AI</Trans> : <Trans>Retry</Trans>}
         </Button>
       </AuthFrame>
     );

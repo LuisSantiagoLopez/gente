@@ -85,7 +85,7 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
           id: "model-server",
           status: "fail",
           code: "OLLAMA_DOWN",
-          summary: "Gente's model server stopped. Restarting it usually fixes this.",
+          summary: "Your AI's model server stopped. Restarting it usually fixes this.",
           fix: "restart-services",
           autoFix: true,
         },
@@ -102,7 +102,7 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
             id: "model",
             status: "fail",
             code: "MODEL_MISSING",
-            summary: "Gente's model is missing. Downloading it again fixes this.",
+            summary: "Your AI's model is missing. Downloading it again fixes this.",
             fix: "redownload-model",
           }
         : damage !== null
@@ -110,7 +110,7 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
               id: "model",
               status: "fail",
               code: "MODEL_CORRUPT",
-              summary: "Gente's model download is damaged. Downloading it again fixes this.",
+              summary: "Your AI's model download is damaged. Downloading it again fixes this.",
               detail: damage,
               fix: "redownload-model",
             }
@@ -126,7 +126,7 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
             id: "disk",
             status: "fail",
             code: "DISK_LOW",
-            summary: `Your disk is almost full (${(free / 1e9).toFixed(1)} GB free). Free up a few GB so Gente can keep working.`,
+            summary: `Your disk is almost full (${(free / 1e9).toFixed(1)} GB free). Free up a few GB so Your AI can keep working.`,
             fix: "clear-cache",
           }
         : { id: "disk", status: "ok", summary: "There is enough free disk space." },
@@ -139,12 +139,12 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
       status: "fail",
       code: "PORT_IN_USE",
       summary:
-        "Another app is using the address Gente needs. Restarting Gente's services picks a free one.",
+        "Another app is using the address Your AI needs. Restarting Your AI's services picks a free one.",
       detail: `port ${conflict.port} held by another process`,
       fix: "restart-services",
       autoFix: true,
     });
-  else checks.push({ id: "ports", status: "ok", summary: "Gente's addresses are free." });
+  else checks.push({ id: "ports", status: "ok", summary: "Your AI's addresses are free." });
 
   const missing = await settle(probe.missingAppFiles, [] as string[]);
   checks.push(
@@ -154,10 +154,10 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
           status: "fail",
           code: "BUNDLE_MODULE_MISSING",
           summary:
-            "Part of Gente's app is missing. An update will repair it; reinstalling also works.",
+            "Part of Your AI's app is missing. An update will repair it; reinstalling also works.",
           detail: `missing: ${missing.slice(0, 5).join(", ")}`,
         }
-      : { id: "app-files", status: "ok", summary: "Gente's app files are complete." },
+      : { id: "app-files", status: "ok", summary: "Your AI's app files are complete." },
   );
 
   const phase = probe.workspacePhase();
@@ -167,7 +167,7 @@ export async function runHealthChecks(probe: HealthProbe, now = new Date()): Pro
           id: "workspace",
           status: "fail",
           code: "WORKSPACE_DOWN",
-          summary: "Gente's workspace stopped. Restarting its services usually fixes this.",
+          summary: "Your AI's workspace stopped. Restarting its services usually fixes this.",
           fix: "restart-services",
           autoFix: true,
         }

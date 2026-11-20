@@ -549,14 +549,14 @@ it("saves credit and personal routes to the same model without mixing their iden
   const credit = [...document.querySelectorAll<HTMLElement>('[role="option"]')].find(
     (entry) =>
       optionName(entry) === "Chat" &&
-      entry.closest("[cmdk-group]")?.textContent?.startsWith("Gente credits"),
+      entry.closest("[cmdk-group]")?.textContent?.startsWith("Your AI credits"),
   );
   await click(credit);
   expect(saved).toEqual({
     primary: pin(chat),
     backups: [{ ...chat, creditOfferingId: "offering-example" }],
   });
-  expect(rows()).toEqual(["ChatOpenRouter", "ChatGente credits"]);
+  expect(rows()).toEqual(["ChatOpenRouter", "ChatYour AI credits"]);
   await click(
     container.querySelectorAll<HTMLButtonElement>('button[aria-label="Chat options"]')[1],
   );

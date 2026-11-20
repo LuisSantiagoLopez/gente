@@ -25,7 +25,7 @@ export function installRendererRecovery(win: BrowserWindow, isQuitting: () => bo
       // A native window-modal dialog works even with no living renderer.
       const { response } = await dialog.showMessageBox(win, {
         type: "error",
-        message: t("Gente stopped unexpectedly."),
+        message: t("Your AI stopped unexpectedly."),
         buttons: [t("Reload")],
         defaultId: 0,
         cancelId: 0,

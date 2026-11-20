@@ -74,7 +74,7 @@ export function genteCloudSdk(brokerUrl: string, fetchImpl: Fetch = fetch): Remo
     });
     if (!res.ok) {
       const data = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
-      const error = new Error(data.message ?? `Gente Cloud computer: ${data.error ?? res.status}`);
+      const error = new Error(data.message ?? `Your AI Cloud computer: ${data.error ?? res.status}`);
       (error as Error & { code?: string }).code = data.error;
       throw error;
     }

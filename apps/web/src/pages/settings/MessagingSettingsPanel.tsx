@@ -494,7 +494,7 @@ export function MessagingSettingsPanel() {
               <Trans>
                 Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and
                 Meta doesn't allow general AI assistants in every country yet. Telegram works right
-                away: in the Gente menu, choose Connect Telegram.
+                away: in the Your AI menu, choose Connect Telegram.
               </Trans>
             ) : (
               <Trans>

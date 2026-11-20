@@ -1,32 +1,32 @@
-# Gente support and self-healing
+# Your AI support and self-healing
 
-How Gente finds problems on people's computers, fixes what it can there, and ships a tested fix for the rest. Everything a person sees is in [help](help/en/06-support.md).
+How Your AI finds problems on people's computers, fixes what it can there, and ships a tested fix for the rest. Everything a person sees is in [help](help/en/06-support.md).
 
 ## The pieces
 
 | Piece          | Where                                                                                           | What it does                                                                                                                               |
 | -------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Help articles  | `docs/gente/help/{en,es,pt}`                                                                    | Setup, features, troubleshooting, billing, privacy, support. Shown in the app and on the site.                                             |
-| Support window | `apps/desktop/src/main/support`, `src/support-renderer`                                         | Help → Gente Support. Local model answers from the articles; one-tap fixes; a person only when stuck.                                      |
+| Support window | `apps/desktop/src/main/support`, `src/support-renderer`                                         | Help → Your AI Support. Local model answers from the articles; one-tap fixes; a person only when stuck.                                      |
 | Health checks  | `support/health.ts`, `support/probes.ts`                                                        | Model server, model files, disk, ports, app files, workspace, Telegram. Every 5 minutes and after errors.                                  |
 | Self-heal      | `support/monitor.ts`                                                                            | Runs the safe automatic fixes (restart services) once per 30 minutes per problem.                                                          |
 | Error catcher  | `support/diagnostics.ts`                                                                        | Main-process crashes, window and child-process crashes, problems the checks find. Saved redacted in `logs/errors.jsonl`.                   |
 | Reports        | `support/diagnostics.ts`, `support/redact.ts`                                                   | Version, OS, codes, stacks, log tails. Chat lines and personal data removed. Sent only with the person's yes ("Ask each time" by default). |
-| Intake         | Gente Cloud: `cloud/db/migrations/010_self_heal.sql`, `cloud/supabase/functions/gente-selfheal` | Receives reports and health counts; serves the update feed.                                                                                |
+| Intake         | Your AI Cloud: `cloud/db/migrations/010_self_heal.sql`, `cloud/supabase/functions/gente-selfheal` | Receives reports and health counts; serves the update feed.                                                                                |
 | Pipeline       | `scripts/self-heal`                                                                             | Group → reproduce → fix → PR → gates → canary → 5% → 25% → 100%, rollback.                                                                 |
 | Workflows      | `.github/workflows/gente-*.yml`                                                                 | The pipeline on GitHub Actions.                                                                                                            |
 
 ## The pipeline
 
 ```
- Gente on a person's computer
+ Your AI on a person's computer
    health checks ──► self-heal (restart services)            fixed: nothing leaves the computer
         │ still broken
         ▼
    redacted report ──► person says yes? ──no──► nothing is sent
         │ yes
         ▼
- Gente Cloud gente-selfheal ──► gente.diag_reports
+ Your AI Cloud gente-selfheal ──► gente.diag_reports
         │  every 6 h (gente-self-heal.yml)
         ▼
  group by signature ──► one job per group and OS (macos-15, windows-2025)
@@ -63,7 +63,7 @@ pnpm exec tsx scripts/gente-help-site.ts /tmp/site/help   # the help website
 
 ## Where it runs
 
-- **Intake and update feed:** Gente Cloud owns them (branch `cloud`): migration `cloud/db/migrations/010_self_heal.sql` (private `gente` schema, RLS forced) and the edge function `cloud/supabase/functions/gente-selfheal`. Builds and feed files live in the public `gente-updates` storage bucket of the same project.
+- **Intake and update feed:** Your AI Cloud owns them (branch `cloud`): migration `cloud/db/migrations/010_self_heal.sql` (private `gente` schema, RLS forced) and the edge function `cloud/supabase/functions/gente-selfheal`. Builds and feed files live in the public `gente-updates` storage bucket of the same project.
 - **Settings in this repository:** `vars.GENTE_SELFHEAL_URL` (the function), `vars.GENTE_UPDATE_URL` (the bucket's public address), `secrets.SELF_HEAL_CLOUD_TOKEN` (CI token; only its sha256 is stored in `gente.selfheal_tokens`). The desktop build reads `GENTE_SELFHEAL_URL`; a build without it sends no reports.
 - **Branches and labels:** fixes merge into `canary`; labels `self-heal` and `blocked-on-owner`.
 - **Pages:** help at `/gente/help/`, status at `/gente/self-heal/` (`gente-pages.yml`).
@@ -84,4 +84,4 @@ No signing certificates exist on this Mac (`security find-identity -v -p codesig
 
 ## Pending checks
 
-- **Media privacy line:** the help says fal.ai keeps requests 90 days by default (confirmed from fal's docs). The stronger line (no record, fal copy deleted after 1 hour, from Gente Cloud commit 6716250c8) is held in `docs/gente/help-privacy-media-held.md`. After the first real fal job confirms it (no entry in fal's request history; the fal file link stops working after 1 hour), swap it into `docs/gente/help/*/05-privacy.md` together with the growth agent's `docs/gente/trust-page-media-held.html`.
+- **Media privacy line:** the help says fal.ai keeps requests 90 days by default (confirmed from fal's docs). The stronger line (no record, fal copy deleted after 1 hour, from Your AI Cloud commit 6716250c8) is held in `docs/gente/help-privacy-media-held.md`. After the first real fal job confirms it (no entry in fal's request history; the fal file link stops working after 1 hour), swap it into `docs/gente/help/*/05-privacy.md` together with the growth agent's `docs/gente/trust-page-media-held.html`.

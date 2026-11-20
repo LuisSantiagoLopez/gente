@@ -31,7 +31,7 @@ const NAMES: Record<string, string> = {
 const COPY = {
   en: {
     head: "| Plan | Price | What you get |",
-    free: (n: number) => `${n} messages to try Gente.`,
+    free: (n: number) => `${n} messages to try Your AI.`,
     first: (h: number) =>
       `Chats with your bots on your computer, plus **${h} hours** of online work each month.`,
     more: (h: number) => `Everything in Pro, with **${h} hours** of online work each month.`,
@@ -44,7 +44,7 @@ const COPY = {
   },
   es: {
     head: "| Plan | Precio | Qué incluye |",
-    free: (n: number) => `${n} mensajes para probar Gente.`,
+    free: (n: number) => `${n} mensajes para probar Your AI.`,
     first: (h: number) =>
       `Chats con tus bots en tu computadora, más **${h} horas** de trabajo en línea cada mes.`,
     more: (h: number) => `Todo lo de Pro, con **${h} horas** de trabajo en línea cada mes.`,
@@ -57,7 +57,7 @@ const COPY = {
   },
   pt: {
     head: "| Plano | Preço | O que inclui |",
-    free: (n: number) => `${n} mensagens para experimentar o Gente.`,
+    free: (n: number) => `${n} mensagens para experimentar o Your AI.`,
     first: (h: number) =>
       `Conversas com seus bots no seu computador, mais **${h} horas** de trabalho online por mês.`,
     more: (h: number) => `Tudo do Pro, com **${h} horas** de trabalho online por mês.`,

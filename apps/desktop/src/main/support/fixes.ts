@@ -19,9 +19,9 @@ export function isFixId(value: unknown): value is FixId {
 /** The button label for each fix, by language. */
 export const FIX_LABELS: Record<FixId, Record<"en" | "es" | "pt", string>> = {
   "restart-services": {
-    en: "Restart Gente's services",
-    es: "Reiniciar los servicios de Gente",
-    pt: "Reiniciar os serviços do Gente",
+    en: "Restart Your AI's services",
+    es: "Reiniciar los servicios de Your AI",
+    pt: "Reiniciar os serviços do Your AI",
   },
   "redownload-model": {
     en: "Download the model again",

@@ -5,7 +5,7 @@ import path from "node:path";
 import { app } from "electron";
 
 /** Earlier names of this app, newest first. Their data folder is reused as is. */
-export const LEGACY_APP_NAMES = ["Burrow"] as const;
+export const LEGACY_APP_NAMES = ["Gente", "Burrow"] as const;
 
 /** The folder to use: the current one if it exists, else the newest legacy one that does. */
 export function pickUserData(current: string, exists: (dir: string) => boolean): string {

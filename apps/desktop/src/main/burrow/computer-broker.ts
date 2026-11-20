@@ -39,7 +39,7 @@ export async function startComputerBroker(cloud: () => GenteCloud | null) {
       // Bodies are small and fixed; nothing to read from them.
     }
     const client = cloud();
-    if (!client) return send(res, 401, { error: "missing_token", message: "Sign in to Gente to use a cloud computer." });
+    if (!client) return send(res, 401, { error: "missing_token", message: "Sign in to Your AI to use a cloud computer." });
     try {
       if (req.method === "POST" && path === "/sessions") {
         const session = await client.startSession(CLOUD_COMPUTER_SESSION);

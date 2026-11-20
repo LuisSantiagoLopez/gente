@@ -11,7 +11,7 @@ let brain: Brain | null = null;
 
 export function registerBrainIpc(stackDirectory: string) {
   app.setAboutPanelOptions({
-    applicationName: "Gente",
+    applicationName: "Your AI",
     applicationVersion: `${app.getVersion()} · Plan: ${checkEntitlement().label}`,
     copyright: "Copyright 2026 DeskHead Inc.",
     credits:

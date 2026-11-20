@@ -18,7 +18,7 @@ import { fetchPairedWithDispatcher } from "../network/undici-fetch.js";
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
 const MAX_REDIRECTS = 5;
-const DEFAULT_USER_AGENT = "Gente/0.2";
+const DEFAULT_USER_AGENT = "Your AI/0.2";
 
 export type { ResolveHostname } from "../network/network-address.js";
 

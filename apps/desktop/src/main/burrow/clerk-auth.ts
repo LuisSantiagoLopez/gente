@@ -105,12 +105,12 @@ export async function signInWithBrowser(input: {
         const got = url.searchParams.get("code");
         if (error || !got || url.searchParams.get("state") !== state) {
           response.writeHead(400, { "content-type": "text/html; charset=utf-8" });
-          response.end(PAGE("Sign-in didn't finish", "Go back to Gente and try again."));
+          response.end(PAGE("Sign-in didn't finish", "Go back to Your AI and try again."));
           reject(new Error(`sign-in callback: ${error ?? "bad state or code"}`));
           return;
         }
         response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-        response.end(PAGE("You're signed in", "You can close this tab and go back to Gente."));
+        response.end(PAGE("You're signed in", "You can close this tab and go back to Your AI."));
         resolve({ code: got, redirectUri });
       });
       let redirectUri = "";

@@ -181,7 +181,7 @@ export function ProjectsOverlay({
               <Trans>Projects</Trans>
             </DialogTitle>
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
-              <Trans>Gente keeps each project's tasks up to date as it works.</Trans>
+              <Trans>Your AI keeps each project's tasks up to date as it works.</Trans>
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -340,7 +340,7 @@ export function ProjectsOverlay({
                   value={feedback}
                   onChange={(event) => setFeedback(event.target.value)}
                   aria-label={t`Feedback`}
-                  placeholder={t`Tell Gente what to keep or change`}
+                  placeholder={t`Tell Your AI what to keep or change`}
                   maxLength={1000}
                   dir="auto"
                 />
@@ -364,7 +364,7 @@ export function ProjectsOverlay({
                     <li key={`${entry.at}:${entry.text}`} className="flex gap-3 text-body-sm">
                       <span className="w-28 shrink-0 text-muted-foreground">{when(entry.at)}</span>
                       <span className="min-w-0 text-foreground" dir="auto">
-                        {entry.by === "user" ? <Trans>You:</Trans> : <Trans>Gente:</Trans>}{" "}
+                        {entry.by === "user" ? <Trans>You:</Trans> : <Trans>Your AI:</Trans>}{" "}
                         {entry.text}
                       </span>
                     </li>
@@ -435,7 +435,7 @@ export function ProjectsOverlay({
               className="py-6 text-center text-body text-muted-foreground"
               data-testid="projects-empty"
             >
-              <Trans>No projects yet. Start one, or ask Gente to start one in a chat.</Trans>
+              <Trans>No projects yet. Start one, or ask Your AI to start one in a chat.</Trans>
             </p>
           ) : (
             <ul className="space-y-1.5">

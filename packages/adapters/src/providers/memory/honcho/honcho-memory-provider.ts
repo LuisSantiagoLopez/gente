@@ -116,7 +116,7 @@ function parseHonchoConnection(
   }
   // Rakazo writes to its own peers, so a user peer that aliases one would not stay read-only.
   if (userPeerId && isReservedHonchoPeerId(userPeerId)) {
-    throw new Error("userPeerId uses a peer ID reserved for Gente");
+    throw new Error("userPeerId uses a peer ID reserved for Your AI");
   }
   // A user peer only exists in a workspace another Honcho app already writes to.
   if (userPeerId && !workspaceId) {

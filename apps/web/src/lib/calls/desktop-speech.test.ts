@@ -149,7 +149,7 @@ describe("Dictation on the desktop app", () => {
     await dictation.listen({ mode: "hold", transcribe: false, onFinal: () => undefined });
     desktop.emit({ session: desktop.session(), type: "error", error: "not-allowed" });
     expect(dictation.state.error).toBe(
-      "Allow Gente to use Speech Recognition and the microphone in System Settings.",
+      "Allow Your AI to use Speech Recognition and the microphone in System Settings.",
     );
   });
 });

@@ -1,9 +1,9 @@
-# Gente using your computer
+# Your AI using your computer
 
 Proof images of the pill, rendered from `apps/desktop/src/computer-pill-renderer` in headless
 Chrome (not a screenshot of the Electron window on a real desktop).
 
-- `pill-in.png`, `pill-in-dark.png`: shown while Gente drives the screen.
+- `pill-in.png`, `pill-in-dark.png`: shown while Your AI drives the screen.
 - `pill-hover-stop.png`: pointer over Stop (the only part of the pill that takes clicks).
 - `pill-stopped.png`: after Stop or the stop key.
 - `pill-enter.gif`: the spring as it appears. Reduced motion turns it off.

@@ -5,7 +5,7 @@ import { buildSkillMd } from "@rakazo/core";
 // building are left out: they are not part of the Gente app.
 export const GENTE_DOCS_BASE = "https://raw.githubusercontent.com/LuisSantiagoLopez/gente/main/docs/help";
 const RAKAZO_DOCS: ReadonlyArray<readonly [topics: string, url: string]> = [
-  ["Getting started, first bot, what Gente does", `${GENTE_DOCS_BASE}/getting-started.md`],
+  ["Getting started, first bot, what Your AI does", `${GENTE_DOCS_BASE}/getting-started.md`],
   [
     "Creating bots, chatting, bot settings, sidebar, search",
     `${GENTE_DOCS_BASE}/bots-and-chats.md`,
@@ -63,13 +63,13 @@ const SKILLS: Array<{ name: string; description: string; body: string }> = [
 4. Synthesize a verdict: ship, ship after fixes, or do not ship. List the confirmed findings ordered by severity, each with its location and failure scenario, then any open questions. If nothing survived verification, say so plainly instead of inventing nitpicks.`,
   },
   {
-    name: "Gente",
-    description: "What Gente is and how to use it: chat apps, computers, billing, hosting",
-    body: `Answer questions about Gente itself from its docs. Fetch the matching page with web_fetch before answering, then answer briefly in your own words and link the page. If fetching fails or is unavailable, answer only what this index says and link the page. Never invent menus, buttons, or steps the page doesn't show. Account-specific facts (credit balance, plan, usage) aren't in the docs: point to the screen that shows them.
+    name: "Your AI",
+    description: "What Your AI is and how to use it: chat apps, computers, billing, hosting",
+    body: `Answer questions about Your AI itself from its docs. Fetch the matching page with web_fetch before answering, then answer briefly in your own words and link the page. If fetching fails or is unavailable, answer only what this index says and link the page. Never invent menus, buttons, or steps the page doesn't show. Account-specific facts (credit balance, plan, usage) aren't in the docs: point to the screen that shows them.
 
 ${RAKAZO_DOCS.map(([topics, url]) => `- ${topics}: ${url}`).join("\n")}
 
-Gente is open source; its code is at github.com/LuisSantiagoLopez/gente. It is based on Rakazo by Elie Steinbock (Apache-2.0).`,
+Your AI is open source; its code is at github.com/LuisSantiagoLopez/gente. It is based on Rakazo by Elie Steinbock (Apache-2.0).`,
   },
 ];
 

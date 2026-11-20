@@ -5,13 +5,13 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("electron", () => ({ app: { getPath: () => "", setPath: () => {} } }));
 const { pickUserData } = await import("./legacy-user-data.js");
 
-describe("Gente keeps Burrow data", () => {
+describe("Your AI keeps Burrow data", () => {
   const support = "/Users/x/Library/Application Support";
-  it("reuses the Burrow folder when no Gente folder exists", () => {
+  it("reuses the Burrow folder when no Your AI folder exists", () => {
     const has = new Set([`${support}/Burrow/stack`, `${support}/Gente`]);
     expect(pickUserData(`${support}/Gente`, (d) => has.has(d))).toBe(`${support}/Burrow`);
   });
-  it("prefers an existing Gente folder", () => {
+  it("prefers an existing Your AI folder", () => {
     const has = new Set([`${support}/Burrow/stack`, `${support}/Gente/stack`]);
     expect(pickUserData(`${support}/Gente`, (d) => has.has(d))).toBe(`${support}/Gente`);
   });

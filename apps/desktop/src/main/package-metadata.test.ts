@@ -18,7 +18,7 @@ const packageJson = JSON.parse(
 
 describe("desktop package metadata", () => {
   it("shares the customer-facing name between Electron and electron-builder", () => {
-    expect(packageJson.productName).toBe("Gente");
+    expect(packageJson.productName).toBe("Your AI");
     expect(packageJson.build?.productName).toBeUndefined();
   });
 

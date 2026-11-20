@@ -216,7 +216,7 @@ export function createAgentDesktopHostScreen(options: AgentDesktopHostScreenOpti
       matching = await windowsWithin(query, LAUNCH_WAIT_MS, signal);
     }
     if (matching.some((window) => window.pid === options.selfPid))
-      throw new HostScreenError("Gente can't use its own window.");
+      throw new HostScreenError("Your AI can't use its own window.");
     const usable = matching.filter(
       (window) => window.accessible !== false && window.visible !== false,
     );
@@ -468,7 +468,7 @@ function refusal(app: string, code: string, message: string | undefined) {
     case "POLICY_DENIED":
       return `Windows won't send that to ${app} without taking over the user's pointer or keyboard. Use click, set, or menu instead.`;
     case "PERM_DENIED":
-      return `Windows doesn't let Gente use ${app}, usually because it runs as administrator.`;
+      return `Windows doesn't let Your AI use ${app}, usually because it runs as administrator.`;
     case "APP_UNRESPONSIVE":
       return `${app} is not responding.`;
     case "TIMEOUT":

@@ -4,7 +4,7 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Check for Updates…": "檢查更新項目…",
   "Computer Access…": "電腦存取權…",
   "Revoke Local Computer Access": "撤銷本機電腦存取權",
-  "Change Gente Server…": "更換 Gente 伺服器…",
+  "Change Your AI Server…": "更換 Your AI 伺服器…",
   "Hide {name}": "隱藏 {name}",
   "Hide Others": "隱藏其他",
   "Show All": "顯示全部",
@@ -39,22 +39,22 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "正在檢查更新項目…",
   "Downloading Update…": "正在下載更新項目…",
   "Restart to Update…": "重新啟動以更新…",
-  "Downloading Gente {version}…": "正在下載 Gente {version}…",
-  "Gente {version} is ready to install.": "Gente {version} 已可安裝。",
+  "Downloading Your AI {version}…": "正在下載 Your AI {version}…",
+  "Your AI {version} is ready to install.": "Your AI {version} 已可安裝。",
   Restart: "重新啟動",
   Later: "稍後",
   "Could not install the update.": "無法安裝更新項目。",
   "Could not check for updates.": "無法檢查更新項目。",
-  "Gente is up to date.": "Gente 已是最新版本。",
+  "Your AI is up to date.": "Your AI 已是最新版本。",
   "Version {version}": "版本 {version}",
   "Automatic updates are turned off for this install.": "此安裝已關閉自動更新。",
   "Automatic updates only run in an installed build.": "自動更新僅在已安裝的版本中執行。",
   "No desktop releases are published for this build yet.": "此版本尚未發佈桌面版。",
-  "Move Gente to Applications to install updates.":
-    "將 Gente 移到「應用程式」檔案夾以安裝更新項目。",
+  "Move Your AI to Applications to install updates.":
+    "將 Your AI 移到「應用程式」檔案夾以安裝更新項目。",
   "Free up disk space to install updates.": "釋放磁碟空間以安裝更新項目。",
-  "This update could not be verified. Reinstall Gente from a trusted download.":
-    "無法驗證此更新項目。請從可信任的來源重新下載並安裝 Gente。",
+  "This update could not be verified. Reinstall Your AI from a trusted download.":
+    "無法驗證此更新項目。請從可信任的來源重新下載並安裝 Your AI。",
   "The update could not be completed. Try again later.": "無法完成更新。請稍後再試一次。",
   "Could not reach the update server.": "無法連線到更新伺服器。",
   "Allow local computer access?": "要允許存取本機電腦嗎？",
@@ -72,10 +72,10 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
     "已有登入正在進行。請取消後再試一次。",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "無法開啟瀏覽器登入。請關閉其他登入嘗試後再試一次。",
-  "Sign-in callback rejected. Return to Gente to retry.": "登入回應遭拒。請返回 Gente 再試一次。",
-  "You can close this tab and return to Gente.": "你可以關閉此分頁並返回 Gente。",
-  "Quit Gente": "結束 Gente",
-  "Welcome to Gente": "歡迎使用 Gente",
+  "Sign-in callback rejected. Return to Your AI to retry.": "登入回應遭拒。請返回 Your AI 再試一次。",
+  "You can close this tab and return to Your AI.": "你可以關閉此分頁並返回 Your AI。",
+  "Quit Your AI": "結束 Your AI",
+  "Welcome to Your AI": "歡迎使用 Your AI",
   Instance: "執行個體",
   "Technical details": "技術詳細資訊",
   "Setup progress": "設定進度",
@@ -89,21 +89,21 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "{size} downloaded": "已下載 {size}",
   "Connecting…": "正在連線…",
   "Checking…": "正在檢查…",
-  "Gente answered at {url}.": "Gente 已在 {url} 回應。",
+  "Your AI answered at {url}.": "Your AI 已在 {url} 回應。",
   "Enter a server address first.": "請先輸入伺服器位址。",
   "Could not save that address.": "無法儲存該位址。",
   "Could not save that address. Try again.": "無法儲存該位址。請再試一次。",
   "Could not run the connection check. Try again.": "無法檢查連線。請再試一次。",
   "Setup bridge unavailable.": "無法使用設定橋接。",
-  "Setup could not start. Quit Gente and try again.": "無法開始設定。請結束 Gente 後再試一次。",
+  "Setup could not start. Quit Your AI and try again.": "無法開始設定。請結束 Your AI 後再試一次。",
   "Enter a server address.": "請輸入伺服器位址。",
   "Enter a valid http:// or https:// address.": "請輸入有效的 http:// 或 https:// 位址。",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "請輸入有效的伺服器位址。公開伺服器需要 HTTPS；新的本機執行個體必須使用 localhost。",
   "Invalid custom headers": "自訂標頭無效",
-  "That address redirects elsewhere. Enter the final Gente server address.":
-    "該位址會重新導向到其他位置。請輸入 Gente 伺服器的最終位址。",
-  "That address did not respond like a Gente server.": "該位址的回應不像 Gente 伺服器。",
+  "That address redirects elsewhere. Enter the final Your AI server address.":
+    "該位址會重新導向到其他位置。請輸入 Your AI 伺服器的最終位址。",
+  "That address did not respond like a Your AI server.": "該位址的回應不像 Your AI 伺服器。",
   "Timed out reaching that address.": "連線到該位址逾時。",
   "Nothing is listening at that address yet.": "該位址目前沒有任何服務在監聽。",
   "That host could not be found.": "找不到該主機。",
@@ -125,8 +125,8 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
     "無法儲存設定。已還原先前的執行個體。",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "已連線，但無法為下次啟動儲存設定。請再按一次「繼續」。",
-  "The app-managed Gente services are not ready. Retry setup.":
-    "由 App 管理的 Gente 服務尚未就緒。請重新設定。",
+  "The app-managed Your AI services are not ready. Retry setup.":
+    "由 App 管理的 Your AI 服務尚未就緒。請重新設定。",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "已安裝 Docker，但缺少 Docker Compose。請安裝 Docker Desktop 或 docker-compose-plugin。",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -146,10 +146,10 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
     "Docker 已停止回應。請啟動 Docker 後再試一次。",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "缺少 Docker Compose。請安裝 Docker Desktop 或 docker-compose-plugin 後再試一次。",
-  "Downloading Gente images failed. Check the output below, then retry.":
-    "無法下載 Gente 映像檔。請查看下方輸出後再試一次。",
-  "Gente services did not start. Check the output below, then retry.":
-    "Gente 服務未能啟動。請查看下方輸出後再試一次。",
+  "Downloading Your AI images failed. Check the output below, then retry.":
+    "無法下載 Your AI 映像檔。請查看下方輸出後再試一次。",
+  "Your AI services did not start. Check the output below, then retry.":
+    "Your AI 服務未能啟動。請查看下方輸出後再試一次。",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "服務堆疊已啟動，但網頁 App 沒有回應。請重試並查看下方輸出。",
   "Could not prepare the local stack. Retry.": "無法準備本機服務堆疊。請再試一次。",
@@ -172,22 +172,22 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Chat Details": "聊天詳細資料",
   Help: "說明",
   "Keyboard Shortcuts": "鍵盤快速鍵",
-  "Downloading Gente failed. Check the internet connection, then retry.":
-    "無法下載 Gente。請檢查網路連線，然後再試一次。",
+  "Downloading Your AI failed. Check the internet connection, then retry.":
+    "無法下載 Your AI。請檢查網路連線，然後再試一次。",
   "Could not move your data from Docker. Check the output below, then retry.":
     "無法從 Docker 移轉你的資料。請查看下方輸出，然後再試一次。",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "已在執行的電腦執行環境版本過舊。請更新或結束它，然後再試一次。",
-  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
-    "你的 Gente 資料位於另一個電腦執行環境中。請結束正在執行的那個，然後再試一次。",
-  "Run Gente without Docker?": "不使用 Docker 執行 Gente？",
+  "Your Your AI data is in a different computer runtime. Quit the one running, then retry.":
+    "你的 Your AI 資料位於另一個電腦執行環境中。請結束正在執行的那個，然後再試一次。",
+  "Run Your AI without Docker?": "不使用 Docker 執行 Your AI？",
   "Your bots and data move over. Docker is stopped, not removed.":
     "你的機器人和資料會一併移轉。Docker 只會停止，不會移除。",
   Move: "移轉",
   "Keep Docker": "繼續使用 Docker",
-  "Gente needs Docker Desktop to run on this computer.":
-    "Gente 需要 Docker Desktop 才能在這台電腦上執行。",
-  "Gente needs Docker to run on this computer.": "Gente 需要 Docker 才能在這台電腦上執行。",
+  "Your AI needs Docker Desktop to run on this computer.":
+    "Your AI 需要 Docker Desktop 才能在這台電腦上執行。",
+  "Your AI needs Docker to run on this computer.": "Your AI 需要 Docker 才能在這台電腦上執行。",
   "Install Docker Engine and start it.": "安裝並啟動 Docker Engine。",
   "Download Docker Desktop": "下載 Docker Desktop",
   "Install Docker": "安裝 Docker",
@@ -196,16 +196,16 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Starting {app}…": "正在啟動 {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker 已安裝但未執行。請啟動 Docker 服務以繼續。",
-  "Gente stopped unexpectedly.": "Gente 意外停止。",
+  "Your AI stopped unexpectedly.": "Your AI 意外停止。",
   Reload: "重新載入",
   "Mac app control": "Mac App 控制",
   "Set up Mac app control": "設定 Mac App 控制",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
-    "指令已可使用。若要操作 App，請在系統設定中允許 Gente 使用輔助使用和螢幕錄製，然後重新啟動 Gente。",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Your AI in System Settings, then restart Your AI.":
+    "指令已可使用。若要操作 App，請在系統設定中允許 Your AI 使用輔助使用和螢幕錄製，然後重新啟動 Your AI。",
   "Open System Settings": "打開系統設定",
-  "Restart Gente": "重新啟動 Gente",
+  "Restart Your AI": "重新啟動 Your AI",
   "Not Now": "稍後再說",
-  "Restart Gente to finish setup": "重新啟動 Gente 以完成設定",
+  "Restart Your AI to finish setup": "重新啟動 Your AI 以完成設定",
   // Setup
   "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
     "以 Elie Steinbock 的 Rakazo(Apache-2.0)為基礎。Swift 由 UkisAI 製作。",
@@ -216,43 +216,42 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "改為連接伺服器",
   "Downloading the workspace…": "正在下載工作區…",
   "Downloads once, then works offline.": "只需下載一次,之後可離線使用。",
-  "Gente couldn't finish getting ready. Press Try again.": "Gente 無法完成準備。請按「再試一次」。",
-  "Gente is getting things ready. This takes a moment.": "Gente 正在準備,請稍候。",
+  "Your AI couldn't finish getting ready. Press Try again.": "Your AI 無法完成準備。請按「再試一次」。",
+  "Your AI is getting things ready. This takes a moment.": "Your AI 正在準備,請稍候。",
   "Get started": "開始使用",
-  "Getting Gente ready, about a minute left": "正在準備 Gente,大約還剩 1 分鐘",
-  "Getting Gente ready, about {n} min left": "正在準備 Gente,大約還剩 {n} 分鐘",
-  "Getting Gente ready…": "正在準備 Gente…",
+  "Getting Your AI ready, about a minute left": "正在準備 Your AI,大約還剩 1 分鐘",
+  "Getting Your AI ready, about {n} min left": "正在準備 Your AI,大約還剩 {n} 分鐘",
+  "Getting Your AI ready…": "正在準備 Your AI…",
   "Model choices": "模型選項",
   "Model download": "模型下載",
   "No ads. Ever.": "沒有廣告。永遠沒有。",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "沒有人會讀取、拿來訓練或出售你的資料。我們不會,任何人都不會。",
-  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
-    "在這台 Mac 上,Gente 的工作區需要 Docker Desktop(一款免費 App)。請安裝並開啟一次。",
+  "On this Mac, Your AI needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "在這台 Mac 上,Your AI 的工作區需要 Docker Desktop(一款免費 App)。請安裝並開啟一次。",
   "Run on this Mac instead": "改為在這台 Mac 上執行",
   "Runs privately in the background on this Mac.": "在這台 Mac 的背景私密執行。",
   "Something went wrong.": "發生了一些問題。",
   "Starting the workspace…": "正在啟動工作區…",
   "Switched to {name} for your computer ({from} could not run here).":
     "已為你的電腦切換到 {name}({from} 無法在這裡執行)。",
-  "That address didn't answer like a Gente server. Check it, then try again.":
-    "這個位址的回應不像 Gente 伺服器。請檢查後再試一次。",
+  "That address didn't answer like a Your AI server. Check it, then try again.":
+    "這個位址的回應不像 Your AI 伺服器。請檢查後再試一次。",
   "The AI of the people.": "大家的 AI。",
   "The first start can take a minute.": "第一次啟動可能需要一分鐘。",
   "Try again": "再試一次",
-  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
-    "當 Gente 為你在線上工作時(搜尋、瀏覽、App),只會送出該工作需要的內容。",
+  "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "當 Your AI 為你在線上工作時(搜尋、瀏覽、App),只會送出該工作需要的內容。",
   Workspace: "工作區",
   "Workspace ready.": "工作區已就緒。",
-  "Your AI": "你的 AI",
   "Your AI is ready.": "你的 AI 已就緒。",
   "Your AI lives on your computer. Your chats never leave it.":
     "你的 AI 住在你的電腦裡。你的聊天永遠不會離開它。",
-  "Sign In to Gente…": "登入 Gente…",
-  "Sign Out of Gente": "登出 Gente",
-  "Gente Support…": "Gente 支援…",
+  "Sign In to Your AI…": "登入 Your AI…",
+  "Sign Out of Your AI": "登出 Your AI",
+  "Your AI Support…": "Your AI 支援…",
   // Computer use pill
-  "Gente is using your computer": "Gente 正在使用你的電腦",
+  "Your AI is using your computer": "Your AI 正在使用你的電腦",
   "Press {key} to stop": "按 {key} 停止",
   Stop: "停止",
   Stopped: "已停止",

@@ -4,7 +4,7 @@ export const RU_MESSAGES: Record<string, string> = {
   "Check for Updates…": "Проверить обновления…",
   "Computer Access…": "Доступ к компьютеру…",
   "Revoke Local Computer Access": "Отозвать доступ к локальному компьютеру",
-  "Change Gente Server…": "Сменить сервер Gente…",
+  "Change Your AI Server…": "Сменить сервер Your AI…",
   "Hide {name}": "Скрыть {name}",
   "Hide Others": "Скрыть остальные",
   "Show All": "Показать все",
@@ -39,13 +39,13 @@ export const RU_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Проверка обновлений…",
   "Downloading Update…": "Загрузка обновления…",
   "Restart to Update…": "Перезапустить для обновления…",
-  "Downloading Gente {version}…": "Загрузка Gente {version}…",
-  "Gente {version} is ready to install.": "Gente {version} готов к установке.",
+  "Downloading Your AI {version}…": "Загрузка Your AI {version}…",
+  "Your AI {version} is ready to install.": "Your AI {version} готов к установке.",
   Restart: "Перезапустить",
   Later: "Позже",
   "Could not install the update.": "Не удалось установить обновление.",
   "Could not check for updates.": "Не удалось проверить обновления.",
-  "Gente is up to date.": "У вас последняя версия Gente.",
+  "Your AI is up to date.": "У вас последняя версия Your AI.",
   "Version {version}": "Версия {version}",
   "Automatic updates are turned off for this install.":
     "Автоматические обновления отключены для этой установки.",
@@ -53,12 +53,12 @@ export const RU_MESSAGES: Record<string, string> = {
     "Автоматические обновления работают только в установленной версии.",
   "No desktop releases are published for this build yet.":
     "Для этой сборки пока не опубликовано ни одной версии для компьютера.",
-  "Move Gente to Applications to install updates.":
-    "Переместите Gente в папку «Программы», чтобы устанавливать обновления.",
+  "Move Your AI to Applications to install updates.":
+    "Переместите Your AI в папку «Программы», чтобы устанавливать обновления.",
   "Free up disk space to install updates.":
     "Освободите место на диске, чтобы установить обновления.",
-  "This update could not be verified. Reinstall Gente from a trusted download.":
-    "Не удалось проверить это обновление. Переустановите Gente из надёжного источника.",
+  "This update could not be verified. Reinstall Your AI from a trusted download.":
+    "Не удалось проверить это обновление. Переустановите Your AI из надёжного источника.",
   "The update could not be completed. Try again later.":
     "Не удалось завершить обновление. Повторите попытку позже.",
   "Could not reach the update server.": "Не удалось связаться с сервером обновлений.",
@@ -77,11 +77,11 @@ export const RU_MESSAGES: Record<string, string> = {
     "Вход уже выполняется. Отмените его и повторите попытку.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Не удалось открыть вход в браузере. Закройте другие попытки входа и повторите.",
-  "Sign-in callback rejected. Return to Gente to retry.":
-    "Ответ на вход отклонён. Вернитесь в Gente, чтобы повторить попытку.",
-  "You can close this tab and return to Gente.": "Можно закрыть эту вкладку и вернуться в Gente.",
-  "Quit Gente": "Завершить Gente",
-  "Welcome to Gente": "Добро пожаловать в Gente",
+  "Sign-in callback rejected. Return to Your AI to retry.":
+    "Ответ на вход отклонён. Вернитесь в Your AI, чтобы повторить попытку.",
+  "You can close this tab and return to Your AI.": "Можно закрыть эту вкладку и вернуться в Your AI.",
+  "Quit Your AI": "Завершить Your AI",
+  "Welcome to Your AI": "Добро пожаловать в Your AI",
   Instance: "Экземпляр",
   "Technical details": "Технические подробности",
   "Setup progress": "Ход настройки",
@@ -95,25 +95,25 @@ export const RU_MESSAGES: Record<string, string> = {
   "{size} downloaded": "Загружено {size}",
   "Connecting…": "Подключение…",
   "Checking…": "Проверка…",
-  "Gente answered at {url}.": "Gente ответил по адресу {url}.",
+  "Your AI answered at {url}.": "Your AI ответил по адресу {url}.",
   "Enter a server address first.": "Сначала введите адрес сервера.",
   "Could not save that address.": "Не удалось сохранить этот адрес.",
   "Could not save that address. Try again.": "Не удалось сохранить этот адрес. Повторите попытку.",
   "Could not run the connection check. Try again.":
     "Не удалось проверить подключение. Повторите попытку.",
   "Setup bridge unavailable.": "Мост настройки недоступен.",
-  "Setup could not start. Quit Gente and try again.":
-    "Не удалось начать настройку. Завершите Gente и повторите попытку.",
+  "Setup could not start. Quit Your AI and try again.":
+    "Не удалось начать настройку. Завершите Your AI и повторите попытку.",
   "Enter a server address.": "Введите адрес сервера.",
   "Enter a valid http:// or https:// address.":
     "Введите действительный адрес http:// или https://.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Введите действительный адрес сервера. Публичным серверам нужен HTTPS; новый локальный экземпляр должен использовать localhost.",
   "Invalid custom headers": "Недопустимые пользовательские заголовки",
-  "That address redirects elsewhere. Enter the final Gente server address.":
-    "Этот адрес перенаправляет в другое место. Введите конечный адрес сервера Gente.",
-  "That address did not respond like a Gente server.":
-    "Этот адрес ответил не так, как сервер Gente.",
+  "That address redirects elsewhere. Enter the final Your AI server address.":
+    "Этот адрес перенаправляет в другое место. Введите конечный адрес сервера Your AI.",
+  "That address did not respond like a Your AI server.":
+    "Этот адрес ответил не так, как сервер Your AI.",
   "Timed out reaching that address.": "Истекло время ожидания ответа по этому адресу.",
   "Nothing is listening at that address yet.": "По этому адресу пока ничего не отвечает.",
   "That host could not be found.": "Не удалось найти этот хост.",
@@ -137,8 +137,8 @@ export const RU_MESSAGES: Record<string, string> = {
     "Не удалось сохранить настройку. Предыдущий экземпляр восстановлен.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Подключение установлено, но настройку не удалось сохранить для следующего запуска. Нажмите «Продолжить» ещё раз.",
-  "The app-managed Gente services are not ready. Retry setup.":
-    "Службы Gente, которыми управляет приложение, не готовы. Повторите настройку.",
+  "The app-managed Your AI services are not ready. Retry setup.":
+    "Службы Your AI, которыми управляет приложение, не готовы. Повторите настройку.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker установлен, но Docker Compose отсутствует. Установите Docker Desktop или docker-compose-plugin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -159,10 +159,10 @@ export const RU_MESSAGES: Record<string, string> = {
     "Docker перестал отвечать. Запустите Docker и повторите попытку.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose отсутствует. Установите Docker Desktop или docker-compose-plugin и повторите попытку.",
-  "Downloading Gente images failed. Check the output below, then retry.":
-    "Не удалось загрузить образы Gente. Посмотрите вывод ниже и повторите попытку.",
-  "Gente services did not start. Check the output below, then retry.":
-    "Службы Gente не запустились. Посмотрите вывод ниже и повторите попытку.",
+  "Downloading Your AI images failed. Check the output below, then retry.":
+    "Не удалось загрузить образы Your AI. Посмотрите вывод ниже и повторите попытку.",
+  "Your AI services did not start. Check the output below, then retry.":
+    "Службы Your AI не запустились. Посмотрите вывод ниже и повторите попытку.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "Стек запущен, но веб-приложение не ответило. Повторите попытку и посмотрите вывод ниже.",
   "Could not prepare the local stack. Retry.":
@@ -186,23 +186,23 @@ export const RU_MESSAGES: Record<string, string> = {
   "Chat Details": "Сведения о чате",
   Help: "Справка",
   "Keyboard Shortcuts": "Сочетания клавиш",
-  "Downloading Gente failed. Check the internet connection, then retry.":
-    "Не удалось загрузить Gente. Проверьте подключение к интернету и повторите попытку.",
+  "Downloading Your AI failed. Check the internet connection, then retry.":
+    "Не удалось загрузить Your AI. Проверьте подключение к интернету и повторите попытку.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Не удалось перенести данные из Docker. Посмотрите вывод ниже и повторите попытку.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "Уже запущенная среда выполнения компьютеров слишком старая. Обновите или закройте её, затем повторите попытку.",
-  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
-    "Ваши данные Gente находятся в другой среде выполнения компьютеров. Закройте запущенную среду, затем повторите попытку.",
-  "Run Gente without Docker?": "Запускать Gente без Docker?",
+  "Your Your AI data is in a different computer runtime. Quit the one running, then retry.":
+    "Ваши данные Your AI находятся в другой среде выполнения компьютеров. Закройте запущенную среду, затем повторите попытку.",
+  "Run Your AI without Docker?": "Запускать Your AI без Docker?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Ваши боты и данные будут перенесены. Docker будет остановлен, но не удалён.",
   Move: "Перенести",
   "Keep Docker": "Оставить Docker",
-  "Gente needs Docker Desktop to run on this computer.":
-    "Чтобы Gente работал на этом компьютере, нужен Docker Desktop.",
-  "Gente needs Docker to run on this computer.":
-    "Чтобы Gente работал на этом компьютере, нужен Docker.",
+  "Your AI needs Docker Desktop to run on this computer.":
+    "Чтобы Your AI работал на этом компьютере, нужен Docker Desktop.",
+  "Your AI needs Docker to run on this computer.":
+    "Чтобы Your AI работал на этом компьютере, нужен Docker.",
   "Install Docker Engine and start it.": "Установите Docker Engine и запустите его.",
   "Download Docker Desktop": "Скачать Docker Desktop",
   "Install Docker": "Установить Docker",
@@ -211,16 +211,16 @@ export const RU_MESSAGES: Record<string, string> = {
   "Starting {app}…": "Запуск {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker установлен, но не запущен. Запустите службу Docker, чтобы продолжить.",
-  "Gente stopped unexpectedly.": "Gente неожиданно остановился.",
+  "Your AI stopped unexpectedly.": "Your AI неожиданно остановился.",
   Reload: "Перезагрузить",
   "Mac app control": "Управление приложениями Mac",
   "Set up Mac app control": "Настройка управления приложениями Mac",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
-    "Команды уже работают. Чтобы использовать приложения, разрешите Gente доступ к Универсальному доступу и Записи экрана в Системных настройках, затем перезапустите Gente.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Your AI in System Settings, then restart Your AI.":
+    "Команды уже работают. Чтобы использовать приложения, разрешите Your AI доступ к Универсальному доступу и Записи экрана в Системных настройках, затем перезапустите Your AI.",
   "Open System Settings": "Открыть Системные настройки",
-  "Restart Gente": "Перезапустить Gente",
+  "Restart Your AI": "Перезапустить Your AI",
   "Not Now": "Не сейчас",
-  "Restart Gente to finish setup": "Перезапустите Gente, чтобы завершить настройку",
+  "Restart Your AI to finish setup": "Перезапустите Your AI, чтобы завершить настройку",
   // Setup
   "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
     "Основано на Rakazo от Elie Steinbock (Apache-2.0). Swift от UkisAI.",
@@ -231,45 +231,44 @@ export const RU_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "Подключиться к серверу",
   "Downloading the workspace…": "Скачиваем рабочее пространство…",
   "Downloads once, then works offline.": "Скачивается один раз, потом работает без интернета.",
-  "Gente couldn't finish getting ready. Press Try again.":
-    "Gente не удалось закончить подготовку. Нажмите «Повторить попытку».",
-  "Gente is getting things ready. This takes a moment.":
-    "Gente всё готовит. Это займёт немного времени.",
+  "Your AI couldn't finish getting ready. Press Try again.":
+    "Your AI не удалось закончить подготовку. Нажмите «Повторить попытку».",
+  "Your AI is getting things ready. This takes a moment.":
+    "Your AI всё готовит. Это займёт немного времени.",
   "Get started": "Начать",
-  "Getting Gente ready, about a minute left": "Готовим Gente, осталась примерно минута",
-  "Getting Gente ready, about {n} min left": "Готовим Gente, осталось примерно {n} мин",
-  "Getting Gente ready…": "Готовим Gente…",
+  "Getting Your AI ready, about a minute left": "Готовим Your AI, осталась примерно минута",
+  "Getting Your AI ready, about {n} min left": "Готовим Your AI, осталось примерно {n} мин",
+  "Getting Your AI ready…": "Готовим Your AI…",
   "Model choices": "Выбор модели",
   "Model download": "Загрузка модели",
   "No ads. Ever.": "Без рекламы. Никогда.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "Никто не читает ваши данные, не обучает на них ИИ и не продаёт их. Ни мы, ни кто-либо ещё.",
-  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
-    "На этом Mac для рабочего пространства Gente нужен Docker Desktop (бесплатное приложение). Установите его и откройте один раз.",
+  "On this Mac, Your AI needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "На этом Mac для рабочего пространства Your AI нужен Docker Desktop (бесплатное приложение). Установите его и откройте один раз.",
   "Run on this Mac instead": "Запустить на этом Mac",
   "Runs privately in the background on this Mac.": "Работает приватно в фоне на этом Mac.",
   "Something went wrong.": "Что-то пошло не так.",
   "Starting the workspace…": "Запускаем рабочее пространство…",
   "Switched to {name} for your computer ({from} could not run here).":
     "Для вашего компьютера выбрана модель {name} ({from} не может здесь работать).",
-  "That address didn't answer like a Gente server. Check it, then try again.":
-    "По этому адресу ответил не сервер Gente. Проверьте адрес и попробуйте ещё раз.",
+  "That address didn't answer like a Your AI server. Check it, then try again.":
+    "По этому адресу ответил не сервер Your AI. Проверьте адрес и попробуйте ещё раз.",
   "The AI of the people.": "ИИ для людей.",
   "The first start can take a minute.": "Первый запуск может занять минуту.",
   "Try again": "Повторить попытку",
-  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
-    "Когда Gente работает для вас в интернете (поиск, сайты, приложения), наружу уходит только то, что нужно для задачи.",
+  "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Когда Your AI работает для вас в интернете (поиск, сайты, приложения), наружу уходит только то, что нужно для задачи.",
   Workspace: "Рабочее пространство",
   "Workspace ready.": "Рабочее пространство готово.",
-  "Your AI": "Ваш ИИ",
   "Your AI is ready.": "Ваш ИИ готов.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Ваш ИИ живёт на вашем компьютере. Ваши чаты никогда его не покидают.",
-  "Sign In to Gente…": "Войти в Gente…",
-  "Sign Out of Gente": "Выйти из Gente",
-  "Gente Support…": "Поддержка Gente…",
+  "Sign In to Your AI…": "Войти в Your AI…",
+  "Sign Out of Your AI": "Выйти из Your AI",
+  "Your AI Support…": "Поддержка Your AI…",
   // Computer use pill
-  "Gente is using your computer": "Gente использует ваш компьютер",
+  "Your AI is using your computer": "Your AI использует ваш компьютер",
   "Press {key} to stop": "Нажмите {key}, чтобы остановить",
   Stop: "Остановить",
   Stopped: "Остановлено",

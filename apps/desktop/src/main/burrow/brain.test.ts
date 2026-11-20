@@ -41,7 +41,7 @@ afterEach(async () => {
 const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
-describe("Gente brain (one model: Swift 1.5 27B IQ2_XXS)", () => {
+describe("Your AI brain (one model: Swift 1.5 27B IQ2_XXS)", () => {
   const MODEL = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
 
   it("downloads and loads the one model, named swift-1.5-27b with a 32K context", async () => {
@@ -122,7 +122,7 @@ describe("Burrow brain, network trouble", () => {
   });
 });
 
-describe("Gente memory check", () => {
+describe("Your AI memory check", () => {
   it("tells an 8 GB computer, in one friendly sentence, before downloading anything", async () => {
     const os = await import("node:os");
     const spy = vi.spyOn(os.default, "totalmem").mockReturnValue(8 * 1024 ** 3);

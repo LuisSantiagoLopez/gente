@@ -65,7 +65,7 @@ export function createComputerUseControl(platform: NodeJS.Platform) {
       loadedHint = hint;
       void win.loadFile(path.join(import.meta.dirname, "computer-pill.html"), {
         query: {
-          title: t("Gente is using your computer"),
+          title: t("Your AI is using your computer"),
           hint,
           stop: t("Stop"),
           stopped: t("Stopped"),

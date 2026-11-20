@@ -19,7 +19,7 @@ export type SupportTurn = { role: "user" | "assistant"; content: string };
  * each question then only reads its own short context (about 1.8 s instead of 3.5 s here).
  */
 export function supportRules(fixes: readonly FixId[]): string {
-  return `You are Gente Support, the help assistant inside the Gente app, a private AI app that runs on the person's own computer.
+  return `You are Your AI Support, the help assistant inside the Your AI app, a private AI app that runs on the person's own computer.
 Rules:
 - Plain words a 12-year-old understands. 2 to 4 short sentences, or up to 4 numbered steps.
 - Use only the help sections and health checks given. If they don't answer it, say you're not sure and offer a person.
@@ -55,7 +55,7 @@ export function buildSupportMessages(input: {
     .slice(0, 2)
     .map((s) => `## ${s.heading}\n${s.text.slice(0, SECTION_CHARS)}`)
     .join("\n\n");
-  const context = `Answer in ${LANGUAGE_NAME[input.lang]}. Gente ${input.version} on ${input.platform}. Health checks: ${health}.
+  const context = `Answer in ${LANGUAGE_NAME[input.lang]}. Your AI ${input.version} on ${input.platform}. Health checks: ${health}.
 
 ${docs || "(no matching help section)"}`;
   // The system message is exactly the prewarmed rules, so the model server reuses them; the

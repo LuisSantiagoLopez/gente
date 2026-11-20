@@ -118,7 +118,7 @@ export function proactiveRoutes(ctx: RouterContext) {
           note:
             reverted > 0
               ? "Put back the way it was."
-              : "Nothing here could be put back: it only wrote a reply or a draft. Gente will do less of this.",
+              : "Nothing here could be put back: it only wrote a reply or a draft. Your AI will do less of this.",
         };
       }),
     },

@@ -26,7 +26,7 @@ function browser(code = "code-1") {
   return { open, authorize: () => authorize! };
 }
 
-describe("Gente sign-in with Clerk (PKCE, loopback)", () => {
+describe("Your AI sign-in with Clerk (PKCE, loopback)", () => {
   it("sends a S256 challenge, returns to 127.0.0.1, and proves the verifier when trading the code", async () => {
     const b = browser();
     const tokenFetch = vi.fn(async (_url: string, init: RequestInit) => {

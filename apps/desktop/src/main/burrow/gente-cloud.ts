@@ -77,7 +77,7 @@ export function createGenteCloud(options: GenteCloudOptions) {
     headers: Record<string, string> = {},
   ): Promise<{ status: number; data: T | undefined; response: Response }> {
     const token = await options.token();
-    if (!token) throw new CloudError("missing_token", 401, "Sign in to use Gente online.");
+    if (!token) throw new CloudError("missing_token", 401, "Sign in to use Your AI online.");
     let response: Response;
     try {
       response = await doFetch(`${base}${path}`, {
@@ -91,7 +91,7 @@ export function createGenteCloud(options: GenteCloudOptions) {
         signal: AbortSignal.timeout(timeoutMs),
       });
     } catch {
-      throw new CloudError("offline", 0, "Gente can't reach the internet right now.");
+      throw new CloudError("offline", 0, "Your AI can't reach the internet right now.");
     }
     if (response.status === 304) return { status: 304, data: undefined, response };
     const text = await response.text();
@@ -111,7 +111,7 @@ export function createGenteCloud(options: GenteCloudOptions) {
       const code = known.includes(error.error as CloudErrorCode)
         ? (error.error as CloudErrorCode)
         : "unknown";
-      throw new CloudError(code, response.status, error.message ?? "Gente Cloud said no.");
+      throw new CloudError(code, response.status, error.message ?? "Your AI Cloud said no.");
     }
     return { status: response.status, data, response };
   }

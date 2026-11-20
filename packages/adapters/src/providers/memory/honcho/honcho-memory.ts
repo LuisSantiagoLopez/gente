@@ -60,14 +60,14 @@ export const honchoMemory: MemoryProviderDefinition = {
         label: "User peer",
         kind: "text",
         required: false,
-        description: "Recall from this peer; save to Gente’s own peers.",
+        description: "Recall from this peer; save to Your AI’s own peers.",
         maxLength: 512,
         checks: [
           RESOURCE_ID,
           {
             // Rakazo writes to these peers, so they cannot be read as the user's own peer.
             pattern: UNRESERVED_HONCHO_PEER_PATTERN,
-            message: "rakazo-shared and IDs starting with bot- are reserved for Gente.",
+            message: "rakazo-shared and IDs starting with bot- are reserved for Your AI.",
           },
         ],
         advanced: true,

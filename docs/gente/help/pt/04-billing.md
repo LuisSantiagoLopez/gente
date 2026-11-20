@@ -1,6 +1,6 @@
 # Planos e pagamento
 
-O Gente roda a IA no seu computador, então você não paga por pergunta. Você paga pelo plano que escolher.
+O Your AI roda a IA no seu computador, então você não paga por pergunta. Você paga pelo plano que escolher.
 
 ## Planos
 
@@ -8,7 +8,7 @@ O Gente roda a IA no seu computador, então você não paga por pergunta. Você 
 
 ## Horas de trabalho online
 
-Quase tudo que o Gente faz roda no seu computador. O **trabalho online** é a parte que roda em um computador na nuvem, como um navegador completo que pede uma corrida para você.
+Quase tudo que o Your AI faz roda no seu computador. O **trabalho online** é a parte que roda em um computador na nuvem, como um navegador completo que pede uma corrida para você.
 
 - Seu plano inclui um número de horas por mês. O tempo só conta enquanto um computador na nuvem trabalha na sua tarefa.
 - **As horas incluídas que você não usar expiram no fim de cada mês.** Elas não passam para o mês seguinte.
@@ -20,7 +20,7 @@ Suas conversas continuam no seu computador de qualquer jeito.
 
 - Você pode **cancelar quando quiser**.
 - Quando você cancela, seu plano **continua ativo até o fim do período que você já pagou**. Depois ele não renova.
-- Para mudar ou cancelar, abra **Ajuda → Suporte do Gente** e pergunte.
+- Para mudar ou cancelar, abra **Ajuda → Suporte do Your AI** e pergunte.
 
 Suas conversas e bots continuam no seu computador, seja qual for o plano.
 
@@ -32,4 +32,4 @@ Suas conversas e bots continuam no seu computador, seja qual for o plano.
 
 ## Compras feitas por um bot
 
-O que um bot compra para você não faz parte do seu plano. Você aprova cada compra no Link, e o Link cobra no cartão que você escolheu lá. O Gente nunca guarda seu cartão.
+O que um bot compra para você não faz parte do seu plano. Você aprova cada compra no Link, e o Link cobra no cartão que você escolheu lá. O Your AI nunca guarda seu cartão.

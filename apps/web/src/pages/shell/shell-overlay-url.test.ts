@@ -88,7 +88,7 @@ describe("shellOverlaySearch", () => {
   });
 });
 
-describe("Gente learning overlays", () => {
+describe("Your AI learning overlays", () => {
   it("round-trips projects, brains and learned through the URL", () => {
     for (const overlay of [
       { kind: "projects" },

@@ -252,8 +252,8 @@ export function startSupport(options: SupportOptions) {
     ) {
       notified = true;
       const note = new Notification({
-        title: "Gente",
-        body: "Gente hit a problem it couldn't fix by itself. Open Support to see what happened.",
+        title: "Your AI",
+        body: "Your AI hit a problem it couldn't fix by itself. Open Support to see what happened.",
       });
       note.on("click", () => openSupportWindow());
       note.show();
@@ -408,7 +408,7 @@ export function startSupport(options: SupportOptions) {
     return sendTicket({
       email,
       name: typeof ticket.name === "string" ? ticket.name.slice(0, 120) : "",
-      message: `${message}\n\n-- Gente ${app.getVersion()} on ${process.platform} ${os.release()}. Checks failing: ${codes.join(", ") || "none"}.${reportLine}`,
+      message: `${message}\n\n-- Your AI ${app.getVersion()} on ${process.platform} ${os.release()}. Checks failing: ${codes.join(", ") || "none"}.${reportLine}`,
     });
   });
   handleIpc("gente.support.answerReport", async (_event, answer) => {
@@ -470,7 +470,7 @@ export function openSupportWindow() {
     height: 680,
     minWidth: 380,
     minHeight: 480,
-    title: "Gente Support",
+    title: "Your AI Support",
     show: false,
     webPreferences: {
       preload: path.join(import.meta.dirname, "support-preload.cjs"),

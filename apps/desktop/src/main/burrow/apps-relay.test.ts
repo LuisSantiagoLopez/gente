@@ -9,7 +9,7 @@ afterEach(async () => {
   while (closers.length) await closers.pop()!();
 });
 
-describe("Composio through Gente Cloud", () => {
+describe("Composio through Your AI Cloud", () => {
   it("forwards MCP calls with the sign-in and passes the session id both ways", async () => {
     const seen: Record<string, string | undefined>[] = [];
     const cloud = createServer((req, res) => {

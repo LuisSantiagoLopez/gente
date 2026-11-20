@@ -11,7 +11,7 @@ import {
 } from "./mcp-app.js";
 
 describe("MCP app domains", () => {
-  it("keeps public https origins and drops what could reach the person's network or Gente", () => {
+  it("keeps public https origins and drops what could reach the person's network or Your AI", () => {
     expect(
       mcpAppDomains(
         [

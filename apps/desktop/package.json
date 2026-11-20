@@ -1,7 +1,7 @@
 {
   "name": "@rakazo/desktop",
-  "productName": "Gente",
-  "version": "0.2.0",
+  "productName": "Your AI",
+  "version": "1.0.0",
   "author": {
     "name": "DeskHead Inc."
   },
@@ -103,7 +103,8 @@
         "dmg",
         "zip"
       ],
-      "notarize": false
+      "notarize": false,
+      "artifactName": "Your-AI-${version}-${arch}.${ext}"
     },
     "dmg": {
       "title": "${productName}",
@@ -127,7 +128,7 @@
       ]
     },
     "nsis": {
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "artifactName": "Your-AI-Setup-${version}.${ext}"
     },
     "win": {
       "icon": "assets/icon.ico",

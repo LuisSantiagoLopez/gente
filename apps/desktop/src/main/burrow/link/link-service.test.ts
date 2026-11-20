@@ -91,7 +91,7 @@ function phone(qr: string) {
   };
 }
 
-describe("pairing a phone (Gente Link v1)", () => {
+describe("pairing a phone (Your AI Link v1)", () => {
   it("pairs, shows the same safety code, answers Private mode from this computer, and unpairs", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "gente-link-"));
     const relay = fakeRelay();
@@ -163,7 +163,7 @@ describe("pairing a phone (Gente Link v1)", () => {
 // Live check against the real Gente Cloud relay. Runs only with GENTE_TOKEN_CMD (a command that
 // prints a fresh Clerk token for a test account).
 describe.skipIf(!process.env.GENTE_TOKEN_CMD)("pairing through the real relay", () => {
-  it("pairs and answers Private mode through Gente Cloud", async () => {
+  it("pairs and answers Private mode through Your AI Cloud", async () => {
     const { execSync } = await import("node:child_process");
     const token = async () => execSync(process.env.GENTE_TOKEN_CMD!, { encoding: "utf8" }).trim();
     const cloud = process.env.GENTE_CLOUD ?? "https://gente-cloud.vercel.app";
@@ -173,7 +173,7 @@ describe.skipIf(!process.env.GENTE_TOKEN_CMD)("pairing through the real relay", 
       token,
       sealer,
       userDataDir: dir,
-      deviceName: "Gente live test",
+      deviceName: "Your AI live test",
       async *localAnswer() {
         yield "From your computer.";
       },

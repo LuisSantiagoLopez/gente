@@ -8,9 +8,9 @@ import { describe, expect, it } from "vitest";
 import { CALM_FAILURE, StackSelfHeal } from "./self-heal.js";
 
 const failed = (output: string[]): DesktopLocalStackState =>
-  ({ phase: "failed", message: "Gente services did not start.", output, layerBytes: {}, imageTag: "v1" }) as DesktopLocalStackState;
+  ({ phase: "failed", message: "Your AI services did not start.", output, layerBytes: {}, imageTag: "v1" }) as DesktopLocalStackState;
 
-describe("Gente self-heal", () => {
+describe("Your AI self-heal", () => {
   it("retries three times quietly, then shows one calm sentence with no technical output", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "gente-heal-"));
     const scheduled: Array<() => void> = [];

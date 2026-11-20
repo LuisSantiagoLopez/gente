@@ -1750,10 +1750,6 @@ msgstr "לאפשר את {name} בנייד"
 msgid "Allow cross-space bot communication"
 msgstr "לאפשר תקשורת בין בוטים ממרחבים שונים"
 
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Gente to use Speech Recognition and the microphone in System Settings."
-msgstr "יש לאפשר ל-Gente להשתמש בזיהוי דיבור ובמיקרופון בהגדרות המערכת."
-
 #: apps/mobile/lib/cards/ask-action-label.ts
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Allow in this space"
@@ -1781,6 +1777,10 @@ msgstr "יש לאפשר זיהוי דיבור בהגדרות, או לחבר ספ
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Allow writing"
 msgstr "לאפשר כתיבה"
+
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Your AI to use Speech Recognition and the microphone in System Settings."
+msgstr "יש לאפשר ל-Gente להשתמש בזיהוי דיבור ובמיקרופון בהגדרות המערכת."
 
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2950,7 +2950,7 @@ msgstr "בחירת תיקייה"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Gente"
+msgid "Choose how to use Your AI"
 msgstr "בחירת אופן השימוש ב-Gente"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
@@ -3443,8 +3443,8 @@ msgstr "חברו את ה-AI שלכם"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Gente credits in Billing."
-msgstr "חבר מפתח API משלך במודלים או בחר בקרדיטים של Gente בחיוב."
+msgid "Connect your own API key in Models or choose Your AI credits in Billing."
+msgstr "חבר מפתח API משלך במודלים או בחר בקרדיטים של Your AI בחיוב."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5838,7 +5838,7 @@ msgid "Ends {day}"
 msgstr "מסתיים ב-{day}"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Gente?"
+msgid "Enjoying Your AI?"
 msgstr "נהנים מ-Gente?"
 
 #: apps/mobile/lib/api/user-error.ts
@@ -6381,32 +6381,6 @@ msgstr "Gateway URL"
 msgid "General"
 msgstr "כללי"
 
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Gente"
-msgstr "Gente"
-
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Gente credits"
-msgstr "קרדיטים של Gente"
-
-#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "Gente is easing off this one for now."
-msgstr "Gente מאט את הקצב עם היעד הזה בינתיים."
-
-#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Gente keeps each project's tasks up to date as it works."
-msgstr "Gente מעדכן את המשימות של כל פרויקט תוך כדי עבודה."
-
-#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "Gente works toward these on its own and tells you what it did."
-msgstr "Gente פועל לקראתם בעצמו ומספר לך מה עשה."
-
-#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Gente:"
-msgstr "Gente:"
-
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "קבלו חודש חינם על כל חבר שמתחיל תקופת ניסיון."
@@ -6726,13 +6700,13 @@ msgstr "כמה יוזמה עבור {0}"
 msgid "How to check"
 msgstr "איך לבדוק"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Gente?"
-msgstr "איך Gente ישמש אותך?"
-
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
-msgstr "איך Gente ישמש אותך?"
+msgstr "איך Your AI ישמש אותך?"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "How will you use Your AI?"
+msgstr "איך Your AI ישמש אותך?"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -8310,7 +8284,7 @@ msgid "No computer hours used yet"
 msgstr "עדיין לא נוצלו שעות מחשב"
 
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "No goals yet. Tell Gente what you want, or add one here."
+msgid "No goals yet. Tell Your AI what you want, or add one here."
 msgstr "אין עדיין יעדים. אפשר לספר ל-Gente מה אתה רוצה, או להוסיף יעד כאן."
 
 #: apps/mobile/components/cards/OutgoingDraftCard.tsx
@@ -8400,7 +8374,7 @@ msgid "No preview for this file type."
 msgstr "אין תצוגה מקדימה לסוג הקובץ הזה."
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "No projects yet. Start one, or ask Gente to start one in a chat."
+msgid "No projects yet. Start one, or ask Your AI to start one in a chat."
 msgstr "אין עדיין פרויקטים. אפשר להתחיל אחד, או לבקש מ-Gente להתחיל אחד בצ'אט."
 
 #: apps/web/src/components/integrations/IntegrationSetup.tsx
@@ -8535,10 +8509,6 @@ msgstr "לא חלק מ-{organization}. יוכלו לראות רק את המרח�
 msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "לא חלק מ-{organizationName}. יוכלו לראות רק את המרחב הזה."
 
-#: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Gente's catalog"
-msgstr "לא בקטלוג של Gente"
-
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
 msgid "Not in the plugin catalog"
@@ -8548,6 +8518,10 @@ msgstr "לא נמצא בקטלוג התוספים"
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Not in use ({0})"
 msgstr "לא בשימוש ({0})"
+
+#: apps/web/src/pages/shell/bots/import-status.ts
+msgid "Not in Your AI's catalog"
+msgstr "לא בקטלוג של Your AI"
 
 #: apps/mobile/components/cards/McpApprovalCard.tsx
 #: apps/mobile/lib/auth/passkey.ts
@@ -8591,7 +8565,7 @@ msgstr "לא נשלחה. הקשה לניסיון חוזר"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Gente"
+msgid "Not supported in Your AI"
 msgstr "לא נתמך ב-Gente"
 
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
@@ -8599,7 +8573,7 @@ msgid "Not this"
 msgstr "לא את זה"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Gente"
+msgid "Not used by Your AI"
 msgstr "לא בשימוש ב-Gente"
 
 #: apps/mobile/app/(settings)/integrations.tsx
@@ -8614,7 +8588,7 @@ msgid "Notes, decisions and follow-ups from every call, kept on your computer"
 msgstr "הערות, החלטות והודעות מעקב מכל שיחה, נשמרים במחשב שלך"
 
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
-msgid "Nothing here yet. When Gente researches something or hears your feedback, it keeps notes here."
+msgid "Nothing here yet. When Your AI researches something or hears your feedback, it keeps notes here."
 msgstr "אין כאן עדיין כלום. כש-Gente חוקר משהו או שומע את המשוב שלך, הוא שומר כאן הערות."
 
 #: apps/mobile/app/(settings)/memory.tsx
@@ -8631,8 +8605,8 @@ msgid "Nothing yet. Check that you sent the code to the right chat, exactly as s
 msgstr "עדיין כלום. כדאי לבדוק שהקוד נשלח לצ'אט הנכון, בדיוק כפי שהוא מוצג. הקוד תקף ל-10 דקות."
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
-msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
-msgstr "עדיין כלום. WhatsApp צריך אפליקציה עסקית של Meta וכתובת ש-Meta יכולה להגיע אליה, ו-Meta עדיין לא מאפשרת עוזרי AI כלליים בכל המדינות. Telegram עובד מיד: בתפריט של Gente, בוחרים חיבור Telegram."
+msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Your AI menu, choose Connect Telegram."
+msgstr "עדיין כלום. WhatsApp צריך אפליקציה עסקית של Meta וכתובת ש-Meta יכולה להגיע אליה, ו-Meta עדיין לא מאפשרת עוזרי AI כלליים בכל המדינות. Telegram עובד מיד: בתפריט של Your AI, בוחרים חיבור Telegram."
 
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Nothing yet. When you tell me how you like things done, it shows up here."
@@ -8830,13 +8804,6 @@ msgstr "פתיחת השיחה"
 msgid "Open external link?"
 msgstr "לפתוח קישור חיצוני?"
 
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Gente"
-msgstr "פתיחת Gente"
-
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "פתיחת התמונה {name}"
@@ -8867,6 +8834,13 @@ msgstr "פתיחת הגדרות קול"
 #: apps/web/src/pages/space/ScratchpadSection.tsx
 msgid "Open work"
 msgstr "עבודה פתוחה"
+
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Your AI"
+msgstr "פתיחת Your AI"
 
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
 msgid "OpenAI API"
@@ -9113,13 +9087,13 @@ msgstr "באיחור תשלום"
 msgid "Paste a replacement key"
 msgstr "יש להדביק מפתח חלופי"
 
-#: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Gente adds /v1 if needed."
-msgstr "יש להדביק את הכתובת התואמת ל-OpenAI מהשרת. Gente מוסיף /v1 במידת הצורך."
-
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
-msgstr "יש להדביק את הכתובת התואמת ל-OpenAI מהשרת. Gente מוסיף /v1 במידת הצורך."
+msgstr "יש להדביק את הכתובת התואמת ל-OpenAI מהשרת. Your AI מוסיף /v1 במידת הצורך."
+
+#: apps/web/src/pages/model-settings/compatible-model-fields.tsx
+msgid "Paste the OpenAI-compatible address from your server. Your AI adds /v1 if needed."
+msgstr "יש להדביק את הכתובת התואמת ל-OpenAI מהשרת. Your AI מוסיף /v1 במידת הצורך."
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -9485,15 +9459,15 @@ msgstr "ציטוט הבחירה"
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
 msgid "Rakazo"
-msgstr "Gente"
+msgstr "Your AI"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 msgid "Rakazo credits"
-msgstr "קרדיטים של Gente"
+msgstr "קרדיטים של Your AI"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
+msgid "rakazo-shared and IDs starting with bot- are reserved for Your AI."
 msgstr "rakazo-shared ומזהים שמתחילים ב-bot- שמורים ל-Gente."
 
 #: apps/mobile/components/thread/message-row.tsx
@@ -9548,8 +9522,8 @@ msgid "Recall from banks"
 msgstr "שליפה ממאגרים"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Gente’s own peers."
-msgstr "שליפה מהעמית הזה; שמירה בעמיתים של Gente."
+msgid "Recall from this peer; save to Your AI’s own peers."
+msgstr "שליפה מהעמית הזה; שמירה בעמיתים של Your AI."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10171,14 +10145,14 @@ msgstr "טעינת המסך מחדש"
 msgid "Return to call with {0}"
 msgstr "חזרה לשיחה עם {0}"
 
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Gente"
-msgstr "חזרה ל-Gente"
-
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
 msgstr "חזרה לתיבת הדואר הנכנס"
+
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Your AI"
+msgstr "חזרה ל-Gente"
 
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
@@ -11011,10 +10985,6 @@ msgstr "להתחבר בכל זאת"
 msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "התחברו ב-<0>{0}</0> והדביקו כאן את הקוד."
 
-#: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Gente"
-msgstr "התחברות ל-Gente"
-
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
 msgstr "התחברות ל-Gente"
@@ -11023,6 +10993,10 @@ msgstr "התחברות ל-Gente"
 #: apps/web/src/lib/query/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
 msgstr "יש להתחבר לחשבון שלך ואז לקשר את הספק הזה בהגדרות"
+
+#: apps/web/src/pages/auth/Auth.tsx
+msgid "Sign in to Your AI"
+msgstr "התחברות ל-Gente"
 
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in with demo account"
@@ -11693,7 +11667,7 @@ msgid "Technical details"
 msgstr "פרטים טכניים"
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Tell Gente what to keep or change"
+msgid "Tell Your AI what to keep or change"
 msgstr "אפשר לספר ל-Gente מה לשמור או לשנות"
 
 #: apps/web/src/components/computers/ComputerProviderSettings.tsx
@@ -11751,7 +11725,7 @@ msgstr "זה לא ייצוא של בוט Grok. יש להדביק את כל הת�
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL did not look like a Rakazo server"
-msgstr "הכתובת הזו לא נראית כמו שרת של Gente"
+msgstr "הכתובת הזו לא נראית כמו שרת של Your AI"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11883,12 +11857,12 @@ msgstr "אירעה בעיה בשרת. כדאי לנסות שוב בעוד רגע
 msgid "The shared link stops working"
 msgstr "הקישור המשותף יפסיק לעבוד"
 
-#: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Gente."
-msgstr "התמליל יוסר מ-Gente."
-
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
+msgstr "התמליל יוסר מ-Gente."
+
+#: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
+msgid "The transcript will be removed from Your AI."
 msgstr "התמליל יוסר מ-Gente."
 
 #: apps/mobile/app/(settings)/billing.tsx
@@ -12052,8 +12026,8 @@ msgid "This device"
 msgstr "המכשיר הזה"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Gente can read. Update Gente and try again."
-msgstr "הייצוא הזה חדש מדי בשביל Gente. יש לעדכן את Gente ולנסות שוב."
+msgid "This export is newer than Your AI can read. Update Your AI and try again."
+msgstr "הייצוא הזה חדש מדי בשביל Your AI. יש לעדכן את Your AI ולנסות שוב."
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12226,12 +12200,12 @@ msgstr "למרחב הזה יש כספת משלו, ולכן הבוטים שלו �
 msgid "This Space keeps its own vault. Its bots save and use items there, not here: open the Space's settings, then Vault."
 msgstr "למרחב הזה יש כספת משלו. הבוטים שלו שומרים ומשתמשים בפריטים שם, לא כאן: יש לפתוח את הגדרות המרחב ואז את כספת."
 
-#: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Gente yet. Use a deployment credential or choose another provider."
-msgstr "התחברות עם המנוי הזה עדיין לא זמינה ב-Gente. אפשר להשתמש בפרטי גישה של ההתקנה או לבחור ספק אחר."
-
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
+msgstr "התחברות עם המנוי הזה עדיין לא זמינה ב-Gente. אפשר להשתמש בפרטי גישה של ההתקנה או לבחור ספק אחר."
+
+#: apps/web/src/pages/model-settings/connection-controls.tsx
+msgid "This subscription sign-in is not available in Your AI yet. Use a deployment credential or choose another provider."
 msgstr "התחברות עם המנוי הזה עדיין לא זמינה ב-Gente. אפשר להשתמש בפרטי גישה של ההתקנה או לבחור ספק אחר."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
@@ -12682,10 +12656,6 @@ msgstr "עדכון מאת {name}"
 msgid "Update from {name}: {text}"
 msgstr "עדכון מאת {name}: {text}"
 
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Gente to connect your calendar from the desktop app."
-msgstr "יש לעדכן את Gente כדי לחבר את היומן מאפליקציית שולחן העבודה."
-
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Update instructions?"
@@ -12699,6 +12669,10 @@ msgstr "התקדמות העדכון"
 #: apps/web/src/lib/platform/client-update.ts
 msgid "Update required"
 msgstr "נדרש עדכון"
+
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Your AI to connect your calendar from the desktop app."
+msgstr "יש לעדכן את Your AI כדי לחבר את היומן מאפליקציית שולחן העבודה."
 
 #: apps/mobile/app/(settings)/vault.tsx
 #: apps/mobile/lib/api/api.ts
@@ -12830,10 +12804,6 @@ msgstr "שימוש בברירות המחדל"
 msgid "Use defaults for {label}"
 msgstr "שימוש בברירות המחדל עבור {label}"
 
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Gente credits"
-msgstr "שימוש בקרדיטים של Gente"
-
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Use in this bot"
@@ -12870,7 +12840,7 @@ msgstr "לסיסמאות יש להשתמש בקלט מוגן."
 
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Use Rakazo credits"
-msgstr "שימוש בקרדיטים של Gente"
+msgstr "שימוש בקרדיטים של Your AI"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12879,6 +12849,10 @@ msgstr "שימוש בברירת המחדל של המרחב"
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Use up to 512 letters, digits, _ or -."
 msgstr "עד 512 אותיות, ספרות, _ או -."
+
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Your AI credits"
+msgstr "שימוש בקרדיטים של Your AI"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "Use your own key"
@@ -13122,13 +13096,13 @@ msgstr "שבועי"
 msgid "Welcome back"
 msgstr "ברוכים השבים"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Gente"
-msgstr "ברוכים הבאים ל-Gente"
-
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 msgid "Welcome to Rakazo"
+msgstr "ברוכים הבאים ל-Gente"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "Welcome to Your AI"
 msgstr "ברוכים הבאים ל-Gente"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
@@ -13147,12 +13121,12 @@ msgstr "במה המרחב הזה יכול להשתמש?"
 msgid "What do you do?"
 msgstr "במה אתה עוסק?"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Gente to help with?"
-msgstr "במה הכי חשוב לך ש-Gente יעזור?"
-
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
+msgstr "במה הכי חשוב לך ש-Gente יעזור?"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "What do you most want Your AI to help with?"
 msgstr "במה הכי חשוב לך ש-Gente יעזור?"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
@@ -13162,10 +13136,6 @@ msgstr "במה להתחיל קודם?"
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "What do you want? For example, land a job"
 msgstr "מה אתה רוצה? למשל, למצוא עבודה"
-
-#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
-msgid "What Gente learned on each topic, with where it learned it. Stays on this computer."
-msgstr "מה Gente למד על כל נושא, ומאיפה למד את זה. נשאר במחשב הזה."
 
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "What I learned about you"
@@ -13200,6 +13170,10 @@ msgstr "מה להחזיר"
 msgid "What to watch"
 msgstr "על מה לעקוב"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "What Your AI learned on each topic, with where it learned it. Stays on this computer."
+msgstr "מה Your AI למד על כל נושא, ומאיפה למד את זה. נשאר במחשב הזה."
+
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "What your bots remember between chats."
 msgstr "מה שהבוטים שלך זוכרים בין צ׳אטים."
@@ -13218,10 +13192,6 @@ msgstr "כשמגיע אימייל"
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "When bots check with you before acting."
 msgstr "מתי בוטים מתייעצים איתך לפני פעולה."
-
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
-msgstr "כש-Gente עובד בשבילך ברשת (חיפוש, גלישה, אפליקציות), יוצא רק מה שהמשימה צריכה. הנתונים של אפליקציה מחוברת עוברים דרך הענן של ספק האפליקציות המחוברות שלנו, רק עבור האפליקציות שבחרת."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"
@@ -13246,6 +13216,10 @@ msgstr "מתי להריץ"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "When to use"
 msgstr "מתי להשתמש"
+
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "כש-Gente עובד בשבילך ברשת (חיפוש, גלישה, אפליקציות), יוצא רק מה שהמשימה צריכה. הנתונים של אפליקציה מחוברת עוברים דרך הענן של ספק האפליקציות המחוברות שלנו, רק עבור האפליקציות שבחרת."
 
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
@@ -13420,6 +13394,32 @@ msgstr "השתמשת ב־10 הודעות החינם שלך. בחר תוכנית 
 #: apps/mobile/app/(settings)/profile.tsx
 msgid "Your account"
 msgstr "החשבון שלך"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Your AI"
+msgstr "Your AI"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Your AI credits"
+msgstr "קרדיטים של Your AI"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your AI is easing off this one for now."
+msgstr "Your AI מאט את הקצב עם היעד הזה בינתיים."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Your AI keeps each project's tasks up to date as it works."
+msgstr "Your AI מעדכן את המשימות של כל פרויקט תוך כדי עבודה."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your AI works toward these on its own and tells you what it did."
+msgstr "Your AI פועל לקראתם בעצמו ומספר לך מה עשה."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Your AI:"
+msgstr "Your AI:"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts

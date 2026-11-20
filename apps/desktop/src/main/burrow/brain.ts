@@ -32,7 +32,7 @@ const SWIFT_LADDER = [
     alias: "swift-1.5-27b",
     name: "Swift 1.5 27B",
     sizeGB: 8.9,
-    note: "Gente's model. About 11 GB in memory.",
+    note: "Your AI's model. About 11 GB in memory.",
   },
 ] as const satisfies readonly SwiftModel[];
 export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
@@ -691,15 +691,15 @@ async function downloadTo(url: string, file: string, onBytes: (done: number, tot
 /** Calm words for the few things a person may need to do; details go to logs/setup.log. */
 export const CALM = {
   offline:
-    "Gente needs the internet to finish getting ready. It will pick up where it left off. Press Try again when you're back online.",
-  install: "Gente couldn't finish getting ready just now. Press Try again in a moment.",
-  ollama: "Gente is taking a moment to start. Press Try again.",
+    "Your AI needs the internet to finish getting ready. It will pick up where it left off. Press Try again when you're back online.",
+  install: "Your AI couldn't finish getting ready just now. Press Try again in a moment.",
+  ollama: "Your AI is taking a moment to start. Press Try again.",
   memory:
     "This computer is short on free memory right now. Close a few apps, then press Try again.",
   smallComputer:
-    "Gente needs a computer with at least 16 GB of memory. This one has less, so Gente can't run its model here.",
+    "Your AI needs a computer with at least 16 GB of memory. This one has less, so Your AI can't run its model here.",
   space: (gb: number) =>
-    `Gente needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
+    `Your AI needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
 } as const;
 /**
  * The computer's memory. CI runners with less than 16 GB (the 7 GB macOS arm64 runner) set

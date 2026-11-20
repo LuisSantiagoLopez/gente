@@ -5,7 +5,7 @@ import { GenteCloudMediaProvider } from "./gente-cloud-media.js";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
-describe("images and video through Gente Cloud", () => {
+describe("images and video through Your AI Cloud", () => {
   it("starts a job, waits for it, and downloads the file right away", async () => {
     const fetch = vi
       .fn()

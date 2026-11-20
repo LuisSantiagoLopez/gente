@@ -400,7 +400,7 @@ export function BotShapePreview({
 export function Wordmark({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      {/* Gente mark: people gathered in a circle; the marigold dot is you. */}
+      {/* Your AI mark: people gathered in a circle; the marigold dot is you. */}
       <svg data-gente-mark="" width={44} height={44} viewBox="0 0 24 24" aria-hidden="true" className="text-foreground">
           <circle cx="12.00" cy="4.00" r="2.6" fill={"var(--primary)"} />
           <circle cx="17.66" cy="6.34" r="2.1" fill={"currentColor"} />
@@ -413,7 +413,7 @@ export function Wordmark({ className }: { className?: string }) {
       </svg>
       {/* off-scale: wordmark sized to the 44px logo mark */}
       <span className="font-[Aeonik,ui-sans-serif] text-[28px] tracking-tight text-foreground">
-        Gente
+        Your AI
       </span>
     </div>
   );

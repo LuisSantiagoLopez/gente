@@ -68,8 +68,8 @@ describe("Cua host screen", () => {
 
   it("refuses a permission the OS has not granted without starting the driver", async () => {
     const { screen, connect, permissions } = driver(runningTextEdit);
-    permissions.mockRejectedValueOnce(new HostScreenError("allow Gente"));
-    await expect(screen.observe(scope, "TextEdit")).rejects.toThrow("allow Gente");
+    permissions.mockRejectedValueOnce(new HostScreenError("allow Your AI"));
+    await expect(screen.observe(scope, "TextEdit")).rejects.toThrow("allow Your AI");
     expect(connect).not.toHaveBeenCalled();
   });
 
@@ -81,7 +81,7 @@ describe("Cua host screen", () => {
           apps: [
             textEdit,
             { name: "Terminal", pid: 50, running: true },
-            { name: "Gente", pid: 99, running: true },
+            { name: "Your AI", pid: 99, running: true },
           ],
         },
       }),
@@ -93,8 +93,8 @@ describe("Cua host screen", () => {
       'No app is named exactly "Text". Installed apps with similar names: TextEdit.',
     );
     await expect(screen.observe(scope, "T")).rejects.toThrow("TextEdit, Terminal");
-    await expect(screen.observe(scope, "Gente")).rejects.toThrow(
-      "Gente can't use its own window.",
+    await expect(screen.observe(scope, "Your AI")).rejects.toThrow(
+      "Your AI can't use its own window.",
     );
     await expect(screen.observe(scope, "com.apple.textedit")).resolves.toMatchObject({
       app: "TextEdit",

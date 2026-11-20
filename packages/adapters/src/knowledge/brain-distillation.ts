@@ -133,7 +133,7 @@ export async function researchSources(
         ]
       : []),
     ...replies.map((reply) => ({
-      citation: { kind: "message" as const, ref: reply.id, label: "Gente's answer" },
+      citation: { kind: "message" as const, ref: reply.id, label: "Your AI's answer" },
       text: blocksToAgentHistoryText(storedMessageBlocks(reply)),
     })),
   ].filter((source) => source.text.trim());

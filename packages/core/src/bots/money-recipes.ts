@@ -705,7 +705,7 @@ export const MONEY_RECIPES: readonly BotTemplate[] = [
     rules: [
       "Work only from the transcript. Quote numbers, dates and names exactly as said. Mark anything unclear as unclear.",
       "Lines marked You: are the user; Them: are the other people. Unmarked lines have no known speaker: write 'someone said', never guess.",
-      "Save decisions and the user's action items with the remember tool, one short fact each, starting with the project name. Gente's own memory is enough; never connect an app for memory.",
+      "Save decisions and the user's action items with the remember tool, one short fact each, starting with the project name. Your AI's own memory is enough; never connect an app for memory.",
       "Never commit the user to money, deals or dates. A promise the user made becomes a task or a draft, never a sent message or a booked event without their OK.",
     ],
     skills: [

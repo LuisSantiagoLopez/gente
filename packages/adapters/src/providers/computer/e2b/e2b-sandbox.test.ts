@@ -296,7 +296,7 @@ describe("E2B computer backend", () => {
     }
   });
 
-  it("creates new computers from the Gente computer template", async () => {
+  it("creates new computers from the Your AI computer template", async () => {
     const sdk: E2BSandboxSdk = {
       create: vi.fn().mockResolvedValue({ sandboxId: "fresh" }),
       connect: vi.fn(),

@@ -4,7 +4,7 @@ export const FR_MESSAGES: Record<string, string> = {
   "Check for Updates…": "Rechercher des mises à jour…",
   "Computer Access…": "Accès à l’ordinateur…",
   "Revoke Local Computer Access": "Révoquer l’accès à l’ordinateur local",
-  "Change Gente Server…": "Changer de serveur Gente…",
+  "Change Your AI Server…": "Changer de serveur Your AI…",
   "Hide {name}": "Masquer {name}",
   "Hide Others": "Masquer les autres",
   "Show All": "Tout afficher",
@@ -39,13 +39,13 @@ export const FR_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Recherche de mises à jour…",
   "Downloading Update…": "Téléchargement de la mise à jour…",
   "Restart to Update…": "Redémarrer pour mettre à jour…",
-  "Downloading Gente {version}…": "Téléchargement de Gente {version}…",
-  "Gente {version} is ready to install.": "Gente {version} est prêt à être installé.",
+  "Downloading Your AI {version}…": "Téléchargement de Your AI {version}…",
+  "Your AI {version} is ready to install.": "Your AI {version} est prêt à être installé.",
   Restart: "Redémarrer",
   Later: "Plus tard",
   "Could not install the update.": "Impossible d’installer la mise à jour.",
   "Could not check for updates.": "Impossible de rechercher des mises à jour.",
-  "Gente is up to date.": "Gente est à jour.",
+  "Your AI is up to date.": "Your AI est à jour.",
   "Version {version}": "Version {version}",
   "Automatic updates are turned off for this install.":
     "Les mises à jour automatiques sont désactivées pour cette installation.",
@@ -53,12 +53,12 @@ export const FR_MESSAGES: Record<string, string> = {
     "Les mises à jour automatiques ne fonctionnent que dans une version installée.",
   "No desktop releases are published for this build yet.":
     "Aucune version de bureau n’est encore publiée pour cette build.",
-  "Move Gente to Applications to install updates.":
-    "Déplacez Gente dans Applications pour installer les mises à jour.",
+  "Move Your AI to Applications to install updates.":
+    "Déplacez Your AI dans Applications pour installer les mises à jour.",
   "Free up disk space to install updates.":
     "Libérez de l’espace disque pour installer les mises à jour.",
-  "This update could not be verified. Reinstall Gente from a trusted download.":
-    "Impossible de vérifier cette mise à jour. Réinstallez Gente depuis un téléchargement fiable.",
+  "This update could not be verified. Reinstall Your AI from a trusted download.":
+    "Impossible de vérifier cette mise à jour. Réinstallez Your AI depuis un téléchargement fiable.",
   "The update could not be completed. Try again later.":
     "Impossible de terminer la mise à jour. Réessayez plus tard.",
   "Could not reach the update server.": "Impossible de joindre le serveur de mises à jour.",
@@ -77,12 +77,12 @@ export const FR_MESSAGES: Record<string, string> = {
     "Une connexion est déjà en cours. Annulez-la et réessayez.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Impossible d’ouvrir la connexion dans le navigateur. Fermez les autres tentatives de connexion et réessayez.",
-  "Sign-in callback rejected. Return to Gente to retry.":
-    "La réponse de connexion a été refusée. Revenez à Gente pour réessayer.",
-  "You can close this tab and return to Gente.":
-    "Vous pouvez fermer cet onglet et revenir à Gente.",
-  "Quit Gente": "Quitter Gente",
-  "Welcome to Gente": "Bienvenue dans Gente",
+  "Sign-in callback rejected. Return to Your AI to retry.":
+    "La réponse de connexion a été refusée. Revenez à Your AI pour réessayer.",
+  "You can close this tab and return to Your AI.":
+    "Vous pouvez fermer cet onglet et revenir à Your AI.",
+  "Quit Your AI": "Quitter Your AI",
+  "Welcome to Your AI": "Bienvenue dans Your AI",
   Instance: "Instance",
   "Technical details": "Détails techniques",
   "Setup progress": "Progression de la configuration",
@@ -96,23 +96,23 @@ export const FR_MESSAGES: Record<string, string> = {
   "{size} downloaded": "{size} téléchargés",
   "Connecting…": "Connexion…",
   "Checking…": "Vérification…",
-  "Gente answered at {url}.": "Gente a répondu à {url}.",
+  "Your AI answered at {url}.": "Your AI a répondu à {url}.",
   "Enter a server address first.": "Saisissez d’abord une adresse de serveur.",
   "Could not save that address.": "Impossible d’enregistrer cette adresse.",
   "Could not save that address. Try again.": "Impossible d’enregistrer cette adresse. Réessayez.",
   "Could not run the connection check. Try again.": "Impossible de tester la connexion. Réessayez.",
   "Setup bridge unavailable.": "Le pont de configuration n’est pas disponible.",
-  "Setup could not start. Quit Gente and try again.":
-    "Impossible de lancer la configuration. Quittez Gente et réessayez.",
+  "Setup could not start. Quit Your AI and try again.":
+    "Impossible de lancer la configuration. Quittez Your AI et réessayez.",
   "Enter a server address.": "Saisissez une adresse de serveur.",
   "Enter a valid http:// or https:// address.": "Saisissez une adresse http:// ou https:// valide.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Saisissez une adresse de serveur valide. Les serveurs publics exigent HTTPS ; une nouvelle instance locale doit utiliser localhost.",
   "Invalid custom headers": "En-têtes personnalisés non valides",
-  "That address redirects elsewhere. Enter the final Gente server address.":
-    "Cette adresse redirige ailleurs. Saisissez l’adresse finale du serveur Gente.",
-  "That address did not respond like a Gente server.":
-    "Cette adresse n’a pas répondu comme un serveur Gente.",
+  "That address redirects elsewhere. Enter the final Your AI server address.":
+    "Cette adresse redirige ailleurs. Saisissez l’adresse finale du serveur Your AI.",
+  "That address did not respond like a Your AI server.":
+    "Cette adresse n’a pas répondu comme un serveur Your AI.",
   "Timed out reaching that address.": "Délai dépassé pour joindre cette adresse.",
   "Nothing is listening at that address yet.": "Rien n’écoute encore à cette adresse.",
   "That host could not be found.": "Cet hôte est introuvable.",
@@ -136,8 +136,8 @@ export const FR_MESSAGES: Record<string, string> = {
     "Impossible d’enregistrer la configuration. L’instance précédente a été restaurée.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Connecté, mais impossible d’enregistrer la configuration pour le prochain lancement. Cliquez à nouveau sur Continuer.",
-  "The app-managed Gente services are not ready. Retry setup.":
-    "Les services Gente gérés par l’app ne sont pas prêts. Relancez la configuration.",
+  "The app-managed Your AI services are not ready. Retry setup.":
+    "Les services Your AI gérés par l’app ne sont pas prêts. Relancez la configuration.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker est installé, mais Docker Compose est absent. Installez Docker Desktop ou le docker-compose-plugin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -158,10 +158,10 @@ export const FR_MESSAGES: Record<string, string> = {
     "Docker ne répond plus. Démarrez Docker, puis réessayez.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose est absent. Installez Docker Desktop ou le docker-compose-plugin, puis réessayez.",
-  "Downloading Gente images failed. Check the output below, then retry.":
-    "Le téléchargement des images Gente a échoué. Consultez la sortie ci-dessous, puis réessayez.",
-  "Gente services did not start. Check the output below, then retry.":
-    "Les services Gente n’ont pas démarré. Consultez la sortie ci-dessous, puis réessayez.",
+  "Downloading Your AI images failed. Check the output below, then retry.":
+    "Le téléchargement des images Your AI a échoué. Consultez la sortie ci-dessous, puis réessayez.",
+  "Your AI services did not start. Check the output below, then retry.":
+    "Les services Your AI n’ont pas démarré. Consultez la sortie ci-dessous, puis réessayez.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "La stack a démarré, mais l’app web n’a pas répondu. Réessayez et consultez la sortie ci-dessous.",
   "Could not prepare the local stack. Retry.": "Impossible de préparer la stack locale. Réessayez.",
@@ -185,23 +185,23 @@ export const FR_MESSAGES: Record<string, string> = {
   "Chat Details": "Détails de la discussion",
   Help: "Aide",
   "Keyboard Shortcuts": "Raccourcis clavier",
-  "Downloading Gente failed. Check the internet connection, then retry.":
-    "Le téléchargement de Gente a échoué. Vérifiez la connexion Internet, puis réessayez.",
+  "Downloading Your AI failed. Check the internet connection, then retry.":
+    "Le téléchargement de Your AI a échoué. Vérifiez la connexion Internet, puis réessayez.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Impossible de transférer vos données depuis Docker. Consultez la sortie ci-dessous, puis réessayez.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "L’environnement d’exécution des ordinateurs déjà lancé est trop ancien. Mettez-le à jour ou quittez-le, puis réessayez.",
-  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
-    "Vos données Gente se trouvent dans un autre environnement d’exécution des ordinateurs. Quittez celui qui est lancé, puis réessayez.",
-  "Run Gente without Docker?": "Utiliser Gente sans Docker ?",
+  "Your Your AI data is in a different computer runtime. Quit the one running, then retry.":
+    "Vos données Your AI se trouvent dans un autre environnement d’exécution des ordinateurs. Quittez celui qui est lancé, puis réessayez.",
+  "Run Your AI without Docker?": "Utiliser Your AI sans Docker ?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Vos bots et vos données sont transférés. Docker est arrêté, pas supprimé.",
   Move: "Transférer",
   "Keep Docker": "Garder Docker",
-  "Gente needs Docker Desktop to run on this computer.":
-    "Gente a besoin de Docker Desktop pour fonctionner sur cet ordinateur.",
-  "Gente needs Docker to run on this computer.":
-    "Gente a besoin de Docker pour fonctionner sur cet ordinateur.",
+  "Your AI needs Docker Desktop to run on this computer.":
+    "Your AI a besoin de Docker Desktop pour fonctionner sur cet ordinateur.",
+  "Your AI needs Docker to run on this computer.":
+    "Your AI a besoin de Docker pour fonctionner sur cet ordinateur.",
   "Install Docker Engine and start it.": "Installez Docker Engine et démarrez-le.",
   "Download Docker Desktop": "Télécharger Docker Desktop",
   "Install Docker": "Installer Docker",
@@ -210,16 +210,16 @@ export const FR_MESSAGES: Record<string, string> = {
   "Starting {app}…": "Démarrage de {app}…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker est installé mais ne fonctionne pas. Démarrez le service Docker pour continuer.",
-  "Gente stopped unexpectedly.": "Gente s’est arrêté de façon inattendue.",
+  "Your AI stopped unexpectedly.": "Your AI s’est arrêté de façon inattendue.",
   Reload: "Recharger",
   "Mac app control": "Contrôle des apps du Mac",
   "Set up Mac app control": "Configurer le contrôle des apps du Mac",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
-    "Les commandes fonctionnent déjà. Pour utiliser les apps, autorisez Accessibilité et Enregistrement de l’écran pour Gente dans Réglages Système, puis redémarrez Gente.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Your AI in System Settings, then restart Your AI.":
+    "Les commandes fonctionnent déjà. Pour utiliser les apps, autorisez Accessibilité et Enregistrement de l’écran pour Your AI dans Réglages Système, puis redémarrez Your AI.",
   "Open System Settings": "Ouvrir Réglages Système",
-  "Restart Gente": "Redémarrer Gente",
+  "Restart Your AI": "Redémarrer Your AI",
   "Not Now": "Pas maintenant",
-  "Restart Gente to finish setup": "Redémarrez Gente pour terminer la configuration",
+  "Restart Your AI to finish setup": "Redémarrez Your AI pour terminer la configuration",
   // Setup
   "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
     "Basé sur Rakazo d’Elie Steinbock (Apache-2.0). Swift par UkisAI.",
@@ -230,21 +230,21 @@ export const FR_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "Se connecter à un serveur à la place",
   "Downloading the workspace…": "Téléchargement de l’espace de travail…",
   "Downloads once, then works offline.": "Se télécharge une fois, puis fonctionne hors ligne.",
-  "Gente couldn't finish getting ready. Press Try again.":
-    "Gente n’a pas pu finir sa préparation. Appuyez sur Réessayer.",
-  "Gente is getting things ready. This takes a moment.":
-    "Gente prépare tout. Cela prend un instant.",
+  "Your AI couldn't finish getting ready. Press Try again.":
+    "Your AI n’a pas pu finir sa préparation. Appuyez sur Réessayer.",
+  "Your AI is getting things ready. This takes a moment.":
+    "Your AI prépare tout. Cela prend un instant.",
   "Get started": "Commencer",
-  "Getting Gente ready, about a minute left": "Préparation de Gente, environ une minute restante",
-  "Getting Gente ready, about {n} min left": "Préparation de Gente, environ {n} min restantes",
-  "Getting Gente ready…": "Préparation de Gente…",
+  "Getting Your AI ready, about a minute left": "Préparation de Your AI, environ une minute restante",
+  "Getting Your AI ready, about {n} min left": "Préparation de Your AI, environ {n} min restantes",
+  "Getting Your AI ready…": "Préparation de Your AI…",
   "Model choices": "Choix du modèle",
   "Model download": "Téléchargement du modèle",
   "No ads. Ever.": "Pas de pub. Jamais.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "Personne ne lit vos données, ne s’en sert pour entraîner une IA ni ne les vend. Ni nous, ni personne.",
-  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
-    "Sur ce Mac, Gente a besoin de Docker Desktop (une app gratuite) pour son espace de travail. Installez-la et ouvrez-la une fois.",
+  "On this Mac, Your AI needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "Sur ce Mac, Your AI a besoin de Docker Desktop (une app gratuite) pour son espace de travail. Installez-la et ouvrez-la une fois.",
   "Run on this Mac instead": "Utiliser plutôt ce Mac",
   "Runs privately in the background on this Mac.":
     "Fonctionne en privé, en arrière-plan, sur ce Mac.",
@@ -252,24 +252,23 @@ export const FR_MESSAGES: Record<string, string> = {
   "Starting the workspace…": "Démarrage de l’espace de travail…",
   "Switched to {name} for your computer ({from} could not run here).":
     "Passage à {name} pour votre ordinateur ({from} ne pouvait pas fonctionner ici).",
-  "That address didn't answer like a Gente server. Check it, then try again.":
-    "Cette adresse n’a pas répondu comme un serveur Gente. Vérifiez-la, puis réessayez.",
+  "That address didn't answer like a Your AI server. Check it, then try again.":
+    "Cette adresse n’a pas répondu comme un serveur Your AI. Vérifiez-la, puis réessayez.",
   "The AI of the people.": "L’IA des gens.",
   "The first start can take a minute.": "Le premier démarrage peut prendre une minute.",
   "Try again": "Réessayer",
-  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
-    "Quand Gente travaille en ligne pour vous (recherche, navigation, apps), seul ce dont la tâche a besoin est envoyé.",
+  "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Quand Your AI travaille en ligne pour vous (recherche, navigation, apps), seul ce dont la tâche a besoin est envoyé.",
   Workspace: "Espace de travail",
   "Workspace ready.": "Espace de travail prêt.",
-  "Your AI": "Votre IA",
   "Your AI is ready.": "Votre IA est prête.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Votre IA vit sur votre ordinateur. Vos discussions ne le quittent jamais.",
-  "Sign In to Gente…": "Se connecter à Gente…",
-  "Sign Out of Gente": "Se déconnecter de Gente",
-  "Gente Support…": "Aide Gente…",
+  "Sign In to Your AI…": "Se connecter à Your AI…",
+  "Sign Out of Your AI": "Se déconnecter de Your AI",
+  "Your AI Support…": "Aide Your AI…",
   // Computer use pill
-  "Gente is using your computer": "Gente utilise ton ordinateur",
+  "Your AI is using your computer": "Your AI utilise ton ordinateur",
   "Press {key} to stop": "Appuie sur {key} pour arrêter",
   Stop: "Arrêter",
   Stopped: "Arrêté",

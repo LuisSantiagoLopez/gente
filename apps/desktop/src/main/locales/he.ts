@@ -4,7 +4,7 @@ export const HE_MESSAGES: Record<string, string> = {
   "Check for Updates…": "בדיקת עדכונים…",
   "Computer Access…": "גישה למחשב…",
   "Revoke Local Computer Access": "ביטול הגישה למחשב המקומי",
-  "Change Gente Server…": "החלפת שרת Gente…",
+  "Change Your AI Server…": "החלפת שרת Your AI…",
   "Hide {name}": "הסתרת {name}",
   "Hide Others": "הסתרת אחרים",
   "Show All": "הצגת הכל",
@@ -39,23 +39,23 @@ export const HE_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "בודק עדכונים…",
   "Downloading Update…": "מוריד עדכון…",
   "Restart to Update…": "הפעלה מחדש לעדכון…",
-  "Downloading Gente {version}…": "מוריד את Gente {version}…",
-  "Gente {version} is ready to install.": "Gente {version} מוכן להתקנה.",
+  "Downloading Your AI {version}…": "מוריד את Your AI {version}…",
+  "Your AI {version} is ready to install.": "Your AI {version} מוכן להתקנה.",
   Restart: "הפעלה מחדש",
   Later: "אחר כך",
   "Could not install the update.": "לא ניתן היה להתקין את העדכון.",
   "Could not check for updates.": "לא ניתן היה לבדוק אם יש עדכונים.",
-  "Gente is up to date.": "Gente מעודכן.",
+  "Your AI is up to date.": "Your AI מעודכן.",
   "Version {version}": "גרסה {version}",
   "Automatic updates are turned off for this install.": "העדכונים האוטומטיים כבויים בהתקנה הזו.",
   "Automatic updates only run in an installed build.": "עדכונים אוטומטיים פועלים רק בגרסה מותקנת.",
   "No desktop releases are published for this build yet.":
     "עדיין לא פורסמו גרסאות שולחן עבודה עבור ה-build הזה.",
-  "Move Gente to Applications to install updates.":
-    "יש להעביר את Gente לתיקיית ״יישומים״ כדי להתקין עדכונים.",
+  "Move Your AI to Applications to install updates.":
+    "יש להעביר את Your AI לתיקיית ״יישומים״ כדי להתקין עדכונים.",
   "Free up disk space to install updates.": "יש לפנות מקום בדיסק כדי להתקין עדכונים.",
-  "This update could not be verified. Reinstall Gente from a trusted download.":
-    "לא ניתן היה לאמת את העדכון הזה. יש להתקין מחדש את Gente מהורדה מהימנה.",
+  "This update could not be verified. Reinstall Your AI from a trusted download.":
+    "לא ניתן היה לאמת את העדכון הזה. יש להתקין מחדש את Your AI מהורדה מהימנה.",
   "The update could not be completed. Try again later.":
     "לא ניתן היה להשלים את העדכון. כדאי לנסות שוב מאוחר יותר.",
   "Could not reach the update server.": "לא ניתן היה להתחבר לשרת העדכונים.",
@@ -74,11 +74,11 @@ export const HE_MESSAGES: Record<string, string> = {
     "כבר מתבצע ניסיון התחברות. יש לבטל אותו ולנסות שוב.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "לא ניתן היה לפתוח התחברות בדפדפן. יש לסגור ניסיונות התחברות אחרים ולנסות שוב.",
-  "Sign-in callback rejected. Return to Gente to retry.":
+  "Sign-in callback rejected. Return to Your AI to retry.":
     "תגובת ההתחברות נדחתה. יש לחזור ל-Gente כדי לנסות שוב.",
-  "You can close this tab and return to Gente.": "אפשר לסגור את הכרטיסייה הזו ולחזור ל-Gente.",
-  "Quit Gente": "יציאה מ-Gente",
-  "Welcome to Gente": "ברוכים הבאים ל-Gente",
+  "You can close this tab and return to Your AI.": "אפשר לסגור את הכרטיסייה הזו ולחזור ל-Gente.",
+  "Quit Your AI": "יציאה מ-Gente",
+  "Welcome to Your AI": "ברוכים הבאים ל-Gente",
   Instance: "מופע",
   "Technical details": "פרטים טכניים",
   "Setup progress": "התקדמות ההגדרה",
@@ -92,22 +92,22 @@ export const HE_MESSAGES: Record<string, string> = {
   "{size} downloaded": "הורדו {size}",
   "Connecting…": "מתחבר…",
   "Checking…": "בודק…",
-  "Gente answered at {url}.": "Gente הגיב בכתובת {url}.",
+  "Your AI answered at {url}.": "Your AI הגיב בכתובת {url}.",
   "Enter a server address first.": "יש להזין קודם כתובת שרת.",
   "Could not save that address.": "לא ניתן היה לשמור את הכתובת הזו.",
   "Could not save that address. Try again.": "לא ניתן היה לשמור את הכתובת הזו. כדאי לנסות שוב.",
   "Could not run the connection check. Try again.": "לא ניתן היה לבדוק את החיבור. כדאי לנסות שוב.",
   "Setup bridge unavailable.": "גשר ההגדרה לא זמין.",
-  "Setup could not start. Quit Gente and try again.":
+  "Setup could not start. Quit Your AI and try again.":
     "לא ניתן היה להתחיל את ההגדרה. יש לצאת מ-Gente ולנסות שוב.",
   "Enter a server address.": "יש להזין כתובת שרת.",
   "Enter a valid http:// or https:// address.": "יש להזין כתובת http:// או https:// תקינה.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "יש להזין כתובת שרת תקינה. שרתים ציבוריים מחייבים HTTPS; מופע מקומי חדש חייב להשתמש ב-localhost.",
   "Invalid custom headers": "כותרות מותאמות אישית לא תקינות",
-  "That address redirects elsewhere. Enter the final Gente server address.":
-    "הכתובת הזו מפנה למקום אחר. יש להזין את הכתובת הסופית של שרת Gente.",
-  "That address did not respond like a Gente server.": "הכתובת הזו לא הגיבה כמו שרת Gente.",
+  "That address redirects elsewhere. Enter the final Your AI server address.":
+    "הכתובת הזו מפנה למקום אחר. יש להזין את הכתובת הסופית של שרת Your AI.",
+  "That address did not respond like a Your AI server.": "הכתובת הזו לא הגיבה כמו שרת Your AI.",
   "Timed out reaching that address.": "תם הזמן לחיבור לכתובת הזו.",
   "Nothing is listening at that address yet.": "עדיין אין שום דבר שמאזין בכתובת הזו.",
   "That host could not be found.": "המארח הזה לא נמצא.",
@@ -131,8 +131,8 @@ export const HE_MESSAGES: Record<string, string> = {
     "לא ניתן היה לשמור את ההגדרה. המופע הקודם שוחזר.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "החיבור הצליח, אבל לא ניתן היה לשמור את ההגדרה להפעלה הבאה. יש ללחוץ שוב על ״המשך״.",
-  "The app-managed Gente services are not ready. Retry setup.":
-    "שירותי Gente שהאפליקציה מנהלת אינם מוכנים. יש לנסות את ההגדרה שוב.",
+  "The app-managed Your AI services are not ready. Retry setup.":
+    "שירותי Your AI שהאפליקציה מנהלת אינם מוכנים. יש לנסות את ההגדרה שוב.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker מותקן, אבל Docker Compose חסר. יש להתקין את Docker Desktop או את docker-compose-plugin.",
   "Could not check Docker Compose. Check the output below, then retry.":
@@ -152,10 +152,10 @@ export const HE_MESSAGES: Record<string, string> = {
     "Docker הפסיק להגיב. יש להפעיל את Docker ולנסות שוב.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose חסר. יש להתקין את Docker Desktop או את docker-compose-plugin ולנסות שוב.",
-  "Downloading Gente images failed. Check the output below, then retry.":
-    "הורדת האימג׳ים של Gente נכשלה. יש לעיין בפלט שלמטה ולנסות שוב.",
-  "Gente services did not start. Check the output below, then retry.":
-    "שירותי Gente לא הופעלו. יש לעיין בפלט שלמטה ולנסות שוב.",
+  "Downloading Your AI images failed. Check the output below, then retry.":
+    "הורדת האימג׳ים של Your AI נכשלה. יש לעיין בפלט שלמטה ולנסות שוב.",
+  "Your AI services did not start. Check the output below, then retry.":
+    "שירותי Your AI לא הופעלו. יש לעיין בפלט שלמטה ולנסות שוב.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "ה-Stack הופעל, אבל אפליקציית האינטרנט לא הגיבה. יש לנסות שוב ולעיין בפלט שלמטה.",
   "Could not prepare the local stack. Retry.":
@@ -179,22 +179,22 @@ export const HE_MESSAGES: Record<string, string> = {
   "Chat Details": "פרטי הצ׳אט",
   Help: "עזרה",
   "Keyboard Shortcuts": "קיצורי מקלדת",
-  "Downloading Gente failed. Check the internet connection, then retry.":
-    "ההורדה של Gente נכשלה. בדקו את החיבור לאינטרנט ונסו שוב.",
+  "Downloading Your AI failed. Check the internet connection, then retry.":
+    "ההורדה של Your AI נכשלה. בדקו את החיבור לאינטרנט ונסו שוב.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "לא ניתן להעביר את הנתונים מ-Docker. בדקו את הפלט למטה ונסו שוב.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "סביבת ההרצה של המחשבים שכבר פועלת ישנה מדי. עדכנו או סגרו אותה ונסו שוב.",
-  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+  "Your Your AI data is in a different computer runtime. Quit the one running, then retry.":
     "הנתונים שלכם ב-Gente נמצאים בסביבת הרצה אחרת של המחשבים. סגרו את זו שפועלת ונסו שוב.",
-  "Run Gente without Docker?": "להפעיל את Gente בלי Docker?",
+  "Run Your AI without Docker?": "להפעיל את Your AI בלי Docker?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "הבוטים והנתונים שלכם יועברו. Docker ייעצר, לא יוסר.",
   Move: "העברה",
   "Keep Docker": "להשאיר את Docker",
-  "Gente needs Docker Desktop to run on this computer.":
-    "Gente צריך את Docker Desktop כדי לפעול במחשב הזה.",
-  "Gente needs Docker to run on this computer.": "Gente צריך את Docker כדי לפעול במחשב הזה.",
+  "Your AI needs Docker Desktop to run on this computer.":
+    "Your AI צריך את Docker Desktop כדי לפעול במחשב הזה.",
+  "Your AI needs Docker to run on this computer.": "Your AI צריך את Docker כדי לפעול במחשב הזה.",
   "Install Docker Engine and start it.": "מתקינים את Docker Engine ומפעילים אותו.",
   "Download Docker Desktop": "הורדת Docker Desktop",
   "Install Docker": "התקנת Docker",
@@ -203,16 +203,16 @@ export const HE_MESSAGES: Record<string, string> = {
   "Starting {app}…": "{app} מופעל…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker מותקן אבל לא פועל. יש להפעיל את שירות Docker כדי להמשיך.",
-  "Gente stopped unexpectedly.": "Gente נעצר באופן בלתי צפוי.",
+  "Your AI stopped unexpectedly.": "Your AI נעצר באופן בלתי צפוי.",
   Reload: "טען מחדש",
   "Mac app control": "שליטה ביישומי Mac",
   "Set up Mac app control": "הגדרת שליטה ביישומי Mac",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
-    "פקודות כבר פועלות. כדי להשתמש ביישומים, אפשרו ל-Gente גישה לנגישות ולהקלטת מסך בהגדרות המערכת, ואז הפעילו מחדש את Gente.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Your AI in System Settings, then restart Your AI.":
+    "פקודות כבר פועלות. כדי להשתמש ביישומים, אפשרו ל-Gente גישה לנגישות ולהקלטת מסך בהגדרות המערכת, ואז הפעילו מחדש את Your AI.",
   "Open System Settings": "פתיחת הגדרות המערכת",
-  "Restart Gente": "הפעלה מחדש של Gente",
+  "Restart Your AI": "הפעלה מחדש של Your AI",
   "Not Now": "לא עכשיו",
-  "Restart Gente to finish setup": "הפעילו מחדש את Gente כדי להשלים את ההגדרה",
+  "Restart Your AI to finish setup": "הפעילו מחדש את Your AI כדי להשלים את ההגדרה",
   // Setup
   "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
     "מבוסס על Rakazo מאת Elie Steinbock (Apache-2.0). Swift מאת UkisAI.",
@@ -223,44 +223,43 @@ export const HE_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "התחברות לשרת במקום זאת",
   "Downloading the workspace…": "מורידים את סביבת העבודה…",
   "Downloads once, then works offline.": "יורד פעם אחת, ואז עובד גם בלי אינטרנט.",
-  "Gente couldn't finish getting ready. Press Try again.":
-    "Gente לא הצליחה לסיים את ההכנות. יש ללחוץ על לנסות שוב.",
-  "Gente is getting things ready. This takes a moment.": "Gente מכינה הכול. זה לוקח רגע.",
+  "Your AI couldn't finish getting ready. Press Try again.":
+    "Your AI לא הצליחה לסיים את ההכנות. יש ללחוץ על לנסות שוב.",
+  "Your AI is getting things ready. This takes a moment.": "Your AI מכינה הכול. זה לוקח רגע.",
   "Get started": "בואו נתחיל",
-  "Getting Gente ready, about a minute left": "מכינים את Gente, נשארה בערך דקה",
-  "Getting Gente ready, about {n} min left": "מכינים את Gente, נשארו בערך {n} דק׳",
-  "Getting Gente ready…": "מכינים את Gente…",
+  "Getting Your AI ready, about a minute left": "מכינים את Your AI, נשארה בערך דקה",
+  "Getting Your AI ready, about {n} min left": "מכינים את Your AI, נשארו בערך {n} דק׳",
+  "Getting Your AI ready…": "מכינים את Your AI…",
   "Model choices": "בחירת מודל",
   "Model download": "הורדת המודל",
   "No ads. Ever.": "בלי פרסומות. אף פעם.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "אף אחד לא קורא את הנתונים שלך, לא מאמן עליהם ולא מוכר אותם. לא אנחנו ולא אף אחד אחר.",
-  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
-    "ב-Mac הזה, Gente צריכה את Docker Desktop (אפליקציה חינמית) בשביל סביבת העבודה. יש להתקין אותה ולפתוח אותה פעם אחת.",
+  "On this Mac, Your AI needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "ב-Mac הזה, Your AI צריכה את Docker Desktop (אפליקציה חינמית) בשביל סביבת העבודה. יש להתקין אותה ולפתוח אותה פעם אחת.",
   "Run on this Mac instead": "הפעלה על ה-Mac הזה במקום זאת",
   "Runs privately in the background on this Mac.": "פועלת באופן פרטי ברקע על ה-Mac הזה.",
   "Something went wrong.": "משהו השתבש.",
   "Starting the workspace…": "מפעילים את סביבת העבודה…",
   "Switched to {name} for your computer ({from} could not run here).":
     "עברנו ל-{name} בשביל המחשב שלך ({from} לא יכול לפעול כאן).",
-  "That address didn't answer like a Gente server. Check it, then try again.":
-    "הכתובת הזו לא ענתה כמו שרת Gente. כדאי לבדוק אותה ולנסות שוב.",
+  "That address didn't answer like a Your AI server. Check it, then try again.":
+    "הכתובת הזו לא ענתה כמו שרת Your AI. כדאי לבדוק אותה ולנסות שוב.",
   "The AI of the people.": "הבינה המלאכותית של האנשים.",
   "The first start can take a minute.": "ההפעלה הראשונה יכולה לקחת דקה.",
   "Try again": "לנסות שוב",
-  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+  "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out.":
     "כש-Gente עובדת בשבילך באינטרנט (חיפוש, גלישה, אפליקציות), יוצא רק מה שהמשימה צריכה.",
   Workspace: "סביבת עבודה",
   "Workspace ready.": "סביבת העבודה מוכנה.",
-  "Your AI": "הבינה המלאכותית שלך",
   "Your AI is ready.": "הבינה המלאכותית שלך מוכנה.",
   "Your AI lives on your computer. Your chats never leave it.":
     "הבינה המלאכותית שלך חיה במחשב שלך. הצ׳אטים שלך אף פעם לא יוצאים ממנו.",
-  "Sign In to Gente…": "התחברות ל־Gente…",
-  "Sign Out of Gente": "התנתקות מ־Gente",
-  "Gente Support…": "תמיכה של Gente…",
+  "Sign In to Your AI…": "התחברות ל־Your AI…",
+  "Sign Out of Your AI": "התנתקות מ־Your AI",
+  "Your AI Support…": "תמיכה של Your AI…",
   // Computer use pill
-  "Gente is using your computer": "Gente משתמש במחשב שלך",
+  "Your AI is using your computer": "Your AI משתמש במחשב שלך",
   "Press {key} to stop": "לחץ {key} כדי לעצור",
   Stop: "עצור",
   Stopped: "נעצר",

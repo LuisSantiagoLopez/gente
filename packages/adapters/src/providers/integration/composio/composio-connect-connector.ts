@@ -299,7 +299,7 @@ export class ComposioConnectConnector implements ManagedConnectorProvider {
     const { auth } = this.options;
     if ("consumerKey" in auth) return { ...base, "x-consumer-api-key": auth.consumerKey };
     const token = await auth.bearer();
-    if (!token) throw new Error("Sign in to Gente to use your apps");
+    if (!token) throw new Error("Sign in to Your AI to use your apps");
     return { ...base, authorization: `Bearer ${token}` };
   }
 
@@ -357,7 +357,7 @@ export class ComposioConnectConnector implements ManagedConnectorProvider {
       throw error;
     });
     const message = parseRpcBody(await response.text());
-    if (!message) throw new Error("Your apps sent an answer Gente could not read");
+    if (!message) throw new Error("Your apps sent an answer Your AI could not read");
     if (isRecord(message.error)) {
       throw new Error(String(message.error.message ?? "Your apps refused the request"));
     }

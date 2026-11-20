@@ -14,7 +14,7 @@ concurrency:
   group: gente-platforms-${{ github.ref }}
   cancel-in-progress: false
 env:
-  DRAFT_TAG: v0.1.0
+  DRAFT_TAG: v1.0.0
 jobs:
   gente:
     name: ${{ matrix.label }}
@@ -55,7 +55,7 @@ jobs:
         run: >-
           npx electron-builder --win nsis --${{ matrix.arch }} --publish never
           -c.win.verifyUpdateCodeSignature=false
-          '-c.nsis.artifactName=${productName}-Setup-${version}-${arch}.${ext}'
+          '-c.nsis.artifactName=Your-AI-Setup-${version}${{ matrix.arch == 'x64' && '' || '-arm64' }}.${ext}'
       - name: Mac disk image
         if: matrix.kind == 'mac'
         working-directory: apps/desktop
@@ -63,7 +63,7 @@ jobs:
         run: >-
           npx electron-builder --mac dmg --${{ matrix.arch }} --publish never
           -c.mac.identity=null -c.mac.notarize=false
-          '-c.dmg.artifactName=${productName}-${version}-${arch}.${ext}'
+          '-c.dmg.artifactName=Your-AI-${version}-${arch}.${ext}'
       - name: Install (timed)
         run: |
           mkdir -p "$RUNNER_TEMP/e2e"
@@ -71,16 +71,16 @@ jobs:
           if [ "${{ matrix.kind }}" = win ]; then
             exe=$(ls apps/desktop/out/*.exe | head -1)
             powershell -NoProfile -Command "Start-Process -Wait -FilePath '$(cygpath -w "$exe")' -ArgumentList '/S'"
-            app="$LOCALAPPDATA/Programs/Gente/Gente.exe"
+            app="$LOCALAPPDATA/Programs/Your AI/Your AI.exe"
             # The installer writes the server out with Node (paths over 260 characters).
-            ls "$LOCALAPPDATA/Programs/Gente/resources/"
-            cat "$LOCALAPPDATA/Programs/Gente/resources/rakazo-server/.complete" && echo " (server written out by the installer)"
+            ls "$LOCALAPPDATA/Programs/Your AI/resources/"
+            cat "$LOCALAPPDATA/Programs/Your AI/resources/rakazo-server/.complete" && echo " (server written out by the installer)"
           else
             dmg=$(ls apps/desktop/out/*.dmg | head -1)
             mnt=$(hdiutil attach -nobrowse -readonly "$dmg" | tail -1 | cut -f3-)
-            cp -R "$mnt/Gente.app" /Applications/
+            cp -R "$mnt/Your AI.app" /Applications/
             hdiutil detach "$mnt" -quiet || true
-            app=/Applications/Gente.app/Contents/MacOS/Gente
+            app="/Applications/Your AI.app/Contents/MacOS/Your AI"
           fi
           test -x "$app" || test -f "$app"
           echo "{\"install\": $(( $(date +%s) - start ))}" > "$RUNNER_TEMP/e2e/install.json"
@@ -105,7 +105,7 @@ jobs:
         run: |
           roaming="$HOME/Library/Application Support"
           [ -n "$APPDATA" ] && roaming="$(cygpath -u "$APPDATA")"
-          for name in Gente Burrow; do
+          for name in "Your AI" Gente Burrow; do
             d="$roaming/$name"
             [ -d "$d" ] || continue
             echo "data folder: $d"; ls -la "$d" "$d/stack" 2>/dev/null || true

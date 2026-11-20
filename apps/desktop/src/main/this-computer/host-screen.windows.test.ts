@@ -55,11 +55,11 @@ describe.runIf(process.platform === "win32" && process.env.CI)("Windows screen c
     const editor = /\[(\d+)\] (?:textfield|document)/.exec(before.tree);
     expect(editor, before.tree).not.toBeNull();
     const written = await screen.act(scope, "notepad", [
-      { kind: "set", element: Number(editor![1]), value: "Hello from Gente" },
+      { kind: "set", element: Number(editor![1]), value: "Hello from Your AI" },
     ]);
     console.log(JSON.stringify({ ...written, observation: written.observation?.tree }));
     expect(written).toMatchObject({ completed: 1 });
-    expect(written.observation?.tree).toContain("Hello from Gente");
+    expect(written.observation?.tree).toContain("Hello from Your AI");
     const selected = await screen.act(scope, "notepad", [
       { kind: "menu", path: ["Edit", "Select All"] },
     ]);

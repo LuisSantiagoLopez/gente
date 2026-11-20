@@ -89,7 +89,7 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
     ) : presented && mode === "in" ? (
       <Trans>Welcome back</Trans>
     ) : mode === "in" ? (
-      <Trans>Sign in to Gente</Trans>
+      <Trans>Sign in to Your AI</Trans>
     ) : mode === "up" ? (
       <Trans>Create your account</Trans>
     ) : (

@@ -19,7 +19,7 @@ export const goalTools: ConnectorTool[] = [
         dial: {
           type: "string",
           enum: ["quiet", "normal", "go_hard"],
-          description: "Only when the person asks Gente to do less or more for this goal.",
+          description: "Only when the person asks Your AI to do less or more for this goal.",
         },
         projectId: { type: "string", description: "Link a project that serves this goal." },
       },

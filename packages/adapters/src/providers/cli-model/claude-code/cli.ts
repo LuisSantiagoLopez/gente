@@ -260,11 +260,11 @@ function versionAtLeast(version: string, minimum: string): boolean {
 }
 
 export const CLAUDE_CODE_NOT_INSTALLED_ERROR =
-  "Claude Code is not installed on this server. Install it for the user that runs the Gente worker, then run `claude auth login`.";
+  "Claude Code is not installed on this server. Install it for the user that runs the Your AI worker, then run `claude auth login`.";
 
 /** Shaped like a provider HTTP error so the run error view classifies it as a sign-in problem. */
 export const CLAUDE_CODE_SIGNED_OUT_ERROR =
-  "Claude Code API error (401): Claude Code on this server is not signed in. Run `claude auth login` as the user that runs the Gente worker.";
+  "Claude Code API error (401): Claude Code on this server is not signed in. Run `claude auth login` as the user that runs the Your AI worker.";
 
 const READY_CACHE_MS = 60_000;
 const ready = new Map<string, number>();

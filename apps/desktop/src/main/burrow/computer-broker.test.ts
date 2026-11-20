@@ -3,7 +3,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { startComputerBroker } from "./computer-broker.js";
 
-describe("cloud computers through Gente Cloud", () => {
+describe("cloud computers through Your AI Cloud", () => {
   it("starts a session, hands back only the computer's own token, and stops billing on stop", async () => {
     const cloud = {
       startSession: vi.fn(async () => ({

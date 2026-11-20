@@ -6,7 +6,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { COMPUTER_CHOICE_FILE, computerEnv, readComputerChoice } from "./service-keys.js";
 
-describe("Gente bot computers", () => {
+describe("Your AI bot computers", () => {
   it("defaults to the E2B cloud computer when a key exists", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "gente-pc-"));
     expect(await readComputerChoice(dir)).toBe("cloud");

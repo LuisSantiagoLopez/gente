@@ -467,9 +467,9 @@ export class StartFailure extends Error {
 }
 
 export const downloadFailed = () =>
-  t("Downloading Gente failed. Check the internet connection, then retry.");
+  t("Downloading Your AI failed. Check the internet connection, then retry.");
 export const servicesFailed = () =>
-  t("Gente services did not start. Check the output below, then retry.");
+  t("Your AI services did not start. Check the output below, then retry.");
 
 export class NativeStackController extends StackLifecycle {
 
@@ -887,7 +887,7 @@ export class NativeStackController extends StackLifecycle {
     let existing = await this.inspectDatabase(cli, signal);
     if (existing === null && ports.database !== undefined && ports.database !== holder) {
       throw new StartFailure(
-        t("Your Gente data is in a different computer runtime. Quit the one running, then retry."),
+        t("Your Your AI data is in a different computer runtime. Quit the one running, then retry."),
       );
     }
     if (ports.database === undefined) {

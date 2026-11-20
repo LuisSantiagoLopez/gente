@@ -357,7 +357,7 @@ export class TeamChatBridge {
       conversation.spaceId !== target.spaceId ||
       !conversation.thread
     ) {
-      throw new Error("Team chat conversation belongs to a different Gente target");
+      throw new Error("Team chat conversation belongs to a different Your AI target");
     }
     return { ...conversation, thread: conversation.thread };
   }

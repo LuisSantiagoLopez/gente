@@ -43,10 +43,10 @@ try {
   await app.whenReady();
   dialog.showMessageBoxSync({
     type: "info",
-    title: "Gente",
-    message: "Gente couldn't open just now.",
+    title: "Your AI",
+    message: "Your AI couldn't open just now.",
     detail:
-      "Please open Gente again. If it keeps happening, restart your computer, or download Gente again. Your chats are safe.",
+      "Please open Your AI again. If it keeps happening, restart your computer, or download Your AI again. Your chats are safe.",
     buttons: ["OK"],
     noLink: true,
   });
