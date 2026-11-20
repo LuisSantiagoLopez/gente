@@ -10,7 +10,7 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "pnpm build && electron .",
-    "build": "node scripts/build.mjs && node scripts/copy-static.mjs && node scripts/build-speech.mjs",
+    "build": "node scripts/build.mjs && node scripts/copy-static.mjs && node scripts/build-speech.mjs && node scripts/copy-koffi.mjs",
     "pack": "pnpm --filter @rakazo/web build && pnpm build && electron-builder --mac --win --linux",
     "pack:dir": "pnpm --filter @rakazo/web build && pnpm build && electron-builder --dir",
     "check": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.jsdom.json && tsc --noEmit -p e2e/tsconfig.json && tsc --noEmit -p scripts/tsconfig.json",
@@ -51,6 +51,10 @@
       {
         "from": "../web/dist",
         "to": "web"
+      },
+      {
+        "from": "build/koffi",
+        "to": "koffi"
       },
       {
         "from": "../../infra/compose/docker-compose.images.yml",
@@ -130,13 +134,6 @@
       ],
       "verifyUpdateCodeSignature": true,
       "extraResources": [
-        {
-          "from": "build/server/",
-          "to": ".",
-          "filter": [
-            "*.zip"
-          ]
-        },
         {
           "from": "build/server-bundle.json",
           "to": "server-bundle.json"
