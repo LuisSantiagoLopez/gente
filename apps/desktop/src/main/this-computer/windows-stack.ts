@@ -350,7 +350,7 @@ export class WindowsStackController extends StackLifecycle {
         this.deps.serverBundle,
       );
       // Windows: point every package junction at this exact folder spelling (see server-links.ts).
-      const relinked = ensureServerLinks(server.dir);
+      const relinked = ensureServerLinks(server.dir, (line) => this.push({ type: "output", line: `re-linking: ${line}` }));
       if (relinked > 0) this.push({ type: "output", line: `re-linked ${relinked} server packages` });
     } catch (error) {
       if (signal.aborted) throw error;
