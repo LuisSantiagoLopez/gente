@@ -3,6 +3,7 @@ import type { ConnectionCatalogItem } from "@rakazo/contracts";
 import { CONNECTION_LABEL_MAX_LENGTH } from "@rakazo/contracts";
 import { appToolLabel, catalogItemAccounts, catalogItemKey } from "@rakazo/core";
 import { Badge, Button, Disclosure, Input } from "@rakazo/ui-web";
+import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { ChevronLeft, Plus } from "lucide-react";
 import { ChatAppLink } from "./parts";
 import type { PluginConnections } from "./use-plugin-connections";
@@ -52,19 +53,7 @@ export function ConnectorDetail({
           >
             <ChevronLeft />
           </Button>
-          {item.logo ? (
-            <img
-              src={item.logo}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              className="h-9 w-9 shrink-0 rounded-xl bg-accent object-contain"
-            />
-          ) : (
-            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent text-body font-semibold text-foreground">
-              {Array.from(item.name)[0]}
-            </div>
-          )}
+          <LogoTile name={item.name} logo={item.logo} size={36} />
           <div className="truncate text-heading3 font-medium text-foreground">{item.name}</div>
         </div>
         <Button

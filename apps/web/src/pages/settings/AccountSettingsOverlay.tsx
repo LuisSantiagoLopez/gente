@@ -35,21 +35,21 @@ import {
 import { DesktopUpdateSection } from "../../components/DesktopUpdates";
 import { AccountDataSettings } from "../../components/settings/AccountDataSettings";
 import { SettingsGroup, SettingsRow } from "../../components/settings/SettingsRows";
-import { desktopBridge } from "../../lib/platform/desktop";
-import { GenteAiModeControl, GentePlanControl, GentePrivateWaitlist } from "../../lib/gente/account";
-import { playSound, setSoundsEnabled, soundsEnabled } from "../../lib/gente/sounds";
 import { TrustedLinkSitesSettings } from "../../components/settings/TrustedLinkSitesSettings";
 import { authClient } from "../../lib/auth/auth";
 import { fetchAuthCapabilities } from "../../lib/auth/auth-capabilities";
 import { usePasskeysSupported } from "../../lib/auth/passkeys";
 import { toolActivityPreference } from "../../lib/chat/tool-activity-preference";
 import { composerEnterToSendPreference } from "../../lib/composer/composer-enter-to-send-pref";
+import { GentePlanControl } from "../../lib/gente/account";
+import { playSound, setSoundsEnabled, soundsEnabled } from "../../lib/gente/sounds";
 import { getActiveUiLocale, setUiLocale } from "../../lib/locale/i18n";
 import { keepTimezone } from "../../lib/locale/kept-timezone";
 import { timezoneOptions } from "../../lib/locale/local-timezone";
 import type { UiLocale } from "../../lib/locale/ui-locale";
 import { UI_LOCALES } from "../../lib/locale/ui-locale";
 import { composerModelPickerPreference } from "../../lib/models/composer-model-picker-preference";
+import { desktopBridge } from "../../lib/platform/desktop";
 import type { BotsSidebarDensity } from "../../lib/preferences/bots-sidebar-density-pref";
 import { botsSidebarDensityPreference } from "../../lib/preferences/bots-sidebar-density-pref";
 import { remoteImagesPreference } from "../../lib/preferences/remote-images-preference";
@@ -286,18 +286,7 @@ export function GeneralSettingsPanels({
       </SettingsGroup>
 
       <SettingsGroup title={<Trans>Gente</Trans>}>
-        <SettingsRow
-          label={<Trans>Plan</Trans>}
-          control={
-            <GentePlanControl />
-          }
-        />
-        {desktopBridge()?.gente ? (
-          <SettingsRow label={<Trans>Where the AI runs</Trans>} control={<GenteAiModeControl />} />
-        ) : null}
-        {desktopBridge()?.gente ? (
-          <SettingsRow label={<Trans>Make my AI private</Trans>} control={<GentePrivateWaitlist />} />
-        ) : null}
+        <SettingsRow label={<Trans>Plan</Trans>} control={<GentePlanControl />} />
         <SettingsRow
           label={<Trans>Sounds</Trans>}
           control={

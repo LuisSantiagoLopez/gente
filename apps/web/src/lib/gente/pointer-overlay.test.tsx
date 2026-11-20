@@ -17,11 +17,20 @@ describe("bot cursor and click highlight", () => {
     const host = document.createElement("div");
     document.body.append(host);
     const root = createRoot(host);
-    await act(async () => root.render(<PointerOverlay botId="b1" screenWidth={1000} screenHeight={500} />));
+    await act(async () =>
+      root.render(<PointerOverlay botId="b1" screenWidth={1000} screenHeight={500} />),
+    );
     const send = (botId: string) =>
       act(async () => {
         globalThis.dispatchEvent(
-          new CustomEvent("gente:pointer", { detail: { botId, width: 1000, height: 500, points: [{ kind: "click", x: 250, y: 100 }] } }),
+          new CustomEvent("gente:pointer", {
+            detail: {
+              botId,
+              width: 1000,
+              height: 500,
+              points: [{ kind: "click", x: 250, y: 100 }],
+            },
+          }),
         );
       });
     await send("other");

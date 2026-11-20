@@ -28,6 +28,7 @@ import {
   Input,
   Spinner,
 } from "@rakazo/ui-web";
+import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { ChevronDown, ChevronRight, LayoutTemplate, X } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { IntegrationSetup } from "../../components/integrations/IntegrationSetup";
@@ -437,17 +438,7 @@ export function PluginsOverlay({
                 <span aria-hidden className="flex -space-x-1.5">
                   {connectedMarks.map((mark) => (
                     <span key={mark.key} className="rounded-[9px] ring-2 ring-card">
-                      {mark.logo ? (
-                        <img
-                          src={mark.logo}
-                          alt=""
-                          className="h-6 w-6 rounded-lg bg-favicon-plate object-contain p-0.5"
-                        />
-                      ) : (
-                        <span className="grid h-6 w-6 place-items-center rounded-lg border border-border/60 bg-favicon-plate text-caption font-semibold text-foreground">
-                          {Array.from(mark.name)[0]?.toUpperCase()}
-                        </span>
-                      )}
+                      <LogoTile name={mark.name} logo={mark.logo} size={24} />
                     </span>
                   ))}
                 </span>

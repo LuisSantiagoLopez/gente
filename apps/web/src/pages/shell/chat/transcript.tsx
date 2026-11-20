@@ -48,6 +48,7 @@ import {
 import { messageHasVisibleBlocks } from "../../../lib/chat/tool-activity-view";
 import { TRANSCRIPT_CONTENT_PADDING } from "../../../lib/chat/transcript-layout";
 import { transcriptIsNearEnd, transcriptMovedDown } from "../../../lib/chat/transcript-scroll";
+import { playSound } from "../../../lib/gente/sounds";
 import type { ArtifactTarget } from "../../../lib/pages/artifact-open";
 import { projectPageCards } from "../../../lib/pages/page-cards";
 import type { createSpaceRpc } from "../../../lib/query/rpc";
@@ -56,7 +57,6 @@ import type { ImportSetupTarget } from "../bots/import-setup-card";
 import { isEditableTarget } from "../shell-shortcuts";
 import { TimeSeparator, UnreadDivider } from "./chat-context";
 import { MessageView } from "./message-view";
-import { playSound } from "../../../lib/gente/sounds";
 import { QuoteSelectionButton } from "./quote-selection-button";
 
 /** Bubbles stop at a readable line length instead of stretching with wide windows. */

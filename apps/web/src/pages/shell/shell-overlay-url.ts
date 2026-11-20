@@ -11,7 +11,6 @@ const SETTINGS_SECTIONS = [
   "wallet",
   "usage",
   "computer",
-  "devices",
   "labs",
   "billing",
   "updates",

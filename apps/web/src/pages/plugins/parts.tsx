@@ -8,25 +8,14 @@ import type {
 import { mcpServerConnection } from "@rakazo/contracts";
 import { catalogItemKey } from "@rakazo/core";
 import { Button, SectionHeading } from "@rakazo/ui-web";
+import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { Check, ChevronLeft, CircleAlert, TriangleAlert } from "lucide-react";
 import type { ReactElement, ReactNode } from "react";
 import { ROW_BUTTON, ROW_HOVER, ROW_SHELL } from "../../components/integrations/plugin-marketplace";
 import type { PluginConnections } from "./use-plugin-connections";
 
 export function ConnectorIcon({ name, logo }: { name: string; logo?: string | null }) {
-  return logo ? (
-    <img
-      src={logo}
-      alt=""
-      loading="lazy"
-      decoding="async"
-      className="h-9 w-9 shrink-0 rounded-xl bg-accent object-contain"
-    />
-  ) : (
-    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent text-body font-semibold text-foreground">
-      {Array.from(name)[0]}
-    </div>
-  );
+  return <LogoTile name={name} logo={logo} size={36} />;
 }
 
 function connectionLabel(state: McpServerConnection): ReactElement {

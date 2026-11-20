@@ -49,7 +49,9 @@ export function playSound(sound: GenteSound) {
   if (!soundsEnabled()) return;
   if (globalThis.document?.visibilityState === "hidden") return;
   if (globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-  const AudioCtor = globalThis.AudioContext ?? (globalThis as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  const AudioCtor =
+    globalThis.AudioContext ??
+    (globalThis as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AudioCtor) return;
   try {
     context ??= new AudioCtor();

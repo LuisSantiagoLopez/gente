@@ -1,5 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
-import { PointerOverlay } from "../../../lib/gente/pointer-overlay";
+
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import type { Bot, ComputerStatus } from "@rakazo/contracts";
@@ -10,6 +10,7 @@ import type { ReactNode } from "react";
 import { ComputersUnavailableHint } from "../../../components/computers/ComputersUnavailableHint";
 import { runsInCloud, runsOnUserMachine } from "../../../lib/computers/computer-sandbox";
 import { screenFrames, screenIframeSandbox } from "../../../lib/computers/computer-screen";
+import { PointerOverlay } from "../../../lib/gente/pointer-overlay";
 import { DesktopKindEmptyState } from "./computer-view";
 
 type ComputerPanelProps = {
@@ -165,27 +166,29 @@ function ComputerPreview({
             className={`grid h-full place-items-center px-6 text-center text-body text-muted-foreground/80 ${hideOnHover}`}
           />
         ) : computer?.state === "running" && embeddedScreenUrl && !computerScreenError ? (
-          screenFrames(screenFrameKey, embeddedScreenUrl, heldScreen).map((frame) => (
-            <iframe
-              key={frame.key}
-              title={frame.held ? undefined : t`Bot screen preview`}
-              aria-hidden={frame.held || undefined}
-              tabIndex={-1}
-              ref={frame.held ? undefined : screenFrameRef}
-              src={frame.url}
-              sandbox={screenIframeSandbox(frame.url)}
-              className={`h-full w-full border-0 bg-black${frame.held ? " absolute inset-0" : ""}`}
-              allow="clipboard-read; clipboard-write"
-              style={{ pointerEvents: "none" }}
-            />
-          )).concat(
-            <PointerOverlay
-              key="gente-pointer"
-              botId={bot.id}
-              screenWidth={computer?.screenWidth}
-              screenHeight={computer?.screenHeight}
-            />,
-          )
+          screenFrames(screenFrameKey, embeddedScreenUrl, heldScreen)
+            .map((frame) => (
+              <iframe
+                key={frame.key}
+                title={frame.held ? undefined : t`Bot screen preview`}
+                aria-hidden={frame.held || undefined}
+                tabIndex={-1}
+                ref={frame.held ? undefined : screenFrameRef}
+                src={frame.url}
+                sandbox={screenIframeSandbox(frame.url)}
+                className={`h-full w-full border-0 bg-black${frame.held ? " absolute inset-0" : ""}`}
+                allow="clipboard-read; clipboard-write"
+                style={{ pointerEvents: "none" }}
+              />
+            ))
+            .concat(
+              <PointerOverlay
+                key="gente-pointer"
+                botId={bot.id}
+                screenWidth={computer?.screenWidth}
+                screenHeight={computer?.screenHeight}
+              />,
+            )
         ) : (
           <div
             className={`grid h-full place-items-center px-6 text-center text-body text-muted-foreground/80 ${hideOnHover}`}

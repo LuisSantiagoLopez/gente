@@ -1,5 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
-import { PointerOverlay } from "../../../lib/gente/pointer-overlay";
+
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import type { Bot, ComputerReleaseReason, ComputerStatus, TaughtSkill } from "@rakazo/contracts";
@@ -15,6 +15,7 @@ import {
 } from "../../../components/teach/TeachRecordingChrome";
 import { runsOnUserMachine } from "../../../lib/computers/computer-sandbox";
 import { screenFrames, screenIframeSandbox } from "../../../lib/computers/computer-screen";
+import { PointerOverlay } from "../../../lib/gente/pointer-overlay";
 import {
   DARWIN_WINDOW_CONTROLS_WIDTH_PX,
   desktopBridge,

@@ -1,5 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
-import { desktopBridge } from "../../../lib/platform/desktop";
+
 import { useLingui } from "@lingui/react/macro";
 import type {
   Bot,
@@ -38,6 +38,7 @@ import {
 import { canPrepareImage, prepareImage } from "../../../lib/composer/prepare-image";
 import type { PageSession } from "../../../lib/pages/pages";
 import { requestBrowserNotificationPermission } from "../../../lib/platform/browser-notifications";
+import { desktopBridge } from "../../../lib/platform/desktop";
 import type { createSpaceRpc } from "../../../lib/query/rpc";
 import { clearActiveThreadRuns, threadRunError } from "../../../lib/query/thread-events";
 import { errorText } from "../../../lib/query/user-error";
@@ -363,7 +364,11 @@ export function useComposerActions({
       if (plan.isNoOp) return false;
       // Gente: the free plan includes 10 messages, counted once each by Gente Cloud.
       const gente = desktopBridge()?.gente;
-      if (plan.shouldSend && gente && !(await gente.consumeMessage(clientNonce).catch(() => true))) {
+      if (
+        plan.shouldSend &&
+        gente &&
+        !(await gente.consumeMessage(clientNonce).catch(() => true))
+      ) {
         setSendError(
           t`You've used your 10 free messages. Choose a plan in Settings to keep chatting.`,
         );

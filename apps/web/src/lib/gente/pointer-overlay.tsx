@@ -22,7 +22,12 @@ export function PointerOverlay({
   screenHeight?: number;
 }) {
   const box = useRef<HTMLDivElement | null>(null);
-  const [fit, setFit] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
+  const [fit, setFit] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
   useEffect(() => {
     const element = box.current;
     if (!element || !screenWidth || !screenHeight) return;
@@ -62,24 +67,32 @@ export function PointerOverlay({
     }
   });
   return (
-    <div ref={box} className="pointer-events-none absolute inset-0 overflow-hidden" data-gente-pointer="">
+    <div
+      ref={box}
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      data-gente-pointer=""
+    >
       <div
         className="absolute"
-        style={fit ? { left: fit.left, top: fit.top, width: fit.width, height: fit.height } : { inset: 0 }}
+        style={
+          fit
+            ? { left: fit.left, top: fit.top, width: fit.width, height: fit.height }
+            : { inset: 0 }
+        }
       >
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
-          className="gente-click-ripple absolute size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary"
-          style={{ left: `${ripple.x * 100}%`, top: `${ripple.y * 100}%` }}
-        />
-      ))}
-      {cursor ? (
-        <span
-          className="absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_0_2px_white] transition-[left,top] duration-300 ease-out"
-          style={{ left: `${cursor.x * 100}%`, top: `${cursor.y * 100}%` }}
-        />
-      ) : null}
+        {ripples.map((ripple) => (
+          <span
+            key={ripple.id}
+            className="gente-click-ripple absolute size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary"
+            style={{ left: `${ripple.x * 100}%`, top: `${ripple.y * 100}%` }}
+          />
+        ))}
+        {cursor ? (
+          <span
+            className="absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_0_2px_white] transition-[left,top] duration-300 ease-out"
+            style={{ left: `${cursor.x * 100}%`, top: `${cursor.y * 100}%` }}
+          />
+        ) : null}
       </div>
     </div>
   );

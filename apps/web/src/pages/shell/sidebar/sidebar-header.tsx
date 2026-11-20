@@ -1,10 +1,10 @@
 import { useLingui } from "@lingui/react/macro";
-import { GenteMark } from "../../../lib/gente/gente-mark";
 import type { Bot } from "@rakazo/contracts";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@rakazo/ui-web";
 import { Bell, PanelLeftClose, PanelLeftOpen, Plus, Search } from "lucide-react";
 import { IconTooltip } from "../../../components/IconTooltip";
 import { WindowChrome } from "../../../components/WindowChrome";
+import { GenteMark } from "../../../lib/gente/gente-mark";
 import { desktopBridge } from "../../../lib/platform/desktop";
 import { BotCreatePicker } from "../bots/bot-picker";
 import type { Panel } from "../right-panel-state";
