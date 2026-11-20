@@ -31,7 +31,7 @@ describe("desktop local computer consent", () => {
     const port = Number(new URL(previous.url).port);
     await computer.close();
     const occupied = createServer();
-    await new Promise<void>((resolve) => occupied.listen(port, "0.0.0.0", resolve));
+    await new Promise<void>((resolve) => occupied.listen(port, "127.0.0.1", resolve));
     try {
       computer = await prepareHostComputer(root);
       expect(computer.connection.token).not.toBe(previous.token);
@@ -57,6 +57,8 @@ describe("desktop local computer consent", () => {
     expect(start).toHaveBeenNthCalledWith(2, {
       root: path.join(root, "computers"),
       token: computer.connection.token,
+      screen: undefined,
+      hostname: "127.0.0.1",
     });
     expect(computer.connection.token).not.toBe(previous.token);
     const saved = JSON.parse(await readFile(path.join(root, "host-computer.json"), "utf8"));
@@ -130,5 +132,40 @@ describe("desktop local computer consent", () => {
     computer = await prepareHostComputer(root);
     computer.activate(true);
     expect(computer.isEnabled()).toBe(false);
+  });
+});
+
+// Gente (QA-003): the server that runs commands on this computer answers on loopback only.
+describe("host computer server address", () => {
+  it("listens on 127.0.0.1, never on every interface", async () => {
+    const { networkInterfaces } = await import("node:os");
+    const { connect } = await import("node:net");
+    const root = await mkdtemp(path.join(tmpdir(), "gente-host-bind-"));
+    const computer = await prepareHostComputer(root);
+    const port = Number(new URL(computer.connection.url).port);
+    const reach = (host: string) =>
+      new Promise<boolean>((resolve) => {
+        const socket = connect({ host, port, timeout: 1000 });
+        socket.once("connect", () => {
+          socket.destroy();
+          resolve(true);
+        });
+        socket.once("error", () => resolve(false));
+        socket.once("timeout", () => {
+          socket.destroy();
+          resolve(false);
+        });
+      });
+    try {
+      expect(await reach("127.0.0.1")).toBe(true);
+      const lan = Object.values(networkInterfaces())
+        .flat()
+        .filter((i) => i && i.family === "IPv4" && !i.internal)
+        .map((i) => i!.address);
+      for (const address of lan) expect(await reach(address), address).toBe(false);
+    } finally {
+      await computer.close();
+      await rm(root, { recursive: true, force: true });
+    }
   });
 });
