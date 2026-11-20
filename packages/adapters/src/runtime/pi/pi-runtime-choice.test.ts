@@ -4,6 +4,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const fakeAgentState = vi.hoisted(() => ({
   options: ["Berlin", "Seoul", "Toronto"],
   detail: undefined as string | undefined,
+  askTwice: false,
+  results: [] as unknown[],
   tools: [] as Array<{
     name: string;
     prepareArguments?: (args: unknown) => Record<string, unknown>;
@@ -33,7 +35,10 @@ vi.mock("@earendil-works/pi-agent-core", () => ({
         ...(fakeAgentState.detail === undefined ? {} : { detail: fakeAgentState.detail }),
       };
       const args = askUser.prepareArguments?.(raw) ?? raw;
-      await askUser.execute("call-choice-1", args);
+      fakeAgentState.results.push(await askUser.execute("call-choice-1", args));
+      // Gente: a model that asks again in the same turn.
+      if (fakeAgentState.askTwice)
+        fakeAgentState.results.push(await askUser.execute("call-choice-2", args));
     }
 
     async waitForIdle() {}
@@ -101,6 +106,19 @@ describe("Pi choice asks", () => {
     fakeAgentState.tools = [];
     fakeAgentState.options = ["Berlin", "Seoul", "Toronto"];
     fakeAgentState.detail = undefined;
+    fakeAgentState.askTwice = false;
+    fakeAgentState.results = [];
+  });
+
+  it("shows one question card per turn even when the model asks twice", async () => {
+    fakeAgentState.askTwice = true;
+    const runtime = new PiAgentRuntime();
+    const events: AgentRuntimeEvent[] = [];
+
+    for await (const event of runtime.run(runRequest, runContext)) events.push(event);
+
+    expect(events.filter((event) => event.type === "ask")).toHaveLength(1);
+    expect(JSON.stringify(fakeAgentState.results[1])).not.toContain("Waiting for the user");
   });
 
   it("emits a tappable ask and stops without a finished-work fallback", async () => {

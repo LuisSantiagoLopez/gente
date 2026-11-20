@@ -60,7 +60,14 @@ const CODE_WORDS =
   /```|\b(code|coding|function|functions|script|program|python|javascript|typescript|java|rust|golang|kotlin|swift code|c\+\+|c#|sql|regex|bash|shell script|html|css|react|bug|debug|compile|compiler|stack trace|traceback|refactor|algorithm|unit test|json|yaml)\b/i;
 /** The tools a coding turn needs: files, a shell, the web for docs, and a question back. */
 const CODE_TOOLS = new Set([
-  "shell", "read_file", "write_file", "list_files", "attach_file", "ask_user", "web_search", "web_fetch",
+  "shell",
+  "read_file",
+  "write_file",
+  "list_files",
+  "attach_file",
+  "ask_user",
+  "web_search",
+  "web_fetch",
 ]);
 
 /** The person's newest message in the conversation (the turn this request belongs to). */
@@ -80,11 +87,20 @@ export function isCodingTurn(messages: readonly ChatMessage[]): boolean {
  * light thinking. Every request of the turn (including tool follow-ups) gets the same shape, so the
  * model server keeps its cache across the turn.
  */
-export function codingBody(parsed: { messages: ChatMessage[]; tools?: unknown[]; [key: string]: unknown }) {
+export function codingBody(parsed: {
+  messages: ChatMessage[];
+  tools?: unknown[];
+  [key: string]: unknown;
+}) {
   const [first, ...rest] = parsed.messages;
   const system =
     first?.role === "system"
-      ? [{ role: "system", content: `${slimSystemPrompt(messageText(first.content))}\n\nFor code: answer with the code first, briefly explained. Use the shell and files only when the task needs running or saving something.` }]
+      ? [
+          {
+            role: "system",
+            content: `${slimSystemPrompt(messageText(first.content))}\n\nFor code: answer with the code first, briefly explained. Use the shell and files only when the task needs running or saving something.`,
+          },
+        ]
       : [];
   const tools = (parsed.tools ?? []).filter((tool) => {
     const name = (tool as { function?: { name?: string } }).function?.name;
@@ -110,7 +126,10 @@ export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
  * (platform and the bot's own profile) and the durable memory block.
  */
 export function slimSystemPrompt(system: string): string {
-  const head = system.split(/\n\s*\n/).slice(0, 2).join("\n\n");
+  const head = system
+    .split(/\n\s*\n/)
+    .slice(0, 2)
+    .join("\n\n");
   const memoryAt = system.indexOf("<durable_memory>");
   const memory = memoryAt >= 0 ? system.slice(memoryAt) : "";
   return [head, "Reply briefly and naturally, like a friendly coworker.", memory]
@@ -124,7 +143,10 @@ export function smallTalkBody(parsed: {
   [key: string]: unknown;
 }): Record<string, unknown> {
   const [first, ...rest] = parsed.messages;
-  const system = first?.role === "system" ? [{ role: "system", content: slimSystemPrompt(messageText(first.content)) }] : [];
+  const system =
+    first?.role === "system"
+      ? [{ role: "system", content: slimSystemPrompt(messageText(first.content)) }]
+      : [];
   const turns = (first?.role === "system" ? rest : parsed.messages).slice(0, -1);
   const text = turns
     .filter((m) => (m.role === "user" || m.role === "assistant") && !m.tool_calls)
@@ -152,7 +174,9 @@ export function repairToolPairs(messages: ChatMessage[]): ChatMessage[] {
   for (let i = 0; i < messages.length; i++) {
     const message = messages[i]!;
     out.push(message);
-    const calls = Array.isArray(message.tool_calls) ? (message.tool_calls as { id?: string }[]) : [];
+    const calls = Array.isArray(message.tool_calls)
+      ? (message.tool_calls as { id?: string }[])
+      : [];
     if (message.role !== "assistant" || calls.length === 0) continue;
     const answered = new Set<string>();
     while (messages[i + 1]?.role === "tool") {
@@ -162,9 +186,90 @@ export function repairToolPairs(messages: ChatMessage[]): ChatMessage[] {
     }
     for (const call of calls) {
       if (call.id && !answered.has(call.id))
-        out.push({ role: "tool", tool_call_id: call.id, content: "The person answered in the chat instead." } as ChatMessage);
+        out.push({
+          role: "tool",
+          tool_call_id: call.id,
+          content: "The person answered in the chat instead.",
+        } as ChatMessage);
     }
   }
+  return out;
+}
+
+// ---- Reply language ----------------------------------------------------------------------
+// The bot answers in the language of the conversation, judged from the person's recent words
+// (typed messages and their answers to question cards), not only the newest message or the app's
+// language. A short "hey" in a Spanish chat gets a Spanish reply.
+
+const LANGUAGE_WORDS: Record<"Spanish" | "Portuguese" | "English", RegExp> = {
+  Spanish:
+    /(?<![\p{L}])(qué|que|el|los|las|y|por|para|con|una|es|está|estás|hola|gracias|quiero|puedes|cómo|dónde|sí|tú|mi|lo|se|también|pero|muy|hacer|dime|ayuda|ayúdame|digas|necesito|tengo|hoy|mañana|bueno|vale|claro|redactar|textos|eso)(?![\p{L}])/giu,
+  Portuguese:
+    /(?<![\p{L}])(você|não|obrigado|obrigada|olá|oi|quero|pode|é|está|uma|um|com|meu|minha|isso|também|fazer|ajuda|então|tudo|bem|hoje|amanhã|preciso|tenho|legal|beleza|sim|vocês)(?![\p{L}])/giu,
+  English:
+    /(?<![\p{L}])(the|and|you|to|is|what|how|can|please|my|it|of|for|with|this|that|do|are|want|need|have|today|tomorrow|thanks|yes|sure)(?![\p{L}])/giu,
+};
+
+/** The person's recent words: typed messages and short answers to question cards. */
+function recentPersonWords(messages: readonly ChatMessage[], limit = 6): string[] {
+  const out: string[] = [];
+  for (let i = messages.length - 1; i >= 0 && out.length < limit; i--) {
+    const message = messages[i]!;
+    const words = userWords(message.content);
+    if (!words) continue;
+    if (message.role === "user") out.push(words);
+    // A card's answer comes back as the ask_user call's result: short, in the person's words.
+    else if (
+      message.role === "tool" &&
+      words.length <= 120 &&
+      !/^(Waiting for|The person answered)/.test(words)
+    )
+      out.push(words);
+  }
+  return out;
+}
+
+/** The conversation's language when it is clearly Spanish or Portuguese; null otherwise. */
+export function conversationLanguage(
+  messages: readonly ChatMessage[],
+): "Spanish" | "Portuguese" | null {
+  const text = recentPersonWords(messages).join(" \n ");
+  if (!text) return null;
+  const score = (re: RegExp) => text.match(re)?.length ?? 0;
+  const es = score(LANGUAGE_WORDS.Spanish) + (/[¿¡ñ]/.test(text) ? 2 : 0);
+  const pt = score(LANGUAGE_WORDS.Portuguese) + (/[ãõç]/.test(text) ? 2 : 0);
+  const en = score(LANGUAGE_WORDS.English);
+  if (es >= 2 && es > pt && es > en) return "Spanish";
+  if (pt >= 2 && pt > es && pt > en) return "Portuguese";
+  return null;
+}
+
+const LANGUAGE_TAG = /\n*<reply_language>[\s\S]*?<\/reply_language>/g;
+
+/**
+ * Adds a one-line language reminder to the person's newest message (inside a tagged block, which
+ * the rest of Gente ignores). It goes on that message, not the system prompt, so the prompt's
+ * start stays the same and the model server keeps reusing what it already read.
+ */
+export function withReplyLanguage(messages: ChatMessage[]): ChatMessage[] {
+  const language = conversationLanguage(messages);
+  if (!language) return messages;
+  let index = -1;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i]?.role === "user") {
+      index = i;
+      break;
+    }
+  }
+  if (index < 0) return messages;
+  const note = `<reply_language>Reply in ${language}, the language of this conversation.</reply_language>`;
+  const target = messages[index]!;
+  let content: unknown = target.content;
+  if (typeof content === "string") content = `${content.replace(LANGUAGE_TAG, "")}\n\n${note}`;
+  else if (Array.isArray(content)) content = [...content, { type: "text", text: note }];
+  else return messages;
+  const out = [...messages];
+  out[index] = { ...target, content };
   return out;
 }
 
@@ -180,6 +285,7 @@ export function quickChatBody(
   }
   if (!Array.isArray(parsed.messages)) return null;
   parsed.messages = repairToolPairs(parsed.messages);
+  parsed.messages = withReplyLanguage(parsed.messages);
   const prefix = { ...parsed, messages: parsed.messages.slice(0, -1) };
   // Gente: small talk, and short plain questions that need no tool ("who painted the Mona
   // Lisa?"), skip the 23 tool schemas (~25k characters) and the long manual. They share one small
@@ -190,7 +296,11 @@ export function quickChatBody(
     const quick = process.env.BURROW_CHAT_MODEL?.trim();
     if (quick) slim.model = quick;
     const messages = slim.messages as unknown[];
-    return { body: JSON.stringify(slim), prefix, chatPrefix: { ...slim, messages: messages.slice(0, -1) } };
+    return {
+      body: JSON.stringify(slim),
+      prefix,
+      chatPrefix: { ...slim, messages: messages.slice(0, -1) },
+    };
   }
   if (Array.isArray((parsed as { tools?: unknown[] }).tools) && isCodingTurn(parsed.messages)) {
     return { body: JSON.stringify(codingBody(parsed as { messages: ChatMessage[] })), prefix };

@@ -558,6 +558,19 @@ function toAgentTool(
                 };
               }
               if (tool.name === "ask_user") {
+                // Gente: one question card per turn. Once it was asked (or answered and the run
+                // resumed), another ask would repeat it, so the model is told to go on instead.
+                if (host.askedThisTurn) {
+                  return {
+                    content: [
+                      {
+                        type: "text",
+                        text: "You already asked the person a question in this turn and have their answer. Do not ask again: continue with that answer, in the language they use.",
+                      },
+                    ],
+                    details: args,
+                  };
+                }
                 const options = Array.isArray(args.options)
                   ? args.options.map((option) => String(option).trim())
                   : [];
@@ -570,6 +583,7 @@ function toAgentTool(
                   throw new Error("ask_user requires two to four unique, non-empty options");
                 }
                 host.pausePending = true;
+                host.askedThisTurn = true;
                 host.queue.push({
                   type: "ask",
                   ...(host.request.onCheckpoint ? { executionId } : {}),
@@ -817,6 +831,8 @@ export interface ToolHost {
   signal: AbortSignal;
   agentNamespace?: string;
   pausePending: boolean;
+  /** Gente: a question card was already asked (or answered, on resume) in this turn. */
+  askedThisTurn?: boolean;
   captureCheckpoint?: (toolCallId: string, executionId: string) => Promise<void>;
   /** Shell commands that returned output and are still running. */
   pendingShells: Array<Promise<FinishedShellCommand>>;

@@ -10,6 +10,7 @@ import { fetchPairedWithDispatcher } from "../../../network/undici-fetch.js";
 import { MODEL_STREAM_AGENT_TIMEOUTS } from "../pi-runtime-limits.js";
 import { splitLeadingThinkBlock } from "../stream/pi-think-tags.js";
 import { burrowFastChatInit } from "./burrow-fast-chat.js";
+import { filterTextToolCalls, offeredTools } from "./gente-text-tool-calls.js";
 import { cachedAnswerResponse, planWebAnswer, withPreface } from "./gente-web-answer.js";
 import { LOCAL_PROVIDER_ID, localModelIds, localModelsApiKey } from "./pi-local-provider-id.js";
 
@@ -118,11 +119,47 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
         return withPreface(response, plan.preface, plan.cacheKey);
       }
     }
-    return transport(input, {
-      ...burrowFastChatInit(init),
-      dispatcher,
-    } as RequestInit & { dispatcher: Dispatcher });
+    const sent = burrowFastChatInit(init);
+    const response = await transport(input, { ...sent, dispatcher } as RequestInit & {
+      dispatcher: Dispatcher;
+    });
+    // Gente: a tool call the model wrote as text becomes a real call, or is removed; never shown.
+    if (process.env.BURROW_FAST_CHAT !== "on" || typeof sent?.body !== "string") return response;
+    const known = offeredTools(parseBody(init?.body)).map((tool) => tool.name);
+    const tools = offeredTools(parseBody(sent.body));
+    if (known.length === 0 && tools.length === 0) return response;
+    return filterTextToolCalls(response, {
+      tools,
+      known,
+      retry: () =>
+        transport(input, {
+          ...sent,
+          body: withFormatNote(sent.body as string),
+          dispatcher,
+        } as RequestInit & { dispatcher: Dispatcher }),
+    });
   };
+}
+
+function parseBody(body: unknown): unknown {
+  if (typeof body !== "string") return null;
+  try {
+    return JSON.parse(body);
+  } catch {
+    return null;
+  }
+}
+
+/** The retry after a tool call written as text: the same request with a one-line reminder. */
+function withFormatNote(body: string): string {
+  const parsed = parseBody(body) as {
+    messages?: Array<{ role?: string; content?: unknown }>;
+  } | null;
+  const last = parsed?.messages?.at(-1);
+  if (!parsed?.messages || !last || typeof last.content !== "string") return body;
+  last.content +=
+    "\n\n<format_note>Call a tool only through tool calling, never by writing its name or arguments in your reply. Otherwise answer in plain words.</format_note>";
+  return JSON.stringify(parsed);
 }
 
 function localApi(): ProviderStreams {
