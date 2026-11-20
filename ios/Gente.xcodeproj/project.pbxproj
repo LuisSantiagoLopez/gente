@@ -27,6 +27,7 @@
 		4C08F438241F468080C8462B /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1B16D6582F6AA0DD15A873 /* TestSupport.swift */; };
 		4C2B754529FF33FBA9DCE0E7 /* ChatEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD4E22F61BBF2681C9E203 /* ChatEngine.swift */; };
 		4E1CAE6FB48025A62C7A8BA5 /* EncryptedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA7140DA80173DB78494FA9 /* EncryptedStore.swift */; };
+		53567F7E72C8C829D0D2917C /* LinkCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093736E581BC651ACBF0CA1 /* LinkCrypto.swift */; };
 		5A011AFB7595A6660F2A816F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB2235FF62A56D4B1540F89 /* Theme.swift */; };
 		6295CA37A38D1FCB0F79418B /* GenteMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60098B5636DF5AC2370F5BA6 /* GenteMark.swift */; };
 		67EAA1406E449E74103E8005 /* Inference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80218A8F758C848463589311 /* Inference.swift */; };
@@ -47,12 +48,12 @@
 		AFBDD9CDBE40268201395A79 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C0855C029B988AD7C47E0E5A /* AppShortcuts.xcstrings */; };
 		B12A9B7401F2D3EEB2DF240E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F296FB3021DBB71D2ECBBB /* Models.swift */; };
 		B2B6B65F8AF1F90248CC68A1 /* GenteWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB5423220943DA1339D2E2C9 /* GenteWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B4AFAAF336CACCB88EF9D794 /* AppsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3B43FD2C1089580AD250F2 /* AppsView.swift */; };
 		B5FAAB8320E8062ECAB40A78 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A7D39CB37C98F9CB31D578 /* Auth.swift */; };
 		BEAEE6271A8B48F1B0A9D671 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8DFDC2082111D1BC99A70DAC /* InfoPlist.xcstrings */; };
 		C67ADABA5641AC6BC9FC7922 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C29EAC078B74ABFC5A1B97B /* Tools.swift */; };
 		C70D724A57481A03373B0C37 /* AskGente.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79551D89B786333BE3CCC530 /* AskGente.swift */; };
 		C8793FE177A8B71783B5A35E /* LogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F657B7193C8E439EF6903CA3 /* LogicTests.swift */; };
-		C9A141E5E4C2ECC194FB683B /* RelayCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C48C3289D9AF14644BA4C7D /* RelayCrypto.swift */; };
 		C9FFDFB6FE6154B7EDF222E7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 474E5EF9E8491E2ECAD99F6D /* Localizable.xcstrings */; };
 		D1CAAF965C5EE60AC1A04B72 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235D185B11A46AC324637F97 /* Notifications.swift */; };
 		DC963E45C7DBB131C7548D2A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFEADEF292C5A3FF3A42C6A /* HomeView.swift */; };
@@ -61,6 +62,7 @@
 		E32BE8A8A3BD28CAC4A36AF8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DADF8C6F3E79FBA4089495 /* RootView.swift */; };
 		E8A251F13D9B1009F6269044 /* StreamingSpeaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E366E7F4E948A818B106F6 /* StreamingSpeaker.swift */; };
 		F018AED58566E6D5CB3876C1 /* EncryptionAtRestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920E3ED0F96F4FCBEFC5A0C /* EncryptionAtRestTests.swift */; };
+		F923DC2EABB2BB3FA7DE7DC3 /* ConnectedApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67C26729BBF9D6A195AEAEE /* ConnectedApps.swift */; };
 		FBCE04B023149C56A82CEE53 /* Purchases.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1AC0EA4BCD43E705CA1F9C /* Purchases.swift */; };
 		FC36AA1646B6F810EC0FEFBC /* CloudAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40F2C6B213BA6886E78A10F /* CloudAPI.swift */; };
 		FDE34211861B19B2C9ED03D5 /* Gente.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 79B25AAEA02C62BBA1C5BD93 /* Gente.storekit */; };
@@ -112,6 +114,7 @@
 		068A370A2D58ECE4B16AA1E3 /* GenteActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenteActivityAttributes.swift; sourceTree = "<group>"; };
 		0EAAD3ED14C4A9A31694BC08 /* Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Export.swift; sourceTree = "<group>"; };
 		194B9DFE67888F24C6E8E42B /* GenteUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = GenteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2093736E581BC651ACBF0CA1 /* LinkCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCrypto.swift; sourceTree = "<group>"; };
 		22AD4E22F61BBF2681C9E203 /* ChatEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEngine.swift; sourceTree = "<group>"; };
 		235D185B11A46AC324637F97 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		2FB2235FF62A56D4B1540F89 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -133,7 +136,6 @@
 		72F296FB3021DBB71D2ECBBB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		79551D89B786333BE3CCC530 /* AskGente.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskGente.swift; sourceTree = "<group>"; };
 		79B25AAEA02C62BBA1C5BD93 /* Gente.storekit */ = {isa = PBXFileReference; path = Gente.storekit; sourceTree = "<group>"; };
-		7C48C3289D9AF14644BA4C7D /* RelayCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayCrypto.swift; sourceTree = "<group>"; };
 		80218A8F758C848463589311 /* Inference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inference.swift; sourceTree = "<group>"; };
 		805B8165EE78AFD42DA5AA97 /* DemoSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSeed.swift; sourceTree = "<group>"; };
 		80BB535150254A5E2C917257 /* Listener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listener.swift; sourceTree = "<group>"; };
@@ -147,11 +149,13 @@
 		9E6A34478379A1938775F17C /* ContextBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextBuilder.swift; sourceTree = "<group>"; };
 		A32980022611C673AFD1AC2B /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		A5F639F78B9085B4B3253B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AD3B43FD2C1089580AD250F2 /* AppsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsView.swift; sourceTree = "<group>"; };
 		AE8CD4490B463D772180D807 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AFA7140DA80173DB78494FA9 /* EncryptedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedStore.swift; sourceTree = "<group>"; };
 		B070D281A3A5601C99532C82 /* MockCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCloud.swift; sourceTree = "<group>"; };
 		B317489A9E269CCA4625B07F /* GenteHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenteHTTP.swift; sourceTree = "<group>"; };
 		B422CD55B1D93B9BB24DAB16 /* Relay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relay.swift; sourceTree = "<group>"; };
+		B67C26729BBF9D6A195AEAEE /* ConnectedApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedApps.swift; sourceTree = "<group>"; };
 		BB5423220943DA1339D2E2C9 /* GenteWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = GenteWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0855C029B988AD7C47E0E5A /* AppShortcuts.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = AppShortcuts.xcstrings; sourceTree = "<group>"; };
 		C3A7D39CB37C98F9CB31D578 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
@@ -235,8 +239,8 @@
 		351D06DACEEB99204717195B /* Sync */ = {
 			isa = PBXGroup;
 			children = (
+				2093736E581BC651ACBF0CA1 /* LinkCrypto.swift */,
 				B422CD55B1D93B9BB24DAB16 /* Relay.swift */,
-				7C48C3289D9AF14644BA4C7D /* RelayCrypto.swift */,
 				FF074163D5667A121B258F74 /* SyncEngine.swift */,
 			);
 			path = Sync;
@@ -245,6 +249,7 @@
 		47DA3F4EF1274424D86A8153 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				AD3B43FD2C1089580AD250F2 /* AppsView.swift */,
 				E067EA4F0B0D58EF6A7C78C7 /* BrainView.swift */,
 				A32980022611C673AFD1AC2B /* ChatView.swift */,
 				EE5348E7FCA97EAB0474E823 /* DevicesView.swift */,
@@ -313,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				F40F2C6B213BA6886E78A10F /* CloudAPI.swift */,
+				B67C26729BBF9D6A195AEAEE /* ConnectedApps.swift */,
 				32C825B153DCDFF89AD8039C /* Friendly.swift */,
 				B317489A9E269CCA4625B07F /* GenteHTTP.swift */,
 				80218A8F758C848463589311 /* Inference.swift */,
@@ -563,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABA799947E39DB35D66010A5 /* Approvals.swift in Sources */,
+				B4AFAAF336CACCB88EF9D794 /* AppsView.swift in Sources */,
 				C70D724A57481A03373B0C37 /* AskGente.swift in Sources */,
 				B5FAAB8320E8062ECAB40A78 /* Auth.swift in Sources */,
 				288974F97B93FF2EC0BB2F03 /* BrainView.swift in Sources */,
@@ -570,6 +577,7 @@
 				067F99D4D0476E5DAA36C4B5 /* ChatView.swift in Sources */,
 				FC36AA1646B6F810EC0FEFBC /* CloudAPI.swift in Sources */,
 				844CAF866E5DEED9595B24BB /* Config.swift in Sources */,
+				F923DC2EABB2BB3FA7DE7DC3 /* ConnectedApps.swift in Sources */,
 				4AF7A739E37A06A1EA06C184 /* ContextBuilder.swift in Sources */,
 				4BE0E2632D7469F8A4CF5776 /* DemoSeed.swift in Sources */,
 				688AA89BEBA9B9C33EB824F4 /* DevicesView.swift in Sources */,
@@ -583,6 +591,7 @@
 				DC963E45C7DBB131C7548D2A /* HomeView.swift in Sources */,
 				67EAA1406E449E74103E8005 /* Inference.swift in Sources */,
 				9D33C855691438D6F26F24C9 /* KeyStore.swift in Sources */,
+				53567F7E72C8C829D0D2917C /* LinkCrypto.swift in Sources */,
 				DD7EF130DAC2BFCEAA7DD346 /* Listener.swift in Sources */,
 				A0AF2131669C32567C9E9A95 /* LiveActivityController.swift in Sources */,
 				B12A9B7401F2D3EEB2DF240E /* Models.swift in Sources */,
@@ -591,7 +600,6 @@
 				96DEE3A0151C10943E85742D /* PrivacyViews.swift in Sources */,
 				FBCE04B023149C56A82CEE53 /* Purchases.swift in Sources */,
 				2470697D1B18D3F7FD847514 /* Relay.swift in Sources */,
-				C9A141E5E4C2ECC194FB683B /* RelayCrypto.swift in Sources */,
 				E32BE8A8A3BD28CAC4A36AF8 /* RootView.swift in Sources */,
 				224B6D6E2A757E6E2605DF4C /* Sealer.swift in Sources */,
 				05F773EE92270091021174BD /* SettingsView.swift in Sources */,

@@ -15,6 +15,8 @@ enum Role: String, Codable { case system, user, assistant, tool }
 enum AnsweredBy: String, Codable {
     /// Gente Cloud Fast mode. The server answered in memory and kept nothing.
     case cloud
+    /// Gente Cloud answered with its placeholder while the GPU server is off ("cloud_preview").
+    case cloudPreview
     /// The person's own Gente computer, over the end-to-end encrypted relay.
     case desktop
     /// A model on this iPhone (off until Santi approves it).

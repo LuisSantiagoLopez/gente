@@ -101,8 +101,8 @@ struct DataCenterView: View {
     @State private var confirmErase = false
 
     var synced: String {
-        sync.peers.isEmpty ? String(localized: "Only on this iPhone")
-                           : String(localized: "This iPhone, synced end to end with \(sync.peers.count) of your devices")
+        sync.desktops.isEmpty ? String(localized: "Only on this iPhone")
+                              : String(localized: "This iPhone, synced end to end with \(sync.desktops.count) of your devices")
     }
 
     var body: some View {

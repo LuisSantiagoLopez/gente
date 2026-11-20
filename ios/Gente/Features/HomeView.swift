@@ -1,11 +1,12 @@
 // Copyright 2026 DeskHead Inc.
 import SwiftUI
 
-enum Route: Hashable { case chat(String), settings, egress, data, devices, brain, routines, paywall }
+enum Route: Hashable { case chat(String), settings, egress, data, devices, brain, routines, paywall, apps }
 
 struct HomeView: View {
     @Environment(ChatEngine.self) private var engine
     @Environment(Connectivity.self) private var net
+    @Environment(SyncEngine.self) private var sync
     @State private var path: [Route] = []
     @State private var query = ""
     @Namespace private var zoom
@@ -67,8 +68,13 @@ struct HomeView: View {
                 case .brain: BrainView()
                 case .routines: RoutinesView()
                 case .paywall: PaywallView()
+                case .apps: AppsView()
                 }
             }
+        }
+        .sheet(item: Binding(get: { sync.approvals.first }, set: { _ in })) { a in
+            DesktopApprovalSheet(approval: a) { yes in Task { await sync.decide(a, approved: yes) } }
+                .presentationDetents([.medium])
         }
         .onReceive(NotificationCenter.default.publisher(for: .genteDeepLink)) { _ in handleDeepLink() }
         .onAppear { handleDeepLink() }
@@ -95,7 +101,7 @@ struct HomeView: View {
         case .ask(let q): start(q)
         case .newChat: start(nil)
         case .chat(let id): path = [.chat(id)]
-        case .pair: path = [.settings, .devices]
+        case .pair(let url): DevicesView.pendingLink = url.absoluteString; path = [.settings, .devices]
         }
     }
 }

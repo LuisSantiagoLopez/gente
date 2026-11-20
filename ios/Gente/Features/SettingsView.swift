@@ -46,6 +46,7 @@ struct SettingsView: View {
             Section {
                 NavigationLink(value: Route.brain) { Label("Memory, skills and projects", systemImage: "brain") }
                 NavigationLink(value: Route.routines) { Label("Routines", systemImage: "alarm") }
+                NavigationLink(value: Route.apps) { Label("Connected apps", systemImage: "square.grid.2x2") }.accessibilityIdentifier("settings.apps")
             } header: { Text("Gente") }
             Section {
                 Link(destination: Config.support) { Label("Help", systemImage: "questionmark.circle") }
@@ -106,7 +107,7 @@ struct SettingsView: View {
                 return
             }
         }
-        for d in sync.peers { await sync.remove(d) }
+        for d in sync.desktops { await sync.unpair(d) }
         sync.stop()
         EncryptedStore.shared.eraseEverything()
         KeyStore(service: "com.deskhead.gente.device").eraseAll()

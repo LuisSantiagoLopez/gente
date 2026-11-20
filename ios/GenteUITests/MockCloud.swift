@@ -10,6 +10,7 @@ final class MockCloud {
     private(set) var requests: [(path: String, body: String)] = []
     private let lock = NSLock()
     private var inferenceRound: [String: Int] = [:]
+    private var manageCalls = 0
 
     init() throws {
         let params = NWParameters.tcp
@@ -109,6 +110,17 @@ final class MockCloud {
         case ("POST", "/v1/proxy/search"):
             return json(["results": [["title": "Weather forecast", "url": "https://weather.gov/forecast", "text": "Warm, 24C, showers after 4 pm."]]])
         case ("POST", "/v1/proxy/composio/mcp"):
+            let rpc = (try? JSONSerialization.jsonObject(with: Data(body.utf8))) as? [String: Any] ?? [:]
+            let params = rpc["params"] as? [String: Any] ?? [:]
+            if rpc["method"] as? String == "tools/list" {
+                return json(["jsonrpc": "2.0", "id": "1", "result": ["tools": ["COMPOSIO_SEARCH_TOOLS", "COMPOSIO_MANAGE_CONNECTIONS", "COMPOSIO_MULTI_EXECUTE_TOOL"].map { ["name": $0] }]])
+            }
+            if params["name"] as? String == "COMPOSIO_MANAGE_CONNECTIONS" {
+                lock.lock(); manageCalls += 1; let n = manageCalls; lock.unlock()
+                let text = n == 1 ? #"{"results":{"gmail":{"status":"INITIATED","redirect_url":"https://example.com/?composio_connect=gmail"}}}"#
+                                  : #"{"results":{"gmail":{"status":"ACTIVE"}}}"#
+                return json(["jsonrpc": "2.0", "id": "1", "result": ["content": [["type": "text", "text": text]]]])
+            }
             return json(["jsonrpc": "2.0", "id": "1", "result": ["content": [["type": "text", "text": "Email sent."]]]])
         case ("POST", "/v1/proxy/tts"):
             return json(["error": "plan_has_no_cloud", "message": "Free plan"], 402)

@@ -14,7 +14,7 @@ enum ToolSpec {
         fn("browse", "Use a cloud browser the person can watch live. action=read opens a URL and returns its text; action=click or type acts on the page.",
            ["action": ["type": "string", "enum": ["read", "click", "type"]], "url": ["type": "string"],
             "selector": ["type": "string"], "text": ["type": "string"]], ["action"]),
-        fn("apps", "Work in the person's connected apps (Gmail, Calendar, Slack, Notion and more). Give the Composio tool name and its arguments.",
+        fn("apps", "Work in the person's connected apps (Gmail, Calendar, Slack, Notion and more). To find an action, call tool COMPOSIO_SEARCH_TOOLS with arguments {\"queries\": [{\"use_case\": \"what you want to do\"}]}. Then call the action slug (for example GMAIL_SEND_EMAIL) with its arguments. If an app is not connected, tell the person to connect it in Settings > Connected apps.",
            ["tool": ["type": "string"], "arguments": ["type": "object"]], ["tool"]),
         fn("make_image", "Create an image from a description.", ["prompt": ["type": "string"]], ["prompt"]),
         fn("remember", "Save a short fact about the person to their phone's memory.", ["fact": ["type": "string"]], ["fact"]),
@@ -64,7 +64,7 @@ final class ToolRunner {
                 return ToolOutcome(text: String(out.prefix(8000)), step: String(localized: "Used the cloud browser"))
             case "apps":
                 let name = args["tool"] as? String ?? ""
-                let res = try await api.composio("tools/call", params: ["name": name, "arguments": args["arguments"] ?? [:]])
+                let res = try await ConnectedApps.shared.run(name, arguments: args["arguments"] ?? [:])
                 let data = try JSONSerialization.data(withJSONObject: res)
                 return ToolOutcome(text: String(data: data, encoding: .utf8).map { String($0.prefix(8000)) } ?? "",
                                    step: String(localized: "Worked in your apps"))

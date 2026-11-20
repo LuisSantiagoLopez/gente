@@ -105,8 +105,49 @@ final class FlowTests: GenteUITestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.buttons["home.new"].tap()
         send("Say hello in five words.")
-        XCTAssertTrue(app.descendants(matching: .any)["badge.cloud"].waitForExistence(timeout: 30), "real Fast mode answer")
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'badge.'")).firstMatch.waitForExistence(timeout: 30), "real Fast mode answer")
         shot("07-real-fast-mode")
+    }
+
+    /// Live: pairs with scripts/link-desktop-reference.mjs through the real Gente Cloud relay.
+    /// Needs a signed-in app (run testRealSignInWithReviewerAccount first) and TEST_RUNNER_LINK_QR.
+    func testLivePairingWithReferenceDesktop() throws {
+        guard let qr = ProcessInfo.processInfo.environment["LINK_QR"], let url = URL(string: qr) else {
+            throw XCTSkip("no LINK_QR")
+        }
+        app.launchArguments = ["-GenteUITest", "-GenteOnboarded"]
+        app.launchEnvironment = [:]
+        app.launch()
+        app.open(url)
+        let sb = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if sb.buttons["Open"].waitForExistence(timeout: 4) { sb.buttons["Open"].tap() }
+        let code = app.staticTexts["devices.safety"]
+        XCTAssertTrue(code.waitForExistence(timeout: 20), "paired: safety code shown")
+        try? code.label.replacingOccurrences(of: " ", with: "").write(toFile: "/tmp/gente-live-code.txt", atomically: true, encoding: .utf8)
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Paired'")).firstMatch.waitForExistence(timeout: 30), "desktop confirmed (hello_ack)")
+        shot("21-live-paired")
+        // Drive the desktop: start a task, get its approval on the phone, say no.
+        let field = app.textFields["devices.taskField"].exists ? app.textFields["devices.taskField"] : app.textViews["devices.taskField"]
+        field.tap(); field.typeText("Email Ana that Thursday works")
+        app.buttons["devices.taskSend"].tap()
+        let deny = app.buttons["desktopApproval.deny"]
+        XCTAssertTrue(deny.waitForExistence(timeout: 30), "approval pushed from the desktop")
+        shot("22-live-desktop-approval")
+        deny.tap()
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'nothing was sent'")).firstMatch.waitForExistence(timeout: 30))
+        shot("23-live-task-status")
+        // The chat the desktop synced is on the phone.
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.staticTexts["From the reference Mac"].waitForExistence(timeout: 10) ||
+                      app.cells.containing(NSPredicate(format: "label CONTAINS 'From the reference Mac'")).firstMatch.waitForExistence(timeout: 10))
+        // Private mode: the desktop answers, sealed end to end.
+        app.buttons["home.new"].tap()
+        app.buttons["Where the AI runs"].tap()
+        app.buttons["On my computer"].tap()
+        send("Hello computer")
+        XCTAssertTrue(app.descendants(matching: .any)["badge.desktop"].waitForExistence(timeout: 40), "answered on your computer")
+        shot("24-live-private-mode")
     }
 
     func testSkipSignInStillOpensApp() {
@@ -149,7 +190,7 @@ final class FlowTests: GenteUITestCase {
         XCTAssertTrue(cloud.received("/v1/proxy/composio").isEmpty, "nothing runs before the yes")
         allow.tap()
         XCTAssertTrue(app.descendants(matching: .any)["badge.cloud"].waitForExistence(timeout: 10))
-        XCTAssertEqual(cloud.received("/v1/proxy/composio").count, 1)
+        XCTAssertTrue(cloud.received("/v1/proxy/composio").contains { $0.contains("GMAIL_SEND_EMAIL") }, "the action ran after the yes")
     }
 
     func testApprovalDeny() {
@@ -251,6 +292,26 @@ final class FlowTests: GenteUITestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.buttons["Memory, skills and projects"].tap()
         XCTAssertTrue(app.buttons.containing(NSPredicate(format: "label CONTAINS 'Lives in Mexico City'")).firstMatch.waitForExistence(timeout: 5))
+    }
+
+    func testConnectAnApp() {
+        launchSignedIn()
+        app.buttons["home.settings"].tap()
+        app.buttons["settings.apps"].tap()
+        let connect = app.buttons["apps.connect.gmail"].firstMatch
+        XCTAssertTrue(connect.waitForExistence(timeout: 5))
+        shot("25-connected-apps")
+        connect.tap()
+        // The app's own sign-in page opens in Safari inside Gente.
+        let done = app.buttons.matching(NSPredicate(format: "label IN {'Done', 'Close'}")).firstMatch
+        XCTAssertTrue(done.waitForExistence(timeout: 15), "sign-in page opened")
+        sleep(2)
+        shot("26-connect-signin-page")
+        done.tap()
+        XCTAssertTrue(app.staticTexts["Connected"].firstMatch.waitForExistence(timeout: 10) ||
+                      app.descendants(matching: .any).containing(NSPredicate(format: "label CONTAINS 'Connected'")).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertEqual(cloud.received("/v1/proxy/composio").filter { $0.contains("COMPOSIO_MANAGE_CONNECTIONS") }.count, 2)
+        shot("27-app-connected")
     }
 
     func testDevicesScreen() {

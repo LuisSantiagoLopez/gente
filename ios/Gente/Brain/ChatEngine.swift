@@ -93,13 +93,12 @@ final class ChatEngine {
         store.deleteChat(chat.id)
         chats.removeAll { $0.id == chat.id }
         messages[chat.id] = nil
-        SyncEngine.shared.publish("chat.delete", id: chat.id, chat.id)
     }
 
     private func save(_ m: Message) {
         store.saveMessage(m)
         messages[m.chatId, default: []].append(m)
-        SyncEngine.shared.publish("message.upsert", id: m.id, m)
+        SyncEngine.shared.chatChanged(m.chatId)
     }
 
     func stop(_ chat: String) { tasks[chat]?.cancel() }
@@ -114,7 +113,6 @@ final class ChatEngine {
             store.saveChat(c)
             chats.removeAll { $0.id == chatId }
             chats.insert(c, at: 0)
-            SyncEngine.shared.publish("chat.upsert", id: c.id, c)
         }
         save(Message(chatId: chatId, role: .user, text: trimmed))
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -139,23 +137,24 @@ final class ChatEngine {
                 let by: AnsweredBy
                 switch place {
                 case .desktop:
-                    stream = try await DesktopBrain().stream(wire, chatId: chatId); by = .desktop
+                    stream = try await SyncEngine.shared.privateInfer(wire); by = .desktop
                 default:
                     try await waitForFastMode(chatId)
                     stream = try await inference.stream(wire, tools: ToolSpec.all); by = .cloud
                 }
                 var text = ""
                 var calls: [ToolCall] = []
+                var answered = by
                 streaming[chatId] = ""
                 for try await e in stream {
                     switch e {
                     case .text(let t): text += t; streaming[chatId] = text
                     case .toolCalls(let c): calls += c
-                    case .done: break
+                    case .done(let stub): if stub { answered = .cloudPreview }
                     }
                 }
                 if calls.isEmpty {
-                    save(Message(chatId: chatId, role: .assistant, text: text, answeredBy: by,
+                    save(Message(chatId: chatId, role: .assistant, text: text, answeredBy: answered,
                                  sources: sources.isEmpty ? nil : sources, steps: steps.isEmpty ? nil : steps))
                     replyCount += 1
                     UINotificationFeedbackGenerator().notificationOccurred(.success)

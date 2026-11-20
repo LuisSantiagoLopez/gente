@@ -30,7 +30,8 @@ struct BrainView: View {
                 .foregroundStyle(G.foreground)
             }
             .onDelete { idx in
-                for i in idx { EncryptedStore.shared.deleteBrain(items[i].id); SyncEngine.shared.publish("brain.delete", id: items[i].id, items[i].id) }
+                for i in idx { EncryptedStore.shared.deleteBrain(items[i].id) }
+                SyncEngine.shared.memoryChanged()
                 reload()
             }
         }
@@ -47,7 +48,7 @@ struct BrainView: View {
             BrainEditor(item: item) { saved in
                 var s = saved; s.updatedAt = Date()
                 EncryptedStore.shared.saveBrain(s)
-                SyncEngine.shared.publish("brain.upsert", id: s.id, s)
+                if s.kind == .memory { SyncEngine.shared.memoryChanged() }
                 editing = nil; reload()
             }
         }

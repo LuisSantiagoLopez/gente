@@ -43,7 +43,7 @@ enum DeepLink: Equatable {
         didSet { NotificationCenter.default.post(name: .genteDeepLink, object: nil) }
     }
     static func parse(_ url: URL) -> DeepLink? {
-        if url.scheme == "gente", url.host == "pair" { return .pair(url) }
+        if url.scheme == "gente", url.host == "link" { return .pair(url) }
         if url.scheme == "gente", url.host == "new" { return .newChat }
         if url.scheme == "gente", url.host == "chat", let id = url.pathComponents.dropFirst().first { return .chat(id) }
         if url.scheme == "gente", url.host == "ask",

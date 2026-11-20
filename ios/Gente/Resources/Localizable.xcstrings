@@ -42,6 +42,22 @@
     "%@%@": {
       "shouldTranslate": false
     },
+    "%lld chats, %lld messages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld chats, %lld mensajes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld conversas, %lld mensagens"
+          }
+        }
+      }
+    },
     "%lld online hours a month": {
       "localizations": {
         "es": {
@@ -330,6 +346,22 @@
         }
       }
     },
+    "Apps": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps"
+          }
+        }
+      }
+    },
     "Apps (Composio)": {
       "localizations": {
         "es": {
@@ -374,6 +406,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pergunte qualquer coisa ao Gente. A conversa fica no seu iPhone."
+          }
+        }
+      }
+    },
+    "Ask your computer to do something": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pídele algo a tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peça algo ao seu computador"
           }
         }
       }
@@ -550,6 +598,86 @@
           "stringUnit": {
             "state": "translated",
             "value": "Composio: ações nos apps que você conectar."
+          }
+        }
+      }
+    },
+    "Connect": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar"
+          }
+        }
+      }
+    },
+    "Connect the apps Gente may use for you. You sign in on the app's own page; Gente never sees your password. Gente still asks before it sends, pays, deletes or accepts anything.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conecta las apps que Gente puede usar por ti. Inicias sesión en la página de cada app; Gente nunca ve tu contraseña. Gente igual pregunta antes de enviar, pagar, borrar o aceptar algo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conecte os apps que o Gente pode usar por você. Você entra na página do próprio app; o Gente nunca vê sua senha. O Gente ainda pergunta antes de enviar, pagar, apagar ou aceitar algo."
+          }
+        }
+      }
+    },
+    "Connected": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectada"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectado"
+          }
+        }
+      }
+    },
+    "Connected apps": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps conectadas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps conectados"
+          }
+        }
+      }
+    },
+    "Connecting apps isn't available yet. Try again later.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar apps aún no está disponible. Inténtalo más tarde."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar apps ainda não está disponível. Tente mais tarde."
           }
         }
       }
@@ -1376,6 +1504,22 @@
         }
       }
     },
+    "Hide": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar"
+          }
+        }
+      }
+    },
     "Hours left": {
       "localizations": {
         "es": {
@@ -2176,6 +2320,22 @@
         }
       }
     },
+    "Preview reply from our servers, not stored": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respuesta de prueba de nuestros servidores, sin guardar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resposta de prévia dos nossos servidores, sem guardar"
+          }
+        }
+      }
+    },
     "Privacy": {
       "localizations": {
         "es": {
@@ -2688,6 +2848,22 @@
         }
       }
     },
+    "Sent to your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviado a tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviado ao seu computador"
+          }
+        }
+      }
+    },
     "Settings": {
       "localizations": {
         "es": {
@@ -2832,6 +3008,22 @@
         }
       }
     },
+    "Source %lld": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuente %lld"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fonte %lld"
+          }
+        }
+      }
+    },
     "Start a private chat in one tap.": {
       "localizations": {
         "es": {
@@ -2844,6 +3036,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Comece uma conversa privada com um toque."
+          }
+        }
+      }
+    },
+    "Start on my computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar en mi computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Começar no meu computador"
           }
         }
       }
@@ -2972,6 +3180,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Toque para rodar agora."
+          }
+        }
+      }
+    },
+    "Tasks on your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tareas en tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarefas no seu computador"
           }
         }
       }
@@ -3344,6 +3568,22 @@
         }
       }
     },
+    "To disconnect an app for good, remove Gente's access in that app's own settings.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para desconectar una app por completo, quita el acceso de Gente en los ajustes de esa app."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para desconectar um app de vez, remova o acesso do Gente nos ajustes desse app."
+          }
+        }
+      }
+    },
     "Tool words you approved (for example a search)": {
       "localizations": {
         "es": {
@@ -3436,6 +3676,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aguardando aprovação. Vamos adicionar quando for aprovado."
+          }
+        }
+      }
+    },
+    "Waiting for your computer to confirm": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando que tu computadora confirme"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aguardando o seu computador confirmar"
           }
         }
       }
@@ -3776,6 +4032,22 @@
         }
       }
     },
+    "Your computer asks": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu computadora pregunta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu computador pergunta"
+          }
+        }
+      }
+    },
     "Your computer is thinking…": {
       "localizations": {
         "es": {
@@ -3788,6 +4060,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seu computador está pensando…"
+          }
+        }
+      }
+    },
+    "Your computer is working": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu computadora está trabajando"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu computador está trabalhando"
           }
         }
       }
@@ -3884,38 +4172,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "fal.ai: imagens que você pedir."
-          }
-        }
-      }
-    },
-    "Source %lld": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuente %lld"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fonte %lld"
-          }
-        }
-      }
-    },
-    "%lld chats, %lld messages": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld chats, %lld mensajes"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld conversas, %lld mensagens"
           }
         }
       }

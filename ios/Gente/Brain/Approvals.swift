@@ -37,7 +37,13 @@ enum ApprovalRules {
 
     /// Every reason this tool call needs a yes from the person. Empty means it may run.
     static func reasons(tool: String, arguments: String) -> [ApprovalReason] {
-        if tool == "web_search" || tool == "make_image" { return [] }
+        if tool == "web_search" || tool == "make_image" || tool == "remember" { return [] }
+        // Composio's own helpers only look things up or make sign-in links.
+        if tool == "apps", let d = arguments.data(using: .utf8),
+           let o = try? JSONSerialization.jsonObject(with: d) as? [String: Any],
+           let name = o["tool"] as? String,
+           ["COMPOSIO_SEARCH_TOOLS", "COMPOSIO_GET_TOOL_SCHEMAS", "COMPOSIO_MANAGE_CONNECTIONS", "COMPOSIO_CHECK_ACTIVE_CONNECTION",
+            "COMPOSIO_CHECK_ACTIVE_CONNECTIONS", "COMPOSIO_LIST_TOOLKITS"].contains(name) { return [] }
         // Reading a page is safe; acting on one (click, type, submit) is checked.
         let hay = (tool + " " + arguments).lowercased()
         let tokens = Set(hay.split(whereSeparator: { !$0.isLetter }).map(String.init))

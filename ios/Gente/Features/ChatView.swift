@@ -97,9 +97,9 @@ struct ChatView: View {
 
     func handoff() {
         guard let desk = sync.desktop else { return }
+        _ = desk
         Task {
-            let p = SyncPayload(type: "handoff.open", id: chatId, at: Int64(Date().timeIntervalSince1970 * 1000), body: Data(chatId.utf8))
-            try? await sync.send(p, to: desk)
+            try? await sync.handoff(chatId)
             withAnimation(G.spring) { handedOff = true }
             try? await Task.sleep(for: .seconds(2))
             withAnimation(G.spring) { handedOff = false }
@@ -162,7 +162,7 @@ struct AnswerBadge: View {
     let by: AnsweredBy
     var body: some View {
         HStack(spacing: 5) {
-            Image(systemName: by == .cloud ? "bolt.shield" : by == .desktop ? "desktopcomputer" : "iphone")
+            Image(systemName: by == .cloud || by == .cloudPreview ? "bolt.shield" : by == .desktop ? "desktopcomputer" : "iphone")
             Text(label)
         }
         .font(.gente(.caption, weight: .medium))
@@ -176,6 +176,7 @@ struct AnswerBadge: View {
     var label: String {
         switch by {
         case .cloud: String(localized: "Answered on our servers, not stored")
+        case .cloudPreview: String(localized: "Preview reply from our servers, not stored")
         case .desktop: String(localized: "Answered on your computer")
         case .onDevice: String(localized: "Answered on this iPhone")
         }
@@ -188,7 +189,7 @@ struct BadgeExplainer: View {
         NavigationStack {
         VStack(alignment: .leading, spacing: 14) {
             AnswerBadge(by: by)
-            Text(by == .cloud ? "Gente Cloud got only this question, a few recent turns and the notes it needed. It answered in memory, then forgot it. No logs of your words, no storage, no training."
+            Text(by == .cloud || by == .cloudPreview ? "Gente Cloud got only this question, a few recent turns and the notes it needed. It answered in memory, then forgot it. No logs of your words, no storage, no training."
                               : "Your own computer made this answer with its local AI. The question and answer crossed the internet sealed end to end; Gente Cloud only passed the sealed box along.")
                 .font(.gente(.body))
             NavigationLink(value: Route.egress) { Text("See what left your phone") }

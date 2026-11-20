@@ -1,42 +1,18 @@
 // Copyright 2026 DeskHead Inc.
-// The store-and-forward relay on Gente Cloud, "channel" shape (SHARED.md, shared with Android
-// and desktop):
-//   POST /v1/devices {platform, publicKey}                 -> {deviceId}   (once per install)
-//   POST /v1/relay/inbox-<recipientDeviceId>               raw envelope bytes, octet-stream,
-//        header x-gente-device-id: <sender>                (wakes the recipient with an empty push)
-//   GET  /v1/relay/inbox-<myDeviceId>?after=<seq>          -> {envelopes:[{seq, envelope(base64)}]}
-//   DELETE /v1/devices/:id and /v1/relay/inbox-<id>        when a device is removed
-// Each envelope is one gente-relay-v1 JSON object. The server never parses it and keeps it at
-// most 72 hours (7 days max); live task messages use a 10-minute TTL.
+// Gente Cloud's channel relay (SHARED.md): the server stores opaque envelopes per channel and
+// never parses them. POST /v1/relay/:channel (raw envelope), GET ?after=<server seq>, DELETE.
 import Foundation
 
-struct Delivered { var serverId: String; var envelope: Envelope }
+struct RelayItem { var seq: Int64; var envelope: LinkEnvelope }
 
-protocol RelayTransport {
-    /// Registers this device's public keys; returns the server's device id.
-    func register(_ d: DevicePublic) async throws -> String
-    func remove(device: String) async throws
-    func send(_ envelopes: [Envelope]) async throws
-    func inbox(device: String, after: String?) async throws -> [Delivered]
-    func ack(device: String, ids: [String]) async throws
-}
-
-extension DevicePublic {
-    /// One string for the server: base64url(x25519 raw 32 bytes || ed25519 raw 32 bytes).
-    var serverPublicKey: String { ((Data(base64URL: x25519) ?? Data()) + (Data(base64URL: ed25519) ?? Data())).base64URL }
-}
-
-enum RelayChannel {
-    static func inbox(_ deviceId: String) -> String { "inbox-\(deviceId)" }
+protocol RelayTransport: AnyObject {
+    func post(_ channel: String, _ env: LinkEnvelope, live: Bool) async throws
+    func poll(_ channel: String, after: Int64) async throws -> [RelayItem]
+    func delete(_ channel: String) async throws
 }
 
 final class CloudRelay: RelayTransport {
     var api = CloudAPI.shared
-    /// Highest sequence number already handled, per inbox (kept on the phone).
-    private var lastSeq: Int {
-        get { UserDefaults.standard.integer(forKey: "relay.lastSeq") }
-        set { UserDefaults.standard.set(newValue, forKey: "relay.lastSeq") }
-    }
 
     private func call(_ r: URLRequest) async throws -> Data {
         let (data, resp) = try await api.http.data(r, service: .relay, carries: .encrypted)
@@ -44,42 +20,37 @@ final class CloudRelay: RelayTransport {
         return data
     }
 
-    func register(_ d: DevicePublic) async throws -> String {
-        struct R: Codable { var deviceId: String }
-        let r = try await api.request("/v1/devices", method: "POST", json: ["platform": "ios", "publicKey": d.serverPublicKey])
-        return try JSONDecoder().decode(R.self, from: try await call(r)).deviceId
+    func post(_ channel: String, _ env: LinkEnvelope, live: Bool) async throws {
+        // Live messages (task status, Private mode words) expire after 10 minutes.
+        var r = try await api.request("/v1/relay/\(channel)" + (live ? "?ttl=600" : ""), method: "POST")
+        r.httpBody = try JSONEncoder().encode(env)
+        r.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let id = UserDefaults.standard.string(forKey: "relay.deviceId") { r.setValue(id, forHTTPHeaderField: "x-gente-device-id") }
+        _ = try await call(r)
     }
 
-    func remove(device: String) async throws {
-        _ = try await call(try await api.request("/v1/devices/\(device)", method: "DELETE"))
-        _ = try? await call(try await api.request("/v1/relay/\(RelayChannel.inbox(device))", method: "DELETE"))
-    }
-
-    func send(_ envelopes: [Envelope]) async throws {
-        for e in envelopes {
-            var r = try await api.request("/v1/relay/\(RelayChannel.inbox(e.to))", method: "POST")
-            if e.live { r.url = URL(string: r.url!.absoluteString + "?ttl=600") }
-            r.httpBody = try JSONEncoder().encode(e)
-            r.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-            r.setValue(e.from, forHTTPHeaderField: "x-gente-device-id")
-            _ = try await call(r)
-        }
-    }
-
-    func inbox(device: String, after: String?) async throws -> [Delivered] {
-        struct E: Codable { var seq: Int; var envelope: String }
+    func poll(_ channel: String, after: Int64) async throws -> [RelayItem] {
+        struct E: Codable { var seq: Int64; var envelope: String }
         struct R: Codable { var envelopes: [E] }
-        let r = try await api.request("/v1/relay/\(RelayChannel.inbox(device))?after=\(after.flatMap(Int.init) ?? lastSeq)")
-        let got = try JSONDecoder().decode(R.self, from: try await call(r))
-        return got.envelopes.compactMap { x in
-            guard let d = Data(base64Encoded: x.envelope), let e = try? JSONDecoder().decode(Envelope.self, from: d) else { return nil }
-            return Delivered(serverId: String(x.seq), envelope: e)
+        let r = try await api.request("/v1/relay/\(channel)?after=\(after)")
+        return try JSONDecoder().decode(R.self, from: try await call(r)).envelopes.compactMap { x in
+            guard let d = Data(base64Encoded: x.envelope), let e = try? JSONDecoder().decode(LinkEnvelope.self, from: d) else { return nil }
+            return RelayItem(seq: x.seq, envelope: e)
         }
     }
 
-    /// Channel relay has no per-message delete: we remember the last sequence handled, and the
-    /// server drops envelopes when their TTL ends.
-    func ack(device: String, ids: [String]) async throws {
-        if let m = ids.compactMap(Int.init).max(), m > lastSeq { lastSeq = m }
+    func delete(_ channel: String) async throws {
+        _ = try await call(try await api.request("/v1/relay/\(channel)", method: "DELETE"))
+    }
+
+    /// Once per install: lets Gente Cloud wake this phone with an empty push. No names, no content.
+    func registerDevice(publicKey: Data, pushToken: String?) async {
+        guard UserDefaults.standard.string(forKey: "relay.deviceId") == nil else { return }
+        struct R: Codable { var deviceId: String }
+        var body: [String: Any] = ["platform": "ios", "publicKey": publicKey.base64URL]
+        if let pushToken { body["pushToken"] = pushToken }
+        guard let r = try? await api.request("/v1/devices", method: "POST", json: body),
+              let d = try? await call(r), let id = try? JSONDecoder().decode(R.self, from: d).deviceId else { return }
+        UserDefaults.standard.set(id, forKey: "relay.deviceId")
     }
 }
