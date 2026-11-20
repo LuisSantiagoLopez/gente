@@ -1,5 +1,6 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRunRequest } from "@rakazo/adapter-kit";
+import { SandboxTaskLimitError } from "@rakazo/adapter-kit";
 import type { MessageBlock } from "@rakazo/contracts";
 import { disabledBuiltinToolSet, modelRoleConnectionId } from "@rakazo/contracts";
 import {
@@ -25,6 +26,7 @@ import {
   waitForRunComputerLease,
 } from "../../computers/computer-lifecycle.js";
 import { resolveComputerRunModel } from "../../computers/computer-model-settings.js";
+import { taskComputerBudget } from "../../computers/computer-task-limit.js";
 import { checkpointRunComputerWorkspace } from "../../computers/computer-workspace.js";
 import { sandboxKindCapabilities } from "../../computers/sandbox/sandbox-kind-capabilities.js";
 import { teamWorkspaceInstruction } from "../../computers/screens/computer-support.prompt.js";
@@ -80,7 +82,7 @@ import { refreshTakeoverContinuePlan } from "../turn/takeover-resume.js";
 import { historyReplaysOutsideContent } from "../turn/tool-step-calls.js";
 import type { ThreadHistory, TurnContext } from "./run-assembly-history.js";
 import type { ConnectedRun, RunRecords, SavedTurn } from "./run-assembly-records.js";
-import { lazyRunComputer } from "./run-computer.js";
+import { computerNotReached, lazyRunComputer } from "./run-computer.js";
 import {
   BOT_DIRECTORY_LIMIT,
   COMPUTER_USE_INSTRUCTION,
@@ -309,6 +311,11 @@ export async function prepareRunComputer(
     { id: storedComputer.id, kind: computerKind },
     context.signal,
   );
+  // A computer that bills while running stops serving a task that has used its time limit.
+  const taskBudget =
+    deps.sandbox.billsWhileRunning?.({ kind: computerKind }) === true
+      ? taskComputerBudget(deps.prisma, { runId, attemptId: hold.attempt.id })
+      : undefined;
   const pendingTurnFiles: MessageBlock[][] = [turnBlocks ?? []];
   let copyingTurnFiles = Promise.resolve();
   // Serialize copies before each tool, including attachments received while a boot is in flight.
@@ -326,7 +333,18 @@ export async function prepareRunComputer(
         "computer.id": storedComputer.id,
       },
       async () => {
-        const computer = await runComputer.get();
+        let computer: Awaited<ReturnType<typeof runComputer.get>>;
+        try {
+          if (await taskBudget?.exceeded()) {
+            getLogger().warn("computer.task_limit_reached", { "limit.ms": taskBudget?.limitMs });
+            scheduleComputerSleep(deps.jobs, storedComputer.id, new Date());
+            runComputer.fail(new SandboxTaskLimitError(taskBudget?.limitMs ?? 0));
+          }
+          computer = await runComputer.get();
+        } catch (error) {
+          // Gente: nothing was sent to the computer, so the asking tool call may run on retry.
+          throw computerNotReached(error);
+        }
         copyingTurnFiles = copyingTurnFiles
           .catch(() => undefined)
           .then(async () => {

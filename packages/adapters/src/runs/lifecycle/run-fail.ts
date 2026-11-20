@@ -1,9 +1,11 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   ModelAccountError,
   ModelOutputError,
   SandboxAllowanceUsedError,
   SandboxProviderAccountError,
   SandboxRateLimitError,
+  SandboxTaskLimitError,
   TransientModelError,
 } from "@rakazo/adapter-kit";
 import {
@@ -16,7 +18,7 @@ import {
   userRunError,
 } from "@rakazo/core";
 import { isDatabaseUnavailable, retryWhileDatabaseUnavailable } from "@rakazo/db";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
 import { sanitizedError } from "@rakazo/logging/monitoring";
 import { returnBotMessageOutcome } from "../../messaging/bot-messages.js";
 import {
@@ -32,6 +34,7 @@ import { scheduleRoutineRetry } from "../assembly/run-routines.js";
 import {
   computerRetryDelay,
   enqueueSteeringContinuation,
+  providerOutageRetryDelay,
   requeueInterruptedRun,
 } from "./run-lifecycle.js";
 import { notifyRun, runSendsFinishNotification } from "./run-notifications.js";
@@ -84,6 +87,67 @@ export async function requeueRunAfterDatabaseOutage(ctx: RunContext): Promise<vo
   }
 }
 
+/**
+ * Gente: how many times a turn that has saved progress waits out a model server that cannot be
+ * reached before it fails. With the provider-outage backoff that is about 45 minutes, long enough
+ * for a local model server to restart or a laptop to get its network back.
+ */
+export const MODEL_OUTAGE_REQUEUES = 12;
+/** Marks an attempt that ended to wait for the model server, so the waits can be counted. */
+export const MODEL_OUTAGE_ATTEMPT_NOTE = "The model server could not be reached; resumed later.";
+
+/**
+ * Gente (modified from Rakazo): a long turn that saved its steps should not be lost because the
+ * model server was briefly unreachable. Hand the run back like a stopping worker, so it resumes
+ * after its last saved step once the backoff passes. Returns false when the turn should fail.
+ */
+export async function requeueRunAfterModelOutage(
+  ctx: RunContext,
+  error: unknown,
+): Promise<boolean> {
+  if (!(error instanceof TransientModelError) || !ctx.state.effects.storedTurnCheckpoint)
+    return false;
+  const { deps, runId, workerId, fence } = ctx;
+  // Only earlier waits for the model count; restarts and busy-computer retries are other attempts.
+  const waits = await deps.prisma.attempt.count({
+    where: { runId, error: MODEL_OUTAGE_ATTEMPT_NOTE },
+  });
+  if (waits >= MODEL_OUTAGE_REQUEUES) return false;
+  await bestEffort("run.model_outage_checkpoint", ctx.computer.checkpoint.flush());
+  const wakeAt = new Date(Date.now() + providerOutageRetryDelay(waits));
+  const handedBack = await requeueInterruptedRun(deps, runId, workerId, fence, wakeAt);
+  if (handedBack) {
+    ctx.state.lease.handedBack = true;
+    await bestEffort(
+      "run.model_outage_note",
+      deps.prisma.attempt.updateMany({
+        where: { id: ctx.attempt.id },
+        data: { error: MODEL_OUTAGE_ATTEMPT_NOTE },
+      }),
+    );
+    getLogger().warn("run.model_outage_requeued", {
+      "run.id": runId,
+      "run.model_waits": waits + 1,
+      "run.wake_at": wakeAt.toISOString(),
+      reason: error.message,
+    });
+  }
+  return handedBack;
+}
+
+/**
+ * Gente (modified from Rakazo): the attempt stopped itself because its leases could have lapsed,
+ * as after a laptop sleeps or the process is frozen. Nothing failed: hand the run back so this or
+ * another process resumes it after its last saved step. When another process already claimed it,
+ * the requeue matches nothing and that process carries on.
+ */
+export async function requeueRunAfterLostLease(ctx: RunContext): Promise<void> {
+  const { deps, runId, workerId, fence } = ctx;
+  const handedBack = await requeueInterruptedRun(deps, runId, workerId, fence);
+  ctx.state.lease.handedBack ||= handedBack;
+  getLogger().warn("run.lease_lost_requeued", { "run.id": runId, "run.handed_back": handedBack });
+}
+
 /** The turn failed: keep the reply streamed so far, record the error, and retry or notify. */
 export async function failRun(
   ctx: RunContext,
@@ -105,6 +169,7 @@ export async function failRun(
     if (
       !(computerError instanceof SandboxRateLimitError) &&
       !(computerError instanceof SandboxAllowanceUsedError) &&
+      !(computerError instanceof SandboxTaskLimitError) &&
       !(computerError instanceof SandboxProviderAccountError)
     )
       throw computerError;
@@ -151,7 +216,8 @@ export async function failRun(
     error instanceof ModelAccountError ||
     error instanceof ModelOutputError ||
     error instanceof SandboxRateLimitError ||
-    error instanceof SandboxAllowanceUsedError
+    error instanceof SandboxAllowanceUsedError ||
+    error instanceof SandboxTaskLimitError
   ) {
     // Provider outages that outlasted retries, provider accounts, plans and model
     // choices the user fixes, unusable model output, the computer provider's own rate limit

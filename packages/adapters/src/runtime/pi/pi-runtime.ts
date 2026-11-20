@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentToolResult } from "@earendil-works/pi-agent-core";
 import { Agent } from "@earendil-works/pi-agent-core";
 import type {
@@ -130,6 +131,9 @@ const MAX_SILENT_TOOL_CONTINUATIONS = 3;
 // Shown as a failed-run error, not an assistant message. Asking the user to
 // continue stores that sentence as the reply, and the next "continue" runs
 // tools and misses a final answer again.
+/** How often a long turn saves its finished steps; each save replaces the last. */
+const PROGRESS_CHECKPOINT_INTERVAL_MS = 30_000;
+
 export { MISSING_TOOL_FINAL_RESPONSE_ERROR } from "@rakazo/core";
 
 export interface PiAgentRuntimeOptions {
@@ -230,6 +234,7 @@ export class PiAgentRuntime implements AgentRuntime {
       let trackedBudget: ToolCallBudget | undefined;
       let yielded = false;
       let handBackFailed = false;
+      let progressSavedAt = 0;
       // Ends the turn only once the run's executor has saved it and handed the run back.
       const handBack = (checkpoint: string) =>
         new Promise<boolean>((resolve) => {
@@ -698,6 +703,29 @@ export class PiAgentRuntime implements AgentRuntime {
                 return { action: "end" };
               }
               handBackFailed = true;
+            }
+            // Gente (modified from Rakazo): a long turn also saves its finished steps as it goes,
+            // so a quit cut short, a crash or a sleep resumes after the last finished step
+            // instead of starting the turn over. Same boundary as the hand-back above.
+            if (
+              !request.yieldSignal?.aborted &&
+              turn.toolResults.length > 0 &&
+              !turnSignal?.aborted &&
+              !host.pausePending &&
+              !terminatedReply &&
+              !joinCutReply &&
+              host.pendingShells.length === 0 &&
+              Date.now() - progressSavedAt >= PROGRESS_CHECKPOINT_INTERVAL_MS
+            ) {
+              progressSavedAt = Date.now();
+              const checkpoint = turnCheckpointAt("");
+              if (finishedShells)
+                checkpoint.messages.push({
+                  role: "user",
+                  content: finishedShells,
+                  timestamp: Date.now(),
+                });
+              queue.push({ type: "checkpoint", blob: serializeTurnCheckpoint(checkpoint) });
             }
             // Steered, so the output reaches the next model request like a tool result. A
             // follow-up waits until the model stops and then costs one model turn each.

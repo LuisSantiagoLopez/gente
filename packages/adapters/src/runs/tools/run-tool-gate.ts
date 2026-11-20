@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   AgentToolExecutionObserver,
@@ -105,6 +106,9 @@ import { shellDeletesInBulk } from "./shell-deletes.js";
 export type AppliedEffect = Awaited<ReturnType<typeof recordEffect>>;
 
 /** A tool call that passed its approval gate, as tool handlers receive it. */
+/** Tools whose handlers claim their own effect, at the point their side effect starts. */
+const CLAIMED_BY_HANDLER = new Set(["request_secret", "secret_request"]);
+
 export interface ToolCall {
   readonly name: string;
   readonly args: Record<string, unknown>;
@@ -125,6 +129,8 @@ export interface ToolCall {
   readonly spend: PurchaseApproval | undefined;
   /** This call moved its effect to executing. request_secret can hand the claim back. */
   claimedEffect: boolean;
+  /** The status the claim moved the effect from, to hand it back to. */
+  claimedFrom?: "approved" | "intended";
   /** Store the result on the effect; false when it could not be stored. */
   readonly persistEffectResult: (result: unknown) => Promise<boolean>;
   /** Store the result and return it, or an uncertain-effect result when storing failed. */
@@ -716,6 +722,12 @@ export async function gateToolCall(
   } else if (call.bypassApproval && applied) {
     const early = await call.claimOrReturn("intended");
     if (early !== undefined) return { result: early, replayed: true };
+  } else if (applied && !CLAIMED_BY_HANDLER.has(name)) {
+    // Gente (modified from Rakazo): an ungated call used to run with its effect still intended,
+    // so when its process died mid-call the resumed turn ran it a second time. Marking it
+    // running first makes a resume report the outcome as unknown instead.
+    const early = await call.claimOrReturn("intended");
+    if (early !== undefined) return { result: early, replayed: true };
   }
   // Past the gate: this destination is now one the run was given. A search result's exact
   // URL trusts only that URL, never the rest of its site, and a URL Auto Review passed (judged on
@@ -783,6 +795,7 @@ function createToolCall(
     claimOrReturn: async (from) => {
       if (await claimEffect(deps, ctx.runId, applied!.effect.id, from)) {
         call.claimedEffect = true;
+        call.claimedFrom = from;
         return undefined;
       }
       const current = await deps.prisma.externalEffect.findUnique({

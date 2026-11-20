@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { setImmediate } from "node:timers/promises";
 import type { JobPublisher, NotificationProvider } from "@rakazo/adapter-kit";
 import { routineWakeupJob, runContinueJob } from "@rakazo/adapter-kit";
@@ -130,6 +131,8 @@ export function createJobReconciler(
     reconcileChatHistoryRetention?: () => Promise<void>;
     reconcileHomeStorage?: () => Promise<void>;
     reconcileIdleComputers?: () => Promise<void>;
+    /** Stops provider machines this deployment started that nothing here uses. */
+    reconcileOrphanComputers?: () => Promise<void>;
     reconcileDeadJobs?: () => Promise<void>;
     /** Gives chat messages whose backup job was lost a new one. */
     reconcileChatDelivery?: () => Promise<void>;
@@ -177,6 +180,7 @@ export function createJobReconciler(
     deps.reconcileChatHistoryRetention,
     deps.reconcileHomeStorage,
     deps.reconcileIdleComputers,
+    deps.reconcileOrphanComputers,
     deps.reconcileDeadJobs,
     deps.reconcileChatDelivery,
   ].filter((reconcile) => reconcile !== undefined);

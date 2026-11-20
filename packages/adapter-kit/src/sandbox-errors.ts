@@ -1,7 +1,9 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   COMPUTER_ALLOWANCE_USED_ERROR,
   COMPUTER_PROVIDER_UNAVAILABLE_ERROR,
   COMPUTER_RATE_LIMIT_ERROR,
+  COMPUTER_TASK_LIMIT_ERROR,
 } from "@rakazo/contracts";
 
 /** The sandbox provider refused the request because an account rate limit or quota was hit. */
@@ -35,6 +37,15 @@ export class SandboxAllowanceUsedError extends Error {
   constructor() {
     super(COMPUTER_ALLOWANCE_USED_ERROR);
     this.name = "SandboxAllowanceUsedError";
+  }
+}
+
+/** One task used its computer time limit, so it may not use a computer that bills again. */
+export class SandboxTaskLimitError extends Error {
+  readonly code = "SANDBOX_TASK_LIMIT";
+  constructor(readonly limitMs: number) {
+    super(COMPUTER_TASK_LIMIT_ERROR);
+    this.name = "SandboxTaskLimitError";
   }
 }
 

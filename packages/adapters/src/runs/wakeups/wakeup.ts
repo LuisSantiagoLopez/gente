@@ -587,6 +587,14 @@ export class GraphileJobWorkerHost implements JobWorkerHost {
  * and row claims, never from running jobs one at a time.
  */
 const MAINTENANCE_JOB_CONCURRENCY = 100;
+
+/**
+ * Maintenance jobs are short database work, so running more at once than the pool has
+ * connections only queues them inside the pool (and Graphile warns about it). Size to the pool.
+ */
+export function maintenanceConcurrency(poolMax: number | undefined): number {
+  return Math.max(1, Math.min(MAINTENANCE_JOB_CONCURRENCY, poolMax ?? 10));
+}
 const MAINTENANCE_LOCAL_QUEUE_SIZE = 10;
 
 /** Long agent turns cannot occupy the capacity reserved for other workloads. */
@@ -600,7 +608,9 @@ export function createReservedGraphileJobWorkerHost(
         ...options,
         ...(workload === "maintenance"
           ? {
-              concurrency: MAINTENANCE_JOB_CONCURRENCY,
+              concurrency: maintenanceConcurrency(
+                (pool as { options?: { max?: number } }).options?.max,
+              ),
               localQueueSize: MAINTENANCE_LOCAL_QUEUE_SIZE,
             }
           : { concurrency: workload === "interactive" ? options.concurrency : 1 }),

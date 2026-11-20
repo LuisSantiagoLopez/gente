@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AssistantMessage, Context, Model, ToolCall } from "@earendil-works/pi-ai";
 import { AssistantMessageEventStream } from "@earendil-works/pi-ai/utils/event-stream";
 import type { AgentRunRequest, AgentRuntimeEvent } from "@rakazo/adapter-kit";
@@ -291,4 +292,42 @@ it("runs every step of a turn whose process is not stopping", async () => {
   expect(calledPaths(input)).toEqual(["a", "b"]);
   expect(fake.stream).toHaveBeenCalledTimes(3);
   expect(events.at(-1)).toEqual({ type: "done", text: "Done." });
+});
+
+describe("a long turn's progress", () => {
+  it("is saved after a finished step, and a crashed turn resumes after that step", async () => {
+    const input = request(new AbortController());
+    script(["a", "b", undefined]);
+
+    const events = await run(input);
+    const saved = events.filter((event) => event.type === "checkpoint");
+    // The first finished step saves; the next one falls inside the save interval.
+    expect(saved).toHaveLength(1);
+    expect(events.at(-1)).toEqual({ type: "done", text: "Done." });
+
+    // The process died after step "a" was saved. Another process resumes from that save.
+    script(["b", undefined]);
+    const resumed = {
+      ...request(new AbortController()),
+      runId: input.runId,
+      turnCheckpoint: saved[0]?.type === "checkpoint" ? saved[0].blob : undefined,
+    };
+    const resumedEvents = await run(resumed);
+
+    expect(calledPaths(resumed)).toEqual(["b"]);
+    const nextCall = fake.stream.mock.calls.at(-2)![1] as Context;
+    expect(nextCall.messages.at(-1)).toMatchObject({ role: "toolResult", toolCallId: "call-a" });
+    expect(resumedEvents.at(-1)).toEqual({ type: "done", text: "Done." });
+  });
+
+  it("is not saved separately when the stopping process hands the turn back", async () => {
+    const stopping = new AbortController();
+    const input = request(stopping, "a");
+    script(["a", "b", undefined]);
+
+    const events = await run(input);
+
+    expect(events.some((event) => event.type === "yielded")).toBe(true);
+    expect(events.some((event) => event.type === "checkpoint")).toBe(false);
+  });
 });
