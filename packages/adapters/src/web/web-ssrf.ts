@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { lookup } from "node:dns/promises";
 import { MIMEType } from "node:util";
 import {
@@ -17,7 +18,7 @@ import { fetchPairedWithDispatcher } from "../network/undici-fetch.js";
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
 const MAX_REDIRECTS = 5;
-const DEFAULT_USER_AGENT = "Rakazo/0.1 (+https://github.com/elie222/rakazo)";
+const DEFAULT_USER_AGENT = "Gente/0.2";
 
 export type { ResolveHostname } from "../network/network-address.js";
 

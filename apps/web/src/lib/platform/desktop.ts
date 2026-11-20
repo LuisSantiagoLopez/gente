@@ -65,4 +65,5 @@ export function windowChromeKind(desktop?: RakazoDesktop): "spacer" | "darwin" |
  * Apply it with a style (`width` or `left`). Tailwind only emits a utility from a complete class
  * literal, so `w-[${DARWIN_WINDOW_CONTROLS_WIDTH_PX}px]` would not ship.
  */
-export const DARWIN_WINDOW_CONTROLS_WIDTH_PX = 72;
+// Gente: macOS 26 draws larger buttons (they end about 76 px from the edge), so 80 keeps a gap.
+export const DARWIN_WINDOW_CONTROLS_WIDTH_PX = 80;

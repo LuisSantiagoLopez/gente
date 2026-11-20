@@ -20,9 +20,15 @@
     <main class="shell">
       <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12.00" cy="4.00" r="2.6" class="mark-you"/><circle cx="17.66" cy="6.34" r="2.1"/><circle cx="20.00" cy="12.00" r="2.1"/><circle cx="17.66" cy="17.66" r="2.1"/><circle cx="12.00" cy="20.00" r="2.1"/><circle cx="6.34" cy="17.66" r="2.1"/><circle cx="4.00" cy="12.00" r="2.1"/><circle cx="6.34" cy="6.34" r="2.1"/></svg>
       <h1 class="heading">The AI of the people.</h1>
-      <p class="subheading">
-        Private like a conversation at home. Gente runs on your computer, and nobody watches.
-        Its helpers chat, do real work, and remember what matters to you.
+      <ul class="benefits">
+        <li>Your AI lives on your computer. Your chats never leave it.</li>
+        <li>No usage limits. Message as much as you want.</li>
+        <li>Nobody reads your data, trains on it, or sells it. Not us, not anyone.</li>
+        <li>No ads. Ever.</li>
+      </ul>
+      <p class="benefits-note">
+        When Gente works online for you (browsing, apps), only what that task needs goes out, and
+        only when you ask.
       </p>
 
       <form id="setup" novalidate>
@@ -37,7 +43,7 @@
             <span class="step-dot" aria-hidden="true"></span>
             <div class="step-body">
               <div class="step-row">
-                <span class="step-title">Swift model</span>
+                <span class="step-title">Your AI</span>
                 <span id="brain-size" class="step-meta"></span>
               </div>
               <p id="brain-status" class="step-status" role="status" aria-live="polite">
@@ -48,7 +54,7 @@
               </div>
               <p id="brain-detail" class="step-detail"></p>
               <details id="brain-models" class="models">
-                <summary>Choose a different Swift model</summary>
+                <summary>Choose a different model</summary>
                 <div id="brain-model-list" class="model-list" role="radiogroup" aria-label="Swift model"></div>
               </details>
             </div>

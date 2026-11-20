@@ -520,3 +520,35 @@ form {
   font-size: 11px;
   color: var(--faint-foreground);
 }
+
+/* Gente: the promises on the first screen. */
+.benefits {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--foreground, inherit);
+}
+.benefits li {
+  position: relative;
+  padding-left: 18px;
+}
+.benefits li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary, #e8951a);
+}
+.benefits-note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted-foreground, #8a8070);
+}

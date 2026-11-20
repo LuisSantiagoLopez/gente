@@ -54,7 +54,7 @@ describe("window chrome", () => {
   });
 
   it("reserves the macOS traffic-light strip width beside inset controls", () => {
-    expect(DARWIN_WINDOW_CONTROLS_WIDTH_PX).toBe(72);
+    expect(DARWIN_WINDOW_CONTROLS_WIDTH_PX).toBe(80);
   });
 });
 

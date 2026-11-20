@@ -16,7 +16,7 @@ export function registerBrainIpc(stackDirectory: string) {
     copyright: "Copyright 2026 DeskHead Inc.",
     credits:
       "Based on Rakazo by Elie Steinbock (Apache-2.0), github.com/elie222/rakazo.\n" +
-      "Default model: Swift 1.5 by UkisAI, run locally with Ollama.",
+      "Default model: Swift 1.5 by UkisAI, running on this computer.",
   });
   brain = new Brain(stackDirectory, (state) => {
     const win = desktop.setupWindow;
@@ -33,7 +33,7 @@ export function registerBrainIpc(stackDirectory: string) {
         ? (options as { installOllama?: unknown; model?: unknown })
         : {};
     void (brain as Brain).start({
-      installOllama: opts.installOllama === true,
+      installOllama: opts.installOllama !== false,
       model: typeof opts.model === "string" ? opts.model : undefined,
     });
     return (brain as Brain).current();
