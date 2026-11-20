@@ -181,6 +181,11 @@ msgstr "{0} דברים בוצעו עד עכשיו."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} דברים בוצעו, שמרת {1}."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} ממתינים"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**שלישי: $2,340 מ-31 הזמנות** (עלייה של 12% לעומ�
 msgid "/ month"
 msgstr "/ חודש"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price} לחודש · {0} ממתינים"
+msgid "${price}/mo"
+msgstr "${price} לחודש"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -12079,8 +12083,8 @@ msgid "this computer"
 msgstr "המחשב הזה"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "המחשב הזה פועל בענן (E2B), לא ב-Mac או ב-PC שלך. אפשר לצפות בו בשידור חי ולקחת שליטה כדי להתחבר בעצמך."
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "המחשב הזה פועל בענן, לא ב-Mac או ב-PC שלך. אפשר לצפות בו בשידור חי ולקחת שליטה כדי להתחבר בעצמך."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13291,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "מתי בוטים מתייעצים איתך לפני פעולה."
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "כש־Gente עובד בשבילך ברשת (חיפוש, גלישה, אפליקציות), יוצא רק מה שהמשימה צריכה. נתונים של אפליקציה מחוברת עוברים דרך הענן של Composio, רק עבור האפליקציות שבחרת."
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "כש-Gente עובד בשבילך ברשת (חיפוש, גלישה, אפליקציות), יוצא רק מה שהמשימה צריכה. הנתונים של אפליקציה מחוברת עוברים דרך הענן של ספק האפליקציות המחוברות שלנו, רק עבור האפליקציות שבחרת."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

@@ -17,6 +17,8 @@ export const exclude = [
   // Names a user picks by name are product data: model providers and protocols, messaging apps,
   // the integrations catalog, and the settings another agent's import reads.
   "packages/core/src/{models/model-providers,messaging/messaging-providers,integrations/featured-connectors,integrations/plugin-catalog}.ts",
+  // Gente's work apps and the apps its money recipes connect, picked by name like the catalog above.
+  "packages/core/src/{integrations/work-apps,bots/money-recipes}.ts",
   "packages/core/src/agent-import/**",
   // Composition roots wire vendors up and read their configuration, which AGENTS.md allows.
   "apps/api/src/{app,env,index}.ts",

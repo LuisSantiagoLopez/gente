@@ -181,6 +181,11 @@ msgstr "Şu ana kadar {0} iş tamamlandı."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} iş tamamlandı, {1} tanesini tuttunuz."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} bekliyor"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**Salı: 31 siparişten $2,340** (geçen salıya göre %12 artış)\n"
 msgid "/ month"
 msgstr "/ ay"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/ay · {0} kişi bekliyor"
+msgid "${price}/mo"
+msgstr "${price}/ay"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -12079,8 +12083,8 @@ msgid "this computer"
 msgstr "bu bilgisayar"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "Bu bilgisayar Mac'inde veya PC'nde değil, bulutta (E2B) çalışır. Canlı izle ve kendin oturum açmak için kontrolü al."
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "Bu bilgisayar Mac'inde veya PC'nde değil, bulutta çalışır. Canlı izle ve kendin oturum açmak için kontrolü al."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13291,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "Botların harekete geçmeden önce sana ne zaman danışacağı."
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "Gente senin için çevrimiçi çalıştığında (arama, gezinme, uygulamalar), yalnızca o görevin ihtiyacı olan dışarı çıkar. Bağlı bir uygulamanın verileri yalnızca seçtiğin uygulamalar için Composio'nun bulutundan geçer."
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "Gente sizin için çevrimiçi çalıştığında (arama, gezinme, uygulamalar) yalnızca o görevin ihtiyaç duyduğu şey dışarı çıkar. Bağlı bir uygulamanın verileri, yalnızca seçtiğiniz uygulamalar için bağlı uygulama sağlayıcımızın bulutundan geçer."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

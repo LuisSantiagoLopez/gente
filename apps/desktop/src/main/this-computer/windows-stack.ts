@@ -15,7 +15,11 @@ import type { DesktopLocalStackPhase } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
-import { computerEnv, readComputerChoice } from "../burrow/composio.js";
+import { computerEnv, readComputerChoice } from "../burrow/service-keys.js";
+import {
+  connectedAppsEnv,
+  storedServiceKey,
+} from "@rakazo/adapters/desktop-server-env";
 import { telegramSecret } from "../burrow/telegram.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import { ensureServerLinks } from "./server-links.js";
@@ -131,16 +135,16 @@ export interface WindowsStackDeps {
   searchBroker?: () => { url: string; token: string } | null;
   /** Gente: the loopback model router (Fast or Private), used as the model server's address. */
   modelRouter?: () => string | null;
-  /** Gente: the loopback relay for Composio through Gente Cloud. */
-  composioProxy?: () => string | null;
+  /** Gente: the loopback relay for connected apps through Gente Cloud. */
+  appsRelay?: () => string | null;
   /** Gente: the loopback broker for Gente Cloud computers; null unless the plan has hours. */
   computerBroker?: () => string | null;
   /** Gente: images and video through Gente Cloud (the relay's /media address). */
   mediaRelay?: () => string | null;
-  /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
+  /** A developer's cloud-computer key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
-  /** The Composio Connect consumer key from the OS keychain, if the person set one. */
-  composioKey?: () => Promise<string | undefined>;
+  /** A developer's connected-apps key from the OS keychain, if set. */
+  connectedAppsKey?: () => Promise<string | undefined>;
   /** Seals the workspace's master secrets with Windows DPAPI (Electron safeStorage). */
   sealer?: Sealer;
   stackDir: string;
@@ -478,13 +482,14 @@ export class WindowsStackController extends StackLifecycle {
     if (chosenWeb !== webPort) this.currentWebUrl = `http://127.0.0.1:${chosenWeb}`;
     await writePrivateFile(this.dir(STACK_WEB_URL_FILE), this.currentWebUrl);
 
-    const composioKey = (await this.deps.composioKey?.().catch(() => undefined)) ??
-      (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
-    const e2bKey =
+    const connectedAppsKey =
+      (await this.deps.connectedAppsKey?.().catch(() => undefined)) ??
+      storedServiceKey(stackEnv, "connectedApps");
+    const cloudComputerKey =
       (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
-      (stackEnv.get("E2B_API_KEY") || undefined);
+      storedServiceKey(stackEnv, "cloudComputers");
     const computer = computerEnv(
-      e2bKey,
+      cloudComputerKey,
       await readComputerChoice(this.deps.stackDir),
       "none",
       this.deps.computerBroker?.() ?? null,
@@ -493,7 +498,7 @@ export class WindowsStackController extends StackLifecycle {
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
-      ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
+      ...connectedAppsEnv({ key: connectedAppsKey, relayUrl: this.deps.appsRelay?.() }),
       ...computer,
       // Updates arrive through Gente's long-poll hand-off, signed with this computer's secret.
       ...(telegramToken
@@ -501,7 +506,6 @@ export class WindowsStackController extends StackLifecycle {
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
-      ...(this.deps.composioProxy?.() ? { GENTE_COMPOSIO_PROXY_URL: this.deps.composioProxy()! } : {}),
       ...(this.deps.mediaRelay?.()
         ? { MEDIA_GENERATION_PROVIDER: "gente-cloud", GENTE_MEDIA_URL: this.deps.mediaRelay()! }
         : {}),

@@ -181,6 +181,11 @@ msgstr "{0} coisas feitas até agora."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} coisas feitas, você manteve {1}."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} na espera"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**Terça: $2.340 de 31 pedidos** (12% a mais que na terça passada)\n"
 msgid "/ month"
 msgstr "/ mês"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/mês · {0} esperando"
+msgid "${price}/mo"
+msgstr "${price}/mês"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -12079,8 +12083,8 @@ msgid "this computer"
 msgstr "Este computador"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "Este computador roda na nuvem (E2B), não no seu Mac ou PC. Assista ao vivo e assuma o controle para entrar você mesmo."
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "Este computador roda na nuvem, não no seu Mac ou PC. Assista ao vivo e assuma o controle para entrar você mesmo."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13291,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "Quando os bots consultam você antes de agir."
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "Quando o Gente trabalha online para você (pesquisar, navegar, apps), só sai o que essa tarefa precisa. Os dados de um app conectado passam pela nuvem da Composio, só para os apps que você escolher."
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "Quando o Gente trabalha online para você (pesquisar, navegar, apps), só sai o que essa tarefa precisa. Os dados de um app conectado passam pela nuvem do nosso provedor de apps conectados, só para os apps que você escolher."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

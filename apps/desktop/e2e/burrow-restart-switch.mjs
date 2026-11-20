@@ -38,7 +38,11 @@ async function chat(page, text, expect) {
 
 let page = await appWindow(120_000);
 await page.waitForLoadState("domcontentloaded");
-await page.waitForTimeout(4000);
+await page
+  .waitForFunction(() => document.body.innerText.includes("Hello Chief, are you running locally?"), null, {
+    timeout: 60_000,
+  })
+  .catch(() => {});
 log("after relaunch:", page.url());
 await page.screenshot({ path: path.join(out, "30-relaunch.png") });
 const history = await page.innerText("body");
@@ -85,7 +89,7 @@ if (switchTo) {
     await new Promise((r) => setTimeout(r, 5000));
   }
   page = await appWindow();
-  await page.waitForTimeout(4000);
+  await page.locator("textarea, [contenteditable=true]").first().waitFor({ timeout: 60_000 });
   await chat(page, "Which model now?", "You said: Which model now?");
   await page.screenshot({ path: path.join(out, "34-after-switch-chat.png") });
 }

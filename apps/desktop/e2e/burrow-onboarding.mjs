@@ -50,7 +50,7 @@ while (Date.now() < deadline) {
   if (main) {
     log("app window:", main.url());
     await main.waitForLoadState("domcontentloaded").catch(() => {});
-    await main.waitForTimeout(5000);
+    await main.locator("textarea, [contenteditable=true]").first().waitFor({ timeout: 60_000 }).catch(() => {});
     await main.screenshot({ path: path.join(out, "20-app.png") });
     break;
   }

@@ -3,7 +3,9 @@
 //
 // The app's only door to Gente Cloud (https://gente-cloud.vercel.app, API in gente-cloud/cloud/API.md).
 // Vendor keys never reach the app: cloud computers come back as per-session connections, and search
-// and Composio go through the cloud's metered proxy. Every call carries the person's Clerk session.
+// and connected apps go through the cloud's metered proxy. Every call carries the person's Clerk session.
+
+import { CONNECTED_APPS_CLOUD_PATH } from "@rakazo/adapters/desktop-server-env";
 
 export const GENTE_CLOUD_URL = process.env.GENTE_CLOUD_URL?.trim() || "https://gente-cloud.vercel.app";
 
@@ -143,7 +145,8 @@ export function createGenteCloud(options: GenteCloudOptions) {
       )).data!,
 
     /** A metered cloud computer. The connection is for this session only. */
-    startSession: async (input: { vendor: "e2b" | "browserbase"; taskKind?: string; maxSeconds?: number }) =>
+    /** `vendor` is Gente Cloud's provider id, from @rakazo/adapters/desktop-server-env. */
+    startSession: async (input: { vendor: string; taskKind?: string; maxSeconds?: number }) =>
       (await call<CloudSession>("POST", "/v1/sessions", input)).data!,
     heartbeat: async (sessionId: string) =>
       (await call<Heartbeat>("POST", `/v1/sessions/${encodeURIComponent(sessionId)}/heartbeat`, {})).data!,
@@ -179,8 +182,8 @@ export function createGenteCloud(options: GenteCloudOptions) {
       await call("DELETE", "/v1/private/waitlist");
     },
 
-    /** Where the Composio MCP client points instead of connect.composio.dev with a vendor key. */
-    composioMcpUrl: () => `${base}/v1/proxy/composio/mcp`,
+    /** Where the connected-apps MCP client points instead of the service itself with a vendor key. */
+    connectedAppsUrl: () => `${base}${CONNECTED_APPS_CLOUD_PATH}`,
   };
 }
 

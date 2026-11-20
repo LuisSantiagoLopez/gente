@@ -7,7 +7,7 @@ import { COMPUTER_COMMAND_OUTPUT_MAX_CHARS } from "@rakazo/contracts";
 import { redactSecrets } from "@rakazo/core";
 import { sandboxCommandTimeoutMs } from "@rakazo/core/node/sandbox-command";
 import { RunHistoryWriteError, releasePayment } from "@rakazo/db";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
 import { recordPagePayment } from "../../billing/spending-gate.js";
 import { getActiveTeachingSession } from "../../bots/teaching-session.js";
 import {
@@ -110,20 +110,31 @@ function appendComputerPointers(
 ) {
   if (!size) return;
   const points = actions
-    .filter((action) => (action.kind === "click" || action.kind === "move" || action.kind === "down") && typeof action.x === "number" && typeof action.y === "number")
-    .map((action) => ({ kind: action.kind === "move" ? "move" : "click", x: action.x!, y: action.y! }));
+    .filter(
+      (action) =>
+        (action.kind === "click" || action.kind === "move" || action.kind === "down") &&
+        typeof action.x === "number" &&
+        typeof action.y === "number",
+    )
+    .map((action) => ({
+      kind: action.kind === "move" ? "move" : "click",
+      x: action.x!,
+      y: action.y!,
+    }));
   if (points.length === 0) return;
   const { deps, run, runId, bot, thread } = ctx;
-  void deps.events
-    .append({
+  // Only the live view's cursor depends on it; a lost event never fails the tool call.
+  void bestEffort(
+    "show the bot's pointer",
+    deps.events.append({
       spaceId: run.spaceId,
       threadId: thread.id,
       botId: bot.id,
       runId,
       type: "computer.pointer",
       payload: { points, width: size.width, height: size.height },
-    })
-    .catch(() => undefined);
+    }),
+  );
 }
 
 /** Record a finished file/app action for the terminal's Activity view. */
@@ -546,8 +557,12 @@ export const computerTools: ToolHandlers = {
         context,
       );
       if (result.observation) {
-        if (!lastScreenSize.has(ctx.state)) appendComputerPointers(ctx, actions as never, result.observation);
-        lastScreenSize.set(ctx.state, { width: result.observation.width, height: result.observation.height });
+        if (!lastScreenSize.has(ctx.state))
+          appendComputerPointers(ctx, actions as never, result.observation);
+        lastScreenSize.set(ctx.state, {
+          width: result.observation.width,
+          height: result.observation.height,
+        });
       }
       return result.observation
         ? formatObservation(

@@ -181,6 +181,11 @@ msgstr "지금까지 {0}개를 끝냈어요."
 msgid "{0} things done, you kept {1}."
 msgstr "{0}개를 끝냈고, 그중 {1}개를 남겼어요."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0}명 대기 중"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**화요일: 주문 31건, $2,340** (지난 화요일보다 12% 증가)\
 msgid "/ month"
 msgstr "/ 월"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/월 · {0}명 대기 중"
+msgid "${price}/mo"
+msgstr "${price}/월"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -12079,8 +12083,8 @@ msgid "this computer"
 msgstr "이 컴퓨터"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "이 컴퓨터는 Mac이나 PC가 아니라 클라우드(E2B)에서 실행됩니다. 실시간으로 지켜보고, 직접 제어해서 로그인할 수 있습니다."
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "이 컴퓨터는 Mac이나 PC가 아니라 클라우드에서 실행됩니다. 실시간으로 지켜보고, 직접 제어해서 로그인할 수 있습니다."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13291,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "봇이 실행 전에 확인을 받는 경우."
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "Gente가 온라인에서 대신 일할 때(검색, 브라우징, 앱) 그 작업에 필요한 것만 밖으로 나갑니다. 연결된 앱의 데이터는 선택한 앱에 한해 Composio 클라우드를 거칩니다."
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "Gente가 온라인에서 대신 일할 때(검색, 탐색, 앱) 그 작업에 필요한 것만 밖으로 나갑니다. 연결된 앱의 데이터는 선택한 앱에 한해 저희 연결 앱 제공업체의 클라우드를 거칩니다."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

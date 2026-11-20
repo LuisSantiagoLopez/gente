@@ -13,6 +13,7 @@ export const desktop = {
   setupWindow: null,
   supportWindow: null,
   computerPillWindow: null,
+  telegramWindow: null,
   currentSetup: null,
   currentTargetUrl: null,
   setupError: null,
@@ -38,6 +39,8 @@ export const desktop = {
   supportWindow: BrowserWindow | null;
   /** The "Gente is using your computer" pill, once it was first shown. */
   computerPillWindow: BrowserWindow | null;
+  /** Gente's "Connect Telegram" window, while open. */
+  telegramWindow: BrowserWindow | null;
   currentSetup: DesktopSetup | null;
   currentTargetUrl: string | null;
   setupError: string | null;

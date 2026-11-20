@@ -14,7 +14,7 @@ import {
   nonOwnerChatPrivacyBlock,
 } from "@rakazo/core";
 import { availableInSpace, parseComputerMode } from "@rakazo/db";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
 import { createApprovedEffectReplayQueue } from "../../approvals/approval-effect.js";
 import { loadGroupContext } from "../../bots/group-handoff.js";
 import { USER_CLOUD_AGENT_KEY_PREFIX } from "../../cloud-agents/cloud-agent-factory.js";
@@ -298,8 +298,13 @@ export async function prepareRunComputer(
   );
   // Gente (BENCH-005): a turn that brings files, or plainly asks for computer work, starts its
   // computer now, in parallel with the model's first turn, instead of after it.
-  if (process.env.BURROW_FAST_CHAT === "on" && turnLikelyNeedsComputer(turnBlocks ?? [], currentTurnMessage)) {
-    void runComputer.get().catch(() => undefined);
+  if (
+    process.env.BURROW_FAST_CHAT === "on" &&
+    turnLikelyNeedsComputer(turnBlocks ?? [], currentTurnMessage)
+  ) {
+    // Starting early is only a head start: the first tool that needs the computer waits for it
+    // and reports its own failure.
+    void bestEffort("start the computer early", runComputer.get());
   }
   const computerKind =
     (await deps.sandbox.provisionKind?.(storedComputer.homeKey)) ?? storedComputer.kind;

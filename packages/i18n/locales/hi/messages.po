@@ -181,6 +181,11 @@ msgstr "अब तक {0} काम पूरे हुए।"
 msgid "{0} things done, you kept {1}."
 msgstr "{0} काम पूरे हुए, आपने {1} रखे।"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} प्रतीक्षा में"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**मंगलवार: 31 ऑर्डर से $2,340** (पिछ�
 msgid "/ month"
 msgstr "/ महीना"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/माह · {0} प्रतीक्षा में"
+msgid "${price}/mo"
+msgstr "${price}/माह"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -12079,8 +12083,8 @@ msgid "this computer"
 msgstr "यह कंप्यूटर"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "यह कंप्यूटर क्लाउड (E2B) में चलता है, आपके Mac या PC पर नहीं। इसे लाइव देखें, और खुद साइन इन करने के लिए नियंत्रण लें।"
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "यह कंप्यूटर क्लाउड में चलता है, आपके Mac या PC पर नहीं। इसे लाइव देखें, और खुद साइन इन करने के लिए नियंत्रण लें।"
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13291,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "बॉट कार्रवाई से पहले आपसे कब पूछते हैं।"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "जब Gente आपके लिए ऑनलाइन काम करता है (खोज, ब्राउज़िंग, ऐप्स), तो सिर्फ़ उतना ही बाहर जाता है जितना उस काम को चाहिए। जुड़े हुए ऐप का डेटा Composio के क्लाउड से होकर जाता है, सिर्फ़ आपके चुने ऐप्स के लिए।"
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "जब Gente आपके लिए ऑनलाइन काम करता है (खोज, ब्राउज़िंग, ऐप्स), तो सिर्फ़ वही बाहर जाता है जो उस काम के लिए ज़रूरी है। किसी जुड़े ऐप का डेटा हमारे जुड़े-ऐप प्रदाता के क्लाउड से होकर जाता है, सिर्फ़ उन ऐप्स के लिए जिन्हें आप चुनते हैं।"
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

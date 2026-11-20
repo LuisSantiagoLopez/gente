@@ -41,6 +41,7 @@ jobs:
           packages/adapters/src/providers/computer/e2b/gente-cloud-sdk.test.ts
           packages/adapters/src/runtime/pi/models
           packages/adapters/src/mcp
+          packages/adapters/src/providers/integration/composio/composio-key.test.ts
           packages/adapters/src/computers/computer-task-limit.test.ts
           packages/adapters/src/computers/orphan-computers.test.ts
           packages/adapters/src/runs/lifecycle/run-model-outage.test.ts

@@ -1,5 +1,4 @@
 import { lookup } from "node:dns/promises";
-import { composioEndpoint, withComposioKey } from "./composio-key.js";
 import type { LookupFunction } from "node:net";
 import type { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import {
@@ -36,6 +35,10 @@ import {
 import { createCheckedProxyDispatcher } from "../network/proxy-dispatcher.js";
 import { dispatcherFetch, fetchPairedWithDispatcher } from "../network/undici-fetch.js";
 import { composioMcpToolFields } from "../providers/integration/composio/composio-batch.js";
+import {
+  composioEndpoint,
+  withComposioKey,
+} from "../providers/integration/composio/composio-key.js";
 import { credentialDigest } from "../secrets/credential-digest.js";
 import { mcpToolAppResourceUri, mcpToolVisibleToModel } from "./mcp-app.js";
 import type { McpCallAsker } from "./mcp-elicitation.js";

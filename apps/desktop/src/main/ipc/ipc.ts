@@ -41,12 +41,17 @@ export function sentFrom(window: IpcWindow, event: IpcCaller): boolean {
         event.senderFrame === event.sender.mainFrame
       );
     }
-    if (window !== "setup" && window !== "computerPill")
+    if (window !== "setup" && window !== "computerPill" && window !== "telegram")
       return (
         fromAppFrame(permissionTarget(), event) ||
         (window === "appOrReplaced" && fromAppFrame(replacedAppTarget(), event))
       );
-    const own = window === "setup" ? desktop.setupWindow : desktop.computerPillWindow;
+    const own =
+      window === "setup"
+        ? desktop.setupWindow
+        : window === "telegram"
+          ? desktop.telegramWindow
+          : desktop.computerPillWindow;
     return (
       own !== null &&
       !own.isDestroyed() &&

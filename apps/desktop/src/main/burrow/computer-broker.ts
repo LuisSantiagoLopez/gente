@@ -7,6 +7,7 @@
 // computer runs. The server only ever sees the session's per-computer token, never a vendor key.
 import { randomBytes } from "node:crypto";
 import { createServer, type Server, type ServerResponse } from "node:http";
+import { CLOUD_COMPUTER_SESSION } from "@rakazo/adapters/desktop-server-env";
 import type { CloudSession, GenteCloud } from "./gente-cloud.js";
 
 interface Live {
@@ -41,7 +42,7 @@ export async function startComputerBroker(cloud: () => GenteCloud | null) {
     if (!client) return send(res, 401, { error: "missing_token", message: "Sign in to Gente to use a cloud computer." });
     try {
       if (req.method === "POST" && path === "/sessions") {
-        const session = await client.startSession({ vendor: "e2b", taskKind: "desktop" });
+        const session = await client.startSession(CLOUD_COMPUTER_SESSION);
         if (!("sandboxId" in session.connection)) return send(res, 502, { error: "unexpected_session" });
         const sandboxId = session.connection.sandboxId;
         const timer = setInterval(() => {

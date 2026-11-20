@@ -182,6 +182,11 @@ msgstr "目前已完成 {0} 件事。"
 msgid "{0} things done, you kept {1}."
 msgstr "已完成 {0} 件事，你保留了 {1} 件。"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} 人在等待"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1168,10 +1173,9 @@ msgstr "**週二：31 筆訂單，營收 $2,340**（比上週二高 12%）\n"
 msgid "/ month"
 msgstr "/ 月"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/月 · {0} 人等待中"
+msgid "${price}/mo"
+msgstr "${price}/月"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -12080,8 +12084,8 @@ msgid "this computer"
 msgstr "這臺電腦"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "這台電腦在雲端（E2B）執行，不在你的 Mac 或 PC 上。你可以即時觀看，並接手控制自行登入。"
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "這台電腦在雲端執行，不在你的 Mac 或 PC 上。你可以即時觀看，並接手控制自行登入。"
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13292,8 +13296,8 @@ msgid "When bots check with you before acting."
 msgstr "機器人何時在行動前先與你確認。"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "當 Gente 為你在線上工作時（搜尋、瀏覽、應用程式），只會送出該任務需要的內容。已連結應用程式的資料僅針對你選擇的應用程式經過 Composio 的雲端。"
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "當 Gente 替你在線上工作時（搜尋、瀏覽、應用程式），只會送出該任務需要的內容。已連接應用程式的資料會經過我們的連接應用程式供應商的雲端，僅限你選擇的應用程式。"
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

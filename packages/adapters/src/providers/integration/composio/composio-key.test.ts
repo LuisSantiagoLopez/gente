@@ -10,7 +10,9 @@ describe("Composio Connect key", () => {
     });
     expect(withComposioKey("https://evil.example/mcp", undefined, "ck_x")).toBeUndefined();
     expect(withComposioKey("http://connect.composio.dev/mcp", undefined, "ck_x")).toBeUndefined();
-    expect(withComposioKey("https://connect.composio.dev.evil.example/mcp", { a: "1" }, "ck_x")).toEqual({ a: "1" });
+    expect(
+      withComposioKey("https://connect.composio.dev.evil.example/mcp", { a: "1" }, "ck_x"),
+    ).toEqual({ a: "1" });
   });
   it("keeps a header the person set, and does nothing without a key", () => {
     const own = { "X-Consumer-Api-Key": "mine" };
@@ -24,7 +26,11 @@ describe("Composio through Gente Cloud", () => {
     const { composioEndpoint } = await import("./composio-key.js");
     const relay = "http://127.0.0.1:5555/secret/mcp";
     expect(String(composioEndpoint("https://connect.composio.dev/mcp", relay))).toBe(relay);
-    expect(String(composioEndpoint("https://example.com/mcp", relay))).toBe("https://example.com/mcp");
-    expect(String(composioEndpoint("https://connect.composio.dev/mcp", undefined))).toBe("https://connect.composio.dev/mcp");
+    expect(String(composioEndpoint("https://example.com/mcp", relay))).toBe(
+      "https://example.com/mcp",
+    );
+    expect(String(composioEndpoint("https://connect.composio.dev/mcp", undefined))).toBe(
+      "https://connect.composio.dev/mcp",
+    );
   });
 });

@@ -8,7 +8,7 @@ import type {
 } from "@rakazo/adapter-kit";
 import { MeetingCalendarScheduleRejected, RetryJobLaterError } from "@rakazo/adapter-kit";
 import type { Actor, MeetingCalendarUpcoming } from "@rakazo/contracts";
-import { ClientError, deadlineSignal, meetingBotName } from "@rakazo/core";
+import { ClientError, deadlineSignal } from "@rakazo/core";
 import type { HeldLease, Prisma, PrismaClient } from "@rakazo/db";
 import { assertLeaseHeld, LeaseHeldError, runAsSystem, withLease } from "@rakazo/db";
 import { bestEffort } from "@rakazo/logging";
@@ -17,6 +17,7 @@ import {
   countSpaceMeetingsForDay,
   MEETING_DAILY_LIMIT,
   MEETING_SESSION_DURATION,
+  meetingBotNameFor,
   meetingUtcDayStart,
 } from "../meeting-service.js";
 import { CalendarAuthorization, signCalendarConnectionRef } from "./calendar-authorization.js";
@@ -443,15 +444,11 @@ export class MeetingCalendarService {
               if (!sessionId) continue;
 
               const booking = { eventId: event.id, sessionId, startsAt: event.startsAt };
-              const owner = await prisma.user.findUnique({
-                where: { id: connection.userId },
-                select: { name: true },
-              });
               const request = await this.options.buildJoin({
                 sessionId,
                 meetingUrl: link.url,
                 platform: link.platform,
-                botName: meetingBotName(owner?.name),
+                botName: await meetingBotNameFor(prisma, connection.userId),
                 expiresAt,
               });
               if ((await selectedCalendarRule(prisma, connectionId, event))?.botId !== bot.id) {

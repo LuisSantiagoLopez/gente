@@ -11,7 +11,8 @@ import { app, session } from "electron";
 import { accountToken, isSignedIn } from "../burrow/account.js";
 import { OLLAMA_URL, readSavedBrain, startOllama } from "../burrow/brain.js";
 import { rebuildBrain } from "../burrow/brain-ipc.js";
-import { COMPUTER_CHOICE_FILE, readComputerChoice } from "../burrow/composio.js";
+import { CONNECTED_APPS_UNCONFIGURED } from "@rakazo/adapters/desktop-server-env";
+import { COMPUTER_CHOICE_FILE, readComputerChoice } from "../burrow/service-keys.js";
 import { GENTE_CLOUD_URL } from "../burrow/gente-cloud.js";
 import { desktop } from "../desktop-state.js";
 import { findMissingAppFiles } from "../support/app-files.js";
@@ -40,7 +41,7 @@ type ServiceControl = {
 
 const SIGNALS: [LogSignal, RegExp][] = [
   ["computer-template-missing", /template\b[^\n]*\bnot found|template_not_found/i],
-  ["apps-not-configured", /composio\b[^\n]*not configured|missing_token[^\n]*connected apps/i],
+  ["apps-not-configured", CONNECTED_APPS_UNCONFIGURED],
   ["media-balance-empty", /fal[^\n]*balance|balance_exhausted/i],
   ["sign-in-rejected", /gente cloud[^\n]*\b401\b/i],
 ];

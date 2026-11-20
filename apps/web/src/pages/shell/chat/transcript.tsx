@@ -286,13 +286,11 @@ export const Transcript = memo(function Transcript({
   const shownItems = showTail ? items.slice(-FIRST_FRAME_ROWS) : items;
   // Gente: never sit silent. If nothing has shown after 10 s, say so calmly; the worker's own
   // watchdog restarts it when a run is not picked up.
-  const [slowStart, setSlowStart] = useState(false);
-  useEffect(() => {
-    setSlowStart(false);
-    if (!running) return;
-    const timer = setTimeout(() => setSlowStart(true), 10_000);
-    return () => clearTimeout(timer);
-  }, [running, messages.length]);
+  // The wait starts again whenever the run or the message count changes.
+  const slowKey = `${running}:${messages.length}`;
+  const [slowAt, setSlowAt] = useState<string | null>(null);
+  useTimeout(() => setSlowAt(slowKey), running ? 10_000 : null, slowKey);
+  const slowStart = running && slowAt === slowKey;
   const workingLabel =
     liveActivityLine(messages) ??
     (workingRoutine

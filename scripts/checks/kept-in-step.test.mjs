@@ -2,7 +2,7 @@
 // stylesheet, a Compose file, or a package outside the other's dependency graph. Each pair reads
 // both sides, so changing one alone fails here.
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -84,7 +84,12 @@ test("table column widths are capped at the cell's own max-width", () => {
   );
 });
 
-test("Depot's pull request test workflow is the one GitHub runs on main", () => {
+// Gente's repository runs its own workflows and leaves upstream's test-suites.yml out of .github,
+// so there is nothing for the Depot copy to match there.
+const githubSuites = path.join(root, ".github/workflows/test-suites.yml");
+test("Depot's pull request test workflow is the one GitHub runs on main", {
+  skip: existsSync(githubSuites) ? false : "no .github/workflows/test-suites.yml in this repository",
+}, () => {
   const [depot, github] = [".depot", ".github"].map((folder) =>
     readFileSync(path.join(root, folder, "workflows/test-suites.yml"), "utf8"),
   );

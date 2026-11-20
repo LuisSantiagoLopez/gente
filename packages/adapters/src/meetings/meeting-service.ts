@@ -448,10 +448,7 @@ export class MeetingService {
       where: { id: row.botId, spaceId: row.spaceId, archivedAt: null },
       select: { name: true },
     });
-    const owner = await prisma.user.findUnique({
-      where: { id: row.userId },
-      select: { name: true },
-    });
+    const botName = await meetingBotNameFor(prisma, row.userId);
     if (!row.meetingUrl || !bot || !(await this.member(row))) {
       await this.finish(row, "failed", errors.join);
       return;
@@ -460,7 +457,7 @@ export class MeetingService {
       sessionId: row.id,
       meetingUrl: row.meetingUrl,
       platform: MeetingPlatformSchema.parse(row.platform),
-      botName: meetingBotName(owner?.name),
+      botName,
       expiresAt: row.expiresAt,
     };
     const { count } = await prisma.meetingSession.updateMany({
@@ -776,6 +773,12 @@ function nextObservation(
 }
 
 type MeetingQuotaReader = Pick<Prisma.TransactionClient, "meetingSession">;
+
+/** The name a meeting bot joins under: "<Owner>'s Gente (AI assistant)". */
+export async function meetingBotNameFor(prisma: Pick<PrismaClient, "user">, userId: string) {
+  const owner = await prisma.user.findUnique({ where: { id: userId }, select: { name: true } });
+  return meetingBotName(owner?.name);
+}
 
 export function meetingUtcDayStart(timestamp: number) {
   return Math.floor(timestamp / DAY_MS) * DAY_MS;
