@@ -29,7 +29,7 @@ import {
   withResolvedArtifactVersion,
   withTransactionRetry,
 } from "@rakazo/db";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
 import { resolveBotWorkspacePath } from "../computers/screens/computer-support.js";
 
 export type MaterializedThreadFile = {
@@ -190,7 +190,12 @@ export async function readSmallTextTurnFiles(
       row.size > INLINE_TEXT_ATTACHMENT_MAX_BYTES
     )
       continue;
-    const bytes = await deps.artifacts.get(row.id, context);
+    // A file that cannot be read here is still copied to the computer, so the turn goes on without it.
+    const bytes = await bestEffort(
+      "read small text attachment",
+      deps.artifacts.get(row.storageKey, context),
+    );
+    if (!bytes) continue;
     out.push({
       name: row.name,
       path: attachmentComputerPath(row.id, row.mimeType),
