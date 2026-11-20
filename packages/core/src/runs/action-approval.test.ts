@@ -164,6 +164,13 @@ describe("connectorToolRequiresApproval", () => {
     expect(connectorToolRequiresApproval("profile_card", true)).toBe(true);
   });
 
+  it("reads a fetch, unless its name also changes something", () => {
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_EMAILS")).toBe(false);
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_MESSAGE_BY_THREAD_ID", true)).toBe(false);
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_AND_DELETE_EMAILS")).toBe(true);
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_EMAILS", false)).toBe(true);
+  });
+
   it("still requires approval for a declared read whose name says load", () => {
     expect(connectorToolRequiresApproval("warehouse-load-rows", true)).toBe(true);
   });
@@ -486,6 +493,28 @@ describe("planActionGate", () => {
     expect(gate("never")).toBe("allow");
     expect(gate("auto")).toBe("judge");
     expect(gate("ask")).toBe("ask");
+  });
+
+  it("asks a person for the four always-ask kinds in every mode, Never ask included", () => {
+    for (const kind of ["spend", "send", "delete", "legal"] as const) {
+      for (const mode of ["never", "auto", "ask"] as const) {
+        expect(gate(mode, { alwaysAsk: kind })).toBe("ask");
+        expect(gate(mode, { alwaysAsk: kind, consequential: false })).toBe("ask");
+      }
+      // Never ask still refuses one that someone else could have steered.
+      expect(gate("never", { alwaysAsk: kind, steerable: true })).toBe("deny");
+      expect(gate("never", { alwaysAsk: kind, resolved: blocked })).toBe("deny");
+    }
+  });
+
+  it("lets an Always allow rule pass a send, delete or terms action, never a spend", () => {
+    for (const mode of ["never", "auto", "ask"] as const) {
+      expect(gate(mode, { alwaysAsk: "send", resolved: allowed })).toBe("allow");
+      expect(gate(mode, { alwaysAsk: "delete", resolved: allowed })).toBe("allow");
+      expect(gate(mode, { alwaysAsk: "legal", resolved: allowed })).toBe("allow");
+      expect(gate(mode, { alwaysAsk: "spend", resolved: allowed })).toBe("ask");
+      expect(gate(mode, { alwaysAsk: "send", resolved: allowed, mandatory: true })).toBe("ask");
+    }
   });
 
   it("asks in Auto when no approval model is set up", () => {

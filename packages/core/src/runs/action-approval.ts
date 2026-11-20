@@ -4,6 +4,7 @@ import { BUILTIN_TOOL_NAMES } from "@rakazo/contracts";
 export { isSecretAskBlock } from "../asks/ask-kind.js";
 
 import { humanizeToolName } from "../messages/events.js";
+import type { AlwaysAskCategory } from "./auto-approve.js";
 
 const APPROVAL_EXEMPT_TOOLS = new Set([
   "computer_observe",
@@ -97,7 +98,9 @@ const EXPLICIT_APPROVAL_BUILTIN_TOOLS = new Set([
   "set_child_instructions",
 ]);
 
-const READ_ONLY_CONNECTOR_PATTERN = /(^|[_-])(get|list|search|find|read)([_-]|$)/i;
+// Fetch reads: it is how Composio names its everyday reads (GMAIL_FETCH_EMAILS), which otherwise
+// asked the owner before every look at their inbox.
+const READ_ONLY_CONNECTOR_PATTERN = /(^|[_-])(get|list|search|find|read|fetch)([_-]|$)/i;
 /** App slug before a hyphenated action: letters and digits, with at most one underscore. */
 const PLAIN_CONNECTOR_SLUG = /^[a-z0-9]+(?:_[a-z0-9]+)?$/;
 const MUTATING_CONNECTOR_PATTERN =
@@ -635,8 +638,24 @@ export function planActionGate(input: {
   newDestination?: boolean;
   /** A click that completes a purchase: a person approves it each time in Ask and Auto. */
   purchase?: boolean;
+  /**
+   * Spending money, sending as the owner to others, deleting their data or accepting legal
+   * terms: a person approves it in every mode, Never ask included, and the approval model never
+   * passes it. Only the owner's auto-approve limits (applied by the caller) or, outside spending,
+   * an Always allow rule they saved let one through.
+   */
+  alwaysAsk?: AlwaysAskCategory;
 }): "ask" | "allow" | "judge" | "deny" {
   if (input.resolved.decision === "deny") return "deny";
+  if (input.alwaysAsk) {
+    if (input.mode === "never" && input.steerable) return "deny";
+    const ruleAllows =
+      input.resolved.source === "always_allow" &&
+      input.alwaysAsk !== "spend" &&
+      !input.purchase &&
+      !input.mandatory;
+    return ruleAllows ? "allow" : "ask";
+  }
   if (input.mode === "never") return input.steerable ? "deny" : "allow";
   if (input.purchase || input.mandatory) return "ask";
   if (input.resolved.decision === "ask") return "ask";
