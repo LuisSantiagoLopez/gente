@@ -43,6 +43,7 @@ import {
   accountToken,
   isPaidPlan,
   isSignedIn,
+  privateOffer,
   accountState,
   consumeFreeMessage,
   initAccount,
@@ -1157,6 +1158,10 @@ app.whenReady().then(async () => {
     fastAvailable: isPaidPlan(),
   });
   handleIpc("desktop.gente.aiMode", () => aiModeState());
+  handleIpc("desktop.gente.privateOffer", () => privateOffer());
+  handleIpc("desktop.gente.setPrivateWaitlist", (_event, join: unknown) =>
+    privateOffer(join === true ? "join" : "leave"),
+  );
   handleIpc("desktop.gente.setAiMode", async (_event, mode: unknown) => {
     await aiMode.set(mode);
     return aiModeState();

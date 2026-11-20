@@ -1167,6 +1167,11 @@ msgstr "**火曜日: 31件の注文で$2,340**（先週の火曜より12%アッ�
 msgid "/ month"
 msgstr "/ 月"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price}/月 · {0} 人が待機中"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "1個のボットが独自のモデルを使用しています:"
@@ -7083,6 +7088,10 @@ msgstr "{spaceName}に参加"
 msgid "Join meeting"
 msgstr "会議に参加"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "ウェイトリストに参加"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7498,6 +7507,10 @@ msgstr "管理者にする"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "メンバーにする"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "AI を自分専用にする"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13437,6 +13450,10 @@ msgstr "あなた:"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "準備が整いました"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "ウェイトリストに登録済み"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

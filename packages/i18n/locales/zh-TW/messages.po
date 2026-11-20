@@ -1168,6 +1168,11 @@ msgstr "**週二：31 筆訂單，營收 $2,340**（比上週二高 12%）\n"
 msgid "/ month"
 msgstr "/ 月"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price}/月 · {0} 人等待中"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "1 個機器人使用自己的模型："
@@ -7084,6 +7089,10 @@ msgstr "加入 {spaceName}"
 msgid "Join meeting"
 msgstr "加入會議"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "加入候補名單"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7499,6 +7508,10 @@ msgstr "設為管理員"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "設為成員"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "讓我的 AI 私有化"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13438,6 +13451,10 @@ msgstr "你："
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "一切就緒"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "你已在候補名單中"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

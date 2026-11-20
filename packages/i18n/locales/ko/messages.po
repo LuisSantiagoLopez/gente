@@ -1167,6 +1167,11 @@ msgstr "**화요일: 주문 31건, $2,340** (지난 화요일보다 12% 증가)\
 msgid "/ month"
 msgstr "/ 월"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price}/월 · {0}명 대기 중"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "자체 모델을 쓰는 봇 1개:"
@@ -7083,6 +7088,10 @@ msgstr "{spaceName} 참여"
 msgid "Join meeting"
 msgstr "회의 참여"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "대기 명단에 등록"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7498,6 +7507,10 @@ msgstr "관리자로 지정"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "멤버로 지정"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "내 AI를 비공개로"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13437,6 +13450,10 @@ msgstr "나:"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "준비가 끝났습니다"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "대기 명단에 등록됨"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

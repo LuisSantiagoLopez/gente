@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { Trans } from "@lingui/react/macro";
-import type { GenteAccountState, GenteAiMode } from "@rakazo/contracts";
+import type { GenteAccountState, GenteAiMode, GentePrivateOffer } from "@rakazo/contracts";
 import { Button } from "@rakazo/ui-web";
 import { useEffect, useState } from "react";
 import { desktopBridge } from "../platform/desktop";
@@ -104,6 +104,48 @@ export function GenteAiModeControl() {
         ) : (
           <Trans>Private: the AI runs on this computer. Fast mode comes with a paid plan.</Trans>
         )}
+      </span>
+    </div>
+  );
+}
+
+/** "Make my AI private": a waitlist for now, with the price and how many are waiting. */
+export function GentePrivateWaitlist() {
+  const gente = desktopBridge()?.gente;
+  const [offer, setOffer] = useState<GentePrivateOffer | null>(null);
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    if (!gente?.privateOffer) return;
+    let alive = true;
+    void gente.privateOffer().then((next) => alive && setOffer(next)).catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [gente]);
+  if (!gente || !offer) return null;
+  const price = (offer.monthlyCents / 100).toFixed(2);
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={busy}
+        aria-pressed={offer.onWaitlist}
+        onClick={() => {
+          setBusy(true);
+          void gente
+            .setPrivateWaitlist(!offer.onWaitlist)
+            .then((next) => next && setOffer(next))
+            .catch(() => undefined)
+            .finally(() => setBusy(false));
+        }}
+      >
+        {offer.onWaitlist ? <Trans>You're on the waitlist</Trans> : <Trans>Join the waitlist</Trans>}
+      </Button>
+      <span className="text-body-sm text-muted-foreground">
+        <Trans>
+          ${price}/mo · {offer.waiting} waiting
+        </Trans>
       </span>
     </div>
   );
