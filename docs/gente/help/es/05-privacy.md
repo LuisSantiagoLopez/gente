@@ -17,7 +17,7 @@ Algunas cosas necesitan internet. Esta es la lista completa:
 - **Apps que conectas:** cuando un bot usa Gmail, Calendar u otra app que conectaste, le manda a esa app lo que la tarea necesita, como un correo que le pediste mandar.
 - **Telegram, si lo conectas:** los mensajes que le mandas a tu bot en Telegram pasan por Telegram, como cualquier mensaje de Telegram. Tus chats en la app de Gente no.
 - **Trabajo en línea:** cuando una tarea corre en una computadora en la nube, esa computadora visita el sitio que la tarea necesita. Tu historial de chats no se manda ahí.
-- **Imágenes y videos que creas:** tu descripción va a nuestro servicio de imágenes y video, fal.ai, para hacer el archivo. Gente lo guarda en tu computadora. Una copia temporal en la nube se borra a los 30 días. fal.ai tiene sus propias reglas: por defecto guarda la solicitud (tu descripción y el resultado) 90 días. Mira [la retención de datos de fal.ai](https://fal.ai/docs/model-apis/data-retention).
+- **Imágenes y videos que creas:** tu descripción va a nuestro servicio de imágenes y video, fal.ai, para hacer el archivo. fal.ai no guarda ningún registro de la solicitud, y su copia del archivo se borra después de 1 hora. Gente guarda el archivo en tu computadora; nuestra copia temporal en la nube se borra a los 30 días.
 - **Soporte, solo si tú quieres:** un mensaje que le mandas a una persona, y un reporte de error si lo permites.
 
 ## Reportes de error
