@@ -29,6 +29,7 @@ export type ShellOverlay =
   | { kind: "projects"; projectId?: string }
   | { kind: "brains"; slug?: string }
   | { kind: "learned" }
+  | { kind: "goals" }
   | null;
 
 const OVERLAY_KEYS = [
@@ -43,6 +44,7 @@ const OVERLAY_KEYS = [
   "projects",
   "brains",
   "learned",
+  "goals",
 ] as const;
 
 function isSettingsSection(value: string): value is SettingsSection {
@@ -75,6 +77,7 @@ export function readShellOverlay(params: URLSearchParams): ShellOverlay {
     return slug ? { kind: "brains", slug } : { kind: "brains" };
   }
   if (params.has("learned")) return { kind: "learned" };
+  if (params.has("goals")) return { kind: "goals" };
   // Links from before Messaging moved into settings.
   if (params.has("messaging")) return { kind: "settings", section: "messaging", spaceId: null };
   return null;

@@ -19,6 +19,7 @@ import {
   retainsConversationTurn,
 } from "../../memory/conversation-memory.js";
 import { returnBotMessageOutcome } from "../../messaging/bot-messages.js";
+import { isProactiveRun, recordProactiveRunResult } from "../../proactive/proactive-runtime.js";
 import { clearRoutineBackoff } from "../../routines/routine-backoff.js";
 import { isStrategicInitiativeRun } from "../../routines/strategic-initiative.js";
 import {
@@ -187,6 +188,8 @@ export async function completeRun(ctx: RunContext) {
   // Agent-to-agent work the chat stays read for is not news to the user either.
   if (
     runSendsFinishNotification(run.trigger) &&
+    // Proactive work is reported in the day's digest, inside quiet hours and the ping limit.
+    !isProactiveRun(run) &&
     marksUnread &&
     notifyBody &&
     !completed.continuationRunId
@@ -214,6 +217,17 @@ export async function completeRun(ctx: RunContext) {
       summary: text,
     }),
   );
+  if (isProactiveRun(run))
+    await bestEffort(
+      "record a proactive run's result",
+      recordProactiveRunResult(deps, {
+        spaceId: run.spaceId,
+        userId: run.userId,
+        runId,
+        ok: true,
+        summary: text,
+      }),
+    );
 }
 
 /** A scripted runtime's turns carry the files and memory it writes. */

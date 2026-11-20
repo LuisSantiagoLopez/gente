@@ -25,6 +25,10 @@ const READS: Record<ReadChangeKind, readonly Procedure[]> = {
     ["brains", "list"],
     ["projects", "list"],
     ["projects", "get"],
+    ["goals", "list"],
+    ["proactive", "today"],
+    ["proactive", "metrics"],
+    ["proactive", "settings"],
   ],
 };
 

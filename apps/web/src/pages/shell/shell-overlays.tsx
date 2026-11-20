@@ -49,6 +49,9 @@ const ProjectsOverlay = lazyOverlay(() =>
 const BrainsOverlay = lazyOverlay(() =>
   import("../knowledge/BrainsOverlay").then((module) => module.BrainsOverlay),
 );
+const GoalsOverlay = lazyOverlay(() =>
+  import("../knowledge/GoalsOverlay").then((module) => module.GoalsOverlay),
+);
 const LearnedOverlay = lazyOverlay(() =>
   import("../learning/LearnedOverlay").then((module) => module.LearnedOverlay),
 );
@@ -131,6 +134,7 @@ export function AppOverlays({
       {overlay?.kind === "brains" ? (
         <BrainsOverlay initialSlug={overlay.slug} onClose={() => setOverlay(null)} />
       ) : null}
+      {overlay?.kind === "goals" ? <GoalsOverlay onClose={() => setOverlay(null)} /> : null}
       {overlay?.kind === "learned" ? (
         <LearnedOverlay
           onClose={() => setOverlay(null)}

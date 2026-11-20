@@ -195,3 +195,10 @@
     animation: gente-msg-in 320ms var(--gente-ease-out) both;
   }
 }
+
+/* A goal's progress bar grows with the same spring; it only scales, so it never re-lays out. */
+@media (prefers-reduced-motion: no-preference) {
+  .gente-progress {
+    transition: transform 600ms var(--gente-spring);
+  }
+}

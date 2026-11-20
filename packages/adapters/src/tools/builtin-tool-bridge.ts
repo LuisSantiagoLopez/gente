@@ -48,6 +48,7 @@ export const CORE_BUILTIN_TOOL_NAMES: ReadonlySet<string> = new Set([
   "remember",
   // Gente: bots keep their projects up to date on their own, so the tool is always in view.
   "project_update",
+  "goal_update",
   "save_memory",
   "recall_memory",
   "reflect_memory",

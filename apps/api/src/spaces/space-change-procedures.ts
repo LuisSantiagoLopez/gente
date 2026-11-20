@@ -26,6 +26,13 @@ const SPACE_CHANGE_PROCEDURES: Record<string, readonly SpaceChangeKind[]> = {
   "projects.update": ["knowledge"],
   "projects.feedback": ["knowledge"],
   "projects.remove": ["knowledge"],
+  "goals.create": ["knowledge"],
+  "goals.update": ["knowledge"],
+  "goals.remove": ["knowledge"],
+  "proactive.updateSettings": ["knowledge"],
+  "proactive.decide": ["knowledge"],
+  "proactive.approve": ["knowledge"],
+  "proactive.undo": ["knowledge"],
 };
 
 export function spaceChangesFor(path: readonly string[]): readonly SpaceChangeKind[] {

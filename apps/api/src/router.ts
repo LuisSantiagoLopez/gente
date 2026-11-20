@@ -56,6 +56,7 @@ import { connectionsRoutes } from "./routes/connections.js";
 import { contentRoutes } from "./routes/content.js";
 import { createRouterContext } from "./routes/context.js";
 import { knowledgeRoutes } from "./routes/knowledge.js";
+import { proactiveRoutes } from "./routes/proactive.js";
 import { learningRoutes } from "./routes/learning.js";
 import { mcpRoutes } from "./routes/mcp.js";
 import { memoryRoutes } from "./routes/memory.js";
@@ -199,6 +200,7 @@ export function createRouter(deps: RouterDeps) {
     ...memoryRoutes(ctx),
     ...learningRoutes(ctx),
     ...knowledgeRoutes(ctx),
+    ...proactiveRoutes(ctx),
     ...routinesRoutes(ctx),
     ...boardsRoutes(ctx),
     ...capabilitiesRoutes(ctx),

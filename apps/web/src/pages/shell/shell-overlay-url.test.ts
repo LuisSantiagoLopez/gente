@@ -95,6 +95,7 @@ describe("Gente learning overlays", () => {
       { kind: "projects", projectId: "p1" },
       { kind: "brains", slug: "coffee" },
       { kind: "learned" },
+      { kind: "goals" },
     ] as const) {
       expect(readShellOverlay(withShellOverlay(new URLSearchParams(), overlay))).toEqual(overlay);
     }

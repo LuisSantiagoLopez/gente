@@ -1091,6 +1091,16 @@ export interface BackgroundJobPayloads {
     projectId?: string;
     feedback?: string;
   };
+  /** A proactive pass for one person: on the hourly schedule, or woken by an event. */
+  "proactive.cycle": {
+    spaceId: string;
+    userId: string;
+    event?: {
+      trigger: "email" | "calendar" | "price_drop" | "project_stalled" | "deadline_near";
+      goalId?: string;
+      summary: string;
+    };
+  };
   /** Read an Expo push receipt; the token is identified by its digest, never stored. */
   "push.receipt": { userId: string; ticketId: string; tokenDigest: string };
   /**

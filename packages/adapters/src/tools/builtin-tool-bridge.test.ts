@@ -33,6 +33,7 @@ describe("built-in tool bridge", () => {
       "attach_file",
       "connect_app",
       "find_tool",
+      "goal_update",
       "list_files",
       "message_bot",
       "message_user",
@@ -63,7 +64,7 @@ describe("built-in tool bridge", () => {
     // whether a routine runs in its chat, and takes the events (webhook, Git, chat, email) a
     // routine can start on, saying a Git event needs no connected app; the deferred index names
     // project_update.
-    expect(definitionBytes(listed)).toBeLessThanOrEqual(36_732);
+    expect(definitionBytes(listed)).toBeLessThanOrEqual(37_778);
     expect(deferred.map((tool) => tool.name)).toEqual(
       expect.arrayContaining(["render_plot", "create_space", "generate_secret", "scratchpad_add"]),
     );

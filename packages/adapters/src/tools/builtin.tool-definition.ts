@@ -4,6 +4,7 @@ import { meetingTranscriptTool } from "../meetings/meeting-chat.tool-definition.
 import { computerTools } from "./builtin-computer.tool-definition.js";
 import { conversationTools } from "./builtin-conversation.tool-definition.js";
 import { fleetTools } from "./builtin-fleet.tool-definition.js";
+import { goalTools } from "./builtin-goals.tool-definition.js";
 import { knowledgeTools } from "./builtin-knowledge.tool-definition.js";
 import { memoryTools } from "./builtin-memory.tool-definition.js";
 import { serviceTools } from "./builtin-services.tool-definition.js";
@@ -26,6 +27,7 @@ export const builtinAgentTools: ConnectorTool[] = [
   ...memoryTools,
   ...workTools,
   ...knowledgeTools,
+  ...goalTools,
   ...fleetTools,
 ];
 

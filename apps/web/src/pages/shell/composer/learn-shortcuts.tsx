@@ -1,12 +1,15 @@
 // Copyright 2026 DeskHead Inc. New file in Gente (a fork of Rakazo, Apache-2.0).
 import { Trans } from "@lingui/react/macro";
-import { BookOpen, FolderKanban, Sparkles } from "lucide-react";
+import { BookOpen, FolderKanban, Sparkles, Target } from "lucide-react";
 import type { ShellOverlay } from "../shell-overlay-url";
 
-type LearnOverlay = Extract<NonNullable<ShellOverlay>, { kind: "projects" | "brains" | "learned" }>;
+type LearnOverlay = Extract<
+  NonNullable<ShellOverlay>,
+  { kind: "goals" | "projects" | "brains" | "learned" }
+>;
 
 /**
- * Projects, brains and what Gente learned, one click from the only input box. Quiet until hovered,
+ * Goals, projects, brains and what Gente learned, one click from the only input box. Quiet until hovered,
  * so the composer stays the one thing on screen.
  */
 export function LearnShortcuts({ onOpen }: { onOpen: (overlay: LearnOverlay) => void }) {
@@ -18,6 +21,10 @@ export function LearnShortcuts({ onOpen }: { onOpen: (overlay: LearnOverlay) => 
       data-gente-rise
       className="pointer-events-auto mx-auto flex w-fit items-center gap-1 pb-1"
     >
+      <button type="button" className={chip} onClick={() => onOpen({ kind: "goals" })}>
+        <Target className="size-3.5" aria-hidden />
+        <Trans>Goals</Trans>
+      </button>
       <button type="button" className={chip} onClick={() => onOpen({ kind: "projects" })}>
         <FolderKanban className="size-3.5" aria-hidden />
         <Trans>Projects</Trans>

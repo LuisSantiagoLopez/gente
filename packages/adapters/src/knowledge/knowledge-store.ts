@@ -82,7 +82,7 @@ export class KnowledgeConflictError extends ClientError {
 }
 
 /** Saves one document and appends its revision atomically, as plain memory saves do. */
-async function saveDocument(
+export async function saveDocument(
   prisma: PrismaClient,
   owner: KnowledgeOwner,
   input: {

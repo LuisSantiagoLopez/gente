@@ -56,6 +56,7 @@ import type { MessagingDelivery } from "../../messaging/messaging-delivery.js";
 import type { TeamChat } from "../../messaging/team-chat/team-chat.js";
 import type { ExpoPushProvider } from "../../notifications/expo-push.js";
 import { pollPurchase } from "../../payments/purchase-poll.js";
+import { runProactiveForOwner } from "../../proactive/proactive-runtime.js";
 import { compactHistory } from "../../runtime/context/history-compaction.js";
 import { expireRunSecrets } from "../../secrets/run-secrets-expiry.js";
 import { retrySecretCleanup } from "../../secrets/secret-cleanup.js";
@@ -320,6 +321,26 @@ export function createBackgroundJobHandlers(deps: {
             ...(deps.executor.resolveModel ? { resolveModel: deps.executor.resolveModel } : {}),
           },
           payload,
+        );
+      },
+    ),
+    // The payload names the person the pass works for.
+    "proactive.cycle": asOwner(
+      async (payload: BackgroundJobPayloads["proactive.cycle"]) => payload,
+      async (payload) => {
+        await runProactiveForOwner(
+          {
+            prisma: deps.prisma,
+            runtime: deps.runtime,
+            jobs: deps.jobs,
+            events: deps.events,
+            ...(delivery ? { messagingDelivery: delivery } : {}),
+            deploymentModelKey: deps.deploymentModelKey,
+            deploymentModelConfigured: deps.deploymentModelConfigured,
+            ...(deps.executor.resolveModel ? { resolveModel: deps.executor.resolveModel } : {}),
+          },
+          { spaceId: payload.spaceId, userId: payload.userId },
+          payload.event ? [payload.event] : [],
         );
       },
     ),
