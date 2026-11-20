@@ -1,5 +1,6 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { RakazoDesktop, RakazoSetup } from "@rakazo/contracts";
+import type { GenteSupportBridge } from "../support/bridge.js";
 
 /**
  * The window whose own page may call a channel. Its main frame only, and for an app window
@@ -7,7 +8,7 @@ import type { RakazoDesktop, RakazoSetup } from "@rakazo/contracts";
  * takes the window a server switch is replacing: only for a channel whose handler acts on
  * the window that sent the call and on nothing else.
  */
-export type IpcWindow = "app" | "appOrReplaced" | "setup";
+export type IpcWindow = "app" | "appOrReplaced" | "setup" | "support";
 
 type BridgeMethod = (...args: never[]) => unknown;
 
@@ -70,6 +71,13 @@ const setupPageSync = <Method extends BridgeMethod>(): IpcChannel<Method> & { sy
 });
 
 const SETUP_NOT_ACTIVE = { ok: false, error: "Setup is not active." };
+/** Gente's support window: only its own page may call. */
+const supportPage = <Method extends BridgeMethod>(
+  refused: Refused<Method>,
+): IpcChannel<Method> => ({
+  from: "support",
+  refused,
+});
 
 type Desktop = { [Key in keyof RakazoDesktop]-?: NonNullable<RakazoDesktop[Key]> };
 
@@ -118,6 +126,15 @@ export const ipcChannels = {
   "desktop.setup.stack.state": setupPage<RakazoSetup["stack"]["state"]>(REJECTS),
   "desktop.setup.state": setupPage<RakazoSetup["state"]>(REJECTS),
   "desktop.setup.test": setupPage<RakazoSetup["test"]>(SETUP_NOT_ACTIVE),
+  "gente.support.state": supportPage<GenteSupportBridge["state"]>(REJECTS),
+  "gente.support.check": supportPage<GenteSupportBridge["check"]>(REJECTS),
+  "gente.support.ask": supportPage<GenteSupportBridge["ask"]>(REJECTS),
+  "gente.support.fix": supportPage<GenteSupportBridge["fix"]>(REJECTS),
+  "gente.support.feedback": supportPage<GenteSupportBridge["feedback"]>({ offerHuman: false }),
+  "gente.support.ticket": supportPage<GenteSupportBridge["ticket"]>(false),
+  "gente.support.answerReport": supportPage<GenteSupportBridge["answerReport"]>(false),
+  "gente.support.saveSettings": supportPage<GenteSupportBridge["saveSettings"]>(REJECTS),
+  "gente.support.articles": supportPage<GenteSupportBridge["articles"]>([]),
 };
 
 export type IpcChannelName = keyof typeof ipcChannels;

@@ -31,8 +31,23 @@ import { openBrowserAuth } from "./auth/browser-auth.js";
 import { associatedPasskeyRpIds } from "./auth/passkeys.js";
 import { installSessionPermissions } from "./auth/session-permissions.js";
 import { createUserDeviceAccess, deviceName } from "./auth/user-device.js";
+import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
+import { registerBrainIpc } from "./burrow/brain-ipc.js";
+import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
+import { useLegacyUserData } from "./burrow/legacy-user-data.js";
+import { stackSelfHeal } from "./burrow/self-heal.js";
+import { readTelegramToken } from "./burrow/telegram.js";
+import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
+import { startWatchdogs } from "./burrow/watchdogs.js";
 import { appWindowTargets, desktop, permissionTarget } from "./desktop-state.js";
-import { createLocaleHandler, errorDetail, startDesktopLocale, t, withDetail } from "./i18n.js";
+import {
+  createLocaleHandler,
+  desktopLocale,
+  errorDetail,
+  startDesktopLocale,
+  t,
+  withDetail,
+} from "./i18n.js";
 import type { IpcCaller } from "./ipc/ipc.js";
 import { handleIpc, sentFrom } from "./ipc/ipc.js";
 import { installServerHeaders } from "./setup/server-request-headers.js";
@@ -54,16 +69,13 @@ import {
   writeSetup,
   writeUiLocale,
 } from "./setup/setup-store.js";
-import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
-import { registerBrainIpc } from "./burrow/brain-ipc.js";
-import { stackSelfHeal } from "./burrow/self-heal.js";
-import { readTelegramToken } from "./burrow/telegram.js";
-import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
-import { startWatchdogs } from "./burrow/watchdogs.js";
-import { useLegacyUserData } from "./burrow/legacy-user-data.js";
-import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
-import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
+import { readSupportSettings } from "./support/settings.js";
+import {
+  recordSupportFailure,
+  recordWorkspaceReady,
+  startSupport,
+} from "./support/support-window.js";
 import { createBadgeHandler } from "./system/badge.js";
 import { createClipboardHandler } from "./system/clipboard.js";
 import {
@@ -118,6 +130,7 @@ import {
   StackStopMenuAvailability,
   stopStackLeftBehind,
 } from "./this-computer/stop-local-stack.js";
+import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import type { ElectronAutoUpdater } from "./updates/auto-update.js";
 import { DesktopUpdateController } from "./updates/auto-update.js";
 import { verifyDownloadedLinuxUpdate } from "./updates/linux-update-signature.js";
@@ -155,6 +168,8 @@ const updaterEnvironment = {
   packaged: app.isPackaged && existsSync(path.join(process.resourcesPath, "app-update.yml")),
   version: app.getVersion(),
   disabled: process.env.RAKAZO_DISABLE_AUTO_UPDATE === "1",
+  // Gente: "latest" or "canary", from Support settings; read before the updater loads.
+  channel: "latest" as "latest" | "canary",
 };
 let requestingComputerAccess = false;
 let hostScreen: HostScreen | undefined;
@@ -589,6 +604,7 @@ app.whenReady().then(async () => {
     await readUiLocale(userDataDir),
     app.getPreferredSystemLanguages()[0] ?? app.getLocale(),
   );
+  updaterEnvironment.channel = (await readSupportSettings(userDataDir)).updateChannel;
   desktop.desktopUpdater = new DesktopUpdateController(
     updaterEnvironment,
     // Loaded only when a packaged build actually checks for updates.
@@ -620,9 +636,7 @@ app.whenReady().then(async () => {
       const options: Electron.MessageBoxOptions = {
         type: "info",
         title: t("Mac app control"),
-        message: readyForRestart
-          ? t("Restart Gente to finish setup")
-          : t("Set up Mac app control"),
+        message: readyForRestart ? t("Restart Gente to finish setup") : t("Set up Mac app control"),
         detail: readyForRestart
           ? undefined
           : t(
@@ -739,6 +753,14 @@ app.whenReady().then(async () => {
   heal.bind(() => desktop.localStack.start());
   const onState = (state: DesktopLocalStackState) => {
     heal.observe(state);
+    // Gente Support: the quiet retries are used up, so record it and let the monitor take over.
+    if (state.phase === "failed" && heal.present(state).phase === "failed")
+      recordSupportFailure(
+        "WORKSPACE_DOWN",
+        "setup",
+        new Error(state.message ?? "workspace failed"),
+      );
+    if (state.phase === "ready") recordWorkspaceReady();
     void syncTelegramPoller(userStackDir, state.phase === "ready");
     // Gente: once the workspace is up, have the model read the last chat's prompt ahead of time.
     if (state.phase === "ready" && !prewarmed) {
@@ -838,24 +860,24 @@ app.whenReady().then(async () => {
           telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null
-      ? await nativeStack(serverBundle)
-      : new LocalStackController({
-          hostComputer: desktop.hostComputer?.connection,
-          platform: process.platform,
-          env: process.env,
-          exists: existsSync,
-          run: runDocker,
-          launchDockerApp: (binary) => launchDockerApp(process.platform, binary),
-          stackDir: userStackDir,
-          resourceDir,
-          localWebUrl,
-          imageTag,
-          probe,
-          randomHex,
-          onState,
-          // A confirmed reuse changes no phase; the menu must hear about it separately.
-          onReuseConfirmed: () => stopStackMenu.reuseConfirmed(),
-        });
+        ? await nativeStack(serverBundle)
+        : new LocalStackController({
+            hostComputer: desktop.hostComputer?.connection,
+            platform: process.platform,
+            env: process.env,
+            exists: existsSync,
+            run: runDocker,
+            launchDockerApp: (binary) => launchDockerApp(process.platform, binary),
+            stackDir: userStackDir,
+            resourceDir,
+            localWebUrl,
+            imageTag,
+            probe,
+            randomHex,
+            onState,
+            // A confirmed reuse changes no phase; the menu must hear about it separately.
+            onReuseConfirmed: () => stopStackMenu.reuseConfirmed(),
+          });
   const settleLocalStack = settleStackWhenNeeded(
     choice,
     async () => {
@@ -1051,6 +1073,8 @@ app.whenReady().then(async () => {
   handleIpc("desktop.update.install", () => installUpdate(), updateState);
   registerBrainIpc(stackDir(app.getPath("userData")));
   registerTelegram(stackDir(app.getPath("userData")));
+  // Gente Support: local health checks, self-healing, the support window and opt-in reports.
+  startSupport({ userDataDir, stackDir: stackDir(userDataDir), locale: () => desktopLocale() });
   // Gente: keep Ollama and the workspace alive without asking the person to do anything.
   startWatchdogs(() => desktop.localStack);
   registerSetupIpc({
@@ -1098,7 +1122,8 @@ app.whenReady().then(async () => {
     showSetupWindow();
   } else if (target.source === "saved" && desktop.currentSetup?.mode === "new") {
     // A workspace left running on the old default model restarts on the new one.
-    if (movedToFastModel && desktop.localStack.managedStackRunning()) await desktop.localStack.stop();
+    if (movedToFastModel && desktop.localStack.managedStackRunning())
+      await desktop.localStack.stop();
     const managedUrl = managedLocalOpenUrl(target.url, desktop.localStack.webUrl());
     const managedStackReady =
       managedUrl !== null ? await desktop.localStack.matchesDesiredStack() : false;

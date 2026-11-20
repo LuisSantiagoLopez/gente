@@ -240,6 +240,11 @@ describe("handleIpc", () => {
       "desktop.setup.stack.start",
       "desktop.setup.stack.state",
       "desktop.setup.state",
+      "gente.support.state",
+      "gente.support.check",
+      "gente.support.ask",
+      "gente.support.fix",
+      "gente.support.saveSettings",
     ]);
     expect(names.filter((name) => ipcChannels[name].refused === LIVE)).toEqual([
       "desktop.update.check",

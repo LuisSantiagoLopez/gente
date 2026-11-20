@@ -198,6 +198,7 @@ export const PT_BR_MESSAGES: Record<string, string> = {
   "Chat Details": "Detalhes do chat",
   Help: "Ajuda",
   "Keyboard Shortcuts": "Atalhos de teclado",
+  "Gente Support…": "Suporte do Gente…",
   "Downloading Gente failed. Check the internet connection, then retry.":
     "Não foi possível baixar o Gente. Verifique a conexão com a internet e tente novamente.",
   "Could not move your data from Docker. Check the output below, then retry.":

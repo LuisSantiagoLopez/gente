@@ -18,13 +18,18 @@ export function registerBrainIpc(stackDirectory: string) {
       "Based on Rakazo by Elie Steinbock (Apache-2.0), github.com/elie222/rakazo.\n" +
       "Default model: Swift 1.5 by UkisAI, run locally with Ollama.",
   });
-  brain = new Brain(stackDirectory, (state) => {
-    const win = desktop.setupWindow;
-    if (win !== null && !win.isDestroyed()) win.webContents.send("desktop.setup.brain.changed", state);
-  }, async () => {
-    // The API and worker read the default model when they start.
-    if (desktop.localStack.managedStackRunning()) await desktop.localStack.stop();
-  });
+  brain = new Brain(
+    stackDirectory,
+    (state) => {
+      const win = desktop.setupWindow;
+      if (win !== null && !win.isDestroyed())
+        win.webContents.send("desktop.setup.brain.changed", state);
+    },
+    async () => {
+      // The API and worker read the default model when they start.
+      if (desktop.localStack.managedStackRunning()) await desktop.localStack.stop();
+    },
+  );
   void brain.loadSaved();
   handleIpc("desktop.setup.brain.state", () => (brain as Brain).current());
   handleIpc("desktop.setup.brain.start", (_event, options) => {
@@ -42,4 +47,11 @@ export function registerBrainIpc(stackDirectory: string) {
   // quick model read the small-talk prompt, so the first "hey" answers at once.
   if (ollamaInstalled())
     void startOllama().then((up) => (up ? prewarmSwift(stackDirectory) : false));
+}
+
+/** Gente support: download the model again and load it, as first-run setup does. */
+export async function rebuildBrain(): Promise<boolean> {
+  if (brain === null) return false;
+  await brain.start();
+  return brain.current().phase === "ready";
 }
