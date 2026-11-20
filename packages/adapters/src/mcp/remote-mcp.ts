@@ -1,5 +1,5 @@
 import { lookup } from "node:dns/promises";
-import { withComposioKey } from "./composio-key.js";
+import { composioEndpoint, withComposioKey } from "./composio-key.js";
 import type { LookupFunction } from "node:net";
 import type { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import {
@@ -295,7 +295,7 @@ async function withRemoteMcpClient<T>(
     undefined,
     MCP_HTTP_TIMEOUTS,
   );
-  const transport = new StreamableHTTPClientTransport(endpoint, {
+  const transport = new StreamableHTTPClientTransport(composioEndpoint(endpoint), {
     requestInit: {
       // Gente: the Composio Connect key from the OS keychain, for that host only.
       headers: withComposioKey(endpoint, options.headers),
@@ -490,7 +490,7 @@ export class RemoteMcpSessionCache {
       undefined,
       MCP_HTTP_TIMEOUTS,
     );
-    const transport = new StreamableHTTPClientTransport(endpoint, {
+    const transport = new StreamableHTTPClientTransport(composioEndpoint(endpoint), {
       requestInit: {
         headers: withComposioKey(endpoint, options.headers),
         redirect: "manual",

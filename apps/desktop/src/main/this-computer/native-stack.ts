@@ -288,6 +288,8 @@ export interface NativeStackDeps {
   searchBroker?: () => { url: string; token: string } | null;
   /** Gente: the loopback model router (Fast or Private), used as the model server's address. */
   modelRouter?: () => string | null;
+  /** Gente: the loopback relay for Composio through Gente Cloud. */
+  composioProxy?: () => string | null;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -672,6 +674,7 @@ export class NativeStackController extends StackLifecycle {
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
+      ...(this.deps.composioProxy?.() ? { GENTE_COMPOSIO_PROXY_URL: this.deps.composioProxy()! } : {}),
     });
     // Gente: chats are encrypted at rest with a key sealed in the system keychain. Content saved
     // before this release is encrypted once, here, before the server starts; until that pass
