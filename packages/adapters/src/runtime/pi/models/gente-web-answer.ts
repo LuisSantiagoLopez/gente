@@ -30,16 +30,47 @@ const SEARCH_TIMEOUT_MS = 5_000;
 const SOURCES_CHAR_BUDGET = 6_000;
 const MAX_SOURCES = 3;
 
-const WEB_WORDS =
-  /\b(latest|newest|recent(ly)?|today|tonight|yesterday|this (week|month|year)|right now|currently|current|news|headlines?|price|prices|cost of|stock|weather|forecast|score|scores|who won|winner|results?|election|released?|release date|schedule|open now|near me|trending|search (for|the web)|look ?up|google|busca(r)?|noticias|hoy|precio|clima|últim[oa]s?)\b|\b20[2-9]\d\b/i;
-const REFRESH = /\b(refresh|again|update[sd]?|actualiza)\b/i;
+/** Whole words or phrases (any alphabet, accents included), case-insensitive. */
+const words = (alternatives: string) =>
+  new RegExp(`(?<![\\p{L}\\p{N}])(?:${alternatives})(?![\\p{L}\\p{N}])`, "iu");
 
-/** True when the newest user message plainly asks for something that lives on the web. */
+// Fresh facts that live on the web: any of these alone sends a question to the web.
+const FACT_TOPICS = words(
+  "news|headlines?|weather|forecast|temperature|price|prices|cost of|stocks?|share price|exchange rate|bitcoin|score|scores|who won|winner|election|polls?|release date|box office|trending|traffic|open now|near me|noticias|clima|pron[oó]stico|temperatura|precio|precios|cotizaci[oó]n|tipo de cambio|acciones|marcador|qui[eé]n gan[oó]|elecciones|estreno|tr[aá]fico|abierto ahora|cerca de m[ií]|not[ií]cias|previs[aã]o do tempo|pre[cç]o|pre[cç]os|cota[cç][aã]o|c[aâ]mbio do d[oó]lar|placar|quem ganhou|elei[cç][oõ]es|estreia|tr[aâ]nsito|aberto agora|perto de mim",
+);
+// Saying "search" (or "look up") always means the web.
+const SEARCH_WORDS = words(
+  "search (for|the web|online)|look ?up|google it|google|busca(r)? en (internet|la web|google)|b[uú]scalo|investiga en internet|pesquis(e|ar|a) (na internet|no google|na web)|procur(e|ar|a) na internet",
+);
+// Time words count only next to something that happens in the world.
+const TIME_WORDS = words(
+  "latest|newest|recent(ly)?|today|tonight|yesterday|this (week|month|year)|right now|currently|hoy|esta noche|ayer|esta semana|ahora mismo|[uú]ltim[oa]s?|hoje|hoje [aà] noite|ontem|esta semana|agora|20[2-9]\\d",
+);
+const WORLD_EVENTS = words(
+  "game|match|plays?|playing|happened|event|concert|movie|show|market|dollar|euro|launch(ed)?|announced?|partido|juega|juegan|pas[oó]|evento|concierto|pel[ií]cula|mercado|d[oó]lar|lanz(a|aron|ó)|anunci[oó]|jogo|joga|jogam|aconteceu|evento|show|filme|mercado|lan[cç](a|ou|aram)|anunciou",
+);
+// About Gente itself or the person's own things: never the web unless they say "search".
+const NOT_WEB = words(
+  "what can you do|can you help|help me|who are you|what are you|how are you|remind me|my (calendar|email|emails|inbox|tasks?|day|schedule|files?|notes?|week)|plan my|write|draft|translate|summari[sz]e (this|my)|qu[eé] puedes hacer|puedes ayudarme|me ayudas|ay[uú]dame|qui[eé]n eres|c[oó]mo est[aá]s|recu[eé]rdame|mi (agenda|calendario|correo|d[ií]a|semana|bandeja)|mis (tareas|correos|archivos|notas)|escribe|redacta|traduce|resume (esto|mi)|organiza mi|o que voc[eê] (pode|faz)|pode me ajudar|me ajuda|quem [eé] voc[eê]|como voc[eê] est[aá]|me lembr[ae]|meu (calend[aá]rio|e-?mail|dia)|minha (agenda|semana|caixa)|minhas (tarefas|notas)|escreva|redija|traduza|resuma (isso|meu)",
+);
+const REFRESH = words("refresh|again|update[sd]?|actualiza");
+
+/** Whether a message needs fresh facts from the web ("web") or the model alone answers it ("model"). */
+export function webRoute(text: string): "web" | "model" {
+  const words = text.trim();
+  if (words.split(/\s+/).length < 2 || words.length > 2400) return "model";
+  if (SEARCH_WORDS.test(words)) return "web";
+  if (NOT_WEB.test(words)) return "model";
+  if (FACT_TOPICS.test(words)) return "web";
+  if (TIME_WORDS.test(words) && WORLD_EVENTS.test(words)) return "web";
+  return "model";
+}
+
+/** True when the newest user message needs fresh facts from the web. */
 export function needsWeb(messages: readonly ChatMessage[]): boolean {
   const last = messages.at(-1);
   if (!last || last.role !== "user") return false;
-  const words = userWords(last.content);
-  return words.length >= 6 && words.length <= 400 && WEB_WORDS.test(words);
+  return webRoute(userWords(last.content)) === "web";
 }
 
 const normalize = (q: string) =>
