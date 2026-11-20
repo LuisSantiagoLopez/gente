@@ -1,6 +1,8 @@
-import type { SettingsScope } from "@rakazo/contracts";
+import type { AutoApproveLimits, SettingsScope } from "@rakazo/contracts";
+import { AutoApproveLimitsSchema, DEFAULT_AUTO_APPROVE_LIMITS } from "@rakazo/contracts";
 import type { PrismaClient } from "../database/client.js";
 import { Prisma } from "../database/client.js";
+import { readJsonColumn } from "../database/json-column.js";
 import { lockSpaceSettings, settingsTarget } from "../spaces/space-settings.js";
 
 type Scope = { userId: string; spaceId: string };
@@ -25,6 +27,10 @@ export function storedBatchActions(
 
 export type ApprovalRuleInput = { effect: string; matchKind: string; matchValue: string };
 export type AutoReviewPreference = { enabled: boolean; skipApprovals: boolean };
+/** A stored preference row; `autoApprove` is read with readJsonColumn by its callers. */
+export type StoredAutoReviewPreference = AutoReviewPreference & {
+  autoApprove: Prisma.JsonValue | null;
+};
 
 /**
  * Approval rules and auto review are confirmations: the account's copy, or the Space's
@@ -116,12 +122,29 @@ export async function removeApprovalRule(
   }
 }
 
+/**
+ * The owner's auto-approve limits on a stored preference. Never set, or stored in another shape,
+ * reads as off, which only ever asks more.
+ */
+export function storedAutoApproveLimits(
+  value: Prisma.JsonValue | null | undefined,
+  row: { table: string; id: string },
+): AutoApproveLimits {
+  if (value === null || value === undefined) return DEFAULT_AUTO_APPROVE_LIMITS;
+  return readJsonColumn(
+    AutoApproveLimitsSchema,
+    value,
+    { ...row, column: "autoApprove" },
+    { fallback: DEFAULT_AUTO_APPROVE_LIMITS },
+  );
+}
+
 export async function findAutoReviewPreference(
   prisma: ConfirmationsClient,
   scope: Scope,
   requested?: SettingsScope,
-): Promise<AutoReviewPreference | null> {
-  const select = { enabled: true, skipApprovals: true } as const;
+): Promise<StoredAutoReviewPreference | null> {
+  const select = { enabled: true, skipApprovals: true, autoApprove: true } as const;
   return (await confirmationsTarget(prisma, scope, requested)) === "account"
     ? prisma.userActionAutoReviewPreference.findUnique({
         where: { userId: scope.userId },
@@ -137,13 +160,14 @@ export async function findAutoReviewPreference(
 export async function saveAutoReviewPreference(
   prisma: ConfirmationsTx,
   scope: Scope,
-  update: Partial<AutoReviewPreference>,
+  update: Partial<AutoReviewPreference> & { autoApprove?: Prisma.InputJsonValue },
   defaults: AutoReviewPreference,
   requested?: SettingsScope,
 ) {
   const create = {
     enabled: update.enabled ?? defaults.enabled,
     skipApprovals: update.skipApprovals ?? defaults.skipApprovals,
+    ...(update.autoApprove === undefined ? {} : { autoApprove: update.autoApprove }),
   };
   await lockSpaceSettings(prisma, scope);
   if ((await confirmationsTarget(prisma, scope, requested)) === "account") {

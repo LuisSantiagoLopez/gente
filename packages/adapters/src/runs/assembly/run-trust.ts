@@ -1,4 +1,4 @@
-import type { MessageBlock } from "@rakazo/contracts";
+import type { AutoApproveLimits, MessageBlock } from "@rakazo/contracts";
 import type { ActionApprovalRule } from "@rakazo/core";
 import {
   BACKGROUND_HELPER_TRIGGER,
@@ -13,6 +13,7 @@ import {
   findAutoReviewPreference,
   listApprovalRules,
   readMessageBlocks,
+  storedAutoApproveLimits,
   storedBatchActions,
   storedMessageBlocks,
 } from "@rakazo/db";
@@ -119,7 +120,7 @@ export function createRunTrustLoaders(
       }),
     ));
   let autoReviewPreferencePromise:
-    | Promise<{ enabled: boolean; skipApprovals: boolean }>
+    | Promise<{ enabled: boolean; skipApprovals: boolean; autoApprove: AutoApproveLimits }>
     | undefined;
   const loadAutoReviewPreference = () => {
     autoReviewPreferencePromise ??= findAutoReviewPreference(deps.prisma, {
@@ -128,6 +129,10 @@ export function createRunTrustLoaders(
     }).then((row) => ({
       enabled: row?.enabled ?? true,
       skipApprovals: row?.skipApprovals ?? false,
+      autoApprove: storedAutoApproveLimits(row?.autoApprove, {
+        table: "auto_review_preferences",
+        id: `${run.spaceId}:${run.userId}`,
+      }),
     }));
     return autoReviewPreferencePromise;
   };

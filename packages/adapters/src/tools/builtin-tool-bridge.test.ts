@@ -106,6 +106,11 @@ describe("built-in tool bridge", () => {
     });
   });
 
+  it("sends a search for a connected app's actions back to the app's own tools", () => {
+    const { deferred } = partitionTools(ownerChat);
+    expect(findTools(deferred, { query: "zzzz" }).hint).toContain("connected app");
+  });
+
   it("never finds a tool the bot turned off", () => {
     const { listed, deferred } = partitionTools(
       selectBuiltinToolsForRun({
