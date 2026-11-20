@@ -251,10 +251,40 @@ export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
       signal: AbortSignal.timeout(5 * 60_000),
     });
     await res.text();
+    // QA-022: then the long task prompt (system prompt plus about 23 tool schemas, ~10k tokens),
+    // so the first real question after launch also finds its prefix cached. It runs after the
+    // small-talk warm-up, in the background, and never delays a reply.
+    if (res.ok) void warmTaskPrefix(stackDirectory, model);
     return res.ok;
   } catch {
     // No chat yet, or the model server is busy: the first reply reads the prompt instead.
     return false;
+  }
+}
+
+async function warmTaskPrefix(stackDirectory: string, model: string): Promise<void> {
+  try {
+    const prefix = JSON.parse(
+      await readFile(path.join(stackDirectory, "data", "burrow-warm.json"), "utf8"),
+    ) as { messages?: unknown[] };
+    if (!Array.isArray(prefix.messages) || prefix.messages.length === 0) return;
+    const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        ...prefix,
+        stream_options: undefined,
+        model,
+        stream: false,
+        max_completion_tokens: 1,
+        max_tokens: 1,
+        reasoning_effort: "none",
+      }),
+      signal: AbortSignal.timeout(10 * 60_000),
+    });
+    await res.text();
+  } catch {
+    // Best effort only.
   }
 }
 

@@ -282,4 +282,6 @@ export const ES_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "Tu IA está lista.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Tu IA vive en tu computadora. Tus chats nunca salen de ella.",
+  "Sign In to Gente…": "Iniciar sesión en Gente…",
+  "Sign Out of Gente": "Cerrar sesión de Gente",
 };

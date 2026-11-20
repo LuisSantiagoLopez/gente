@@ -248,4 +248,6 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Your AI": "你的 AI",
   "Your AI is ready.": "你的 AI 已就緒。",
   "Your AI lives on your computer. Your chats never leave it.": "你的 AI 住在你的電腦裡。你的聊天永遠不會離開它。",
+  "Sign In to Gente…": "登入 Gente…",
+  "Sign Out of Gente": "登出 Gente",
 };

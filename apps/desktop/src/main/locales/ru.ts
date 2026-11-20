@@ -266,4 +266,6 @@ export const RU_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "Ваш ИИ готов.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Ваш ИИ живёт на вашем компьютере. Ваши чаты никогда его не покидают.",
+  "Sign In to Gente…": "Войти в Gente…",
+  "Sign Out of Gente": "Выйти из Gente",
 };

@@ -61,7 +61,8 @@ import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
 import { startWatchdogs } from "./burrow/watchdogs.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
-import { readComposioKey, readKeychainSecret } from "./burrow/composio.js";
+import { initAccount } from "./burrow/account.js";
+import { readComposioKey, readKeychainSecret, vendorKeysAllowed } from "./burrow/composio.js";
 import { plainStackEligible, postgresBin, WindowsStackController } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { createBadgeHandler } from "./system/badge.js";
@@ -149,6 +150,12 @@ let monitoringSession: Session | undefined;
 let monitoringTargetUrl: string | undefined;
 let stopMonitoringSession: (() => void) | undefined;
 const appOpener = createAppOpener(openAppOnce);
+/** Gente: vendor keys stay out of user builds (see vendorKeysAllowed). */
+const devVendorKeys = () =>
+  vendorKeysAllowed({
+    packaged: app.isPackaged,
+    devFlagFile: existsSync(path.join(app.getPath("userData"), "dev-vendor-keys")),
+  });
 const reportsErrors = desktopReportsErrors(app.isPackaged);
 const updaterEnvironment = {
   // A `--dir` build has no update feed to read.
@@ -732,6 +739,7 @@ app.whenReady().then(async () => {
         unseal: (sealed: Buffer) => safeStorage.decryptString(sealed),
       }
     : undefined;
+  initAccount({ sealer, rebuildMenu: () => installApplicationMenu() });
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
@@ -802,8 +810,9 @@ app.whenReady().then(async () => {
       onState,
       importFromDocker: moving ? (target) => moveDockerStack(moveDeps, target) : undefined,
       sealer,
-      composioKey: () => readComposioKey(),
-      cloudComputerKey: () => readKeychainSecret("E2B_API_KEY"),
+      composioKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
+      cloudComputerKey: () =>
+        devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
       telegramToken: () => readTelegramToken(),
     });
   };
@@ -849,8 +858,9 @@ app.whenReady().then(async () => {
           randomHex,
           onState,
           sealer,
-          composioKey: () => readComposioKey(),
-          cloudComputerKey: () => readKeychainSecret("E2B_API_KEY"),
+          composioKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
+          cloudComputerKey: () =>
+            devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
           telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null

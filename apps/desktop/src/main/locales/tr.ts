@@ -263,4 +263,6 @@ export const TR_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "Yapay zekân hazır.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Yapay zekân senin bilgisayarında yaşar. Sohbetlerin oradan hiç çıkmaz.",
+  "Sign In to Gente…": "Gente'ye giriş yap…",
+  "Sign Out of Gente": "Gente'den çıkış yap",
 };

@@ -265,4 +265,6 @@ export const JA_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "あなたのAIの準備ができました。",
   "Your AI lives on your computer. Your chats never leave it.":
     "あなたのAIはあなたのコンピュータの中にあります。チャットが外に出ることはありません。",
+  "Sign In to Gente…": "Gente にサインイン…",
+  "Sign Out of Gente": "Gente からサインアウト",
 };
