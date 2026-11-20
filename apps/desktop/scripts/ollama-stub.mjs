@@ -9,7 +9,13 @@
 import http from "node:http";
 
 export function createOllamaStub({ failLoad = [], installed = [] } = {}) {
-  const models = new Map(installed.map((name) => [name, { from: name }]));
+  // "alias=tag" starts with an alias already made from those weights.
+  const models = new Map(
+    installed.map((name) => {
+      const [alias, from] = name.split("=");
+      return from ? [`${alias}:latest`, { from }] : [name, { from: name }];
+    }),
+  );
   const calls = [];
   const resolve = (name) => {
     const entry = models.get(name) ?? models.get(`${name}:latest`);
@@ -33,7 +39,9 @@ export function createOllamaStub({ failLoad = [], installed = [] } = {}) {
         res.writeHead(200, { "content-type": "application/x-ndjson" });
         const total = 1000;
         for (const completed of [0, 250, 500, 1000]) {
-          res.write(`${JSON.stringify({ status: "pulling", digest: "sha256:stub", total, completed })}\n`);
+          res.write(
+            `${JSON.stringify({ status: "pulling", digest: "sha256:stub", total, completed })}\n`,
+          );
         }
         models.set(json.model, { from: json.model });
         res.end(`${JSON.stringify({ status: "success" })}\n`);
@@ -48,12 +56,21 @@ export function createOllamaStub({ failLoad = [], installed = [] } = {}) {
             error: "model requires more system memory (20.1 GiB) than is available (15.2 GiB)",
           });
         return send(200, { model: json.model, response: "", done: true });
-      case "/api/show":
-        return send(200, { capabilities: ["completion", "tools"] });
+      case "/api/show": {
+        // The quantization is the tag's suffix (…GGUF:Q4_K_M), as Ollama reports it in details.
+        const quant = /:([A-Z0-9_]+)$/.exec(resolve(json.model))?.[1];
+        return send(200, {
+          capabilities: ["completion", "tools"],
+          ...(quant ? { details: { quantization_level: quant } } : {}),
+        });
+      }
       case "/v1/models":
         return send(200, {
           object: "list",
-          data: [...models.keys()].map((id) => ({ id: id.replace(/:latest$/, ""), object: "model" })),
+          data: [...models.keys()].map((id) => ({
+            id: id.replace(/:latest$/, ""),
+            object: "model",
+          })),
         });
       case "/v1/chat/completions": {
         const last = json.messages?.at(-1);
@@ -75,7 +92,9 @@ export function createOllamaStub({ failLoad = [], installed = [] } = {}) {
           id: "stub",
           object: "chat.completion",
           model: json.model,
-          choices: [{ index: 0, message: { role: "assistant", content: text }, finish_reason: "stop" }],
+          choices: [
+            { index: 0, message: { role: "assistant", content: text }, finish_reason: "stop" },
+          ],
           usage: { prompt_tokens: 10, completion_tokens: 10, total_tokens: 20 },
         });
       }
