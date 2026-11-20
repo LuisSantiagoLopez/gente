@@ -58,7 +58,13 @@ export function computerEnv(
   e2bKey: string | undefined,
   choice: ComputerChoice,
   localProvider: "local-vm" | "none",
+  /** Gente Cloud's computer broker, when the person's plan includes online hours. */
+  cloudBroker?: string | null,
 ): Record<string, string> {
+  // Auto: a paid plan with the network up uses Gente Cloud's computers (billed by the hour only
+  // while one runs); otherwise this computer's own. A task never waits for want of a computer.
+  if (cloudBroker && choice === "cloud")
+    return { SANDBOX_PROVIDER: "e2b", E2B_API_KEY: "gente-cloud", GENTE_COMPUTER_BROKER_URL: cloudBroker };
   if (e2bKey && choice === "cloud") return { SANDBOX_PROVIDER: "e2b", E2B_API_KEY: e2bKey };
   return { SANDBOX_PROVIDER: localProvider };
 }

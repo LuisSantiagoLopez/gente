@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { DEFAULT_COMPUTER_SCREEN } from "@rakazo/core";
 import type { ComputerProviderDefinition } from "../../../computers/computer-provider-descriptor.js";
 import { raw } from "../../../computers/computer-provider-descriptor.js";
@@ -20,6 +21,11 @@ export const e2bComputer: ComputerProviderDefinition = {
   },
   async create(opts) {
     const { E2BSandboxProvider } = await import("./e2b-sandbox.js");
+    // Gente: in the desktop app, cloud computers come from Gente Cloud through the app's broker;
+    // no E2B key is on the computer then.
+    const { genteCloudBrokerUrl, genteCloudSdk } = await import("./gente-cloud-sdk.js");
+    const broker = genteCloudBrokerUrl();
+    if (broker) return new E2BSandboxProvider("gente-cloud", genteCloudSdk(broker));
     return new E2BSandboxProvider(opts.e2bApiKey!);
   },
 };
