@@ -1214,11 +1214,13 @@ app.whenReady().then(async () => {
   );
   handleIpc("desktop.gente.setAiMode", async (_event, mode: unknown) => {
     await aiMode.set(mode);
+    void (modelRouter as RouterHandle | null)?.refresh?.();
     return aiModeState();
   });
   handleIpc("desktop.gente.consumeMessage", (_event, messageId: unknown) => consumeFreeMessage(messageId));
   handleIpc("desktop.gente.signIn", async () => {
     await signInToGente();
+    void (modelRouter as RouterHandle | null)?.refresh?.();
     return accountState();
   });
   handleIpc("desktop.gente.signOut", async () => {
