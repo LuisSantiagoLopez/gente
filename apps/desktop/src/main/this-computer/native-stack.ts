@@ -577,6 +577,18 @@ export class NativeStackController extends StackLifecycle {
         throw new StartFailure(servicesFailed(), [...postgres.tail, error.message]);
       });
     const endpoint = await this.waitForDatabasePort(runtime.cli, databasePort, signal);
+    // Gente (QA-002): the database machine and its volume outlive Gente's data folder. When a new
+    // folder brings a new password, the old volume still holds the old one and every login fails.
+    // Set the owner's password from this folder over the machine's own socket (no password
+    // needed there). The data stays exactly as it was.
+    await this.psql(
+      runtime.cli,
+      "postgres",
+      `ALTER ROLE ${quoteIdent(user)} WITH PASSWORD ${quoteLiteral(password)};\n`,
+      signal,
+    ).catch((error: Error) => {
+      throw new StartFailure(servicesFailed(), [error.message]);
+    });
 
     const at = (login: string, secret: string) =>
       `postgres://${encodeURIComponent(login)}:${encodeURIComponent(secret)}@${endpoint.host}:${endpoint.port}/${encodeURIComponent(database)}`;
@@ -1166,3 +1178,11 @@ export const NO_TELEMETRY: Record<string, string> = {
   OTEL_CAPTURE_CONTENT: "false",
   CRISP_WEBSITE_ID: "",
 };
+
+/** SQL identifier and literal quoting for the one statement Gente runs over the socket. */
+export function quoteIdent(name: string): string {
+  return `"${name.replaceAll('"', '""')}"`;
+}
+export function quoteLiteral(value: string): string {
+  return `'${value.replaceAll("'", "''")}'`;
+}
