@@ -3,6 +3,8 @@ name: gente-windows
 # the onboarding → workspace → chat smoke test against a stand-in model server.
 on:
   workflow_dispatch:
+  # Gente self-healing: the gates run this same packaged-app smoke test on every fix.
+  workflow_call:
   push:
     branches: [windows-ci]
 permissions:

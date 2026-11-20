@@ -13,6 +13,8 @@ export interface UpdaterEnvironment {
   packaged: boolean;
   version: string;
   disabled?: boolean;
+  /** Gente: the update channel ("latest" unless the person chose "canary" in Support). */
+  channel?: "latest" | "canary";
 }
 
 export function updaterSupport(env: UpdaterEnvironment): { supported: boolean; reason: string } {
@@ -248,6 +250,7 @@ export interface ElectronAutoUpdater {
   allowDowngrade: boolean;
   allowPrerelease: boolean;
   disableWebInstaller: boolean;
+  channel?: string | null;
   on: (event: string, listener: (payload: unknown) => void) => unknown;
   checkForUpdates: () => Promise<unknown>;
   downloadUpdate: () => Promise<unknown>;
@@ -369,6 +372,9 @@ export class DesktopUpdateController {
         // The updater would install on quit before an async verifier could finish.
         updater.autoInstallOnAppQuit = this.verifyDownload === undefined;
         updater.allowPrerelease = false;
+        // Gente: canary reads canary.yml. Setting a channel turns downgrades on, so turn them off
+        // again after it: a rollback ships as a newer version, never as an older one.
+        if (this.environment.channel === "canary") updater.channel = "canary";
         updater.allowDowngrade = false;
         updater.disableWebInstaller = true;
         updater.on("checking-for-update", () => this.push({ type: "check-start" }));

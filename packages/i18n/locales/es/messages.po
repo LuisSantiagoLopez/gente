@@ -5891,6 +5891,10 @@ msgstr "Pide permiso para grabar y compartir la transcripción con este Espacio.
 msgid "Getting ready"
 msgstr "Preparando"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "Poniendo todo en marcha…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from "node:fs/promises";
+import { copyFile, cp, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,7 +14,16 @@ const STATIC_FILES = [
   "telegram-renderer/telegram.html",
   "telegram-renderer/telegram.css",
   "telegram-renderer/telegram.js",
+  "preload/support-preload.cjs",
+  "support-renderer/support.html",
+  "support-renderer/support.css",
+  "support-renderer/support.js",
 ];
+// Gente's help articles, read by the support window and its local search.
+const HELP_DIR = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../docs/gente/help",
+);
 const TOKENS_FILE = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../../packages/ui-tokens/src/tokens.css",
@@ -29,4 +38,5 @@ await Promise.all([
     copyFile(path.join(root, "src", file), path.join(dist, path.basename(file))),
   ),
   copyFile(TOKENS_FILE, path.join(dist, "tokens.css")),
+  cp(HELP_DIR, path.join(dist, "help"), { recursive: true }),
 ]);

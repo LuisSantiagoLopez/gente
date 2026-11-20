@@ -31,6 +31,16 @@ export type IpcHandler<Name extends IpcChannelName> = (
  */
 export function sentFrom(window: IpcWindow, event: IpcCaller): boolean {
   try {
+    if (window === "support") {
+      const support = desktop.supportWindow;
+      return (
+        support !== null &&
+        !support.isDestroyed() &&
+        event.sender === support.webContents &&
+        event.senderFrame !== null &&
+        event.senderFrame === event.sender.mainFrame
+      );
+    }
     if (window !== "setup")
       return (
         fromAppFrame(permissionTarget(), event) ||

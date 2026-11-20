@@ -1,0 +1,115 @@
+name: gente-canary-release
+# Gente self-healing, step 6: every merge into canary runs all the gates again on the merged code,
+# then builds Mac and Windows, publishes them to the update bucket, and starts the staged rollout:
+# canary channel at once, everyone else at 5%. gente-rollout.yml moves it to 25% and 100%.
+#
+# Needs: vars.GENTE_UPDATE_URL (the public address of Gente Cloud's gente-updates bucket),
+# vars.GENTE_SELFHEAL_URL and secrets.SELF_HEAL_CLOUD_TOKEN (uploads go through Gente Cloud).
+# Signing is skipped until the certificates exist (CSC_LINK, CSC_KEY_PASSWORD, APPLE_ID,
+# APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID, WIN_CSC_LINK, WIN_CSC_KEY_PASSWORD); a skipped
+# signature is noted in the run summary and never fails the build.
+on:
+  push:
+    branches: [canary]
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: gente-canary-release
+jobs:
+  gates:
+    uses: ./.github/workflows/gente-gates.yml
+    secrets: inherit
+
+  build:
+    needs: gates
+    strategy:
+      matrix:
+        include:
+          - os: macos-15
+            target: --mac dmg zip --arm64
+          - os: windows-2025
+            target: --win nsis --x64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - name: Version 0.2.<run number>, so every canary build is newer than the last
+        working-directory: apps/desktop
+        run: npm version "0.2.${{ github.run_number }}" --no-git-tag-version --allow-same-version
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
+          [ "$RUNNER_OS" = "Windows" ] && node scripts/burrow-windows-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
+          mkdir -p apps/desktop/build && cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+        env:
+          GENTE_SELFHEAL_URL: ${{ vars.GENTE_SELFHEAL_URL }}
+      - name: Package (signed when the certificates are configured)
+        working-directory: apps/desktop
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+          GENTE_UPDATE_URL: ${{ vars.GENTE_UPDATE_URL }}
+        run: |
+          flags=""
+          if [ -z "$CSC_LINK$WIN_CSC_LINK" ]; then
+            echo "::notice title=Signing skipped::No code-signing certificates yet (blocked on owner). This build is unsigned."
+            echo "Signing skipped: no certificates yet (blocked on owner)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -z "$CSC_LINK" ] && [ "$RUNNER_OS" = "macOS" ]; then flags="$flags -c.mac.identity=null"; fi
+          if [ -n "$APPLE_ID" ]; then flags="$flags -c.mac.notarize=true"; fi
+          if [ -z "$WIN_CSC_LINK" ]; then flags="$flags -c.win.verifyUpdateCodeSignature=false"; fi
+          # The update feed lives in the bucket (generic provider), so stagingPercentage can be edited.
+          node -e 'const f="package.json",p=JSON.parse(require("fs").readFileSync(f));p.build.publish=[{provider:"generic",url:process.env.GENTE_UPDATE_URL,channel:"latest"}];require("fs").writeFileSync(f,JSON.stringify(p,null,2))'
+          npx electron-builder ${{ matrix.target }} --publish never $flags
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}
+          path: |
+            apps/desktop/out/*.yml
+            apps/desktop/out/*.dmg
+            apps/desktop/out/*.zip
+            apps/desktop/out/*.exe
+            apps/desktop/out/*.blockmap
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: Upload the builds, then publish the feed (canary 100%, everyone else 5%)
+        env:
+          GENTE_SELFHEAL_URL: ${{ vars.GENTE_SELFHEAL_URL }}
+          SELF_HEAL_CLOUD_TOKEN: ${{ secrets.SELF_HEAL_CLOUD_TOKEN }}
+          GENTE_UPDATE_URL: ${{ vars.GENTE_UPDATE_URL }}
+        run: |
+          pnpm exec tsx scripts/self-heal/cli.ts upload --dir out
+          pnpm exec tsx scripts/self-heal/cli.ts publish --built out --feed cloud

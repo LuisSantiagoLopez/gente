@@ -270,4 +270,5 @@ export const NL_MESSAGES: Record<string, string> = {
     "Je AI woont op je computer. Je chats verlaten hem nooit.",
   "Sign In to Gente…": "Inloggen bij Gente…",
   "Sign Out of Gente": "Uitloggen bij Gente",
+  "Gente Support…": "Gente-hulp…",
 };

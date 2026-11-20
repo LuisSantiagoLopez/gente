@@ -247,4 +247,5 @@ export const ZH_CN_MESSAGES: Record<string, string> = {
   "Your AI lives on your computer. Your chats never leave it.": "你的 AI 住在你的电脑上。你的聊天永远不会离开它。",
   "Sign In to Gente…": "登录 Gente…",
   "Sign Out of Gente": "退出 Gente",
+  "Gente Support…": "Gente 支持…",
 };

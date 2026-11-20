@@ -265,4 +265,5 @@ export const TR_MESSAGES: Record<string, string> = {
     "Yapay zekân senin bilgisayarında yaşar. Sohbetlerin oradan hiç çıkmaz.",
   "Sign In to Gente…": "Gente'ye giriş yap…",
   "Sign Out of Gente": "Gente'den çıkış yap",
+  "Gente Support…": "Gente Destek…",
 };

@@ -284,8 +284,22 @@ export const Transcript = memo(function Transcript({
       item.kind === "voiceChat" || messageHasVisibleBlocks(item.message.blocks, showToolActivity),
   );
   const shownItems = showTail ? items.slice(-FIRST_FRAME_ROWS) : items;
+  // Gente: never sit silent. If nothing has shown after 10 s, say so calmly; the worker's own
+  // watchdog restarts it when a run is not picked up.
+  const [slowStart, setSlowStart] = useState(false);
+  useEffect(() => {
+    setSlowStart(false);
+    if (!running) return;
+    const timer = setTimeout(() => setSlowStart(true), 10_000);
+    return () => clearTimeout(timer);
+  }, [running, messages.length]);
   const workingLabel =
-    liveActivityLine(messages) ?? (workingRoutine ? t`Running ${workingRoutine}…` : t`Reading…`);
+    liveActivityLine(messages) ??
+    (workingRoutine
+      ? t`Running ${workingRoutine}…`
+      : slowStart
+        ? t`Getting things moving…`
+        : t`Reading…`);
   const [quoteDraft, setQuoteDraft] = useState<{
     message: ThreadMessage;
     text: string;

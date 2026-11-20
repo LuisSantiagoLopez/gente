@@ -5891,6 +5891,10 @@ msgstr "रिकॉर्ड करने और ट्रांसक्रि
 msgid "Getting ready"
 msgstr "तैयार हो रहा है"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "चीज़ें शुरू की जा रही हैं…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

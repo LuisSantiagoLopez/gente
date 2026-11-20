@@ -1147,6 +1147,9 @@ export class NativeStackController extends StackLifecycle {
       ...this.nodeEnv(),
       DATA_DIR: this.dir("data"),
       WAKEUP_DRIVER: "graphile",
+      // Gente: a worker that stops taking jobs exits so it is restarted; its pool fits its jobs.
+      GENTE_JOB_WATCHDOG: "on",
+      DB_POOL_MAX: "24",
       AGENT_RUNTIME: "pi",
       SANDBOX_PROVIDER: "local-vm",
       // The host bridge is addressed for containers; these processes are on the host itself.
