@@ -59,7 +59,6 @@ export function createOrphanComputerSweeper(
       where: { providerRef: { in: running.map((machine) => machine.providerRef) } },
       select: {
         id: true,
-        botId: true,
         kind: true,
         providerRef: true,
         state: true,
@@ -76,7 +75,7 @@ export function createOrphanComputerSweeper(
         continue;
       const ref: ComputerRef = {
         id: row?.id ?? machine.providerRef,
-        botId: row?.botId ?? "",
+        botId: "",
         kind: machine.kind as ComputerRef["kind"],
         providerRef: machine.providerRef,
       };

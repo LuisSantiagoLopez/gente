@@ -28,7 +28,7 @@ function setup(
     stop: vi.fn(async () => undefined),
   };
   const findMany = vi.fn(async () =>
-    rows.map((row) => ({ id: `c-${row.providerRef}`, botId: "bot", kind: "e2b", ...row })),
+    rows.map((row) => ({ id: `c-${row.providerRef}`, kind: "e2b", ...row })),
   );
   const sweep = createOrphanComputerSweeper(
     { prisma: { computer: { findMany } } as never, sandbox },
