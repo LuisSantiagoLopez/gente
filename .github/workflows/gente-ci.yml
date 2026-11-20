@@ -87,3 +87,17 @@ jobs:
       - name: Package the app; afterPack boots the server from inside it
         working-directory: apps/desktop
         run: npx electron-builder --mac dir --arm64 --publish never -c.mac.identity=null
+      - name: Zip the packaged app (keeps symlinks and permissions)
+        run: |
+          APP=$(ls -d apps/desktop/out/mac-arm64/*.app | head -1)
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "$RUNNER_TEMP/Gente-mac-arm64.zip"
+          shasum -a 256 "$RUNNER_TEMP/Gente-mac-arm64.zip" | tee "$RUNNER_TEMP/Gente-mac-arm64.zip.sha256"
+          echo "commit ${GITHUB_SHA}" >> "$RUNNER_TEMP/Gente-mac-arm64.zip.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gente-mac-arm64-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/Gente-mac-arm64.zip
+            ${{ runner.temp }}/Gente-mac-arm64.zip.sha256
+          retention-days: 7
+          compression-level: 0
