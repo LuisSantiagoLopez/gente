@@ -52,7 +52,7 @@ export function isLoopGuardStopText(text: string): boolean {
 }
 
 // Same tool, same arguments, failing this many times in a row means the agent is stuck.
-const MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS = 6;
+export const MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS = 3;
 // Arguments that differ only by digits in their text (`echo noop-1`, `echo noop-2`) can be a real
 // sequence such as reading a file in chunks or paging through a site, so they get more room. So
 // does an identical call that keeps succeeding with the same answer: it may be waiting on a page,

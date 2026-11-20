@@ -7,6 +7,7 @@ import {
   isLoopGuardStopText,
   loopGuardStop,
   loopGuardStopText,
+  MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS,
   MAX_CONSECUTIVE_OVER_LIMIT_ACTION_CALLS,
   overLimitStopText,
   toolCallStreakLength,
@@ -77,18 +78,18 @@ describe("advanceToolCallLoopGuard", () => {
     }
   });
 
-  it("stops six consecutive identical calls that return the same tool error", () => {
+  it("stops consecutive identical calls that keep returning the same tool error", () => {
     let streak = { key: undefined as string | undefined, count: 0 };
     let stuck = false;
 
-    for (let index = 0; index < 6; index += 1) {
+    for (let index = 0; index < MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS; index += 1) {
       const result = advanceToolCallLoopGuard(streak, "shell", { command: "npm test" }, failure());
       streak = result.streak;
       stuck = result.stuck;
     }
 
     expect(stuck).toBe(true);
-    expect(streak.count).toBe(6);
+    expect(streak.count).toBe(MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS);
   });
 
   it.each([
@@ -120,8 +121,8 @@ describe("advanceToolCallLoopGuard", () => {
         break;
       }
     }
-    expect(stoppedAt).toBe(6);
-    expect(streak.count).toBe(6);
+    expect(stoppedAt).toBe(MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS);
+    expect(streak.count).toBe(MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS);
   });
 
   it("counts similar text arguments despite reordered fields", () => {
@@ -235,7 +236,9 @@ describe("advanceToolCallLoopGuard", () => {
       throw new Error("never stopped");
     };
 
-    expect(stopText(() => "npm test")).toContain(" with the same input 6 times in a row");
+    expect(stopText(() => "npm test")).toContain(
+      ` with the same input ${MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS} times in a row`,
+    );
     expect(stopText((call) => `echo noop-${call}`)).toContain(
       " with nearly the same input 25 times",
     );
@@ -249,7 +252,7 @@ describe("advanceToolCallLoopGuard", () => {
     for (let call = 1; call <= 10; call += 1) {
       streak = advanceToolCallLoopGuard(streak, "shell", { command: `echo noop-${call}` }).streak;
     }
-    for (let call = 0; call < 6; call += 1) {
+    for (let call = 0; call < MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS; call += 1) {
       streak = advanceToolCallLoopGuard(
         streak,
         "shell",
@@ -257,7 +260,9 @@ describe("advanceToolCallLoopGuard", () => {
         failure(),
       ).streak;
     }
-    expect(loopGuardStopText("shell", streak)).toContain(" with the same input 6 times in a row");
+    expect(loopGuardStopText("shell", streak)).toContain(
+      ` with the same input ${MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS} times in a row`,
+    );
   });
 
   it.each([
@@ -284,15 +289,23 @@ describe("advanceToolCallLoopGuard", () => {
   });
 
   it.each([
-    ["the same failure", () => failure(), 6],
+    ["the same failure", () => failure(), MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS],
     ["the same answer", () => answer("Still loading"), 25],
     ["an unknown answer", () => undefined, 25],
     ["a new answer each time", (call: number) => answer(`Downloaded ${call * 10}%`), undefined],
     // Only the first switch is new; after that both are known.
-    ["alternating failures", (call: number) => failure(call % 2 ? "a" : "b"), 7],
+    [
+      "alternating failures",
+      (call: number) => failure(call % 2 ? "a" : "b"),
+      MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS + 1,
+    ],
     ["alternating answers", (call: number) => answer(call % 2 ? "a" : "b"), 26],
-    // The first failure, from call 5, starts the run the sixth failing call stops.
-    ["a failure after four answers", (call: number) => (call <= 4 ? answer("ok") : failure()), 10],
+    // The first failure, from call 5, starts the run that the limit's failing call stops.
+    [
+      "a failure after four answers",
+      (call: number) => (call <= 4 ? answer("ok") : failure()),
+      4 + MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS,
+    ],
     // Call 20's new answer starts the run over from it, so its 25th repeat stops.
     ["an answer that changes at call 20", (call: number) => answer(call < 20 ? "a" : "b"), 44],
     // A wait with transient errors: the first error starts the run over from call 4.
@@ -313,7 +326,7 @@ describe("advanceToolCallLoopGuard", () => {
   });
 
   it.each([
-    ["identical", () => "npm test", 6],
+    ["identical", () => "npm test", MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS],
     ["digits-only", (call: number) => `cat page-${call}.txt`, 25],
   ])("counts %s calls once per model response", (_, command, limit) => {
     const stopsAt = (response: (call: number) => number) => {

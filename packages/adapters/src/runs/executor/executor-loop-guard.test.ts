@@ -3,7 +3,11 @@ import { createServer } from "node:http";
 import { setTimeout as delay } from "node:timers/promises";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type * as ComputerLifecycleModule from "../../computers/computer-lifecycle.js";
-import { isLoopGuardStopText, MAX_CONSECUTIVE_OVER_LIMIT_ACTION_CALLS } from "../turn/tool-loop.js";
+import {
+  isLoopGuardStopText,
+  MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS,
+  MAX_CONSECUTIVE_OVER_LIMIT_ACTION_CALLS,
+} from "../turn/tool-loop.js";
 
 const provisionComputer = vi.hoisted(() => vi.fn());
 
@@ -450,19 +454,23 @@ describe("over-limit computer_act batches through the run loop", () => {
     expect(isLoopGuardStopText(finalText)).toBe(true);
   }, 30_000);
 
-  it("ends an identical refused batch at the fourth, before the same-input guard", async () => {
+  it("ends an identical refused batch at the same-input limit, which comes first", async () => {
     const { requests, act, finalText } = await runWithBatches([30], false);
 
-    expect(requests).toHaveLength(MAX_CONSECUTIVE_OVER_LIMIT_ACTION_CALLS);
+    expect(requests).toHaveLength(MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS);
     expect(act).not.toHaveBeenCalled();
-    expect(finalText).toContain("with too many actions 4 times in a row");
-    expect(finalText).not.toContain("the same input");
+    expect(finalText).toContain(
+      `with the same input ${MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS} times in a row`,
+    );
   }, 30_000);
 });
 
 describe("repeated identical tool calls through the run loop", () => {
-  it("ends the run at the sixth call that fails the same way", async () => {
-    expectStoppedAt(6, await runLoop(() => ({ calls: [LISTING] }), { listing: unreadable }));
+  it("ends the run at the limit's call that fails the same way", async () => {
+    expectStoppedAt(
+      MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS,
+      await runLoop(() => ({ calls: [LISTING] }), { listing: unreadable }),
+    );
   }, 30_000);
 
   it("lets the bot wait on an unchanged answer until it changes", async () => {
@@ -475,7 +483,7 @@ describe("repeated identical tool calls through the run loop", () => {
     expect(finalText).toBe("The report is ready.");
   }, 30_000);
 
-  it("ends an unchanged answer at the 25th call, not the sixth", async () => {
+  it("ends an unchanged answer at the 25th call, not at the failure limit", async () => {
     expectStoppedAt(25, await runLoop(() => ({ calls: [LISTING] })));
   }, 30_000);
 
@@ -506,7 +514,7 @@ describe("repeated identical tool calls through the run loop", () => {
     expect(batch.finalText).toBe("Done.");
 
     expectStoppedAt(
-      6,
+      MAX_CONSECUTIVE_IDENTICAL_TOOL_CALLS,
       await runLoop(() => ({ calls: [LISTING, LISTING] }), { listing: unreadable }),
     );
   }, 30_000);
