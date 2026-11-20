@@ -113,8 +113,8 @@ it("starts its top row below the macOS window controls in the desktop app", asyn
   await mac.render({ document: "<p>v1</p>" });
   const close = document.querySelector<HTMLElement>('[aria-label="Close page"]')!;
   expect(close.className).toContain("top-[42px]");
-  // 72px traffic-light strip plus the 11px browser inset.
-  expect(close.style.left).toBe("83px");
+  // 80px traffic-light strip plus the 11px browser inset.
+  expect(close.style.left).toBe("91px");
   expect(document.querySelector(".app-drag")!.className).toContain("h-[70px]");
   await mac.unmount();
   document.body.replaceChildren();

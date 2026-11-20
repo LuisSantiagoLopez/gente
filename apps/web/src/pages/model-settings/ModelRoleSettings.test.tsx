@@ -556,7 +556,7 @@ it("saves credit and personal routes to the same model without mixing their iden
     primary: pin(chat),
     backups: [{ ...chat, creditOfferingId: "offering-example" }],
   });
-  expect(rows()).toEqual(["ChatOpenRouter", "ChatRakazo credits"]);
+  expect(rows()).toEqual(["ChatOpenRouter", "ChatGente credits"]);
   await click(
     container.querySelectorAll<HTMLButtonElement>('button[aria-label="Chat options"]')[1],
   );
