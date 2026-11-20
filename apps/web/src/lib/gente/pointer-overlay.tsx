@@ -1,6 +1,8 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
+import { useTimeout } from "@rakazo/chat-ui/hooks";
 import { useEffect, useRef, useState } from "react";
+import { useEventListener } from "../use-event-listener";
 
 type Point = { kind: "click" | "move"; x: number; y: number };
 type Ripple = { id: number; x: number; y: number };
@@ -39,29 +41,26 @@ export function PointerOverlay({
   }, [screenWidth, screenHeight]);
   const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
   const [ripples, setRipples] = useState<Ripple[]>([]);
-  useEffect(() => {
-    let next = 0;
-    const onPointer = (event: Event) => {
-      const detail = (event as CustomEvent).detail as {
-        botId: string;
-        points?: Point[];
-        width?: number;
-        height?: number;
-      };
-      if (detail.botId !== botId || !detail.width || !detail.height) return;
-      for (const point of detail.points ?? []) {
-        const at = { x: point.x / detail.width, y: point.y / detail.height };
-        setCursor(at);
-        if (point.kind === "click") {
-          const id = ++next;
-          setRipples((current) => [...current.slice(-4), { id, ...at }]);
-          setTimeout(() => setRipples((current) => current.filter((r) => r.id !== id)), 900);
-        }
-      }
+  const nextRipple = useRef(0);
+  // Rings fade out over 900 ms (gente-motion.css); clear them once the latest one has finished.
+  useTimeout(() => setRipples([]), ripples.length ? 900 : null, ripples.at(-1)?.id);
+  useEventListener(globalThis as EventTarget, "gente:pointer", (event) => {
+    const detail = (event as CustomEvent).detail as {
+      botId: string;
+      points?: Point[];
+      width?: number;
+      height?: number;
     };
-    globalThis.addEventListener("gente:pointer", onPointer);
-    return () => globalThis.removeEventListener("gente:pointer", onPointer);
-  }, [botId]);
+    if (detail.botId !== botId || !detail.width || !detail.height) return;
+    for (const point of detail.points ?? []) {
+      const at = { x: point.x / detail.width, y: point.y / detail.height };
+      setCursor(at);
+      if (point.kind === "click") {
+        const id = ++nextRipple.current;
+        setRipples((current) => [...current.slice(-4), { id, ...at }]);
+      }
+    }
+  });
   return (
     <div ref={box} className="pointer-events-none absolute inset-0 overflow-hidden" data-gente-pointer="">
       <div

@@ -181,6 +181,11 @@ msgstr "{0} choses faites jusqu'ici."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} choses faites, vous en avez gardé {1}."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} en attente"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**Mardi : 2 340 $ pour 31 commandes** (+12 % par rapport à mardi dernie
 msgid "/ month"
 msgstr "/ mois"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/mois · {0} en attente"
+msgid "${price}/mo"
+msgstr "${price}/mois"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"

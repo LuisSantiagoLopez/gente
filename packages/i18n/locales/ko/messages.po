@@ -181,6 +181,11 @@ msgstr "지금까지 {0}개를 끝냈어요."
 msgid "{0} things done, you kept {1}."
 msgstr "{0}개를 끝냈고, 그중 {1}개를 남겼어요."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0}명 대기 중"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**화요일: 주문 31건, $2,340** (지난 화요일보다 12% 증가)\
 msgid "/ month"
 msgstr "/ 월"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/월 · {0}명 대기 중"
+msgid "${price}/mo"
+msgstr "${price}/월"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"

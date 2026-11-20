@@ -181,6 +181,11 @@ msgstr "अब तक {0} काम पूरे हुए।"
 msgid "{0} things done, you kept {1}."
 msgstr "{0} काम पूरे हुए, आपने {1} रखे।"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} प्रतीक्षा में"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**मंगलवार: 31 ऑर्डर से $2,340** (पिछ�
 msgid "/ month"
 msgstr "/ महीना"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/माह · {0} प्रतीक्षा में"
+msgid "${price}/mo"
+msgstr "${price}/माह"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"

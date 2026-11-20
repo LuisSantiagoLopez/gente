@@ -5,12 +5,16 @@ import type { GenteAccountState, GenteAiMode, GentePrivateOffer } from "@rakazo/
 import { Button } from "@rakazo/ui-web";
 import { useEffect, useState } from "react";
 import { desktopBridge } from "../platform/desktop";
+import { useSave } from "../query/query";
 
 /** Settings → Plan: the plan from Gente Cloud, free messages or hours left, and sign-in. */
 export function GentePlanControl() {
   const gente = desktopBridge()?.gente;
   const [state, setState] = useState<GenteAccountState | null>(null);
-  const [busy, setBusy] = useState(false);
+  const signIn = useSave({
+    save: async () => (gente ? gente.signIn() : null),
+    onSaved: (next) => next && setState(next),
+  });
   useEffect(() => {
     if (!gente) return;
     let alive = true;
@@ -25,15 +29,8 @@ export function GentePlanControl() {
       <Button
         variant="outline"
         size="sm"
-        disabled={busy}
-        onClick={() => {
-          setBusy(true);
-          void gente
-            .signIn()
-            .then(setState)
-            .catch(() => undefined)
-            .finally(() => setBusy(false));
-        }}
+        disabled={signIn.pending}
+        onClick={() => signIn.run()}
       >
         <Trans>Sign in</Trans>
       </Button>
@@ -49,9 +46,9 @@ export function GentePlanControl() {
       </Trans>
     ) : null;
   return (
-    <span className="text-body-sm text-muted-foreground" data-testid="gente-plan">
-      {state.plan ?? <Trans>Unknown</Trans>}
-      {detail ? <> · {detail}</> : null}
+    <span className="flex flex-col items-end text-body-sm" data-testid="gente-plan">
+      <span>{state.plan ?? <Trans>Unknown</Trans>}</span>
+      {detail ? <span className="text-muted-foreground">{detail}</span> : null}
     </span>
   );
 }
@@ -113,7 +110,10 @@ export function GenteAiModeControl() {
 export function GentePrivateWaitlist() {
   const gente = desktopBridge()?.gente;
   const [offer, setOffer] = useState<GentePrivateOffer | null>(null);
-  const [busy, setBusy] = useState(false);
+  const waitlist = useSave({
+    save: async (join: boolean) => (gente ? gente.setPrivateWaitlist(join) : null),
+    onSaved: (next) => next && setOffer(next),
+  });
   useEffect(() => {
     if (!gente?.privateOffer) return;
     let alive = true;
@@ -129,23 +129,17 @@ export function GentePrivateWaitlist() {
       <Button
         variant="outline"
         size="sm"
-        disabled={busy}
+        disabled={waitlist.pending}
         aria-pressed={offer.onWaitlist}
-        onClick={() => {
-          setBusy(true);
-          void gente
-            .setPrivateWaitlist(!offer.onWaitlist)
-            .then((next) => next && setOffer(next))
-            .catch(() => undefined)
-            .finally(() => setBusy(false));
-        }}
+        onClick={() => waitlist.run(!offer.onWaitlist)}
       >
         {offer.onWaitlist ? <Trans>You're on the waitlist</Trans> : <Trans>Join the waitlist</Trans>}
       </Button>
+      <span className="text-body-sm">
+        <Trans>${price}/mo</Trans>
+      </span>
       <span className="text-body-sm text-muted-foreground">
-        <Trans>
-          ${price}/mo · {offer.waiting} waiting
-        </Trans>
+        <Trans>{offer.waiting} waiting</Trans>
       </span>
     </div>
   );

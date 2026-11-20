@@ -181,6 +181,11 @@ msgstr "Şu ana kadar {0} iş tamamlandı."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} iş tamamlandı, {1} tanesini tuttunuz."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} bekliyor"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**Salı: 31 siparişten $2,340** (geçen salıya göre %12 artış)\n"
 msgid "/ month"
 msgstr "/ ay"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/ay · {0} kişi bekliyor"
+msgid "${price}/mo"
+msgstr "${price}/ay"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"

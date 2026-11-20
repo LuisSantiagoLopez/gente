@@ -4,7 +4,7 @@
 import type { GenteLinkState } from "@rakazo/contracts";
 import type { ComponentProps, ReactNode } from "react";
 import { act } from "react";
-import { createRoot } from "react-dom/client";
+import { createQueryRoot as createRoot } from "../query/query-root.test-support";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { DevicesSettingsPanel } from "./devices";
 

@@ -181,6 +181,11 @@ msgstr "目前已完成 {0} 件事。"
 msgid "{0} things done, you kept {1}."
 msgstr "已完成 {0} 件事，你保留了 {1} 件。"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} 人在等待"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**周二：31 笔订单，收入 $2,340**（比上周二高 12%）\n"
 msgid "/ month"
 msgstr "/ 月"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/月 · {0} 人等待中"
+msgid "${price}/mo"
+msgstr "${price}/月"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"

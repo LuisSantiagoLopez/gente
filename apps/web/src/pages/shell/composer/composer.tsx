@@ -159,7 +159,9 @@ const ComposerBody = memo(function Composer({
   docked?: boolean;
 }) {
   const { t } = useLingui();
-  const [sentPulse, setSentPulse] = useState(false);
+  // Counts sends, so each one restarts the 450 ms pop on the send button.
+  const [sentPulse, setSentPulse] = useState(0);
+  useTimeout(() => setSentPulse(0), sentPulse ? 450 : null, sentPulse);
   // Gente: one low, soft tone when sending or a run fails.
   useEffect(() => {
     if (sendError || runError) playSound("error");
@@ -474,8 +476,7 @@ const ComposerBody = memo(function Composer({
     if (!canSend || sending || disabled) return;
     // Gente: a soft pluck and a pop on the send button.
     playSound("send");
-    setSentPulse(true);
-    globalThis.setTimeout(() => setSentPulse(false), 450);
+    setSentPulse((n) => n + 1);
     setLargePaste(null);
     const revision = editRevision.current;
     // Recovery rebuilds the draft from text alone, so only a plain-text send —

@@ -181,6 +181,11 @@ msgstr "{0} דברים בוצעו עד עכשיו."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} דברים בוצעו, שמרת {1}."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} ממתינים"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**שלישי: $2,340 מ-31 הזמנות** (עלייה של 12% לעומ�
 msgid "/ month"
 msgstr "/ חודש"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price} לחודש · {0} ממתינים"
+msgid "${price}/mo"
+msgstr "${price} לחודש"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"

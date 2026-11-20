@@ -5,38 +5,35 @@
 import { Trans } from "@lingui/react/macro";
 import type { GenteLinkState } from "@rakazo/contracts";
 import { Button } from "@rakazo/ui-web";
+import { useNow } from "@rakazo/chat-ui/hooks";
 import { useEffect, useState } from "react";
 import { desktopBridge } from "../platform/desktop";
+import { useSave } from "../query/query";
 
 export function DevicesSettingsPanel() {
   const gente = desktopBridge()?.gente;
   const [state, setState] = useState<GenteLinkState | null>(null);
-  const [busy, setBusy] = useState(false);
+  // The phone pairs (or unpairs) from its own screen; look again every 2 seconds while open.
+  const tick = useNow(gente?.linkState ? 2000 : null);
   useEffect(() => {
     if (!gente?.linkState) return;
     let alive = true;
-    const load = () =>
-      void gente
-        .linkState()
-        .then((next) => alive && setState(next))
-        .catch(() => undefined);
-    load();
-    // The phone pairs from its own screen; check every 2 seconds while this page is open.
-    const timer = setInterval(load, 2000);
+    void gente.linkState().then(
+      (next) => alive && setState(next),
+      () => undefined, // the next tick asks again
+    );
     return () => {
       alive = false;
-      clearInterval(timer);
     };
-  }, [gente]);
+  }, [gente, tick]);
+  const action = useSave({
+    save: (call: () => Promise<GenteLinkState>) => call(),
+    onSaved: setState,
+  });
   if (!gente?.linkState || !state) return null;
   const { phoneName, code } = state;
-  const act = (call: () => Promise<GenteLinkState>) => {
-    setBusy(true);
-    void call()
-      .then(setState)
-      .catch(() => undefined)
-      .finally(() => setBusy(false));
-  };
+  const busy = action.pending;
+  const act = (call: () => Promise<GenteLinkState>) => action.run(call);
 
   return (
     <div className="flex flex-col gap-4" data-gente-devices={state.status}>

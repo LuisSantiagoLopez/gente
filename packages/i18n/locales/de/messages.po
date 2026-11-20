@@ -181,6 +181,11 @@ msgstr "Bisher {0} Dinge erledigt."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} Dinge erledigt, du hast {1} behalten."
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} waiting"
+msgstr "{0} warten"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1167,10 +1172,9 @@ msgstr "**Dienstag: 2.340 $ aus 31 Bestellungen** (12 % mehr als letzten Diensta
 msgid "/ month"
 msgstr "/ Monat"
 
-#. placeholder {0}: offer.waiting
 #: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo · {0} waiting"
-msgstr "${price}/Monat · {0} warten"
+msgid "${price}/mo"
+msgstr "${price}/Monat"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
