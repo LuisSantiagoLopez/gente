@@ -83,4 +83,4 @@ No signing certificates exist on this Mac (`security find-identity -v -p codesig
 
 ## Pending checks
 
-- **Media privacy line** (`docs/gente/help/*/05-privacy.md`, "Images and videos you make"): says fal.ai keeps no record of the request and deletes its file copy after 1 hour. That comes from Gente Cloud sending `X-Fal-Store-IO: 0` and a 1-hour `X-Fal-Object-Lifecycle-Preference` (cloud commit 6716250c8). Pending until the first real fal job confirms both (no entry in fal's request history; the fal file link stops working after 1 hour).
+- **Media privacy line:** the help says fal.ai keeps requests 90 days by default (confirmed from fal's docs). The stronger line (no record, fal copy deleted after 1 hour, from Gente Cloud commit 6716250c8) is held in `docs/gente/help-privacy-media-held.md`. After the first real fal job confirms it (no entry in fal's request history; the fal file link stops working after 1 hour), swap it into `docs/gente/help/*/05-privacy.md` together with the growth agent's `docs/gente/trust-page-media-held.html`.
