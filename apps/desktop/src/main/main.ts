@@ -79,6 +79,7 @@ import {
   writeSetup,
   writeUiLocale,
 } from "./setup/setup-store.js";
+import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { readSupportSettings } from "./support/settings.js";
 import {
@@ -101,6 +102,7 @@ import {
   createComputerPermissionSetup,
   waitForComputerSetupReturn,
 } from "./this-computer/computer-permissions.js";
+import { createComputerUseControl } from "./this-computer/computer-use-pill.js";
 import { launchDockerApp, resolveDockerBinary, runDocker } from "./this-computer/docker-cli.js";
 import type { StackChoice } from "./this-computer/docker-move.js";
 import {
@@ -189,11 +191,14 @@ const updaterEnvironment = {
 };
 let requestingComputerAccess = false;
 let hostScreen: HostScreen | undefined;
+let computerUse: ReturnType<typeof createComputerUseControl> | undefined;
 markOnce("rk:main:module-evaluated");
 if (PERFORMANCE_USER_DATA) {
   app.setPath("userData", PERFORMANCE_USER_DATA);
   app.setPath("sessionData", path.join(PERFORMANCE_USER_DATA, "session"));
 }
+// Gente: the private notetaker records the call's sound; Chromium needs this before ready.
+enableMeetingAudioCapture();
 app.once("will-finish-launching", () => markOnce("rk:main:will-finish-launching"));
 app.once("ready", () => markOnce("rk:main:ready"));
 // Includes fresh partitions and popup-created sessions, before they load remote content.
@@ -682,7 +687,7 @@ app.whenReady().then(async () => {
       app.quit();
     },
   });
-  hostScreen =
+  const driven =
     screenDriver &&
     createDesktopHostScreen({
       platform: process.platform,
@@ -704,6 +709,11 @@ app.whenReady().then(async () => {
         return { png: fitted.toPNG(), ...fitted.getSize() };
       },
     });
+  // Shown while Gente drives the screen, with a Stop button and a stop key.
+  if (driven) {
+    computerUse = createComputerUseControl(process.platform);
+    hostScreen = computerUse.wrap(driven);
+  }
   try {
     desktop.hostComputer = await prepareHostComputer(userDataDir, hostScreen);
   } catch {
@@ -1129,6 +1139,11 @@ app.whenReady().then(async () => {
   registerTelegram(stackDir(app.getPath("userData")));
   // Gente Support: local health checks, self-healing, the support window and opt-in reports.
   startSupport({ userDataDir, stackDir: stackDir(userDataDir), locale: () => desktopLocale() });
+  // Gente: notes from calls, transcribed on this computer, handed to the assistant's chat.
+  startMeetingNotetaker(
+    (text) => desktop.mainWindow?.webContents.send("desktop.meetings.transcript", text),
+    () => installApplicationMenu(),
+  );
   // Gente: keep Ollama and the workspace alive without asking the person to do anything.
   startWatchdogs(() => desktop.localStack);
   registerSetupIpc({
@@ -1239,5 +1254,6 @@ app.on("before-quit", (event) => {
   void desktop.hostComputer?.close();
   desktop.userDevices?.close();
   void hostScreen?.close();
+  computerUse?.dispose();
   desktop.localStack?.abort();
 });

@@ -1120,7 +1120,9 @@ describe("compactHistory", () => {
         "Anya: Own reply.",
         "system: Note.",
         "Boris: [from Boris] Ready.",
-      ].join("\n\n"),
+      ]
+        .map((line, seq) => `[seq ${seq}] ${line}`)
+        .join("\n\n"),
     );
     expect(request.instructions).toContain("who said or decided each");
   });
@@ -1138,7 +1140,7 @@ describe("compactHistory", () => {
     await compactHistory(harness.deps, "thread-1");
 
     const [request] = harness.runtime.run.mock.calls[0]!;
-    expect(request.prompt).toBe("User: Hi\n\nUser (bot): Hello");
+    expect(request.prompt).toBe("[seq 0] User: Hi\n\n[seq 1] User (bot): Hello");
   });
 
   it("hands the previous summary to the summarizer unchanged next to the labelled messages", async () => {
@@ -1157,7 +1159,7 @@ describe("compactHistory", () => {
 
     const [request] = harness.runtime.run.mock.calls[0]!;
     expect(request.prompt).toContain("Anya proposed Bluebird.");
-    expect(request.prompt).toMatch(/User: Thanks\.\n\nAnya: Welcome\.$/);
+    expect(request.prompt).toMatch(/\] User: Thanks\.\n\n\[seq \d+\] Anya: Welcome\.$/);
   });
 
   async function compactAfterTurns(harness: ReturnType<typeof compactionHarness>, turns: number) {

@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- Copyright 2026 DeskHead Inc. New file in Gente (a fork of Rakazo, Apache-2.0). -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'" />
+    <title>Gente</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="computer-pill.css" />
+  </head>
+  <body data-state="out">
+    <div class="pill" role="status" aria-live="polite">
+      <span class="mark" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </span>
+      <span class="words">
+        <strong id="title">Gente is using your computer</strong>
+        <span id="hint"></span>
+      </span>
+      <button id="stop" type="button">Stop</button>
+    </div>
+    <script src="computer-pill.js"></script>
+  </body>
+</html>

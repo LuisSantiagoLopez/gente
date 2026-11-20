@@ -5,7 +5,7 @@ import { botTemplateCopy } from "./bot-template-copy";
 
 afterEach(() => resetI18nForTests());
 
-// Gente: the recipes ship in English first; their copy and translations come in their own PR.
+// Gente: recipes ship in English, Spanish and Portuguese first; other languages follow.
 const recipes = new Set(MONEY_RECIPES.map((recipe) => recipe.id));
 const TRANSLATED = BOT_TEMPLATES.filter((template) => !recipes.has(template.id));
 
@@ -27,6 +27,18 @@ describe("botTemplateCopy", () => {
       const copy = botTemplateCopy(template);
       expect(copy.summary).not.toBe(template.summary);
       expect(copy.sample).not.toBe(template.sample);
+    }
+  });
+
+  it("translates every recipe into Spanish and Portuguese", () => {
+    for (const locale of ["es", "pt-BR"] as const) {
+      resetI18nForTests(locale);
+      for (const recipe of MONEY_RECIPES) {
+        const copy = botTemplateCopy(recipe);
+        expect(copy.name, `${locale} ${recipe.id}`).not.toBe(recipe.name);
+        expect(copy.summary, `${locale} ${recipe.id}`).not.toBe(recipe.summary);
+        expect(copy.sample, `${locale} ${recipe.id}`).not.toBe(recipe.sample);
+      }
     }
   });
 

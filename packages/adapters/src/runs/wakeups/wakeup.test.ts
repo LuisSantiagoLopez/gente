@@ -43,6 +43,8 @@ function handlers(): BackgroundJobHandlers {
     "meeting.calendar-sync": vi.fn(async () => undefined),
     "meeting.work": vi.fn(async () => undefined),
     "purchase.poll": vi.fn(async () => undefined),
+    "brain.distill": vi.fn(async () => undefined),
+    "proactive.cycle": vi.fn(async () => undefined),
     "media.poll": vi.fn(async () => undefined),
     "push.receipt": vi.fn(async () => undefined),
     "email.lifecycle": vi.fn(async () => undefined),

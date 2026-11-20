@@ -269,4 +269,11 @@ export const RU_MESSAGES: Record<string, string> = {
   "Sign In to Gente…": "Войти в Gente…",
   "Sign Out of Gente": "Выйти из Gente",
   "Gente Support…": "Поддержка Gente…",
+  // Computer use pill
+  "Gente is using your computer": "Gente использует ваш компьютер",
+  "Press {key} to stop": "Нажмите {key}, чтобы остановить",
+  Stop: "Остановить",
+  Stopped: "Остановлено",
+  "Stop Meeting Notes": "Остановить заметки встречи",
+  "Take Meeting Notes…": "Вести заметки встречи…",
 };

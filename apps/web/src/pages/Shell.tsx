@@ -91,6 +91,7 @@ import { useThreadState } from "./shell/chat/use-thread-state";
 import { useThreadSync } from "./shell/chat/use-thread-sync";
 import { Composer } from "./shell/composer/composer";
 import { ComposerModelPicker } from "./shell/composer/composer-model-picker";
+import { LearnShortcuts } from "./shell/composer/learn-shortcuts";
 import { useComposerActions } from "./shell/composer/use-composer-actions";
 import { useComposerMentions } from "./shell/composer/use-composer-mentions";
 import { ComputerOverlay } from "./shell/computers/computer-overlay";
@@ -275,7 +276,6 @@ function SpaceShell() {
   const openSettingsRef = useRef(openSettings);
   openSettingsRef.current = openSettings;
   useEffect(() => desktopBridge()?.settings?.onOpen(() => openSettingsRef.current("general")), []);
-
   const inGroup = Boolean(groupId);
   const chatPanelOpen = inGroup
     ? panel === "group-settings"
@@ -767,6 +767,27 @@ function SpaceShell() {
     flushPendingBrowserNotifications,
   });
   const { sending, sendError, stopRun } = composer;
+  // Gente: a call transcribed on this computer goes to the assistant, which writes the notes
+  // and drafts the follow-ups under the usual approvals.
+  const meetingNotesRequest = t`Here is the transcript of the call I just finished, recorded and transcribed on this computer. Write the notes (summary, decisions, action items, open questions), remember the decisions and my action items, and save drafts of the follow-ups. Lines marked You: are me; Them: are the others.`;
+  const meetingBotRef = useRef<string | undefined>(undefined);
+  meetingBotRef.current = active?.id ?? bots[0]?.id;
+  useEffect(
+    () =>
+      desktopBridge()?.meetings?.onTranscript((transcript) => {
+        const botId = meetingBotRef.current;
+        if (!botId || !transcript.trim()) return;
+        void rpc.threads
+          .send({
+            botId,
+            clientNonce: newClientId(),
+            text: `${meetingNotesRequest}\n\n${transcript}`,
+          })
+          .then(() => refreshThread(botId))
+          .catch((error: unknown) => composer.setSendError(errorText(error)));
+      }),
+    [],
+  );
   function openChatSettings(kind: "bot" | "group", id: string) {
     const destKey =
       userId && bootstrapMe?.spaceId
@@ -1225,6 +1246,7 @@ function SpaceShell() {
                 <Trans>Teaching in progress. Stop teaching before sending a new message.</Trans>
               </div>
             ) : null}
+            <LearnShortcuts onOpen={setOverlay} />
             <Composer
               key={inGroup ? `group:${groupId}` : `bot:${active?.id}`}
               draftKey={inGroup ? `group:${groupId}` : `bot:${active?.id}`}

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AgentHomeStore,
   ArtifactStore,
@@ -40,6 +41,7 @@ import type { LabFeature, ModelCredential, NavLink } from "@rakazo/contracts";
 import type { BoardEvents, PrismaClient, ThreadEvents } from "@rakazo/db";
 import type { BillingService } from "./billing/billing.js";
 import type { VoiceDeps } from "./calls/voice.js";
+import type { SkillLearningModel } from "./learning/skill-learning-model.js";
 import { meetingCalendarRoutes } from "./meetings/calendar/calendar-routes.js";
 import type { createMeetingAnswers } from "./meetings/meeting-answers.js";
 import { meetingRoutes } from "./meetings/meeting-routes.js";
@@ -53,6 +55,9 @@ import { computerProviderRoutes } from "./routes/computer-provider.js";
 import { connectionsRoutes } from "./routes/connections.js";
 import { contentRoutes } from "./routes/content.js";
 import { createRouterContext } from "./routes/context.js";
+import { knowledgeRoutes } from "./routes/knowledge.js";
+import { proactiveRoutes } from "./routes/proactive.js";
+import { learningRoutes } from "./routes/learning.js";
 import { mcpRoutes } from "./routes/mcp.js";
 import { memoryRoutes } from "./routes/memory.js";
 import { messagingRoutes } from "./routes/messaging.js";
@@ -140,6 +145,8 @@ export interface RouterDeps {
   email?: TransactionalEmailProvider;
   onEmailError?: (error: unknown) => void;
   speechSummary?: VoiceDeps["speechSummary"];
+  /** Proposes and judges learned skill edits; absent keeps feedback as examples only. */
+  skillLearningModel?: SkillLearningModel;
   env: {
     deploymentVoice?: NonNullable<VoiceDeps["env"]>["deploymentVoice"];
     /** Domain of bots' email addresses; unset when this server receives no email. */
@@ -191,6 +198,9 @@ export function createRouter(deps: RouterDeps) {
     ...computerRoutes(ctx),
     ...computerProviderRoutes(ctx),
     ...memoryRoutes(ctx),
+    ...learningRoutes(ctx),
+    ...knowledgeRoutes(ctx),
+    ...proactiveRoutes(ctx),
     ...routinesRoutes(ctx),
     ...boardsRoutes(ctx),
     ...capabilitiesRoutes(ctx),

@@ -123,6 +123,8 @@ export function createJobReconciler(
     reconcileModelCredits?: () => Promise<void>;
     reconcileRoutineRetryNotices?: () => Promise<void>;
     reconcileStrategicInitiatives?: () => Promise<void>;
+    /** Gente's hourly proactive passes, one per person with a goal. */
+    reconcileProactive?: () => Promise<void>;
     reconcileSecurityEventRetention?: () => Promise<void>;
     reconcileAuditLog?: () => Promise<void>;
     reconcileChatHistoryRetention?: () => Promise<void>;
@@ -169,6 +171,7 @@ export function createJobReconciler(
     deps.reconcileComputerUpdates,
     deps.reconcileRoutineRetryNotices,
     deps.reconcileStrategicInitiatives,
+    deps.reconcileProactive,
     deps.reconcileSecurityEventRetention,
     deps.reconcileAuditLog,
     deps.reconcileChatHistoryRetention,

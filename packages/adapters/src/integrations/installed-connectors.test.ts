@@ -832,13 +832,13 @@ describe("OpenAPI connector import", () => {
     expect(String(fetch.mock.calls[0]![0])).toBe("https://93.184.216.34/v1/items");
   });
 
-  it("refuses ambiguous specs without stable operation ids", () => {
-    expect(() =>
-      importOpenApiDocument({
-        servers: [{ url: "https://api.example.test" }],
-        paths: { "/contacts": { get: { summary: "List contacts" } } },
-      }),
-    ).toThrow("operationId");
+  // Gente: real documents often leave out operationId; the method and path name the operation.
+  it("names operations without an operationId from their method and path", () => {
+    const imported = importOpenApiDocument({
+      servers: [{ url: "https://api.example.test" }],
+      paths: { "/contacts": { get: { summary: "List contacts" } } },
+    });
+    expect(imported.operations.map((operation) => operation.id)).toEqual(["get_contacts"]);
   });
 
   it("refuses credentials embedded in an imported OpenAPI server URL", () => {

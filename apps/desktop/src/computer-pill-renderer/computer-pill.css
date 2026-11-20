@@ -1,0 +1,186 @@
+/* Copyright 2026 DeskHead Inc. New file in Gente (a fork of Rakazo, Apache-2.0).
+   Only transform, opacity and filter move, on a spring; nothing moves under reduced motion. */
+:root {
+  --pill-spring: linear(
+    0,
+    0.006,
+    0.025 2.8%,
+    0.101 6.1%,
+    0.539 18.9%,
+    0.721 25.3%,
+    0.849 31.5%,
+    0.937 38.1%,
+    0.968 41.8%,
+    0.991 45.7%,
+    1.006 50.1%,
+    1.015 55%,
+    1.017 63.9%,
+    1.001 85.9%,
+    1
+  );
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font:
+    13px / 1.25 ui-rounded,
+    "SF Pro Rounded",
+    -apple-system,
+    "Segoe UI Variable",
+    "Segoe UI",
+    sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6px;
+  box-sizing: border-box;
+}
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 7px 7px 10px;
+  border-radius: 999px;
+  background: #1c1710f2;
+  color: #f7f0e4;
+  box-shadow:
+    0 0 0 1px #f5a52455,
+    0 10px 30px -8px #000a,
+    0 0 22px -6px #f5a52466;
+  transform-origin: 50% 0;
+  transition:
+    transform 520ms var(--pill-spring),
+    opacity 220ms ease,
+    filter 260ms ease;
+}
+body[data-state="out"] .pill {
+  transform: translateY(-24px) scale(0.86);
+  opacity: 0;
+  filter: blur(4px);
+}
+body[data-state="in"] .pill,
+body[data-state="stopped"] .pill {
+  transform: none;
+  opacity: 1;
+  filter: none;
+}
+.words {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  white-space: nowrap;
+}
+.words strong {
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+#hint {
+  font-size: 11px;
+  color: #f7f0e4a8;
+}
+#hint:empty {
+  display: none;
+}
+.mark {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  animation: gather 2.4s ease-in-out infinite;
+}
+.mark i {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f7f0e4;
+}
+.mark i:nth-child(1) {
+  background: #f5a524;
+  width: 5px;
+  height: 5px;
+  left: 8.5px;
+  top: 8.5px;
+  transform: rotate(0deg) translateY(-8px);
+}
+.mark i:nth-child(2) {
+  transform: rotate(45deg) translateY(-8px);
+}
+.mark i:nth-child(3) {
+  transform: rotate(90deg) translateY(-8px);
+}
+.mark i:nth-child(4) {
+  transform: rotate(135deg) translateY(-8px);
+}
+.mark i:nth-child(5) {
+  transform: rotate(180deg) translateY(-8px);
+}
+.mark i:nth-child(6) {
+  transform: rotate(225deg) translateY(-8px);
+}
+.mark i:nth-child(7) {
+  transform: rotate(270deg) translateY(-8px);
+}
+.mark i:nth-child(8) {
+  transform: rotate(315deg) translateY(-8px);
+}
+@keyframes gather {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(45deg) scale(0.9);
+  }
+}
+#stop {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 13px;
+  font: inherit;
+  font-weight: 650;
+  background: #f5a524;
+  color: #1a1206;
+  cursor: pointer;
+  transition:
+    transform 220ms var(--pill-spring),
+    background-color 160ms ease;
+}
+#stop:hover {
+  background: #ffb940;
+  transform: scale(1.04);
+}
+#stop:active {
+  transform: scale(0.94);
+  transition-duration: 90ms;
+}
+#stop:focus-visible {
+  outline: 2px solid #f7d48a;
+  outline-offset: 2px;
+}
+#stop[hidden] {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill,
+  #stop {
+    transition: none;
+  }
+  .mark {
+    animation: none;
+  }
+  body[data-state="out"] .pill {
+    transform: none;
+    filter: none;
+  }
+}
+body[data-state="stopped"] .pill { padding-right: 16px; }

@@ -271,4 +271,11 @@ export const NL_MESSAGES: Record<string, string> = {
   "Sign In to Gente…": "Inloggen bij Gente…",
   "Sign Out of Gente": "Uitloggen bij Gente",
   "Gente Support…": "Gente-hulp…",
+  // Computer use pill
+  "Gente is using your computer": "Gente gebruikt je computer",
+  "Press {key} to stop": "Druk op {key} om te stoppen",
+  Stop: "Stoppen",
+  Stopped: "Gestopt",
+  "Stop Meeting Notes": "Vergadernotities stoppen",
+  "Take Meeting Notes…": "Vergadernotities maken…",
 };

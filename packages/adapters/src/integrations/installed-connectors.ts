@@ -63,6 +63,7 @@ import {
   isUnavailableInstallCall,
   unavailableInstallError,
 } from "./installed-connector-unavailable.js";
+import { operationIdFor, withDefaultServer } from "./openapi-defaults.js";
 
 const ModelHeaderName = HeaderName.refine(
   (name) => !isSensitiveHeader(name),
@@ -547,7 +548,7 @@ async function loadOpenApiDocument(
     }
     const { text, truncated } = await readBoundedText(response, 2_000_000);
     if (truncated) throw new ConnectionSetupError("OpenAPI document is too large");
-    return parseOpenApiText(text);
+    return withDefaultServer(parseOpenApiText(text), url);
   } finally {
     await safeFetch.close().catch(() => undefined);
   }
@@ -648,8 +649,7 @@ export function importOpenApiDocument(document: Record<string, unknown>): {
       const raw = (pathValue as Record<string, unknown>)[method];
       if (!raw || typeof raw !== "object" || Array.isArray(raw)) continue;
       const operation = raw as Record<string, unknown>;
-      const id = typeof operation.operationId === "string" ? operation.operationId : undefined;
-      if (!id) continue;
+      const id = operationIdFor(method, path, operation.operationId);
       refs.size = 0;
       const properties: Record<string, unknown> = {};
       const required: string[] = [];

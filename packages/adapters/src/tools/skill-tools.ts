@@ -1,3 +1,6 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+import { randomUUID } from "node:crypto";
+import type { SkillChangeSource, StoredSkillChange } from "@rakazo/contracts";
 import type { SkillRecord, SkillSource } from "@rakazo/core";
 import {
   buildSkillMd,
@@ -5,9 +8,14 @@ import {
   isSkillReadOnly,
   mergeBuiltinSkills,
   parseSkillMd,
+  proposeSkillChange,
+  replaySkillChange,
+  settleSkillChange,
 } from "@rakazo/core";
 import type { PrismaClient } from "@rakazo/db";
 import { availableInSpace } from "@rakazo/db";
+import { bestEffort } from "@rakazo/logging";
+import { readSkillLearningLog, writeSkillLearningLog } from "../memory/skill-learning-store.js";
 import { BUILTIN_AGENT_SKILLS } from "./builtin-skills.prompt.js";
 
 export const SKILL_TOOL_NAMES = new Set([
@@ -233,6 +241,10 @@ export async function skillUpdateFromTool(
     description?: string;
     body?: string;
     content?: string;
+    /** Why the skill changed, in plain words; shown on "What Gente learned about you". */
+    reason?: string;
+    /** Where the lesson came from. Web content is held until the person confirms it. */
+    learnedFrom?: SkillChangeSource;
   },
 ): Promise<Record<string, unknown>> {
   const existing = await findOwnedSkill(prisma, owner, {
@@ -284,6 +296,22 @@ export async function skillUpdateFromTool(
     }
   }
 
+  const learned = await recordToolSkillChange(prisma, owner, {
+    skill: existing,
+    after: nextContent,
+    renamed: nextName.toLowerCase() !== existing.name.toLowerCase(),
+    reason: input.reason,
+    source: input.learnedFrom ?? "user_feedback",
+  });
+  if (learned.status === "rejected") return { error: SKILL_CHANGE_WIDENS_ERROR };
+  if (learned.status === "quarantined") {
+    return {
+      ok: true,
+      held: true,
+      hint: "Saved for the user to confirm on the page of what you learned. The skill is unchanged until they do.",
+    };
+  }
+
   try {
     // Re-scope mutate to owner + user source so a stale id cannot cross tenants.
     const updated = await prisma.agentSkill.updateMany({
@@ -316,4 +344,52 @@ export async function skillDeleteFromTool(
   });
   if (deleted.count !== 1) return { error: SHARED_SKILL_ERROR };
   return { ok: true, name: existing.name };
+}
+
+export const SKILL_CHANGE_WIDENS_ERROR =
+  "Not saved: this change would let the skill spend money, act or send as the user, delete their data, accept terms, or skip asking first. Skills can't learn that. Tell the user what you wanted to change so they can decide.";
+
+/**
+ * Every change to a user skill through the tool is versioned with its reason and checked by the
+ * safety guard first. Web-learned changes are recorded but held for the person to confirm.
+ * A failure to record never blocks a safe edit the person asked for directly.
+ */
+async function recordToolSkillChange(
+  prisma: PrismaClient,
+  owner: SkillOwner,
+  input: {
+    skill: SkillRecord & { id: string };
+    after: string;
+    renamed: boolean;
+    reason?: string;
+    source: SkillChangeSource;
+  },
+): Promise<{ status: StoredSkillChange["status"] }> {
+  if (input.after === input.skill.content) return { status: "live" };
+  const read = await readSkillLearningLog(prisma, owner, input.skill);
+  const now = new Date();
+  const proposed = proposeSkillChange(read.log, {
+    id: randomUUID(),
+    current: input.skill.content,
+    after: input.after,
+    reason: input.reason?.trim().slice(0, 300) || "Updated while working on a request.",
+    source: input.source,
+    now,
+  });
+  let log = proposed.log;
+  let status = proposed.change.status;
+  if (status === "testing") {
+    const report = await replaySkillChange({
+      before: input.skill.content,
+      after: input.after,
+      examples: [],
+      allowRename: input.renamed,
+      now: () => now,
+    });
+    const settled = settleSkillChange(log, proposed.change.id, report, now);
+    log = settled.log;
+    status = settled.change.status;
+  }
+  await bestEffort("record skill change", writeSkillLearningLog(prisma, owner, log, read));
+  return { status };
 }
