@@ -197,7 +197,8 @@ export function buildDiagnosticsBundle(input: BundleInput): DiagnosticsBundle {
       ]),
     ),
   };
-  return redactValue(bundle, input.context);
+  // The report's own random id is not personal and must survive (a UUID looks like a key).
+  return { ...redactValue(bundle, input.context), id: bundle.id };
 }
 
 /** The last lines of each report log that exists. A missing log is left out. */

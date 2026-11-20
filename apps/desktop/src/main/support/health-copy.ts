@@ -41,13 +41,31 @@ const COPY: Record<string, Copy> = {
     es: "Telegram ya no acepta el vínculo de tu bot. Vincúlalo otra vez en unos segundos.",
     pt: "O Telegram não aceita mais o vínculo do seu bot. Vincule de novo em alguns segundos.",
   },
-  "model-server:ok": { es: "El servidor del modelo está funcionando.", pt: "O servidor do modelo está funcionando." },
+  "model-server:ok": {
+    es: "El servidor del modelo está funcionando.",
+    pt: "O servidor do modelo está funcionando.",
+  },
   "model:ok": { es: "El modelo está listo.", pt: "O modelo está pronto." },
-  "disk:ok": { es: "Hay suficiente espacio libre en el disco.", pt: "Há espaço livre suficiente no disco." },
-  "ports:ok": { es: "Las direcciones de Gente están libres.", pt: "Os endereços do Gente estão livres." },
-  "app-files:ok": { es: "Los archivos de Gente están completos.", pt: "Os arquivos do Gente estão completos." },
-  "workspace:ok": { es: "Tu espacio de trabajo está funcionando.", pt: "Seu espaço de trabalho está funcionando." },
-  "workspace:warn": { es: "Tu espacio de trabajo está arrancando.", pt: "Seu espaço de trabalho está iniciando." },
+  "disk:ok": {
+    es: "Hay suficiente espacio libre en el disco.",
+    pt: "Há espaço livre suficiente no disco.",
+  },
+  "ports:ok": {
+    es: "Las direcciones de Gente están libres.",
+    pt: "Os endereços do Gente estão livres.",
+  },
+  "app-files:ok": {
+    es: "Los archivos de Gente están completos.",
+    pt: "Os arquivos do Gente estão completos.",
+  },
+  "workspace:ok": {
+    es: "Tu espacio de trabajo está funcionando.",
+    pt: "Seu espaço de trabalho está funcionando.",
+  },
+  "workspace:warn": {
+    es: "Tu espacio de trabajo está arrancando.",
+    pt: "Seu espaço de trabalho está iniciando.",
+  },
   "telegram:ok": { es: "Telegram está vinculado.", pt: "O Telegram está vinculado." },
 };
 

@@ -10,11 +10,17 @@ import type { DiagnosticsBundle } from "./diagnostics.js";
 
 /** `GENTE_SUPPORT_BASE` points tests at a stand-in server. */
 export const SUPPORT_BASE = process.env.GENTE_SUPPORT_BASE?.trim() || "https://trytabmate.com";
+/**
+ * Gente Cloud's self-heal intake (cloud/supabase/functions/gente-selfheal on the cloud branch).
+ * Set at build time from GENTE_SELFHEAL_URL; a build without it sends no reports.
+ */
+export const SELFHEAL_URL = process.env.GENTE_SELFHEAL_URL?.trim() ?? "";
 
 export type Ticket = { email: string; name?: string; message: string };
 
-async function post(pathname: string, body: unknown, fetcher: typeof fetch) {
-  const res = await fetcher(`${SUPPORT_BASE}${pathname}`, {
+async function post(pathname: string, body: unknown, fetcher: typeof fetch, base = SUPPORT_BASE) {
+  if (base === "") return false;
+  const res = await fetcher(`${base}${pathname}`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
@@ -43,7 +49,7 @@ export async function sendTicket(ticket: Ticket, fetcher: typeof fetch = fetch):
 
 export async function sendDiagnostics(bundle: DiagnosticsBundle, fetcher: typeof fetch = fetch) {
   try {
-    return await post("/api/gente-diagnostics", { kind: "bundle", bundle }, fetcher);
+    return await post("/diagnostics", { kind: "bundle", bundle }, fetcher, SELFHEAL_URL);
   } catch {
     return false;
   }
@@ -62,7 +68,7 @@ export async function sendHealthEvent(
   fetcher: typeof fetch = fetch,
 ) {
   try {
-    return await post("/api/gente-diagnostics", { kind: "health", ...event }, fetcher);
+    return await post("/diagnostics", { kind: "health", ...event }, fetcher, SELFHEAL_URL);
   } catch {
     return false;
   }

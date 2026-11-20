@@ -12,7 +12,7 @@ How Gente finds problems on people's computers, fixes what it can there, and shi
 | Self-heal | `support/monitor.ts` | Runs the safe automatic fixes (restart services) once per 30 minutes per problem. |
 | Error catcher | `support/diagnostics.ts` | Main-process crashes, window and child-process crashes, problems the checks find. Saved redacted in `logs/errors.jsonl`. |
 | Reports | `support/diagnostics.ts`, `support/redact.ts` | Version, OS, codes, stacks, log tails. Chat lines and personal data removed. Sent only with the person's yes ("Ask each time" by default). |
-| Intake | `scripts/self-heal/intake-endpoint` | Website function and tables that receive reports and health counts. |
+| Intake | Gente Cloud: `cloud/db/migrations/010_self_heal.sql`, `cloud/supabase/functions/gente-selfheal` | Receives reports and health counts; serves the update feed. |
 | Pipeline | `scripts/self-heal` | Group → reproduce → fix → PR → gates → canary → 5% → 25% → 100%, rollback. |
 | Workflows | `.github/workflows/gente-*.yml` | The pipeline on GitHub Actions. |
 
@@ -26,7 +26,7 @@ How Gente finds problems on people's computers, fixes what it can there, and shi
    redacted report ──► person says yes? ──no──► nothing is sent
         │ yes
         ▼
- /api/gente-diagnostics ──► gente_diagnostics table
+ Gente Cloud gente-selfheal ──► gente.diag_reports
         │  every 6 h (gente-self-heal.yml)
         ▼
  group by signature ──► one job per group and OS (macos-15, windows-2025)
@@ -61,13 +61,19 @@ open /tmp/heal/status.html
 pnpm exec tsx scripts/gente-help-site.ts /tmp/site/help   # the help website
 ```
 
-## What must be set up before it runs for real
+## Where it runs
 
-1. **Intake.** Run `scripts/self-heal/intake-endpoint/schema.sql` on the Supabase project. Copy `gente-diagnostics.js` into the website's `api/` folder and set `GENTE_SUPABASE_URL` and `GENTE_SUPABASE_PUBLISHABLE_KEY` there.
-2. **Update bucket.** An S3-compatible bucket with a public HTTPS address (for example Cloudflare R2). Secrets: `GENTE_UPDATE_BUCKET` (s3://…), `GENTE_UPDATE_URL` (https://…), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `GENTE_UPDATE_ENDPOINT` for R2. Staged rollout edits `stagingPercentage` in the feed, which a GitHub release feed cannot do without re-uploading assets. Installed apps read their feed from `app-update.yml`, so the first build that points at the bucket has to be installed once by hand or shipped through the current GitHub feed.
-3. **Pipeline secrets.** `GENTE_SUPABASE_URL`, `GENTE_SUPABASE_SERVICE_KEY`, `SELF_HEAL_TOKEN` (a fine-grained token or GitHub App with contents and pull requests write: PRs opened with the default token do not start other workflows), `vars.SELF_HEAL_AGENT` and `vars.SELF_HEAL_AGENT_SETUP` (the repair agent command and its install), and the agent's key.
-4. **A `canary` branch** made from `release-main`, and a `self-heal` label.
-5. **GitHub Pages** turned on (source: GitHub Actions) for the status page.
+- **Intake and update feed:** Gente Cloud owns them (branch `cloud`): migration `cloud/db/migrations/010_self_heal.sql` (private `gente` schema, RLS forced) and the edge function `cloud/supabase/functions/gente-selfheal`. Builds and feed files live in the public `gente-updates` storage bucket of the same project.
+- **Settings in this repository:** `vars.GENTE_SELFHEAL_URL` (the function), `vars.GENTE_UPDATE_URL` (the bucket's public address), `secrets.SELF_HEAL_CLOUD_TOKEN` (CI token; only its sha256 is stored in `gente.selfheal_tokens`). The desktop build reads `GENTE_SELFHEAL_URL`; a build without it sends no reports.
+- **Branches and labels:** fixes merge into `canary`; labels `self-heal` and `blocked-on-owner`.
+- **Pages:** help at `/gente/help/`, status at `/gente/self-heal/` (`gente-pages.yml`).
+
+### Blocked on owner
+
+- **Repair agent:** set `vars.SELF_HEAL_AGENT`, `vars.SELF_HEAL_AGENT_SETUP` and its key. Until then each failure group becomes an issue labeled `blocked-on-owner`, with the redacted evidence, and the pipeline stops there.
+- **Build uploads:** the project's storage upload limit is 50 MB, so installers are refused (413). Raise it in Supabase → Storage → Settings (2 GB is enough).
+- **Schedules:** GitHub runs `schedule` only from the default branch (`main`). Until these workflows are there, a push to `canary` runs them.
+- **Signing:** see below. Builds are unsigned and say so in the run summary; that never fails a run.
 
 ## Code signing
 

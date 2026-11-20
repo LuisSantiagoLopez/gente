@@ -17,5 +17,7 @@ await build({
     "process.env.RAKAZO_DESKTOP_RELEASE": JSON.stringify(process.env.RAKAZO_DESKTOP_RELEASE ?? ""),
     // Self-hosted builds associated with their own passkey domain (see src/main/auth/passkeys.ts).
     "process.env.RAKAZO_PASSKEY_RP_ID": JSON.stringify(process.env.RAKAZO_PASSKEY_RP_ID ?? ""),
+    // Gente: where opt-in error reports go (Gente Cloud's self-heal intake). Unset sends none.
+    "process.env.GENTE_SELFHEAL_URL": JSON.stringify(process.env.GENTE_SELFHEAL_URL ?? ""),
   },
 });

@@ -18,7 +18,7 @@ import { desktop } from "../desktop-state.js";
 import { handleIpc } from "../ipc/ipc.js";
 import { NATIVE_PORTS_FILE } from "../this-computer/native-stack.js";
 import { findMissingAppFiles } from "./app-files.js";
-import { askSupport, shouldOfferHuman } from "./assistant.js";
+import { askSupport, prewarmSupport, shouldOfferHuman } from "./assistant.js";
 import type { SupportViewState } from "./bridge.js";
 import { buildDiagnosticsBundle, ErrorCatcher, readLogTails } from "./diagnostics.js";
 import type { FixDeps } from "./fixes.js";
@@ -45,6 +45,9 @@ import type { SupportTurn } from "./support.prompt.js";
 
 const CHECK_EVERY_MS = 5 * 60_000;
 const FIRST_CHECK_MS = 60_000;
+/** After launch settles (the chat prewarm goes first). */
+const PREWARM_AFTER_MS = 20_000;
+let prewarm: () => Promise<void> = async () => {};
 
 type SupportOptions = {
   userDataDir: string;
@@ -298,6 +301,12 @@ export function startSupport(options: SupportOptions) {
     })();
   healthEvent("launch");
 
+  // Have the model read the support instructions ahead of time, so a first question answers fast.
+  prewarm = async () => {
+    const alias = (await readSavedBrain(options.stackDir))?.alias;
+    if (alias && (await ollamaRunning())) await prewarmSupport(OLLAMA_URL, alias);
+  };
+  setTimeout(() => void prewarm(), PREWARM_AFTER_MS).unref();
   setTimeout(() => void monitor?.check(), FIRST_CHECK_MS).unref();
   setInterval(() => void monitor?.check(), CHECK_EVERY_MS).unref();
 
@@ -446,6 +455,7 @@ async function installId(userDataDir: string): Promise<string> {
 }
 
 export function openSupportWindow() {
+  void prewarm();
   const existing = desktop.supportWindow;
   if (existing && !existing.isDestroyed()) {
     existing.focus();

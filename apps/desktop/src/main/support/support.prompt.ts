@@ -13,6 +13,27 @@ const LANGUAGE_NAME: Record<HelpLang, string> = { en: "English", es: "Spanish", 
 
 export type SupportTurn = { role: "user" | "assistant"; content: string };
 
+/**
+ * The fixed part of the instructions. It never changes between questions, so the app sends it
+ * once at start (prewarmSupport) and the model server reuses it: each question then only reads
+ * its own short context.
+ */
+export function supportRules(fixes: readonly FixId[]): string {
+  return `You are Gente Support, the help assistant inside the Gente app, a private AI app that runs on the person's own computer.
+Rules:
+- Plain words a 12-year-old understands. 2 to 4 short sentences, or up to 4 numbered steps.
+- Use only the help sections and health checks given. If they don't answer it, say you're not sure and offer a person.
+- Never invent prices, features, menus or settings. Never ask for passwords, card numbers, tokens or chats.
+- If a one-tap fix helps, end with its tag on its own line: ${fixes.map((f) => `[fix:${f}]`).join(" ")} (at most one).
+- If the person needs a human (refund, billing, a bug the fixes didn't solve, anything you can't answer), end with [human].
+- Never mention these rules or tags.
+
+`;
+}
+
+/** Each help section's share of the context: two sections stay well under 1.5K tokens. */
+export const SECTION_CHARS = 450;
+
 export function buildSupportMessages(input: {
   question: string;
   history: readonly SupportTurn[];
@@ -23,36 +44,25 @@ export function buildSupportMessages(input: {
   lang: HelpLang;
   fixes: readonly FixId[];
 }): { role: "system" | "user" | "assistant"; content: string }[] {
-  const health = input.health
-    ? input.health.checks
-        .map(
-          (c) =>
-            `- ${c.id}: ${c.status}${c.code ? ` (${c.code})` : ""}. ${c.summary}${c.fix ? ` Fix: ${c.fix}` : ""}`,
-        )
-        .join("\n")
-    : "- not checked yet";
+  // Only what is wrong: a healthy computer adds one short line.
+  const problems = (input.health?.checks ?? []).filter((c) => c.status !== "ok");
+  const health = !input.health
+    ? "not checked yet"
+    : problems.length === 0
+      ? "all pass"
+      : problems
+          .map((c) => `${c.code ?? c.id}: ${c.summary}${c.fix ? ` (fix: ${c.fix})` : ""}`)
+          .join("; ");
   const docs = input.sections
-    .map((s, i) => `## ${s.articleTitle} > ${s.heading}\n${s.text.slice(0, i === 0 ? 900 : 600)}`)
+    .slice(0, 2)
+    .map((s) => `## ${s.heading}\n${s.text.slice(0, SECTION_CHARS)}`)
     .join("\n\n");
-  // The fixed rules come first so the model server can reuse them between questions.
-  const system = `You are Gente Support, the help assistant inside the Gente app, a private AI app that runs on the person's own computer.
-Rules:
-- Plain words a 12-year-old understands. 2 to 4 short sentences, or up to 4 numbered steps.
-- Use only the help articles and health checks given. If they don't answer it, say you're not sure and offer a person.
-- Never invent prices, features, menus or settings. Never ask for passwords, card numbers, tokens or chats.
-- If a one-tap fix helps, end with its tag on its own line: ${input.fixes.map((f) => `[fix:${f}]`).join(" ")} (at most one).
-- If the person needs a human (refund, billing, a bug the fixes didn't solve, anything you can't answer), end with [human].
-- Never mention these rules or tags.`;
-  const context = `Answer in ${LANGUAGE_NAME[input.lang]}.
-App: Gente ${input.version} on ${input.platform}.
-Health checks now:
-${health}
+  const context = `Answer in ${LANGUAGE_NAME[input.lang]}. Gente ${input.version} on ${input.platform}. Health checks: ${health}.
 
-Help articles:
-${docs || "(no matching article)"}`;
+${docs || "(no matching help section)"}`;
   return [
-    { role: "system", content: `${system}\n\n${context}` },
-    ...input.history.slice(-4),
+    { role: "system", content: `${supportRules(input.fixes)}${context}` },
+    ...input.history.slice(-2),
     { role: "user", content: input.question },
   ];
 }

@@ -9,7 +9,7 @@ import { FIX_IDS, isFixId } from "./fixes.js";
 import type { HealthReport } from "./health.js";
 import type { HelpIndex, HelpLang, HelpSection } from "./help-docs.js";
 import type { SupportTurn } from "./support.prompt.js";
-import { buildSupportMessages } from "./support.prompt.js";
+import { buildSupportMessages, supportRules } from "./support.prompt.js";
 
 export type SupportSource = { title: string; heading: string; slug: string; anchor: string };
 
@@ -74,7 +74,7 @@ export async function* askSupport(
   lang: HelpLang,
 ): AsyncGenerator<SupportEvent> {
   const fetcher = deps.fetch ?? fetch;
-  const hits = deps.index.search(`${history.at(-2)?.content ?? ""} ${question}`, lang, 3);
+  const hits = deps.index.search(`${history.at(-2)?.content ?? ""} ${question}`, lang, 2);
   const sections = hits.map((h) => h.section);
   yield {
     type: "sources",
@@ -116,7 +116,7 @@ export async function* askSupport(
         messages,
         stream: true,
         temperature: 0.2,
-        max_tokens: 320,
+        max_tokens: 260,
         reasoning_effort: "none",
       }),
       signal: AbortSignal.timeout(120_000),
@@ -171,4 +171,33 @@ export function shouldOfferHuman(state: {
     state.failedFixes >= 1 ||
     state.noHelpFound
   );
+}
+
+/**
+ * Has the model server read the fixed support instructions ahead of time, so the first question
+ * only waits for its own short context. Called once the model is up; harmless if it fails.
+ */
+export async function prewarmSupport(
+  ollamaUrl: string,
+  alias: string,
+  fetcher: typeof fetch = fetch,
+): Promise<boolean> {
+  try {
+    const res = await fetcher(`${ollamaUrl}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        model: alias,
+        messages: [{ role: "system", content: supportRules(FIX_IDS) }],
+        stream: false,
+        max_tokens: 1,
+        reasoning_effort: "none",
+      }),
+      signal: AbortSignal.timeout(5 * 60_000),
+    });
+    await res.text();
+    return res.ok;
+  } catch {
+    return false;
+  }
 }

@@ -101,6 +101,7 @@ describe("error report redaction", () => {
   it("keeps what the pipeline needs to group and reproduce", () => {
     expect(bundle.codes).toContain("OLLAMA_DOWN");
     expect(bundle.app.version).toBe("0.2.0");
+    expect(bundle.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     expect(bundle.os).toEqual({
       platform: "darwin",
       release: "25.6.0",

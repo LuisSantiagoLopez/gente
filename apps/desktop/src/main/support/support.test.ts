@@ -152,12 +152,18 @@ describe("health copy", () => {
         telegramLinked: async () => false,
       }),
     );
-    for (const report of [failing, await runHealthChecks(healthyProbe({ telegramLinked: async () => true }))])
+    for (const report of [
+      failing,
+      await runHealthChecks(healthyProbe({ telegramLinked: async () => true })),
+    ])
       for (const lang of ["es", "pt"] as const) {
         const localized = localizeHealth(report, lang);
-        localized.checks.forEach((check, i) => expect(check.summary, `${lang} ${check.id}`).not.toBe(report.checks[i]?.summary));
+        for (const [i, check] of localized.checks.entries())
+          expect(check.summary, `${lang} ${check.id}`).not.toBe(report.checks[i]?.summary);
       }
-    expect(localizeHealth(failing, "es").checks.find((c) => c.code === "DISK_LOW")?.summary).toContain("1.5 GB");
+    expect(
+      localizeHealth(failing, "es").checks.find((c) => c.code === "DISK_LOW")?.summary,
+    ).toContain("1.5 GB");
   });
 });
 

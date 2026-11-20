@@ -6,18 +6,18 @@
 //
 //   tsx scripts/self-heal/cli.ts intake  --since <iso> [--dir <reports>] --out clusters.json
 //   tsx scripts/self-heal/cli.ts repair  --clusters clusters.json --signature <sig>
-//   tsx scripts/self-heal/cli.ts publish --built <folder> --feed <folder|s3://bucket/path>
-//   tsx scripts/self-heal/cli.ts rollout --feed <folder|s3://bucket/path> [--apply]
+//   tsx scripts/self-heal/cli.ts upload  --dir <builds>
+//   tsx scripts/self-heal/cli.ts publish --built <folder> --feed <folder|cloud>
+//   tsx scripts/self-heal/cli.ts rollout --feed <folder|cloud> [--apply]
 //   tsx scripts/self-heal/cli.ts status  --records <folder> --out status.html
 import { execFile } from "node:child_process";
-import { mkdtemp, readdir, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { commandAgent, git, repair } from "./agent.js";
 import { runCommand } from "./gates.js";
 import type { Cluster } from "./intake.js";
-import { bundlesFromDir, bundlesFromTable, groupBySignature } from "./intake.js";
+import { bundlesFromCloud, bundlesFromDir, groupBySignature } from "./intake.js";
 import type { RunRecord } from "./pipeline.js";
 import type { FeedStore, Stage, VersionMetrics } from "./rollout.js";
 import {
@@ -48,57 +48,49 @@ const env = (name: string) => {
   return value;
 };
 
-/** An update feed in an S3-compatible bucket, through the aws command line (preinstalled on runners). */
-function bucketFeed(url: string): FeedStore {
-  const endpoint = process.env.GENTE_UPDATE_ENDPOINT
-    ? ["--endpoint-url", process.env.GENTE_UPDATE_ENDPOINT]
-    : [];
+/**
+ * Gente Cloud's self-heal service (cloud/supabase/functions/gente-selfheal on the cloud branch):
+ * GENTE_SELFHEAL_URL is the function, SELF_HEAL_CLOUD_TOKEN the CI token it checks.
+ */
+const cloud = (route: string, init: RequestInit = {}) =>
+  fetch(`${env("GENTE_SELFHEAL_URL")}${route}`, {
+    ...init,
+    headers: { authorization: `Bearer ${env("SELF_HEAL_CLOUD_TOKEN")}`, ...(init.headers ?? {}) },
+  });
+
+/**
+ * The update feed in Gente Cloud's storage bucket: read through its public address
+ * (GENTE_UPDATE_URL), written through the self-heal service.
+ */
+function cloudFeed(): FeedStore {
   return {
     read: async (file) => {
-      try {
-        return (await exec("aws", ["s3", "cp", ...endpoint, `${url}/${file}`, "-"])).stdout;
-      } catch {
-        return null;
-      }
+      const res = await fetch(`${env("GENTE_UPDATE_URL")}/${file}?t=${Date.now()}`);
+      return res.ok ? res.text() : null;
     },
     write: async (file, content) => {
-      const tmp = path.join(await mkdtemp(path.join(os.tmpdir(), "feed-")), file);
-      await writeFile(tmp, content);
-      await exec("aws", [
-        "s3",
-        "cp",
-        ...endpoint,
-        tmp,
-        `${url}/${file}`,
-        "--cache-control",
-        "no-cache",
-      ]);
+      const res = await cloud(`/feed/${file}`, { method: "PUT", body: content });
+      if (!res.ok) throw new Error(`feed write ${file} answered ${res.status}`);
     },
   };
 }
 
 async function versionMetrics(version: string): Promise<VersionMetrics> {
-  const res = await fetch(
-    `${env("GENTE_SUPABASE_URL")}/rest/v1/gente_version_metrics?version=eq.${encodeURIComponent(version)}`,
-    {
-      headers: {
-        apikey: env("GENTE_SUPABASE_SERVICE_KEY"),
-        authorization: `Bearer ${env("GENTE_SUPABASE_SERVICE_KEY")}`,
-      },
-    },
-  );
+  const res = await cloud(`/metrics?version=${encodeURIComponent(version)}`);
   if (!res.ok) throw new Error(`metrics answered ${res.status}`);
-  const row = ((await res.json()) as Record<string, number>[])[0];
+  const row = ((await res.json()) as Record<string, string | number>[])[0];
+  // Postgres counts arrive as strings.
+  const n = (v: string | number | undefined) => Number(v ?? 0);
   return {
     version,
-    launches: row?.launches ?? 0,
-    crashes: row?.crashes ?? 0,
-    setupOk: row?.setup_ok ?? 0,
-    setupFail: row?.setup_fail ?? 0,
+    launches: n(row?.launches),
+    crashes: n(row?.crashes),
+    setupOk: n(row?.setup_ok),
+    setupFail: n(row?.setup_fail),
   };
 }
 
-const feedFor = (url: string) => (url.startsWith("s3://") ? bucketFeed(url) : folderFeed(url));
+const feedFor = (where: string) => (where === "cloud" ? cloudFeed() : folderFeed(where));
 
 /** When the current stage started, kept next to the feed. */
 type RolloutState = { version: string; stage: number; since: string };
@@ -106,15 +98,71 @@ async function writeState(feed: FeedStore, state: RolloutState) {
   await feed.write("rollout.json", `${JSON.stringify(state, null, 2)}\n`);
 }
 
+/** Opens (or finds) the issue for a failure group that has no repair agent yet. */
+async function blockedIssue(cluster: Cluster, testNote: string) {
+  const title = `self-heal: ${cluster.code} (${cluster.signature})`;
+  const { stdout: existing } = await exec("gh", [
+    "issue",
+    "list",
+    "--label",
+    "self-heal",
+    "--state",
+    "open",
+    "--search",
+    cluster.signature,
+    "--json",
+    "url",
+    "-q",
+    ".[0].url",
+  ]);
+  if (existing.trim()) return existing.trim();
+  const body = [
+    `${cluster.reports} Gente installs reported \`${cluster.code}\` on ${cluster.platforms.join(", ")} (versions ${cluster.versions.join(", ")}).`,
+    "",
+    "**Blocked on owner:** the repair agent has no key yet, so the pipeline stops here. With `vars.SELF_HEAL_AGENT` and its key set, the next run writes the failing test and a proposed fix as a pull request.",
+    "",
+    testNote,
+    "",
+    "Redacted evidence (no chats, no personal data):",
+    "```json",
+    JSON.stringify(
+      {
+        message: cluster.message,
+        stack: cluster.stack,
+        health: cluster.sample.health,
+        logs: cluster.sample.logs,
+      },
+      null,
+      2,
+    ).slice(0, 6000),
+    "```",
+    "",
+    `Signature: \`${cluster.signature}\``,
+  ].join("\n");
+  const { stdout } = await exec("gh", [
+    "issue",
+    "create",
+    "--label",
+    "self-heal",
+    "--label",
+    "blocked-on-owner",
+    "--title",
+    title,
+    "--body",
+    body,
+  ]);
+  return stdout.trim();
+}
+
 const commands: Record<string, () => Promise<number>> = {
   async intake() {
     const bundles = process.argv.includes("--dir")
       ? await bundlesFromDir(arg("dir"))
-      : await bundlesFromTable({
-          url: env("GENTE_SUPABASE_URL"),
-          serviceKey: env("GENTE_SUPABASE_SERVICE_KEY"),
-          since: arg("since"),
-        });
+      : await bundlesFromCloud(
+          env("GENTE_SELFHEAL_URL"),
+          env("SELF_HEAL_CLOUD_TOKEN"),
+          arg("since"),
+        );
     const clusters = groupBySignature(bundles).slice(0, Number(arg("limit", "5")));
     await writeFile(arg("out"), JSON.stringify(clusters, null, 2));
     // One repair job per failure group and OS, for the workflow's matrix.
@@ -130,6 +178,25 @@ const commands: Record<string, () => Promise<number>> = {
     const cluster = clusters.find((c) => c.signature === arg("signature"));
     if (!cluster) throw new Error("no such signature");
     const dir = process.cwd();
+    if (!process.env.SELF_HEAL_AGENT) {
+      // No repair agent key yet: record the group as an issue and stop (blocked on owner).
+      const url = await blockedIssue(cluster, "No failing test yet: writing one needs the agent.");
+      await writeFile(
+        `repair-${cluster.signature}.json`,
+        JSON.stringify(
+          {
+            ok: false,
+            step: "reproduce",
+            reason: "blocked-on-owner: no repair agent key",
+            issue: url,
+          },
+          null,
+          2,
+        ),
+      );
+      console.log(`blocked-on-owner: ${url}`);
+      return 0;
+    }
     const branch = `self-heal/${cluster.signature}-${process.platform}`;
     await git(dir, "checkout", "-q", "-B", branch);
     const agent = commandAgent(env("SELF_HEAL_AGENT"), "apps/desktop/src/main");
@@ -159,6 +226,31 @@ const commands: Record<string, () => Promise<number>> = {
       body,
     ]);
     console.log(stdout.trim());
+    return 0;
+  },
+
+  /** Uploads every build file in a folder to the update bucket (signed upload, file by file). */
+  async upload() {
+    const dir = arg("dir");
+    for (const file of (await readdir(dir)).filter((f) => !f.endsWith(".yml"))) {
+      const signed = await cloud("/feed/upload-url", {
+        method: "POST",
+        body: JSON.stringify({ path: file }),
+      });
+      const { url } = (await signed.json()) as { url?: string };
+      if (!url) throw new Error(`no upload address for ${file} (${signed.status})`);
+      const put = await fetch(url, {
+        method: "PUT",
+        headers: { "content-type": "application/octet-stream" },
+        body: await readFile(path.join(dir, file)),
+      });
+      if (put.status === 413)
+        throw new Error(
+          `blocked-on-owner: ${file} is larger than the storage upload limit; raise it in Supabase → Storage → Settings`,
+        );
+      if (!put.ok) throw new Error(`upload ${file} answered ${put.status}`);
+      console.log(`uploaded ${file}`);
+    }
     return 0;
   },
 

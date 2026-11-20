@@ -35,18 +35,17 @@ export async function bundlesFromDir(dir: string): Promise<DiagnosticsBundle[]> 
   );
 }
 
-/** Bundles from the intake table (Supabase REST), newest first. Needs a service key in CI only. */
-export async function bundlesFromTable(input: {
-  url: string;
-  serviceKey: string;
-  since: string;
-  fetcher?: typeof fetch;
-}): Promise<DiagnosticsBundle[]> {
-  const res = await (input.fetcher ?? fetch)(
-    `${input.url}/rest/v1/gente_diagnostics?select=bundle&created_at=gte.${encodeURIComponent(input.since)}&order=created_at.desc&limit=5000`,
-    { headers: { apikey: input.serviceKey, authorization: `Bearer ${input.serviceKey}` } },
-  );
-  if (!res.ok) throw new Error(`intake table answered ${res.status}`);
+/** Reports from Gente Cloud's self-heal service, newest first. The CI token is needed. */
+export async function bundlesFromCloud(
+  url: string,
+  token: string,
+  since: string,
+  fetcher: typeof fetch = fetch,
+): Promise<DiagnosticsBundle[]> {
+  const res = await fetcher(`${url}/reports?since=${encodeURIComponent(since)}`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`self-heal service answered ${res.status}`);
   return ((await res.json()) as { bundle: DiagnosticsBundle }[]).map((row) => row.bundle);
 }
 
