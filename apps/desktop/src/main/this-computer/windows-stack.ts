@@ -523,6 +523,9 @@ export class WindowsStackController extends StackLifecycle {
       ...this.nodeEnv(),
       DATA_DIR: this.dir("data"),
       WAKEUP_DRIVER: "graphile",
+      // Gente: a worker that stops taking jobs exits so it is restarted; its pool fits its jobs.
+      GENTE_JOB_WATCHDOG: "on",
+      DB_POOL_MAX: "24",
       AGENT_RUNTIME: "pi",
       // No VMs on Windows: bots work in chat, and on this PC when the person allows it.
       SANDBOX_PROVIDER: "none",

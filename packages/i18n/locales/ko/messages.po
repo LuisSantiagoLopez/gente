@@ -5891,6 +5891,10 @@ msgstr "녹음하고 대화 기록을 이 스페이스와 공유하려면 동의
 msgid "Getting ready"
 msgstr "준비 중"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "다시 움직이게 하는 중…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

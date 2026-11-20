@@ -5891,6 +5891,10 @@ msgstr "録音と、このスペースへの文字起こしの共有について
 msgid "Getting ready"
 msgstr "準備中"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "準備を進めています…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"
