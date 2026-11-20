@@ -96,6 +96,7 @@ import { BUILTIN_AGENT_TOOL_NAMES, READ_ONLY_AGENT_TOOLS } from "./run-tool-sele
 import { callMediaTool } from "./run-tools-files.js";
 import { callPaidService } from "./run-tools-integrations.js";
 import { USER_COMPUTER_TOOLS, userComputerGate } from "./run-tools-user-computer.js";
+import { shellDeletesInBulk } from "./shell-deletes.js";
 
 export type AppliedEffect = Awaited<ReturnType<typeof recordEffect>>;
 
@@ -290,8 +291,11 @@ export async function gateToolCall(
   const { purchase, cardUse, loginUse } = request;
   // Saved logins that ask first require the owner on every use, like saved cards.
   const paying = Boolean(purchase) || Boolean(cardUse) || Boolean(loginUse);
+  // Deleting the owner's files in bulk asks first; shell is otherwise free (see shellDeletesInBulk).
+  const deletesInBulk = name === "shell" && shellDeletesInBulk(String(args.command ?? ""));
   const requiresApprovalByDefault =
     request.heldForApproval ||
+    deletesInBulk ||
     paying ||
     unattendedWatch ||
     routineWrittenAfterOutside ||

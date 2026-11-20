@@ -211,3 +211,62 @@ describe("gateToolCall: the owner's auto-approve limits", () => {
     expect(autoApprovedAudits()).toBe(0);
   });
 });
+
+function shell(command: string) {
+  const args = { command };
+  const executionId = JSON.stringify(["pi-tool", "main", "call-3"]);
+  const request = {
+    name: "shell",
+    args,
+    executionId,
+    connectorCall: { tool: "shell", args, executionId, route: undefined },
+    effectRequest: args,
+    replayEffectToolName: "shell",
+    heldForApproval: false,
+    settingsChange: false,
+    ignoresAllowRules: false,
+    catalogRemapped: false,
+  } as unknown as ToolRequest;
+  const ctx = {
+    deps: { prisma: { attempt: { count: async () => 1 } } },
+    run: { id: "run-1", userId: "user-1", spaceId: "space-1", trigger: "user" },
+    runId: "run-1",
+    bot: { id: "bot-1", name: "Helper" },
+    thread: { id: "thread-1" },
+    context: { signal: new AbortController().signal },
+    source: { ownerStartedRun: true },
+    tools: { connector: new Map(), connectedPlugins: [] },
+    state: {
+      tainted: false,
+      effects: { consumedIds: new Set(), counts: new Map(), occurrences: [] },
+    },
+    trust: {
+      receivedOutsideMessage: async () => false,
+      loadApprovalRules: async () => [],
+      loadAutoReviewPreference: async () => ({ enabled: false, skipApprovals: false }),
+    },
+  };
+  return gateToolCall(ctx as never, request, undefined).then(
+    (outcome) => outcome,
+    (error: Error) => error.message,
+  );
+}
+
+describe("gateToolCall: deleting files from the shell", () => {
+  beforeEach(() => {
+    plans.length = 0;
+  });
+
+  it("asks before a delete in bulk", async () => {
+    await shell("rm config.json notes.txt q3_sales.csv todo.md");
+    expect(plans).toEqual(["ask"]);
+  });
+
+  it("runs one named delete and other commands without asking", async () => {
+    for (const command of ["rm notes_draft.md", "python3 app.py"]) {
+      plans.length = 0;
+      await shell(command);
+      expect(plans).toEqual(["allow"]);
+    }
+  });
+});
