@@ -197,3 +197,26 @@ describe("Your AI memory check", () => {
     }
   });
 });
+
+describe("getting the model ready as Your AI opens", () => {
+  it("loads it once even when asked twice, before reading any prompt", async () => {
+    const { brainModule, dir, calls } = await setup({ memoryGB: 32, installed: [BEST] });
+    const { writeFile } = await import("node:fs/promises");
+    await writeFile(
+      path.join(dir, "burrow-model.json"),
+      JSON.stringify({ model: BEST, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"] }),
+    );
+    const { mkdir } = await import("node:fs/promises");
+    await mkdir(path.join(dir, "data"), { recursive: true });
+    await writeFile(
+      path.join(dir, "data", "burrow-warm-chat.json"),
+      JSON.stringify({ messages: [{ role: "system", content: "You are Chief." }] }),
+    );
+    await Promise.all([brainModule.prewarmSwift(dir), brainModule.prewarmSwift(dir)]);
+    const work = calls.filter(
+      (c) => c.path === "/api/generate" || c.path === "/v1/chat/completions",
+    );
+    expect(work.map((c) => c.path)).toEqual(["/api/generate", "/v1/chat/completions"]);
+    expect(work[0]?.body).toMatchObject({ model: "swift-1.5-27b", prompt: "", keep_alive: -1 });
+  });
+});

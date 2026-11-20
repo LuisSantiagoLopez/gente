@@ -273,9 +273,41 @@ function hasTag(tags: string[], tag: string) {
  * Sends the last chat's stable prefix (saved by the server as `data/burrow-warm.json`) to the
  * model with a one-token reply, so the first message after Gente opens finds it already read.
  */
-export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
+let prewarming: Promise<boolean> | null = null;
+let taskWarmScheduled = false;
+
+/**
+ * Gets the model ready as Your AI opens: loads it into memory first (an empty prompt, kept loaded),
+ * then reads the small-talk prompt. Runs once at a time: it is asked for both when the model
+ * server starts and when the workspace is ready, and two at once made the first "hey" wait
+ * behind both (26.9 s on Santi's Mac).
+ */
+export function prewarmSwift(stackDirectory: string): Promise<boolean> {
+  prewarming ??= warmUp(stackDirectory).finally(() => {
+    prewarming = null;
+  });
+  return prewarming;
+}
+
+async function warmUp(stackDirectory: string): Promise<boolean> {
   const saved = await readSavedBrain(stackDirectory);
   if (saved === null) return false;
+  // Load the weights before anything reads a prompt: a message that arrives meanwhile waits only
+  // for the load, not behind a prompt too. keep_alive -1 keeps them in memory while Your AI is used.
+  await ollama(
+    "/api/generate",
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        model: saved.chatAlias ?? saved.alias,
+        prompt: "",
+        keep_alive: -1,
+        stream: false,
+      }),
+    },
+    5 * 60_000,
+  ).catch(() => undefined);
   // Only the short small-talk prompt, on the quick model: it reads in about a second, so the first
   // "hey" after launch finds it ready. Warming the long task prompt here would hold the model
   // server for minutes and make that first "hey" wait behind it.
@@ -307,7 +339,10 @@ export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
     // small-talk warm-up, in the background, and never delays a reply.
     // Measured on Santi's Mac: warming it right away made the first "hey" after launch wait 6 s
     // behind it, so it waits two minutes, when the person is most likely reading.
-    if (res.ok) setTimeout(() => void warmTaskPrefix(stackDirectory, model), 120_000).unref();
+    if (res.ok && !taskWarmScheduled) {
+      taskWarmScheduled = true;
+      setTimeout(() => void warmTaskPrefix(stackDirectory, model), 120_000).unref();
+    }
     return res.ok;
   } catch {
     // No chat yet, or the model server is busy: the first reply reads the prompt instead.
