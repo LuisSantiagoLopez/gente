@@ -47,6 +47,7 @@ import {
 import { ExpoPushProvider } from "../../notifications/expo-push.js";
 import { reconcilePurchases } from "../../payments/purchase-poll.js";
 import { T3CodeConnections } from "../../providers/cloud-agent/t3code/t3code-connections.js";
+import { composioConnectFallback } from "../../providers/integration/composio/composio-connect-fallback.js";
 import type { ComposioProvider } from "../../providers/integration/composio/composio-connector.js";
 import {
   ComposioConnector,
@@ -191,7 +192,7 @@ export function createConnectorRuntime(
       composio ??
       (isComposioEnabled(env.composioApiKey)
         ? new ComposioConnector({ apiKey: env.composioApiKey })
-        : undefined),
+        : composioConnectFallback()),
     pipedream,
   });
   const stack = createConnectorStack(composio, [
@@ -299,6 +300,7 @@ export function createRunRuntime(
       env.deploymentModelKey ?? "",
       localModelsApiKey() ?? "",
       env.composioApiKey ?? "",
+      process.env.GENTE_COMPOSIO_KEY ?? "",
       env.cursorApiKey ?? "",
       process.env.TYPESAFE_API_KEY ?? "",
     ].filter(Boolean),

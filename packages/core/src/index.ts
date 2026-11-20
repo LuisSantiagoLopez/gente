@@ -68,6 +68,7 @@ export * from "./integrations/mcp.js";
 export * from "./integrations/mcp-app.js";
 export * from "./integrations/plugin-catalog.js";
 export * from "./integrations/vault.js";
+export * from "./integrations/work-apps.js";
 export * from "./locale/device-timezone.js";
 export * from "./locale/text-direction.js";
 export * from "./locale/translate.js";
