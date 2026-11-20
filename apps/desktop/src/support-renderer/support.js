@@ -56,6 +56,8 @@
       updatesCanary: "Early fixes",
       back: "← All articles",
       runCheck: "Check again",
+      fixedItself: "Gente fixed itself",
+      nothingFixed: "Nothing needed fixing lately.",
       writing: "Writing an answer for you…",
       noResults: "No articles match. Try the Ask tab.",
     },
@@ -109,6 +111,8 @@
       updatesCanary: "Arreglos antes",
       back: "← Todos los artículos",
       runCheck: "Revisar otra vez",
+      fixedItself: "Gente se arregló sola",
+      nothingFixed: "No hubo nada que arreglar últimamente.",
       writing: "Escribiendo una respuesta para ti…",
       noResults: "Ningún artículo coincide. Prueba en Preguntar.",
     },
@@ -167,6 +171,8 @@
       updatesCanary: "Correções antes",
       back: "← Todos os artigos",
       runCheck: "Verificar de novo",
+      fixedItself: "O Gente se consertou sozinho",
+      nothingFixed: "Nada precisou de conserto ultimamente.",
       writing: "Escrevendo uma resposta para você…",
       noResults: "Nenhum artigo encontrado. Tente a aba Perguntar.",
     },
@@ -272,12 +278,47 @@
         return again;
       })(),
     );
+    if (!health.hidden) void renderTimeline();
   }
 
   function toggleHealth(open) {
     const health = $("health");
     health.hidden = !open;
     $("status").setAttribute("aria-expanded", String(open));
+    if (open) void renderTimeline();
+  }
+
+  /** "Gente fixed itself": what self-healing did lately, one plain sentence each. */
+  async function renderTimeline() {
+    const items = (await api.timeline?.().catch(() => [])) ?? [];
+    let box = $("timeline");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "timeline";
+      box.className = "timeline";
+      $("health").append(box);
+    }
+    const title = document.createElement("h2");
+    title.textContent = s.fixedItself;
+    const list = document.createElement("ul");
+    if (items.length === 0) {
+      const li = document.createElement("li");
+      li.className = "note";
+      li.textContent = s.nothingFixed;
+      list.append(li);
+    }
+    for (const item of items.slice(0, 12)) {
+      const li = document.createElement("li");
+      li.textContent = item.text;
+      if (item.detail) {
+        const more = document.createElement("small");
+        more.textContent = item.detail;
+        li.append(more);
+      }
+      li.dataset.outcome = item.outcome;
+      list.append(li);
+    }
+    box.replaceChildren(title, list);
   }
 
   function fixButton(id, after) {

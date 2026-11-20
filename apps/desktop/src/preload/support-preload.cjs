@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld("genteSupport", {
   answerReport: (answer) => ipcRenderer.invoke("gente.support.answerReport", answer),
   saveSettings: (patch) => ipcRenderer.invoke("gente.support.saveSettings", patch),
   articles: () => ipcRenderer.invoke("gente.support.articles"),
+  timeline: () => ipcRenderer.invoke("gente.support.timeline"),
   onEvent: (listener) => {
     ipcRenderer.on("gente.support.event", (_event, payload) => listener(payload));
   },

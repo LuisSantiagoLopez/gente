@@ -103,3 +103,69 @@ export function groupBySignature(bundles: readonly DiagnosticsBundle[]): Cluster
     }))
     .sort((a, b) => b.reports - a.reports || a.signature.localeCompare(b.signature));
 }
+
+/** One anonymous self-repair from an install that shares reports ("Always send"). */
+export type RepairEvent = {
+  failureId: string;
+  outcome: string;
+  fixedBy?: string;
+  ms?: number;
+  version: string;
+  platform: string;
+  installId: string;
+  createdAt?: string;
+};
+
+export type FleetGroup = {
+  failureId: string;
+  devices: number;
+  events: number;
+  /** Share of events the device fixed by itself. */
+  fixedShare: number;
+  medianMs: number | null;
+  versions: string[];
+  platforms: string[];
+  runners: Runner[];
+};
+
+/**
+ * Fleet learning: groups self-repairs by failure. A failure seen on at least `minDevices` installs
+ * is a bug to fix at the source, even when every device healed itself.
+ */
+export function groupRepairs(events: readonly RepairEvent[], minDevices: number): FleetGroup[] {
+  const by = new Map<string, RepairEvent[]>();
+  for (const e of events) by.set(e.failureId, [...(by.get(e.failureId) ?? []), e]);
+  const groups: FleetGroup[] = [];
+  for (const [failureId, list] of by) {
+    const devices = new Set(list.map((e) => e.installId)).size;
+    if (devices < minDevices) continue;
+    const times = list
+      .flatMap((e) => (typeof e.ms === "number" ? [e.ms] : []))
+      .sort((a, b) => a - b);
+    const platforms = [...new Set(list.map((e) => e.platform))];
+    groups.push({
+      failureId,
+      devices,
+      events: list.length,
+      fixedShare: list.filter((e) => e.outcome === "fixed").length / list.length,
+      medianMs: times.length ? (times[Math.floor(times.length / 2)] ?? null) : null,
+      versions: [...new Set(list.map((e) => e.version))],
+      platforms,
+      runners: runnersFor(platforms),
+    });
+  }
+  return groups.sort((a, b) => b.devices - a.devices);
+}
+
+export async function repairsFromCloud(
+  url: string,
+  token: string,
+  since: string,
+  fetcher: typeof fetch = fetch,
+) {
+  const res = await fetcher(`${url}/repairs?since=${encodeURIComponent(since)}`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`self-heal service answered ${res.status}`);
+  return (await res.json()) as RepairEvent[];
+}

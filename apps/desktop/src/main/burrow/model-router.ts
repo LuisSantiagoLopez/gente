@@ -8,7 +8,8 @@
 // Gente's server always talks to this loopback router, so switching modes needs no restart and
 // the sign-in never reaches the server.
 import { randomBytes } from "node:crypto";
-import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
+import type { IncomingMessage, Server, ServerResponse } from "node:http";
+import { createServer } from "node:http";
 import { Readable } from "node:stream";
 
 export type AiMode = "fast" | "private";
@@ -30,6 +31,12 @@ export async function startModelRouter(deps: RouterDeps) {
   const doFetch = deps.fetch ?? fetch;
   const secret = randomBytes(24).toString("hex");
   let status: { at: number; warm: boolean } = { at: 0, warm: false };
+  // Gente self-heal: a preferred side (expires), the last side used, this computer's last wait.
+  let preferred: { where: "cloud" | "local"; until: number } | null = null;
+  let lastRoute: "cloud" | "local" = "local";
+  let localWait: { at: number; ms: number } | null = null;
+  const prefers = (where: "cloud" | "local") =>
+    preferred !== null && preferred.where === where && Date.now() < preferred.until;
 
   async function cloudWarm(token: string): Promise<boolean> {
     if (Date.now() - status.at < STATUS_TTL_MS) return status.warm;
@@ -37,7 +44,9 @@ export async function startModelRouter(deps: RouterDeps) {
       headers: { authorization: `Bearer ${token}` },
       signal: AbortSignal.timeout(3_000),
     }).catch(() => null);
-    const body = res?.ok ? ((await res.json().catch(() => null)) as { status?: string } | null) : null;
+    const body = res?.ok
+      ? ((await res.json().catch(() => null)) as { status?: string } | null)
+      : null;
     status = { at: Date.now(), warm: body?.status === "warm" };
     return status.warm;
   }
@@ -45,7 +54,8 @@ export async function startModelRouter(deps: RouterDeps) {
   async function pipe(upstream: Response, res: ServerResponse) {
     const headers: Record<string, string> = {};
     upstream.headers.forEach((value, key) => {
-      if (!["content-encoding", "content-length", "transfer-encoding", "connection"].includes(key)) headers[key] = value;
+      if (!["content-encoding", "content-length", "transfer-encoding", "connection"].includes(key))
+        headers[key] = value;
     });
     res.writeHead(upstream.status, headers);
     if (!upstream.body) return res.end();
@@ -61,7 +71,7 @@ export async function startModelRouter(deps: RouterDeps) {
         body: body && body.length > 0 ? new Uint8Array(body) : undefined,
       });
     const isChat = req.method === "POST" && path.startsWith("/v1/chat/completions");
-    if (isChat && deps.mode() === "fast") {
+    if (isChat && deps.mode() === "fast" && !prefers("local")) {
       const token = await deps.token().catch(() => null);
       if (token && (await cloudWarm(token))) {
         const cloud = await doFetch(`${deps.cloudBase}${path.replace(/^\/v1/, "")}`, {
@@ -72,18 +82,26 @@ export async function startModelRouter(deps: RouterDeps) {
         }).catch(() => null);
         // Out of hours, not a paid plan, or the cloud is unwell: answer on this computer instead.
         if (cloud?.ok) {
+          lastRoute = "cloud";
           deps.onAnswered?.("cloud");
           return pipe(cloud, res);
         }
-        if (cloud?.status === 402 || (cloud && cloud.status >= 500)) status = { at: Date.now(), warm: false };
+        if (cloud?.status === 402 || (cloud && cloud.status >= 500))
+          status = { at: Date.now(), warm: false };
       }
     }
+    const asked = Date.now();
     const answer = await local().catch(() => null);
     if (!answer) {
       res.writeHead(502).end();
       return;
     }
-    if (isChat) deps.onAnswered?.("local");
+    if (isChat) {
+      // The answer's headers arrive with its first token: that wait is what a person feels.
+      localWait = { at: Date.now(), ms: Date.now() - asked };
+      lastRoute = "local";
+      deps.onAnswered?.("local");
+    }
     return pipe(answer, res);
   }
 
@@ -113,5 +131,15 @@ export async function startModelRouter(deps: RouterDeps) {
     /** What the server uses as its model base URL (ends without /v1). */
     base: `http://127.0.0.1:${port}/${secret}`,
     close: () => new Promise<void>((resolve) => server.close(() => resolve())),
+    /** Self-heal: lean to one side for a few minutes ("auto" clears it). Private mode stays local. */
+    prefer: (where: "cloud" | "local" | "auto", forMs = 5 * 60_000) => {
+      preferred = where === "auto" ? null : { where, until: Date.now() + forMs };
+      if (where === "cloud") status = { at: 0, warm: false }; // check the cloud again right away
+    },
+    route: () => lastRoute,
+    /** This computer's last time to first token, if it answered in the last two minutes. */
+    localWaitMs: () => (localWait && Date.now() - localWait.at < 120_000 ? localWait.ms : null),
+    /** The cloud model as last checked. */
+    cloudWarm: () => status.warm,
   };
 }

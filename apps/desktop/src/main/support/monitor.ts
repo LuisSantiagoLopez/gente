@@ -24,6 +24,8 @@ export type MonitorDeps = {
   send: (bundle: DiagnosticsBundle) => Promise<boolean>;
   onChange: () => void;
   now?: () => number;
+  /** False when the self-healing engine (self-heal/) owns repairs; the monitor then only reports. */
+  autoFix?: boolean;
 };
 
 export type ReportAnswer = "send" | "not-now" | "always" | "never";
@@ -62,7 +64,7 @@ export class SupportMonitor {
     let report = await runHealthChecks(this.deps.probe);
     let triedFix = false;
     for (const check of failing(report)) {
-      if (!check.autoFix || !check.fix || !check.code) continue;
+      if (this.deps.autoFix === false || !check.autoFix || !check.fix || !check.code) continue;
       const last = this.autoFixedAt.get(check.code) ?? 0;
       if (this.now() - last < AUTO_FIX_COOLDOWN_MS) continue;
       this.autoFixedAt.set(check.code, this.now());

@@ -1,0 +1,77 @@
+{
+  "worker-stalled": {
+    "everyMs": 1000,
+    "budgetMs": 8000,
+    "ladder": ["restart-worker", "reset-stack"]
+  },
+  "database-stopped": {
+    "everyMs": 1000,
+    "budgetMs": 8000,
+    "ladder": ["restart-database", "reset-stack"]
+  },
+  "api-down": {
+    "everyMs": 1000,
+    "budgetMs": 8000,
+    "ladder": ["restart-api", "reset-stack"]
+  },
+  "model-server-down": {
+    "everyMs": 1000,
+    "budgetMs": 8000,
+    "ladder": ["answer-from-cloud", "start-model-server"]
+  },
+  "slow-replies": {
+    "everyMs": 2000,
+    "budgetMs": 6000,
+    "ladder": ["answer-from-cloud"]
+  },
+  "cloud-model-unavailable": {
+    "everyMs": 1000,
+    "budgetMs": 3000,
+    "ladder": ["answer-on-this-computer"]
+  },
+  "bundle-module-missing": {
+    "everyMs": 30000,
+    "budgetMs": 35000,
+    "ladder": ["report-for-update"]
+  },
+  "computer-template-missing": {
+    "everyMs": 2000,
+    "budgetMs": 5000,
+    "ladder": ["use-this-computer"]
+  },
+  "sign-in-expired": {
+    "everyMs": 2000,
+    "budgetMs": 5000,
+    "ladder": ["refresh-sign-in"]
+  },
+  "relay-down": {
+    "everyMs": 2000,
+    "budgetMs": 8000,
+    "ladder": ["restart-relay"]
+  },
+  "disk-full": {
+    "everyMs": 5000,
+    "budgetMs": 8000,
+    "ladder": ["clear-cache"]
+  },
+  "port-in-use": {
+    "everyMs": 1000,
+    "budgetMs": 8000,
+    "ladder": ["restart-on-free-port", "reset-stack"]
+  },
+  "model-corrupt": {
+    "everyMs": 15000,
+    "budgetMs": 30000,
+    "ladder": ["answer-from-cloud", "redownload-model"]
+  },
+  "apps-not-configured": {
+    "everyMs": 2000,
+    "budgetMs": 5000,
+    "ladder": ["reconnect-apps"]
+  },
+  "media-balance-empty": {
+    "everyMs": 2000,
+    "budgetMs": 5000,
+    "ladder": ["tell-gente-cloud"]
+  }
+}

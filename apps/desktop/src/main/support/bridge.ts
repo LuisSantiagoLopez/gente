@@ -36,4 +36,6 @@ export type GenteSupportBridge = {
   answerReport: (answer: ReportAnswer) => Promise<boolean>;
   saveSettings: (patch: Partial<SupportSettings>) => Promise<SupportSettings>;
   articles: () => Promise<{ slug: string; title: string; html: string }[]>;
+  /** "Gente fixed itself": recent self-repairs in plain words, newest first. */
+  timeline: () => Promise<{ at: string; text: string; outcome: string; detail?: string }[]>;
 };
