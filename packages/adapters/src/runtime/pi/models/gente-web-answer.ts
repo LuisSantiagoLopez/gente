@@ -191,7 +191,7 @@ export async function planWebAnswer(rawBody: string, deps: WebAnswerDeps = {}): 
     .map((s, i) => `[${i + 1}] ${s.title} (${s.url})\n${s.text}`)
     .join("\n\n");
   const last = messages.at(-1)!;
-  const content = `${typeof last.content === "string" ? last.content : userWords(last.content)}\n\n<web_results>\nFresh web results for this message. Answer from them in a few short sentences, cite them like [1], and say plainly if they don't answer it. Don't call tools.\n\n${block}\n</web_results>`;
+  const content = `${typeof last.content === "string" ? last.content : userWords(last.content)}\n\n<web_results>\nFresh web results for this message. Answer from them in 2 or 3 short sentences, cite them like [1], and say plainly if they don't answer it. Don't call tools.\n\n${block}\n</web_results>`;
   // The same slim, cached prompt as small talk (identity, memory, recent text turns, no tools),
   // so the model only reads the sources and the question.
   const slim = smallTalkBody({ ...parsed, messages } as { messages: ChatMessage[] });
@@ -204,6 +204,10 @@ export async function planWebAnswer(rawBody: string, deps: WebAnswerDeps = {}): 
       ...slim,
       messages: [...slimMessages.slice(0, -1), { ...last, content }],
       reasoning_effort: "none",
+      // Measured: reading the sources takes 1-2 s; most of a 15-30 s answer was the model writing
+      // long replies at ~10 tokens/s. Short answers keep it quick.
+      max_tokens: 180,
+      max_completion_tokens: 180,
     }),
   };
 }
