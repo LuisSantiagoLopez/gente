@@ -47,9 +47,11 @@ import {
   materializeCurrentTurnFiles,
   materializeEarlierFiles,
   materializeRecentThreadFiles,
+  readSmallTextTurnFiles,
 } from "../../storage/thread-artifacts.js";
 import {
   currentTurnFilesInstruction,
+  inlineTextFilesInstruction,
   recentThreadFilesInstruction,
 } from "../../storage/thread-artifacts.prompt.js";
 import { backgroundHelpersAllowed } from "../../tasks/background-helpers.js";
@@ -356,9 +358,11 @@ export async function prepareRunComputer(
   };
   let currentTurnFiles: Awaited<ReturnType<typeof listCurrentTurnFiles>> = [];
   let recentThreadFiles: Awaited<ReturnType<typeof listRecentThreadFiles>> = [];
+  let inlineTextFiles: Awaited<ReturnType<typeof readSmallTextTurnFiles>> = [];
   try {
     if (artifacts) {
       currentTurnFiles = await listCurrentTurnFiles(deps, turnBlocks, context);
+      inlineTextFiles = await readSmallTextTurnFiles({ ...deps, artifacts }, turnBlocks, context);
       recentThreadFiles = await listRecentThreadFiles(
         deps,
         history,
@@ -372,6 +376,7 @@ export async function prepareRunComputer(
   }
   const attachedFilesPrompt = [
     currentTurnFilesInstruction(currentTurnFiles),
+    inlineTextFilesInstruction(inlineTextFiles),
     recentThreadFilesInstruction(recentThreadFiles),
   ]
     .filter(Boolean)

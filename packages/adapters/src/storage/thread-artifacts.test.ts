@@ -14,9 +14,11 @@ import {
   materializeCurrentTurnFiles,
   materializeEarlierFiles,
   materializeRecentThreadFiles,
+  readSmallTextTurnFiles,
 } from "./thread-artifacts.js";
 import {
   currentTurnFilesInstruction,
+  inlineTextFilesInstruction,
   recentThreadFilesInstruction,
 } from "./thread-artifacts.prompt.js";
 
@@ -771,5 +773,37 @@ describe("earlier file queue", () => {
     queue.computerStarted();
     queue.add([file("a")]);
     expect(queue.take().map((f) => f.artifactId)).toEqual(["a"]);
+  });
+});
+
+describe("small text attachments in the turn", () => {
+  const context = { spaceId: "space", userId: "owner" } as AdapterContext;
+  const block = (artifactId: string, name: string): MessageBlock =>
+    ({ kind: "file", artifactId, name, mimeType: "text/csv", size: 1 }) as MessageBlock;
+  it("reads small text files and skips large or binary ones", async () => {
+    const rows = [
+      { id: "a", name: "bank.csv", mimeType: "text/csv", size: 20 },
+      { id: "b", name: "big.csv", mimeType: "text/csv", size: 16_001 },
+      { id: "c", name: "deck.pdf", mimeType: "application/pdf", size: 20 },
+    ];
+    const get = vi.fn(async () => new TextEncoder().encode("date,amount\n2026-10-01,5"));
+    const files = await readSmallTextTurnFiles(
+      {
+        prisma: {
+          artifact: { findMany: vi.fn().mockResolvedValue(rows) },
+        } as unknown as PrismaClient,
+        artifacts: { get } as unknown as ArtifactStore,
+      },
+      [block("a", "bank.csv"), block("b", "big.csv"), block("c", "deck.pdf")],
+      context,
+    );
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(files).toEqual([
+      { name: "bank.csv", path: "attachments/a.csv", text: "date,amount\n2026-10-01,5" },
+    ]);
+    expect(inlineTextFilesInstruction(files)).toContain(
+      '<file name="bank.csv" path="attachments/a.csv">\ndate,amount',
+    );
+    expect(inlineTextFilesInstruction([])).toBe("");
   });
 });

@@ -161,6 +161,45 @@ function threadFileMetadata(
   };
 }
 
+export type InlineTextFile = { name: string; path: string; text: string };
+
+/** Text attachments at or under this size are put in the turn itself. */
+export const INLINE_TEXT_ATTACHMENT_MAX_BYTES = 16_000;
+const INLINE_TEXT_MIME_TYPES = new Set([
+  "text/plain",
+  "text/markdown",
+  "text/csv",
+  "application/json",
+]);
+
+/** Read this message's small text attachments so the model sees them without a computer. */
+export async function readSmallTextTurnFiles(
+  deps: { prisma: PrismaClient; artifacts: ArtifactStore },
+  blocks: MessageBlock[] | undefined,
+  context: AdapterContext,
+): Promise<InlineTextFile[]> {
+  const attached = attachmentBlocks(blocks);
+  if (!attached.length) return [];
+  const byId = await attachedArtifacts(deps.prisma, attached, context);
+  const out: InlineTextFile[] = [];
+  for (const block of attached) {
+    const row = byId.get(block.artifactId);
+    if (
+      !row ||
+      !INLINE_TEXT_MIME_TYPES.has(row.mimeType) ||
+      row.size > INLINE_TEXT_ATTACHMENT_MAX_BYTES
+    )
+      continue;
+    const bytes = await deps.artifacts.get(row.id, context);
+    out.push({
+      name: row.name,
+      path: attachmentComputerPath(row.id, row.mimeType),
+      text: new TextDecoder().decode(bytes),
+    });
+  }
+  return out;
+}
+
 /** Resolve current attachments without reading their bytes or waking a computer. */
 export async function listCurrentTurnFiles(
   deps: { prisma: PrismaClient; maxUploadSizeBytes?: number },
