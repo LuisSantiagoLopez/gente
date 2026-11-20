@@ -53,7 +53,11 @@ type ToolkitResult = { accounts?: Account[]; redirect_url?: string; error?: stri
 type McpTool = { name: string; inputSchema?: Record<string, unknown> };
 
 export type ComposioConnectOptions = {
-  key: string;
+  /**
+   * How calls are authorized: a Composio Connect consumer key on Santi's own Mac, or, for
+   * customers, a Gente Cloud token for its proxy (one Composio session per Gente user).
+   */
+  auth: { consumerKey: string } | { bearer: () => Promise<string | undefined> };
   fetch?: typeof fetch;
   endpoint?: string;
   /** How long a call may take; Composio's own tools can run for a minute. */
@@ -66,6 +70,8 @@ export class ComposioConnectConnector implements ManagedConnectorProvider {
   private readonly timeoutMs: number;
   private toolList?: Promise<McpTool[]>;
   private nextId = 1;
+  /** The MCP session the server assigned, sent back on every call (the cloud proxy needs it). */
+  private session?: Promise<string | undefined>;
 
   constructor(private readonly options: ComposioConnectOptions) {
     this.fetchImpl = options.fetch ?? fetch;
@@ -284,20 +290,72 @@ export class ComposioConnectConnector implements ManagedConnectorProvider {
     return this.toolList;
   }
 
-  private async rpc(method: string, params: unknown, signal: AbortSignal): Promise<unknown> {
+  private async headers(): Promise<Record<string, string>> {
+    const base = {
+      "content-type": "application/json",
+      accept: "application/json, text/event-stream",
+    };
+    const { auth } = this.options;
+    if ("consumerKey" in auth) return { ...base, "x-consumer-api-key": auth.consumerKey };
+    const token = await auth.bearer();
+    if (!token) throw new Error("Sign in to Gente to use your apps");
+    return { ...base, authorization: `Bearer ${token}` };
+  }
+
+  /** Opens the MCP session once (initialize, then initialized), as the protocol asks. */
+  private openSession(signal: AbortSignal): Promise<string | undefined> {
+    this.session ??= (async () => {
+      const response = await this.post(
+        {
+          jsonrpc: "2.0",
+          id: this.nextId++,
+          method: "initialize",
+          params: {
+            protocolVersion: "2025-06-18",
+            capabilities: {},
+            clientInfo: { name: "gente", version: "1" },
+          },
+        },
+        undefined,
+        signal,
+      );
+      const id = response.headers.get("mcp-session-id") ?? undefined;
+      await response.text();
+      await this.post({ jsonrpc: "2.0", method: "notifications/initialized" }, id, signal).then(
+        (sent) => sent.text(),
+      );
+      return id;
+    })();
+    // A failed open is tried again next time instead of being remembered.
+    this.session.catch(() => {
+      this.session = undefined;
+    });
+    return this.session;
+  }
+
+  private async post(body: unknown, session: string | undefined, signal: AbortSignal) {
     const response = await this.fetchImpl(this.endpoint, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        accept: "application/json, text/event-stream",
-        "x-consumer-api-key": this.options.key,
-      },
-      body: JSON.stringify({ jsonrpc: "2.0", id: this.nextId++, method, params }),
+      headers: { ...(await this.headers()), ...(session ? { "mcp-session-id": session } : {}) },
+      body: JSON.stringify(body),
       signal: AbortSignal.any([signal, AbortSignal.timeout(this.timeoutMs)]),
     });
     if (!response.ok) throw new Error(`Your apps did not answer (${response.status})`);
-    const body = await response.text();
-    const message = parseRpcBody(body);
+    return response;
+  }
+
+  private async rpc(method: string, params: unknown, signal: AbortSignal): Promise<unknown> {
+    const session = await this.openSession(signal);
+    const response = await this.post(
+      { jsonrpc: "2.0", id: this.nextId++, method, params },
+      session,
+      signal,
+    ).catch((error: unknown) => {
+      // An expired session is opened again on the next call.
+      this.session = undefined;
+      throw error;
+    });
+    const message = parseRpcBody(await response.text());
     if (!message) throw new Error("Your apps sent an answer Gente could not read");
     if (isRecord(message.error)) {
       throw new Error(String(message.error.message ?? "Your apps refused the request"));
