@@ -782,7 +782,7 @@ describe("small text attachments in the turn", () => {
     ({ kind: "file", artifactId, name, mimeType: "text/csv", size: 1 }) as MessageBlock;
   it("reads small text files and skips large or binary ones", async () => {
     const rows = [
-      { id: "a", name: "bank.csv", mimeType: "text/csv", size: 20 },
+      { id: "a", name: "bank.csv", mimeType: "text/csv", size: 20, storageKey: "blob-a" },
       { id: "b", name: "big.csv", mimeType: "text/csv", size: 16_001 },
       { id: "c", name: "deck.pdf", mimeType: "application/pdf", size: 20 },
     ];
@@ -798,6 +798,7 @@ describe("small text attachments in the turn", () => {
       context,
     );
     expect(get).toHaveBeenCalledTimes(1);
+    expect(get).toHaveBeenCalledWith("blob-a", context);
     expect(files).toEqual([
       { name: "bank.csv", path: "attachments/a.csv", text: "date,amount\n2026-10-01,5" },
     ]);
