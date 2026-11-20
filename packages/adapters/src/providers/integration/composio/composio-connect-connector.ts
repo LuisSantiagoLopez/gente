@@ -16,6 +16,7 @@ import type {
   ConnectorTool,
   ManagedConnectorProvider,
 } from "@rakazo/adapter-kit";
+import { deadlineSignal } from "@rakazo/core";
 import { filterCatalog } from "../../../integrations/connector-catalog.js";
 import { COMPOSIO_MULTI_EXECUTE_TOOL, composioSessionToolBatch } from "./composio-batch.js";
 import { COMPOSIO_CONNECT_APPS, connectAppLogo } from "./composio-connect-apps.js";
@@ -338,7 +339,7 @@ export class ComposioConnectConnector implements ManagedConnectorProvider {
       method: "POST",
       headers: { ...(await this.headers()), ...(session ? { "mcp-session-id": session } : {}) },
       body: JSON.stringify(body),
-      signal: AbortSignal.any([signal, AbortSignal.timeout(this.timeoutMs)]),
+      signal: deadlineSignal(this.timeoutMs, signal),
     });
     if (!response.ok) throw new Error(`Your apps did not answer (${response.status})`);
     return response;

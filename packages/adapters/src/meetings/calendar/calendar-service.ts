@@ -443,10 +443,7 @@ export class MeetingCalendarService {
               if (!sessionId) continue;
 
               const booking = { eventId: event.id, sessionId, startsAt: event.startsAt };
-              const owner = await prisma.user.findUnique({
-                where: { id: connection.userId },
-                select: { name: true },
-              });
+              const owner = await prisma.user.findUnique({ where: { id: connection.userId } });
               const request = await this.options.buildJoin({
                 sessionId,
                 meetingUrl: link.url,

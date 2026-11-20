@@ -7,15 +7,7 @@
 // The person says yes before every call; the OS asks once more the first time.
 import { execFile } from "node:child_process";
 import path from "node:path";
-import {
-  app,
-  BrowserWindow,
-  desktopCapturer,
-  dialog,
-  ipcMain,
-  Notification,
-  session,
-} from "electron";
+import { app, BrowserWindow, desktopCapturer, dialog, Notification, session } from "electron";
 import type { CallApp } from "./meeting-notetaker.js";
 import { MeetingNotetaker } from "./meeting-notetaker.js";
 import type { TranscriptLine } from "./meeting-transcriber.js";
@@ -111,16 +103,15 @@ function recordInHiddenWindow(): { stop: () => Promise<ArrayBuffer | null> } {
     if (!ours(event.sender)) return;
     if (!sources?.mic && !sources?.call) resolveFinished(null);
   };
-  ipcMain.on("gente.meeting.finished", onFinished);
-  ipcMain.on("gente.meeting.started", onStarted);
+  // This window's own channel: no other page can send on it.
+  window.webContents.ipc.on("gente.meeting.finished", onFinished);
+  window.webContents.ipc.on("gente.meeting.started", onStarted);
   void window.loadFile(path.join(import.meta.dirname, "meeting.html"));
   return {
     stop: async () => {
       if (!window.isDestroyed()) window.webContents.send("gente.meeting.stop");
       const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 30_000));
       const pcm = await Promise.race([finished, timeout]);
-      ipcMain.off("gente.meeting.finished", onFinished);
-      ipcMain.off("gente.meeting.started", onStarted);
       if (!window.isDestroyed()) window.destroy();
       return pcm;
     },
