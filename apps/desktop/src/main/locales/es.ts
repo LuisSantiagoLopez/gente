@@ -289,4 +289,6 @@ export const ES_MESSAGES: Record<string, string> = {
   "Press {key} to stop": "Presiona {key} para detener",
   Stop: "Detener",
   Stopped: "Detenido",
+  "Take Meeting Notes…": "Tomar notas de la reunión…",
+  "Stop Meeting Notes": "Detener notas de la reunión",
 };

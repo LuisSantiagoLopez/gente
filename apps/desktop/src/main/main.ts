@@ -57,6 +57,7 @@ import {
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
+import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
 import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
 import { startWatchdogs } from "./burrow/watchdogs.js";
@@ -172,6 +173,8 @@ if (PERFORMANCE_USER_DATA) {
   app.setPath("userData", PERFORMANCE_USER_DATA);
   app.setPath("sessionData", path.join(PERFORMANCE_USER_DATA, "session"));
 }
+// Gente: the private notetaker records the call's sound; Chromium needs this before ready.
+enableMeetingAudioCapture();
 app.once("will-finish-launching", () => markOnce("rk:main:will-finish-launching"));
 app.once("ready", () => markOnce("rk:main:ready"));
 // Includes fresh partitions and popup-created sessions, before they load remote content.
@@ -1068,6 +1071,11 @@ app.whenReady().then(async () => {
   handleIpc("desktop.update.install", () => installUpdate(), updateState);
   registerBrainIpc(stackDir(app.getPath("userData")));
   registerTelegram(stackDir(app.getPath("userData")));
+  // Gente: notes from calls, transcribed on this computer, handed to the assistant's chat.
+  startMeetingNotetaker(
+    (text) => desktop.mainWindow?.webContents.send("desktop.meetings.transcript", text),
+    () => installApplicationMenu(),
+  );
   // Gente: keep Ollama and the workspace alive without asking the person to do anything.
   startWatchdogs(() => desktop.localStack);
   registerSetupIpc({

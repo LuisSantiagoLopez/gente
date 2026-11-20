@@ -18,6 +18,9 @@ const STATIC_FILES = [
   "computer-pill-renderer/computer-pill.html",
   "computer-pill-renderer/computer-pill.css",
   "computer-pill-renderer/computer-pill.js",
+  "preload/meeting-preload.cjs",
+  "meeting-renderer/meeting.html",
+  "meeting-renderer/meeting.js",
 ];
 const TOKENS_FILE = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

@@ -274,4 +274,6 @@ export const PT_BR_MESSAGES: Record<string, string> = {
   "Press {key} to stop": "Pressione {key} para parar",
   Stop: "Parar",
   Stopped: "Parado",
+  "Take Meeting Notes…": "Fazer notas da reunião…",
+  "Stop Meeting Notes": "Parar notas da reunião",
 };
