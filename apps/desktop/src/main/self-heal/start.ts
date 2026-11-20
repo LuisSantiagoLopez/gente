@@ -15,7 +15,7 @@ import { CATALOG } from "./catalog.js";
 import type { RouterHandle } from "./desktop-env.js";
 import { desktopHealEnv } from "./desktop-env.js";
 import type { HealEvent, Lang } from "./engine.js";
-import { describe, HealEngine } from "./engine.js";
+import { describeHealEvent, HealEngine } from "./engine.js";
 
 let engine: HealEngine<HealEnv> | null = null;
 let timelineFile = "";
@@ -24,7 +24,6 @@ export function startSelfHeal(input: {
   userDataDir: string;
   stackDir: string;
   router: () => RouterHandle | null;
-  mode: () => "fast" | "private";
   onEvent?: (event: HealEvent) => void;
 }) {
   timelineFile = path.join(input.userDataDir, "self-heal-timeline.jsonl");
@@ -48,7 +47,6 @@ export function startSelfHeal(input: {
     env: desktopHealEnv({
       stackDir: input.stackDir,
       router: input.router,
-      mode: input.mode,
       notify: (failureId) => fleet({ failureId, outcome: "reported" }),
     }),
     specs: CATALOG,
@@ -75,7 +73,7 @@ export async function selfHealTimeline(
     .flatMap((line) => {
       try {
         const event = JSON.parse(line) as HealEvent;
-        const text = describe(event, CATALOG, lang);
+        const text = describeHealEvent(event, CATALOG, lang);
         return text
           ? [
               {

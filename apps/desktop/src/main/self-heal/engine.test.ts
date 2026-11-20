@@ -5,7 +5,7 @@ import path from "node:path";
 import { expect, describe as group, it } from "vitest";
 import { CATALOG } from "./catalog.js";
 import type { FailureSpec, HealEvent } from "./engine.js";
-import { describe, HealEngine } from "./engine.js";
+import { describeHealEvent, HealEngine } from "./engine.js";
 
 type Env = { broken: boolean; log: string[] };
 const c = (en: string) => ({ en, es: en, pt: en });
@@ -115,7 +115,7 @@ group("self-heal engine", () => {
 
   it("writes the timeline in plain words", () => {
     const s = spec();
-    const text = describe(
+    const text = describeHealEvent(
       {
         at: "2026-11-20T17:41:00Z",
         failureId: "thing",

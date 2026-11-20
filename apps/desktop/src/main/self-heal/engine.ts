@@ -230,7 +230,7 @@ export class HealEngine<Env> {
 }
 
 /** One plain sentence for the "Gente fixed itself" timeline. */
-export function describe<Env>(
+export function describeHealEvent<Env>(
   event: HealEvent,
   specs: readonly FailureSpec<Env>[],
   lang: Lang,

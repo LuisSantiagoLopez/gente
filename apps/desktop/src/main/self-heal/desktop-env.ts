@@ -24,15 +24,13 @@ import {
   portHeldByOther,
 } from "../support/probes.js";
 import { NATIVE_PORTS_FILE } from "../this-computer/native-stack.js";
+import { WINDOWS_PORTS_FILE } from "../this-computer/windows-stack.js";
 import type { HealEnv, LogSignal } from "./catalog.js";
 
 /** What the model router exposes for self-heal (see burrow/model-router.ts). */
 export type RouterHandle = {
-  prefer: (where: "cloud" | "local" | "auto") => void;
-  route: () => "cloud" | "local";
   localWaitMs: () => number | null;
-  cloudWarm: () => boolean;
-  /** Checks the cloud model now, in the background (optional for test stand-ins). */
+  /** Kept optional for older routers; the AI always runs on this computer. */
   refresh?: () => Promise<void>;
 };
 
@@ -52,22 +50,22 @@ const LOGS = ["api.log", "worker.log"];
 export function desktopHealEnv(input: {
   stackDir: string;
   router: () => RouterHandle | null;
-  mode: () => "fast" | "private";
   notify: (failureId: string) => Promise<void>;
 }): HealEnv {
   const { stackDir } = input;
   const logDir = path.join(stackDir, "logs");
   const offsets = new Map<string, number>();
   const stack = () => desktop.localStack as unknown as Partial<ServiceControl> | undefined;
-  const ports = () => {
-    try {
-      return JSON.parse(readFileSync(path.join(stackDir, NATIVE_PORTS_FILE), "utf8")) as {
-        api?: number;
-        postgres?: number;
-      };
-    } catch {
-      return {};
+  // The plain-process stack writes its ports to one file on Mac and another on Windows.
+  const ports = (): { api?: number; postgres?: number } => {
+    for (const file of [NATIVE_PORTS_FILE, WINDOWS_PORTS_FILE]) {
+      try {
+        return JSON.parse(readFileSync(path.join(stackDir, file), "utf8"));
+      } catch {
+        // Not this platform's file.
+      }
     }
+    return {};
   };
   const ready = () => desktop.localStack?.state().phase === "ready";
 
@@ -139,11 +137,6 @@ export function desktopHealEnv(input: {
       }
       return found;
     },
-    cloudModel: async () => {
-      if (input.mode() === "private") return "unused";
-      if (!isSignedIn()) return "unused";
-      return input.router()?.cloudWarm() ? "warm" : "cold";
-    },
     signIn: async () => {
       if (!isSignedIn()) return "signed-out";
       return (await accountToken().catch(() => null)) ? "ok" : "expired";
@@ -154,7 +147,9 @@ export function desktopHealEnv(input: {
         .then((r) => r.ok)
         .catch(() => false);
     },
-    route: () => input.router()?.route() ?? "local",
+    retryRequest: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    },
     computerIsLocal: async () => (await readComputerChoice(stackDir)) === "local",
     retryOllama: async () => {
       await ollamaUp(OLLAMA_URL);
@@ -201,7 +196,6 @@ export function desktopHealEnv(input: {
     refreshSignIn: async () => {
       await accountToken().catch(() => null);
     },
-    preferRoute: (where) => input.router()?.prefer(where),
     useLocalComputer: async () => {
       if ((await readComputerChoice(stackDir)) === "local") return;
       await writeFile(path.join(stackDir, COMPUTER_CHOICE_FILE), "local\n");

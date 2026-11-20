@@ -6,7 +6,7 @@
 // model server, Gente Cloud, the sign-in service and the relay. A fault is real (a killed process,
 // a taken port, a stalled worker, a log line), the repair is the catalog's own ladder run by the
 // real engine, and the clock runs from the fault to the moment the check says healthy again.
-// Only two numbers are simulated: free disk space and the cloud's warm/cold flag.
+// Only one number is simulated: free disk space.
 //
 //   pnpm exec tsx scripts/self-heal/chaos-catalog.ts [--json out.json] [--md out.md]
 // Exit code 1 when any failure is not detected, not repaired as expected, or slower than its budget.
@@ -138,7 +138,7 @@ export type ChaosRow = {
   detected: boolean;
   outcome: HealEvent["outcome"] | "none";
   fixedBy?: string;
-  expected: { outcome: HealEvent["outcome"]; fixedBy: string };
+  expected: { outcome: HealEvent["outcome"]; fixedBy?: string };
   recoverMs: number | null;
   budgetMs: number;
   pass: boolean;
@@ -172,11 +172,10 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
       return setTimeout(() => res.end("{}"), 1500);
     res.end("{}");
   });
-  let cloudState: "warm" | "cold" | "stub" | "down" = "warm";
   const cloudCalls: string[] = [];
   const cloud = await httpStub((url, res) => {
     if (url.startsWith("/notify/")) cloudCalls.push(url.slice(8));
-    res.end(JSON.stringify({ status: cloudState }));
+    res.end("{}");
   });
   let token: "ok" | "expired" = "ok";
   const auth = await httpStub((url, res) => {
@@ -185,8 +184,6 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
     res.end();
   });
 
-  let route: "cloud" | "local" = "local";
-  // The chaos run is in fast mode (cloud allowed); private mode never routes to the cloud.
   let computerLocal = false;
   let latency: number | null = null;
   let squatter: Server | null = null;
@@ -228,16 +225,14 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
       if (/fal[^\n]*balance/i.test(fresh)) found.add("media-balance-empty");
       return found;
     },
-    cloudModel: async () => {
-      const res = await fetch(`http://127.0.0.1:${cloud.port}/status`).catch(() => null);
-      return res ? ((await res.json()) as { status: "warm" }).status : "down";
+    retryRequest: async () => {
+      await sleep(300);
     },
     signIn: async () => {
       const res = await fetch(`http://127.0.0.1:${auth.port}/check`).catch(() => null);
       return res?.ok ? "ok" : "expired";
     },
     relayUp: () => tcpUp(relay.port),
-    route: () => route,
     computerIsLocal: async () => computerLocal,
     retryOllama: async () => {},
     startOllama: async () => {
@@ -272,10 +267,6 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
     refreshSignIn: async () => {
       await fetch(`http://127.0.0.1:${auth.port}/refresh`);
     },
-    preferRoute: (where) => {
-      if (where === "cloud") route = "cloud";
-      if (where === "local") route = "local";
-    },
     useLocalComputer: async () => {
       computerLocal = true;
     },
@@ -287,7 +278,7 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
   type Scenario = {
     fault: string;
     inject: () => Promise<void>;
-    expected: { outcome: HealEvent["outcome"]; fixedBy: string };
+    expected: { outcome: HealEvent["outcome"]; fixedBy?: string };
     healthy: () => Promise<boolean>;
     reset?: () => Promise<void>;
     simulated?: string;
@@ -318,36 +309,20 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
     "model-server-down": {
       fault: "Ollama stops (server closed)",
       inject: async () => ollama.close(),
-      expected: { outcome: "fixed", fixedBy: "answer-from-cloud" },
+      expected: { outcome: "fixed", fixedBy: "start-model-server" },
       healthy: () => env.ollamaUp(),
-      reset: async () => {
-        route = "local";
-      },
     },
     "slow-replies": {
-      fault: "the shared model is busy: first byte after 25 s",
+      fault: "the model is busy (another program uses it): first word after 25 s",
       inject: async () => {
         latency = 25_000;
       },
-      expected: { outcome: "fixed", fixedBy: "answer-from-cloud" },
-      healthy: async () => route === "cloud",
+      // Nothing to send anywhere: Gente waits and shows its calm line.
+      expected: { outcome: "needs-person" },
+      healthy: async () => true,
       reset: async () => {
         latency = null;
-        route = "local";
       },
-    },
-    "cloud-model-unavailable": {
-      fault: "Gente Cloud's GPU is cold (stub answers)",
-      inject: async () => {
-        route = "cloud";
-        cloudState = "stub";
-      },
-      expected: { outcome: "fixed", fixedBy: "answer-on-this-computer" },
-      healthy: async () => route === "local",
-      reset: async () => {
-        cloudState = "warm";
-      },
-      simulated: "the cloud's warm/cold flag",
     },
     "bundle-module-missing": {
       fault: "a module is missing from the app bundle (file deleted)",
@@ -411,9 +386,6 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
       },
       expected: { outcome: "fixed", fixedBy: "redownload-model" },
       healthy: async () => (await env.modelState()) === "ready",
-      reset: async () => {
-        route = "local";
-      },
     },
     "apps-not-configured": {
       fault: "connected apps are not configured (server log line), relay down",
@@ -476,7 +448,7 @@ export async function runCatalogChaos(): Promise<ChaosRow[]> {
         event !== undefined &&
         recoverMs !== null &&
         event.outcome === scenario.expected.outcome &&
-        event.fixedBy === scenario.expected.fixedBy &&
+        (scenario.expected.fixedBy === undefined || event.fixedBy === scenario.expected.fixedBy) &&
         recoverMs <= spec.budgetMs;
       rows.push({
         id: spec.id,
