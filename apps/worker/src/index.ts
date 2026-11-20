@@ -122,11 +122,6 @@ async function main() {
   });
   const { pool } = created;
   let { prisma } = created;
-  // Gente (temporary diagnostic): the same pool, without Prisma.
-  await pool
-    .query("select 1")
-    .then(() => logger.info("worker pool check", { ok: true }))
-    .catch((e: unknown) => logger.error("worker pool check", { detail: inspect(e, { depth: 6, showHidden: true }).slice(0, 3000) }));
   const rowSecurity = rowSecurityWarning(await describeRowSecurity(prisma));
   if (rowSecurity) logger.warn(rowSecurity);
   const timeZone = await bestEffort("database time zone check", timeZoneWarning(prisma));
@@ -491,25 +486,8 @@ runAsSystem("worker process", main).catch(async (error) => {
     const url = new URL(process.env.DATABASE_URL ?? "");
     target = `${url.hostname}:${url.port}`;
   } catch {}
-  // Gente (temporary diagnostic): can plain TCP and plain pg reach the same address?
-  const probe: Record<string, string> = {};
-  try {
-    const url = new URL(process.env.DATABASE_URL ?? "");
-    const net = await import("node:net");
-    probe.tcp = await new Promise<string>((resolve) => {
-      const socket = net.connect({ host: url.hostname, port: Number(url.port) });
-      socket.once("connect", () => {
-        socket.destroy();
-        resolve("connected");
-      });
-      socket.once("error", (e) => resolve(`error ${(e as NodeJS.ErrnoException).code}`));
-    });
-  } catch (e) {
-    probe.failed = String(e);
-  }
   logger.error("worker startup failed detail", {
     database: target,
-    probe,
     detail: inspect(error, { depth: 8, showHidden: true }).slice(0, 4000),
   });
   await logger.flush({ timeoutMs: 2_000 });
