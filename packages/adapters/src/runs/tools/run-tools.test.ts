@@ -49,6 +49,7 @@ vi.mock("./run-tools-computer.js", async (importOriginal) => {
   };
 });
 
+import { sandboxNotFoundError } from "../../computers/sandbox/sandbox-errors.js";
 import { computerNotReached } from "../assembly/run-computer.js";
 import { gateToolCall } from "./run-tool-gate.js";
 import { applyTool, isToolError } from "./run-tools.js";
@@ -381,6 +382,7 @@ describe("a computer call that never reached the computer", () => {
 
   it("hands its claim back, so the retried turn runs it instead of calling it uncertain", async () => {
     const { ctx, updateMany } = claimed();
+    (ctx as Record<string, unknown>).computer = { lazy: { lost: vi.fn() } };
     computerFailure.error = computerNotReached(new Error("Computer is busy"));
     await expect(applyTool(ctx as never, "shell", { command: "ls" }, "call-1")).rejects.toBe(
       computerFailure.error,
@@ -393,10 +395,25 @@ describe("a computer call that never reached the computer", () => {
 
   it("keeps the claim of a call that failed after reaching the computer", async () => {
     const { ctx, updateMany } = claimed();
+    (ctx as Record<string, unknown>).computer = { lazy: { lost: vi.fn() } };
     computerFailure.error = new Error("connection reset while the command ran");
     await expect(applyTool(ctx as never, "shell", { command: "ls" }, "call-1")).rejects.toThrow(
       "connection reset",
     );
     expect(updateMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("a computer its provider lost mid-run", () => {
+  it("is forgotten, so the run's next computer use starts it again from its home", async () => {
+    const ctx = dispatchContext(false);
+    const lost = vi.fn();
+    (ctx as Record<string, unknown>).computer = { lazy: { lost } };
+    (ctx.deps.prisma as Record<string, unknown>).externalEffect = { updateMany: vi.fn() };
+    computerFailure.error = sandboxNotFoundError("Paused sandbox sbx-1 not found");
+    await expect(applyTool(ctx as never, "shell", { command: "ls" }, "call-1")).rejects.toBe(
+      computerFailure.error,
+    );
+    expect(lost).toHaveBeenCalledTimes(1);
   });
 });

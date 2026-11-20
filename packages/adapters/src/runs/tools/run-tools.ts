@@ -6,6 +6,7 @@ import {
   isTerminatingReplyResult,
 } from "../../approvals/approval-effect.js";
 import { argumentGiven } from "../../bots/update-bot-patch.js";
+import { isSandboxGoneError } from "../../computers/sandbox/sandbox-errors.js";
 import { listChatTranscripts, readChatMeeting } from "../../meetings/meeting-chat.js";
 import {
   meetingTranscriptArgs,
@@ -298,6 +299,8 @@ async function dispatchTool(
       // Gente (modified from Rakazo): a call that never reached the computer (busy with another
       // run's start, or not started) did nothing, so its effect goes back to waiting and the
       // retried turn runs it instead of reporting an unknown outcome.
+      // Gente: a computer its provider lost is started again from its home on the next use.
+      if (isSandboxGoneError(error)) ctx.computer.lazy.lost();
       if (isComputerNotReached(error) && gate.call.claimedEffect && gate.call.applied) {
         const released = await ctx.deps.prisma.externalEffect.updateMany({
           where: { id: gate.call.applied.effect.id, status: "executing" },

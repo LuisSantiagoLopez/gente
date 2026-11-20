@@ -96,3 +96,15 @@ describe("lazyRunComputer.fail", () => {
     expect(start).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("lazyRunComputer.lost", () => {
+  it("starts the computer again on the next use after its provider lost it", async () => {
+    const start = vi.fn(async () => ({ kind: "e2b", homeKey: "h", providerRef: "p" }) as never);
+    const computer = lazyRunComputer(start);
+    await computer.get();
+    computer.lost();
+    expect(computer.ready).toBeUndefined();
+    await computer.get();
+    expect(start).toHaveBeenCalledTimes(2);
+  });
+});

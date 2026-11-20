@@ -51,6 +51,15 @@ export function lazyRunComputer(start: () => Promise<ComputerRef>, onFailure?: (
     throwIfFailed(): void {
       if (failed) throw failure;
     },
+    /**
+     * Forgets a computer its provider lost (killed, expired), so the run's next use provisions
+     * again, which recreates it from its saved home. A failed computer stays failed.
+     */
+    lost(): void {
+      if (failed || !ready) return;
+      started = undefined;
+      ready = undefined;
+    },
     /** Ends the computer for this run: later uses reject with `error`, and the run is aborted. */
     fail(error: unknown): never {
       if (!failed) {
