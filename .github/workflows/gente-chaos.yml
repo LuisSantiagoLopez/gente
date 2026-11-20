@@ -1,0 +1,47 @@
+name: gente-chaos
+# The full self-healing failure catalog on every pull request, on Mac and Windows: every failure
+# is injected for real (killed processes, taken ports, stalled worker, log lines) and must be
+# detected, repaired by its expected step and recovered within its budget. Branch protection on
+# main requires these checks, so a change that weakens a repair cannot merge.
+on:
+  pull_request:
+  push:
+    branches: [main, canary]
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gente-chaos-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  chaos:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - name: Self-healing catalog unit tests (engine, catalog snapshot)
+        run: pnpm exec vitest run apps/desktop/src/main/self-heal scripts/self-heal
+      - name: Failure catalog, injected for real, timed
+        run: |
+          pnpm exec tsx scripts/self-heal/chaos-catalog.ts --json "chaos-${{ matrix.os }}.json" --md chaos.md
+          code=$?
+          { echo "### Self-healing on ${{ matrix.os }}"; cat chaos.md; } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chaos-catalog-${{ matrix.os }}
+          path: chaos-${{ matrix.os }}.json
