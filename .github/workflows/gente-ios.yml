@@ -9,6 +9,10 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+defaults:
+  run:
+    # Explicit bash turns on pipefail, so "| tail" can't hide a failed test run.
+    shell: bash
 concurrency:
   group: gente-ios-${{ github.ref }}
   cancel-in-progress: true
@@ -36,7 +40,7 @@ jobs:
         run: |
           xcodebuild -project Gente.xcodeproj -scheme Gente -destination "id=${{ steps.sim.outputs.udid }}" \
             -derivedDataPath build/dd -resultBundlePath build/unit.xcresult test -only-testing:GenteTests \
-            CODE_SIGNING_ALLOWED=NO | tail -40
+            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= | tail -40
       - name: Node and iPhone agree on Gente Link (both directions)
         working-directory: ios
         run: |
@@ -46,7 +50,7 @@ jobs:
         run: |
           xcodebuild -project Gente.xcodeproj -scheme Gente -destination "id=${{ steps.sim.outputs.udid }}" \
             -derivedDataPath build/dd -resultBundlePath build/ui.xcresult test -only-testing:GenteUITests/FlowTests \
-            CODE_SIGNING_ALLOWED=NO | tail -60
+            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= | tail -60
       - name: Release build for devices (unsigned)
         working-directory: ios
         run: |
