@@ -51,6 +51,7 @@ class UiFlowsTest {
 
     @Test fun signUpOpensClerkWithPkce() {
         rule.onNodeWithText(s(R.string.welcome_title)).assertIsDisplayed()
+        rule.assertAccessible("welcome")
         rule.onNodeWithText(s(R.string.sign_in)).performClick()
         val started: Intent = shadowOf(app).nextStartedActivity
         val url = started.data.toString()
@@ -64,6 +65,7 @@ class UiFlowsTest {
     @Test fun chatWithoutSignInStreamsABadgedDemoReply() {
         rule.onNodeWithText(s(R.string.try_first)).performClick()
         rule.onNodeWithText(s(R.string.empty_chats_title)).assertIsDisplayed()
+        rule.assertAccessible("home")
         rule.onNodeWithText(s(R.string.new_chat), useUnmergedTree = true).performClick()
         rule.onNode(hasSetTextAction()).performTextInput("What can you do?")
         rule.onNodeWithContentDescription(s(R.string.cd_send)).performClick()
@@ -77,6 +79,7 @@ class UiFlowsTest {
         rule.waitUntil(5_000) { rule.onAllNodes(androidx.compose.ui.test.hasText(s(R.string.approval_title))).fetchSemanticsNodes().isNotEmpty() }
         rule.onNodeWithText(s(R.string.approval_money)).assertIsDisplayed()
         rule.onNodeWithText(s(R.string.approval_always_asks)).assertIsDisplayed()
+        rule.assertAccessible("approval")
         rule.onNodeWithText(s(R.string.approve)).performClick()
         assertEquals(true, runBlocking { answer.await() })
     }
@@ -90,6 +93,7 @@ class UiFlowsTest {
         rule.onNodeWithText(s(R.string.try_first)).performClick()
         rule.onNodeWithText("Hi").performClick()
         rule.onNodeWithText(s(R.string.badge_cloud)).assertIsDisplayed()
+        rule.assertAccessible("chat")
         rule.onNodeWithContentDescription(s(R.string.report)).performClick()
         rule.onNodeWithText(s(R.string.report_title)).assertIsDisplayed()
         rule.onNode(isToggleable()).assertIsOff()
@@ -125,6 +129,7 @@ class UiFlowsTest {
         rule.onNodeWithContentDescription(s(R.string.cd_data)).performClick()
         rule.onNodeWithText(s(R.string.data_title)).assertIsDisplayed()
         rule.onNodeWithText(s(R.string.backup_off)).assertIsDisplayed()
+        rule.assertAccessible("data center")
         rule.onNodeWithText(s(R.string.data_chats)).assertIsDisplayed()
         rule.onNode(androidx.compose.ui.test.hasText(s(R.string.data_delete_all))).performScrollToAndClick()
         rule.onNodeWithText(s(R.string.data_delete_confirm_title)).assertIsDisplayed()
@@ -134,6 +139,7 @@ class UiFlowsTest {
         rule.onNodeWithText(s(R.string.try_first)).performClick()
         rule.onNodeWithContentDescription(s(R.string.cd_settings)).performClick()
         rule.onNodeWithText(s(R.string.signed_out)).assertIsDisplayed()
+        rule.assertAccessible("settings")
         rule.onNodeWithText(s(R.string.delete_account)).assertExists()
     }
 }

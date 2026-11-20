@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -137,7 +138,8 @@ class MainActivity : ComponentActivity() {
 
         Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
             val s = start ?: return@Box
-            SharedTransitionLayout {
+            // On tablets and unfolded foldables the app is a calm centered column, not stretched rows.
+            SharedTransitionLayout(Modifier.align(Alignment.TopCenter).widthIn(max = 760.dp).fillMaxSize()) {
                 NavHost(
                     nav, startDestination = s,
                     enterTransition = { slideInHorizontally(tween(320)) { it / 6 } + fadeIn(tween(220)) },

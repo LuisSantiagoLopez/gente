@@ -123,12 +123,15 @@ fun StreamingText(text: String, streaming: Boolean, style: TextStyle, color: Col
         }
         if (shown > text.length) shown = text.length
     }
-    val fade = 18
-    val solid = (shown - fade).coerceAtLeast(0)
-    val annotated = remember(text, shown, color) {
+    // The soft tail only exists while text is still arriving; a finished reply is fully solid.
+    // Text can also shrink (a final trim, an edit), so every index is clamped to the current length.
+    val end = shown.coerceIn(0, text.length)
+    val fade = if (!streaming && end >= text.length) 0 else 18
+    val solid = (end - fade).coerceAtLeast(0)
+    val annotated = remember(text, end, color, fade) {
         buildAnnotatedString {
             append(text.substring(0, solid))
-            for (i in solid until shown.coerceAtMost(text.length)) {
+            for (i in solid until end) {
                 val a = 1f - (i - solid + 1).toFloat() / (fade + 1)
                 withStyle(SpanStyle(color = color.copy(alpha = 0.25f + 0.75f * a))) { append(text[i]) }
             }

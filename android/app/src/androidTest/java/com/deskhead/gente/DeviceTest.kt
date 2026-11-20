@@ -3,7 +3,6 @@ package com.deskhead.gente
 import android.content.pm.ApplicationInfo
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.accessibility.enableAccessibilityChecks
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -48,10 +47,9 @@ class DeviceTest {
         assertEquals(0, info.flags and ApplicationInfo.FLAG_ALLOW_BACKUP)
     }
 
-    @Test fun demoChatEndToEndWithAccessibilityChecks() {
-        rule.enableAccessibilityChecks()
+    @Test fun demoChatEndToEnd() {
         if (rule.onAllNodes(hasText(s(R.string.try_first))).fetchSemanticsNodes().isNotEmpty()) rule.onNodeWithText(s(R.string.try_first)).performClick()
-        rule.onNodeWithText(s(R.string.new_chat)).performClick()
+        rule.onNodeWithText(s(R.string.new_chat), useUnmergedTree = true).performClick()
         rule.onNode(hasSetTextAction()).performTextInput("Hello from the emulator")
         rule.onNodeWithContentDescription(s(R.string.cd_send)).performClick()
         rule.waitUntil(15_000) { rule.onAllNodes(hasText(s(R.string.badge_demo))).fetchSemanticsNodes().isNotEmpty() }

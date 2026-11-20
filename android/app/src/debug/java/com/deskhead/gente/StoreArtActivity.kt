@@ -33,22 +33,23 @@ class StoreArtActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         if (intent.getBooleanExtra("seed", false)) { DebugSeed.run(this); finish(); return }
+        if (intent.getBooleanExtra("approval", false)) { DebugSeed.approval(this); finish(); return }
         setContent {
             GenteTheme(dark = false) {
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
                     Row(
-                        Modifier.fillMaxWidth().aspectRatio(1024f / 500f).background(MaterialTheme.colorScheme.background).padding(horizontal = 36.dp),
+                        Modifier.fillMaxWidth().aspectRatio(1024f / 500f).background(MaterialTheme.colorScheme.background).padding(horizontal = 40.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start,
                     ) {
-                        GenteMark(size = 120.dp)
-                        Spacer(Modifier.width(28.dp))
+                        GenteMark(size = 104.dp)
+                        Spacer(Modifier.width(26.dp))
                         Column {
-                            Text("Gente", style = MaterialTheme.typography.displayMedium.copy(fontSize = 52.sp), color = MaterialTheme.colorScheme.onBackground)
-                            Squiggle(Modifier.width(120.dp).height(12.dp))
+                            Text("Gente", style = MaterialTheme.typography.displayMedium.copy(fontSize = 40.sp), color = MaterialTheme.colorScheme.onBackground)
+                            Squiggle(Modifier.width(96.dp).height(10.dp))
                             Spacer(Modifier.height(10.dp))
-                            Text(stringResource(R.string.welcome_title), style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp), color = MaterialTheme.colorScheme.onBackground)
-                            Text(stringResource(R.string.store_art_line), style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.welcome_title), style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp), color = MaterialTheme.colorScheme.onBackground)
+                            Text(stringResource(R.string.store_art_line), style = MaterialTheme.typography.bodyLarge.copy(fontSize = 14.sp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }

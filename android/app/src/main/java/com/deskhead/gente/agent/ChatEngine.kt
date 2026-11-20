@@ -220,7 +220,13 @@ class ChatEngine(
         }
     }
 
-    private fun detailOf(tool: String, args: String) = "$tool $args".take(600)
+    /** Plain lines like "Amount: 12 USD", never raw JSON. */
+    private fun detailOf(@Suppress("UNUSED_PARAMETER") tool: String, args: String): String {
+        val o = runCatching { GenteJson.parseToJsonElement(args).jsonObject }.getOrNull() ?: return ""
+        return o.entries.joinToString("\n") { (k, v) ->
+            k.replace('_', ' ').replaceFirstChar { it.uppercase() } + ": " + (v.jsonPrimitive.contentOrNull ?: v.toString())
+        }.take(600)
+    }
 
     private suspend fun saveFile(url: String, mime: String) {
         val req = Request.Builder().url(url).build()

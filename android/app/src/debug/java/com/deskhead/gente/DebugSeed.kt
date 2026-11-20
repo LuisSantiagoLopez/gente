@@ -40,4 +40,11 @@ object DebugSeed {
         d.upsertMemory(MemoryEntity("seed-m", "Ana likes quiet mornings", now))
         ctx.graph.settings.setOnboarded()
     }
+
+    fun approval(ctx: Context) = runBlocking {
+        val title = when (ctx.resources.configuration.locales[0].language) {
+            "es" -> "Pagar 12 USD por el dominio gente-viaje.app"; "pt" -> "Pagar 12 USD pelo domínio gente-viagem.app"; else -> "Pay 12 USD for the domain gente-trip.app"
+        }
+        ctx.graph.approvals.record("seed-approval", "money", title, "Item: gente-trip.app\nAmount: 12 USD", "phone")
+    }
 }

@@ -143,7 +143,7 @@ val Rounded = FontFamily(
 private fun Typography.rounded(): Typography {
     fun TextStyle.r() = copy(fontFamily = Rounded)
     return copy(
-        displayLarge = displayLarge.r(), displayMedium = displayMedium.r(), displaySmall = displaySmall.r(),
+        displayLarge = displayLarge.r().copy(fontWeight = FontWeight.ExtraBold), displayMedium = displayMedium.r().copy(fontWeight = FontWeight.ExtraBold), displaySmall = displaySmall.r().copy(fontWeight = FontWeight.ExtraBold),
         headlineLarge = headlineLarge.r().copy(fontWeight = FontWeight.ExtraBold, letterSpacing = (-0.5).sp),
         headlineMedium = headlineMedium.r().copy(fontWeight = FontWeight.ExtraBold, letterSpacing = (-0.3).sp),
         headlineSmall = headlineSmall.r().copy(fontWeight = FontWeight.Bold),

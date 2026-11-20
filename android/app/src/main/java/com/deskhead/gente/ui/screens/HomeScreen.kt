@@ -32,7 +32,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFlexibleTopAppBar
@@ -105,14 +104,21 @@ fun SharedTransitionScope.HomeScreen(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            // A plain Surface instead of ExtendedFloatingActionButton, whose label was not exposed
+            // to TalkBack / UI Automator on Android 16 (checked with uiautomator dump).
+            Surface(
                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.Confirm); newChat(null) },
-                icon = { Icon(Icons.Rounded.Edit, null) },
-                text = { Text(stringResource(R.string.new_chat)) },
-                containerColor = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.sharedBounds(rememberSharedContentState("chat-new"), visibility),
-            )
+                shadowElevation = 6.dp,
+            ) {
+                Row(Modifier.padding(horizontal = 22.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Edit, null)
+                    Spacer(Modifier.width(12.dp))
+                    Text(stringResource(R.string.new_chat), style = MaterialTheme.typography.titleMedium)
+                }
+            }
         },
     ) { pad ->
         val list = chats

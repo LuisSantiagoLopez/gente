@@ -538,6 +538,10 @@ fun PaywallScreen(graph: AppGraph, back: () -> Unit, activity: () -> android.app
     val server by produceState<List<com.deskhead.gente.net.PlanOffer>>(emptyList()) { value = runCatching { graph.cloud.playPlans().plans }.getOrDefault(emptyList()) }
     LaunchedEffect(Unit) { graph.billing.connect() }
 
+    fun serverPrice(id: String, year: Boolean): String? = server.firstOrNull { it.id == id }?.let { p ->
+        val cents = if (year) p.yearlyCents else p.monthlyCents
+        cents?.let { java.text.NumberFormat.getCurrencyInstance(java.util.Locale.US).format(it / 100.0) }
+    }
     fun hours(id: String) = server.firstOrNull { it.id == id }?.onlineHours ?: when (id) { "pro" -> 37; "max" -> 215; "max_plus" -> 430; else -> 0 }
     fun buy(product: String, basePlan: String?) {
         val o = offers.firstOrNull { it.productId == product && (basePlan == null || it.basePlanId == basePlan) } ?: return
@@ -563,12 +567,15 @@ fun PaywallScreen(graph: AppGraph, back: () -> Unit, activity: () -> android.app
                     SegmentedButton(yearly, { yearly = true }, SegmentedButtonDefaults.itemShape(1, 2)) { Text(stringResource(R.string.yearly)) }
                 }
                 Spacer(Modifier.height(16.dp))
-                PlanCard(R.string.plan_pro, hours("pro"), offers.firstOrNull { it.productId == Products.PRO && it.basePlanId == (if (yearly) "pro-year" else "pro-month") }?.price, yearly, highlight = true) {
+                val proOffer = offers.firstOrNull { it.productId == Products.PRO && it.basePlanId == (if (yearly) "pro-year" else "pro-month") }
+                PlanCard(R.string.plan_pro, hours("pro"), proOffer?.price ?: serverPrice("pro", yearly), yearly, highlight = true, canBuy = proOffer != null) {
                     buy(Products.PRO, if (yearly) "pro-year" else "pro-month")
                 }
                 if (!yearly) {
-                    PlanCard(R.string.plan_max, hours("max"), offers.firstOrNull { it.productId == Products.MAX }?.price, false) { buy(Products.MAX, "max-month") }
-                    PlanCard(R.string.plan_max_plus, hours("max_plus"), offers.firstOrNull { it.productId == Products.MAX_PLUS }?.price, false) { buy(Products.MAX_PLUS, "max-plus-month") }
+                    val maxOffer = offers.firstOrNull { it.productId == Products.MAX }
+                    val maxPlusOffer = offers.firstOrNull { it.productId == Products.MAX_PLUS }
+                    PlanCard(R.string.plan_max, hours("max"), maxOffer?.price ?: serverPrice("max", false), false, canBuy = maxOffer != null) { buy(Products.MAX, "max-month") }
+                    PlanCard(R.string.plan_max_plus, hours("max_plus"), maxPlusOffer?.price ?: serverPrice("max_plus", false), false, canBuy = maxPlusOffer != null) { buy(Products.MAX_PLUS, "max-plus-month") }
                 }
                 offers.firstOrNull { it.productId == Products.HOURS_8 }?.let { o ->
                     OutlinedButton(onClick = { buy(Products.HOURS_8, null) }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp).height(52.dp)) { Text(stringResource(R.string.buy_hours, o.price)) }
@@ -593,7 +600,7 @@ fun PaywallScreen(graph: AppGraph, back: () -> Unit, activity: () -> android.app
 }
 
 @Composable
-private fun PlanCard(name: Int, hours: Int, price: String?, yearly: Boolean, highlight: Boolean = false, onBuy: () -> Unit) {
+private fun PlanCard(name: Int, hours: Int, price: String?, yearly: Boolean, highlight: Boolean = false, canBuy: Boolean = true, onBuy: () -> Unit) {
     Surface(
         shape = MaterialTheme.shapes.extraLarge,
         color = if (highlight) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
@@ -605,7 +612,7 @@ private fun PlanCard(name: Int, hours: Int, price: String?, yearly: Boolean, hig
                 Text(stringResource(R.string.plan_hours, hours), style = MaterialTheme.typography.bodyMedium, color = LocalGenteExtras.current.muted)
                 price?.let { Text(stringResource(if (yearly) R.string.per_year else R.string.per_month, it), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold) }
             }
-            Button(onClick = onBuy, enabled = price != null) { Text(stringResource(R.string.choose_plan, stringResource(name))) }
+            Button(onClick = onBuy, enabled = canBuy) { Text(stringResource(R.string.choose_plan, stringResource(name))) }
         }
     }
 }

@@ -142,7 +142,9 @@ fun SharedTransitionScope.ChatScreen(
     openPair: () -> Unit,
     toast: (String) -> Unit,
 ) {
-    val messages by graph.dao.messages(chatId).collectAsState(initial = emptyList())
+    // Null until the first read, so saved messages appear at once instead of animating in.
+    val loaded by graph.dao.messages(chatId).collectAsState(initial = null)
+    val messages = loaded.orEmpty()
     val prefs by graph.settings.prefs.collectAsState(initial = com.deskhead.gente.agent.Prefs())
     val devices by graph.dao.devices().collectAsState(initial = emptyList())
     val speaking by graph.speaker.speakingId.collectAsState()
@@ -155,7 +157,7 @@ fun SharedTransitionScope.ChatScreen(
     var menu by remember { mutableStateOf(false) }
     val running = messages.any { it.status == "streaming" }
 
-    LaunchedEffect(seed) { if (!seed.isNullOrBlank() && messages.isEmpty()) graph.chats.send(chatId, seed) }
+    LaunchedEffect(seed, loaded == null) { if (loaded != null && !seed.isNullOrBlank() && messages.isEmpty()) graph.chats.send(chatId, seed) }
     // Reverse layout keeps the newest message pinned to the composer while it streams.
     LaunchedEffect(messages.size) { if (messages.isNotEmpty()) listState.animateScrollToItem(0) }
 
@@ -176,7 +178,7 @@ fun SharedTransitionScope.ChatScreen(
                 },
                 actions = {
                     WhereChip(prefs.aiLocation) { whereSheet = true }
-                    IconButton(onClick = { menu = true }) { Icon(Icons.Rounded.MoreVert, null) }
+                    IconButton(onClick = { menu = true }) { Icon(Icons.Rounded.MoreVert, stringResource(R.string.cd_more)) }
                     DropdownMenu(menu, { menu = false }) {
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.continue_on_computer)) },
@@ -363,7 +365,7 @@ private fun AssistantMessage(
 
 @Composable
 private fun SmallAction(icon: ImageVector, label: String, onClick: () -> Unit) {
-    IconButton(onClick = onClick, modifier = Modifier.size(40.dp)) {
+    IconButton(onClick = onClick, modifier = Modifier.size(48.dp)) {
         Icon(icon, label, Modifier.size(18.dp), tint = LocalGenteExtras.current.muted)
     }
 }

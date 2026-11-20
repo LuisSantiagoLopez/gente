@@ -72,8 +72,11 @@ object LinkCrypto {
         val safetyCode: String = Hkdf.computeHkdf("HMACSHA256", shared, secret, "gente-link v1 sas".toByteArray(), 2)
             .let { (((it[0].toInt() and 0xff) shl 8) or (it[1].toInt() and 0xff)) % 10000 }.toString().padStart(4, '0')
 
-        fun seal(plain: ByteArray, seq: Long, epk: ByteArray? = null): Envelope {
-            val nonce = ByteArray(12).also { rng.nextBytes(it) }
+        fun seal(plain: ByteArray, seq: Long, epk: ByteArray? = null): Envelope =
+            sealWith(plain, seq, ByteArray(12).also { rng.nextBytes(it) }, epk)
+
+        /** Fixed nonce: only for the shared cross-platform test vector. */
+        internal fun sealWith(plain: ByteArray, seq: Long, nonce: ByteArray, epk: ByteArray? = null): Envelope {
             val c = Cipher.getInstance("AES/GCM/NoPadding")
             c.init(Cipher.ENCRYPT_MODE, SecretKeySpec(if (iAmPhone) p2d else d2p, "AES"), GCMParameterSpec(128, nonce))
             c.updateAAD(aad(me, seq))

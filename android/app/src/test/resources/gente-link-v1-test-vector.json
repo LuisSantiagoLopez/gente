@@ -1,0 +1,17 @@
+{
+  "phonePriv": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc",
+  "phonePub": "E75P6uryBMf9M1j8nAByGIHRdCeBKCJ-xnTzf3_pe20",
+  "deskPriv": "CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQk",
+  "deskPub": "V9tLNZ8jrl4Ubk4lEgVnBHIlBjSMFQwUdT0Mkz0E1CE",
+  "secret": "AwMDAwMDAwMDAwMDAwMDAw",
+  "channel": "UGc4KUkZ0ciLlDPeQEOJi7",
+  "code": "6488",
+  "plain": "{\"type\":\"sync.chat\",\"id\":\"c1\",\"title\":\"From the desktop\",\"updatedAt\":1795000000000,\"messages\":[{\"id\":\"m1\",\"role\":\"user\",\"text\":\"hola desde la compu\",\"createdAt\":1795000000000,\"ranOn\":\"desktop\"}]}",
+  "envelope": {
+    "v": 1,
+    "from": "desktop",
+    "seq": 5,
+    "n": "AQEBAQEBAQEBAQEB",
+    "ct": "Z8MueWiJsQGTf0sj-c2uZIbD7NA7gWQx10jaaMuGfbFy-wWt52Doq7GpDZ_Zzt5g_c3-m7fpwc2Mg06QuU5RnBxlQ9FbNvZ1MTiGZiSyHWp_KTwn7w2QAb5eYdw5lvkw52n8U9IofafOBzk04btGYuVt2TTcB-oONmkMdlcxWJ12lCxxbax0eaw7d_pbvkJW26SquEA6s2vgma0buKygOXNPW9tbmHPXO0v4fHn6cCcMyxWHM8sNHVVtfIjLcRpLng8TJY58pX3QlVUV9f3KyGec8Q"
+  }
+}
