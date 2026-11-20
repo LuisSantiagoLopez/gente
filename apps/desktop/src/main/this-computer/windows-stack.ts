@@ -396,7 +396,9 @@ export class WindowsStackController extends StackLifecycle {
           ? `-p ${ports.postgres} -c listen_addresses=127.0.0.1`
           : `-p ${ports.postgres} -c listen_addresses=127.0.0.1 -k "${pgdata}"`,
       ],
-      { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: 150_000, signal },
+      // Postgres inherits pg_ctl's output pipes on Windows; waiting for them to close would
+      // time out and then kill the server with pg_ctl's process tree.
+      { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: 150_000, signal, untilExit: true },
     );
     if (started.code !== 0)
       throw new StartFailure(servicesFailed(), [started.stdout, started.stderr, "pg_ctl start failed"]);
