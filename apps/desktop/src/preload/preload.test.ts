@@ -53,6 +53,7 @@ describe("desktop preload bridge", () => {
       "gente",
       "locale",
       "mcpBrowser",
+      "meetings",
       "menu",
       "monitoring",
       "nativeWindowFrame",

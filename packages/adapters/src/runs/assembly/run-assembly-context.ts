@@ -283,6 +283,9 @@ export async function buildTurnPrompt(
     history,
     historyMessages,
     recalledMemory,
+    earlierInChat,
+    brainContext,
+    projectContext,
     turnBlocks,
   } = parts.turnContext;
   const { resolved, runModelId, runModelProvider } = parts.model;
@@ -406,6 +409,16 @@ export async function buildTurnPrompt(
       role: "user",
       content: redactSecrets(recalledMemory, runSecrets),
     });
+  }
+  if (earlierInChat) {
+    historicalContext.push({
+      role: "user",
+      content: redactSecrets(earlierInChat, runSecrets),
+    });
+  }
+  for (const knowledge of [brainContext, projectContext]) {
+    if (knowledge)
+      historicalContext.push({ role: "user", content: redactSecrets(knowledge, runSecrets) });
   }
   const modelImageBudget =
     resolved.maxImagesPerPrompt === undefined

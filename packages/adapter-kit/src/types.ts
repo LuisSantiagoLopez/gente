@@ -1083,6 +1083,24 @@ export interface BackgroundJobPayloads {
   "purchase.poll": { purchaseId: string };
   /** Check a submitted video and post it when ready; the ID is the bot-visible job ID. */
   "media.poll": { jobId: string };
+  /** Distil a research run, or a project's feedback, into the owner's topic brains. */
+  "brain.distill": {
+    spaceId: string;
+    userId: string;
+    runId?: string;
+    projectId?: string;
+    feedback?: string;
+  };
+  /** A proactive pass for one person: on the hourly schedule, or woken by an event. */
+  "proactive.cycle": {
+    spaceId: string;
+    userId: string;
+    event?: {
+      trigger: "email" | "calendar" | "price_drop" | "project_stalled" | "deadline_near";
+      goalId?: string;
+      summary: string;
+    };
+  };
   /** Read an Expo push receipt; the token is identified by its digest, never stored. */
   "push.receipt": { userId: string; ticketId: string; tokenDigest: string };
   /**

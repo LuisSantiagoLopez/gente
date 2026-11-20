@@ -227,8 +227,10 @@ export const KO_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "대신 서버에 연결",
   "Downloading the workspace…": "워크스페이스를 내려받는 중…",
   "Downloads once, then works offline.": "한 번만 내려받으면 오프라인에서도 작동합니다.",
-  "Gente couldn't finish getting ready. Press Try again.": "Gente가 준비를 마치지 못했습니다. 다시 시도를 누르세요.",
-  "Gente is getting things ready. This takes a moment.": "Gente가 준비하고 있습니다. 잠시만 기다려 주세요.",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente가 준비를 마치지 못했습니다. 다시 시도를 누르세요.",
+  "Gente is getting things ready. This takes a moment.":
+    "Gente가 준비하고 있습니다. 잠시만 기다려 주세요.",
   "Get started": "시작하기",
   "Getting Gente ready, about a minute left": "Gente 준비 중, 약 1분 남음",
   "Getting Gente ready, about {n} min left": "Gente 준비 중, 약 {n}분 남음",
@@ -263,4 +265,11 @@ export const KO_MESSAGES: Record<string, string> = {
   "Sign In to Gente…": "Gente에 로그인…",
   "Sign Out of Gente": "Gente에서 로그아웃",
   "Gente Support…": "Gente 지원…",
+  // Computer use pill
+  "Gente is using your computer": "Gente가 컴퓨터를 사용 중입니다",
+  "Press {key} to stop": "{key}를 눌러 중지",
+  Stop: "중지",
+  Stopped: "중지됨",
+  "Stop Meeting Notes": "회의 노트 중지",
+  "Take Meeting Notes…": "회의 노트 작성…",
 };

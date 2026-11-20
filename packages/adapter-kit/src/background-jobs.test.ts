@@ -26,6 +26,8 @@ function handlers(): BackgroundJobHandlers {
     "run.continue": vi.fn(async () => undefined),
     "routine.wakeup": vi.fn(async () => undefined),
     "routine.retry": vi.fn(async () => undefined),
+    "brain.distill": vi.fn(async () => undefined),
+    "proactive.cycle": vi.fn(async () => undefined),
     "computer.update": vi.fn(async () => undefined),
     "computer.sleep": vi.fn(async () => undefined),
     "computer.control-expire": vi.fn(async () => undefined),

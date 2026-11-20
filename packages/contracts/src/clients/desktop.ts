@@ -163,6 +163,10 @@ export interface RakazoDesktop {
     /** The app menu's Settings… item; the OS claims Cmd+, before any page keydown can. */
     onOpen: (listener: () => void) => () => void;
   };
+  /** Calls the desktop app recorded and transcribed on this computer, as transcript text. */
+  meetings?: {
+    onTranscript: (listener: (text: string) => void) => () => void;
+  };
   /**
    * The operating system's own speech recognition, so dictation needs no provider key.
    * Absent on platforms without one and on older desktop releases.

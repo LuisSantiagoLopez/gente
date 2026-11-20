@@ -1,0 +1,132 @@
+{
+  "seed": 20261119,
+  "timeZone": "America/Mexico_City",
+  "hours": 72,
+  "goals": [
+    {
+      "id": "etsy",
+      "title": "Grow my Etsy sales",
+      "dial": "go_hard"
+    },
+    {
+      "id": "job",
+      "title": "Land a product design job",
+      "dial": "normal"
+    },
+    {
+      "id": "app",
+      "title": "Ship my habit app",
+      "dial": "normal"
+    }
+  ],
+  "days": [
+    {
+      "day": "2026-11-23",
+      "started": 8,
+      "waitingForApproval": 1,
+      "approved": 0,
+      "notifications": [
+        {
+          "localTime": "08:00",
+          "kind": "approval",
+          "headline": "1 waiting for your OK"
+        },
+        {
+          "localTime": "18:00",
+          "kind": "digest",
+          "headline": "Did 8 things for you today"
+        }
+      ],
+      "acceptanceRate": 0.5
+    },
+    {
+      "day": "2026-11-24",
+      "started": 8,
+      "waitingForApproval": 2,
+      "approved": 1,
+      "notifications": [
+        {
+          "localTime": "18:00",
+          "kind": "digest",
+          "headline": "Did 6 things for you today"
+        }
+      ],
+      "acceptanceRate": 0.5
+    },
+    {
+      "day": "2026-11-25",
+      "started": 7,
+      "waitingForApproval": 3,
+      "approved": 1,
+      "notifications": [
+        {
+          "localTime": "18:00",
+          "kind": "digest",
+          "headline": "Did 6 things for you today"
+        },
+        {
+          "localTime": "19:00",
+          "kind": "approval",
+          "headline": "1 waiting for your OK"
+        }
+      ],
+      "acceptanceRate": 0.833
+    }
+  ],
+  "totals": {
+    "actions": 27,
+    "done": 23,
+    "heldForApproval": 6,
+    "approved": 2,
+    "skipped": 4,
+    "notifications": 5,
+    "acceptanceRate": 0.6,
+    "undoRate": 0.043
+  },
+  "perGoal": [
+    {
+      "goalId": "etsy",
+      "actions": 16,
+      "accepted": 10,
+      "rejected": 3,
+      "undone": 0,
+      "acceptanceRate": 0.769,
+      "undoRate": 0,
+      "progress": 50,
+      "dial": "go_hard",
+      "effectiveDial": "go_hard"
+    },
+    {
+      "goalId": "job",
+      "actions": 7,
+      "accepted": 1,
+      "rejected": 3,
+      "undone": 0,
+      "acceptanceRate": 0.25,
+      "undoRate": 0,
+      "progress": 5,
+      "dial": "normal",
+      "effectiveDial": "quiet"
+    },
+    {
+      "goalId": "app",
+      "actions": 4,
+      "accepted": 1,
+      "rejected": 1,
+      "undone": 1,
+      "acceptanceRate": 0.333,
+      "undoRate": 0.333,
+      "progress": 5,
+      "dial": "normal",
+      "effectiveDial": "normal"
+    }
+  ],
+  "checks": {
+    "everyActionLinkedToGoal": true,
+    "noPingInQuietHours": true,
+    "pingsPerDayWithinLimit": true,
+    "actionsPerDayWithinCap": true,
+    "minutesPerDayWithinBudget": true,
+    "riskyWorkOnlyAfterApproval": true
+  }
+}

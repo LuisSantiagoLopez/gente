@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { ORPCError } from "@orpc/server";
 import { MemoryRevisionConflictError } from "@rakazo/adapter-kit";
 import {
@@ -8,7 +9,7 @@ import {
   memoryProviderDescriptors,
   readAgentMemory,
 } from "@rakazo/adapters";
-import { isDeletableMemoryDocument } from "@rakazo/contracts";
+import { isDeletableMemoryDocument, PLAIN_MEMORY_SCOPES } from "@rakazo/contracts";
 import { ClientError } from "@rakazo/core";
 import { findSpaceMemoryConfig, IsolationError } from "@rakazo/db";
 import {
@@ -29,7 +30,8 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             spaceId: context.actor.spaceId,
             ...(input.botId ? { botId: input.botId } : {}),
-            ...(input.scope ? { scope: input.scope } : {}),
+            // Brains and projects have their own screens and routes.
+            scope: input.scope ?? { in: [...PLAIN_MEMORY_SCOPES] },
           },
         });
         return docs.map((doc) => ({
@@ -60,6 +62,7 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             id: input.documentId,
             spaceId: context.actor.spaceId,
+            scope: { in: [...PLAIN_MEMORY_SCOPES] },
           },
         });
         if (!doc) throw new IsolationError();
@@ -101,6 +104,7 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             id: input.documentId,
             spaceId: context.actor.spaceId,
+            scope: { in: [...PLAIN_MEMORY_SCOPES] },
           },
         });
         if (!doc) throw new IsolationError();
@@ -131,6 +135,7 @@ export function memoryRoutes(ctx: RouterContext) {
           where: {
             spaceId: context.actor.spaceId,
             ...(input.botId ? { botId: input.botId } : {}),
+            scope: { in: [...PLAIN_MEMORY_SCOPES] },
           },
         });
         return docs.map((d) => `# ${d.path}\n\n${d.content}`).join("\n\n");

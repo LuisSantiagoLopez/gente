@@ -26,6 +26,10 @@ export type ShellOverlay =
   | { kind: "templates" }
   | { kind: "import" }
   | { kind: "mcp"; serverId?: string }
+  | { kind: "projects"; projectId?: string }
+  | { kind: "brains"; slug?: string }
+  | { kind: "learned" }
+  | { kind: "goals" }
   | null;
 
 const OVERLAY_KEYS = [
@@ -37,6 +41,10 @@ const OVERLAY_KEYS = [
   "import",
   "mcp",
   "messaging",
+  "projects",
+  "brains",
+  "learned",
+  "goals",
 ] as const;
 
 function isSettingsSection(value: string): value is SettingsSection {
@@ -60,6 +68,16 @@ export function readShellOverlay(params: URLSearchParams): ShellOverlay {
     const serverId = params.get("mcp");
     return serverId ? { kind: "mcp", serverId } : { kind: "mcp" };
   }
+  if (params.has("projects")) {
+    const projectId = params.get("projects");
+    return projectId ? { kind: "projects", projectId } : { kind: "projects" };
+  }
+  if (params.has("brains")) {
+    const slug = params.get("brains");
+    return slug ? { kind: "brains", slug } : { kind: "brains" };
+  }
+  if (params.has("learned")) return { kind: "learned" };
+  if (params.has("goals")) return { kind: "goals" };
   // Links from before Messaging moved into settings.
   if (params.has("messaging")) return { kind: "settings", section: "messaging", spaceId: null };
   return null;
@@ -74,6 +92,10 @@ export function withShellOverlay(params: URLSearchParams, overlay: ShellOverlay)
     if (overlay.spaceId) next.set("space", overlay.spaceId);
   } else if (overlay?.kind === "mcp") {
     next.set("mcp", overlay.serverId ?? "");
+  } else if (overlay?.kind === "projects") {
+    next.set("projects", overlay.projectId ?? "");
+  } else if (overlay?.kind === "brains") {
+    next.set("brains", overlay.slug ?? "");
   } else if (overlay) {
     next.set(overlay.kind, "");
   }

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   desktopGuardApplies,
   desktopProtectionGuardMessage,
@@ -37,6 +38,7 @@ import {
   skillUpdateFromTool,
 } from "../../tools/skill-tools.js";
 import type { RunContext } from "../assembly/run-context.js";
+import { isRunTainted } from "../assembly/run-context.js";
 import type { ToolHandlers } from "./run-tool-gate.js";
 
 /** A command watch may not run what the desktop guard keeps the bot from running itself. */
@@ -313,6 +315,15 @@ export const taskTools: ToolHandlers = {
           description: args.description !== undefined ? String(args.description) : undefined,
           body: args.body !== undefined ? String(args.body) : undefined,
           content: args.content ? String(args.content) : undefined,
+          reason: args.reason !== undefined ? String(args.reason) : undefined,
+          // Whatever the model says, a run that read outside content learned from it.
+          learnedFrom: (await isRunTainted(ctx))
+            ? "web_content"
+            : args.learnedFrom === "run_outcome"
+              ? "run_outcome"
+              : args.learnedFrom === "web_content"
+                ? "web_content"
+                : "user_feedback",
         },
       ),
     );

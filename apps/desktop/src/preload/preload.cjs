@@ -39,6 +39,14 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
   settings: {
     onOpen: subscribe("desktop.settings.open"),
   },
+  // Gente: a call the private notetaker transcribed on this computer.
+  meetings: {
+    onTranscript: (listener) => {
+      const handler = (_event, text) => listener(typeof text === "string" ? text : "");
+      ipcRenderer.on("desktop.meetings.transcript", handler);
+      return () => ipcRenderer.off("desktop.meetings.transcript", handler);
+    },
+  },
   device: {
     state: () => ipcRenderer.invoke("desktop.device.state"),
     setAllowed: (allowed) => ipcRenderer.invoke("desktop.device.setAllowed", allowed),

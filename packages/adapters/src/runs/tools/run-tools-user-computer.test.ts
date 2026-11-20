@@ -2,7 +2,9 @@ import { deferred } from "@rakazo/core/test-async";
 import { describe, expect, it, vi } from "vitest";
 import type { HostComputerRequest } from "../../computers/host/host-computer-protocol.js";
 import type { UserDeviceGateway } from "../../computers/host/user-device-protocol.js";
+import { HOST_SCREEN_STOPPED_MESSAGE } from "../../computers/screens/host-screen.js";
 import type { RunContext } from "../assembly/run-context.js";
+import * as runStop from "../lifecycle/run-stop.js";
 import type { ToolCall } from "./run-tool-gate.js";
 import {
   userComputerAct,
@@ -59,29 +61,119 @@ function setup(execute: (signal: AbortSignal) => AsyncIterable<unknown>, secrets
 }
 
 describe("userComputerGate", () => {
-  it("finds an app approved before hundreds of later screen actions", async () => {
-    const effects = [
-      ...Array.from({ length: 450 }, (_, index) => ({ id: `e${450 - index}`, app: "TextEdit" })),
-      { id: "e0", app: "Mail" },
-    ].map(({ id, app }) => ({ id, request: { app } }));
-    const findMany = vi.fn(async ({ take, cursor }: { take: number; cursor?: { id: string } }) => {
-      const start = cursor ? effects.findIndex((effect) => effect.id === cursor.id) + 1 : 0;
-      return effects.slice(start, start + take);
-    });
+  function gateCtx(shellEffect: { id: string } | null = null) {
+    const findFirst = vi.fn(async () => shellEffect);
     const ctx = {
       deps: {
         userDevices: { pairedSince: async () => new Date(0) },
-        prisma: { externalEffect: { findMany } },
+        prisma: { externalEffect: { findFirst } },
       },
       run: { spaceId: "space-1", userId: "user-1" },
     } as unknown as RunContext;
+    return { ctx, findFirst };
+  }
+  const act = (args: Record<string, unknown>) => ({ app: "Mail", ...args });
+
+  it("lets the bot look at any app without asking", async () => {
+    const { ctx, findFirst } = gateCtx();
     await expect(
-      userComputerGate(ctx, false, "user_computer_observe", { app: "mail" }, "ask"),
+      userComputerGate(ctx, false, "user_computer_observe", { app: "Mail" }, "ask"),
     ).resolves.toBe("allow");
-    expect(findMany).toHaveBeenCalledTimes(3);
+    expect(findFirst).not.toHaveBeenCalled();
+  });
+
+  it("acts without asking unless the action spends, sends, deletes or agrees", async () => {
+    const { ctx } = gateCtx();
+    const gate = (args: Record<string, unknown>) =>
+      userComputerGate(ctx, false, "user_computer_act", act(args), "auto");
     await expect(
-      userComputerGate(ctx, false, "user_computer_observe", { app: "Notes" }, "ask"),
+      gate({ actions: [{ kind: "type", text: "Please send the money and delete it" }] }),
+    ).resolves.toBe("allow");
+    await expect(
+      gate({ purpose: "open the draft", actions: [{ kind: "click", element: 3 }] }),
+    ).resolves.toBe("allow");
+    await expect(
+      gate({ purpose: "Buy the ticket", actions: [{ kind: "click", element: 3 }] }),
     ).resolves.toBe("ask");
+    await expect(gate({ actions: [{ kind: "menu", path: ["Message", "Send"] }] })).resolves.toBe(
+      "ask",
+    );
+    await expect(
+      gate({ actions: [{ kind: "key", key: "return", modifiers: ["cmd"] }] }),
+    ).resolves.toBe("ask");
+  });
+
+  it("asks for a click on a button the latest look named Send", async () => {
+    const { ctx: device, call } = setup(async function* () {
+      yield {
+        app: "Mail",
+        tree: '- [0] AXWindow "Reply"\n  - [7] AXButton "Send"\n  - [8] AXButton "Attach"',
+      };
+    });
+    device.computer = { acceptsImages: false } as RunContext["computer"];
+    const ctx = device;
+    await userComputerObserve(ctx, call({ app: "Mail" }));
+    const click = (element: number) =>
+      userComputerGate(
+        ctx,
+        false,
+        "user_computer_act",
+        act({ actions: [{ kind: "click", element }] }),
+        "ask",
+      );
+    await expect(click(7)).resolves.toBe("ask");
+    await expect(click(8)).resolves.toBe("allow");
+    // Another run never sees this run's labels.
+    await expect(
+      userComputerGate(
+        gateCtx().ctx,
+        false,
+        "user_computer_act",
+        act({ actions: [{ kind: "click", element: 7 }] }),
+        "ask",
+      ),
+    ).resolves.toBe("allow");
+  });
+
+  it("follows Never ask and blocks", async () => {
+    const { ctx } = gateCtx();
+    const buy = act({ purpose: "pay now", actions: [{ kind: "click", element: 1 }] });
+    await expect(userComputerGate(ctx, false, "user_computer_act", buy, "never")).resolves.toBe(
+      "allow",
+    );
+    await expect(userComputerGate(ctx, true, "user_computer_observe", {}, "never")).resolves.toBe(
+      "deny",
+    );
+  });
+
+  it("asks before the shell until one ran after pairing", async () => {
+    await expect(
+      userComputerGate(gateCtx().ctx, false, "user_computer_shell", {}, "ask"),
+    ).resolves.toBe("ask");
+    await expect(
+      userComputerGate(gateCtx({ id: "e1" }).ctx, false, "user_computer_shell", {}, "ask"),
+    ).resolves.toBe("allow");
+  });
+});
+
+describe("stop on the user's computer", () => {
+  it("cancels the run and tells the bot not to use the computer again", async () => {
+    const cancel = vi.spyOn(runStop, "cancelActiveRun").mockResolvedValue(true);
+    const { ctx, call } = setup(() => ({
+      [Symbol.asyncIterator]: () => ({
+        next: () => Promise.reject(new Error(HOST_SCREEN_STOPPED_MESSAGE)),
+      }),
+    }));
+    Object.assign(ctx, {
+      run: { id: "run-1", spaceId: "s", userId: "user-1", threadId: "t", botId: "bot-1" },
+    });
+    const result = await userComputerAct(
+      ctx,
+      call({ app: "Mail", actions: [{ kind: "click", element: 1 }] }),
+    );
+    expect(cancel).toHaveBeenCalledWith(ctx.deps, ctx.run);
+    expect(result).toEqual({ error: HOST_SCREEN_STOPPED_MESSAGE });
+    cancel.mockRestore();
   });
 });
 

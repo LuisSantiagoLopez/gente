@@ -3,10 +3,7 @@ import type { RunStatus } from "@rakazo/contracts";
 import { BACKGROUND_HELPER_TRIGGER, isTerminal } from "@rakazo/core";
 import {
   accountDeactivated,
-  appendEventInTransaction,
   cancelDeactivatedAccountRuns,
-  cancelRunsInTransaction,
-  createPendingSteeringRun,
   databaseOutage,
   RunHistoryWriteError,
   readRunTimingFields,
@@ -36,8 +33,8 @@ import type { ExecutorDeps } from "../executor/executor-deps.js";
 import type { resolveConnectedRunModel } from "../turn/run-model.js";
 import type { TakeoverContinuePlan } from "../turn/takeover-resume.js";
 import { takeoverContinuePlan } from "../turn/takeover-resume.js";
-import { wakeRun } from "../wakeups/wake-run.js";
 import { claimRun, finishRunAttempt, renewRunLease, requeueComputerRun } from "./run-lifecycle.js";
+import { cancelActiveRun } from "./run-stop.js";
 
 const RUN_HEARTBEAT_MS = 60_000;
 
@@ -430,34 +427,6 @@ async function cancelRunOfFormerMember(
     select: { id: true },
   });
   if (member) return false;
-  const cancelled = await deps.prisma.$transaction(async (tx) => {
-    const current = await tx.run.findUnique({
-      where: { id: run.id },
-      select: {
-        id: true,
-        taskId: true,
-        userId: true,
-        spaceId: true,
-        status: true,
-      },
-    });
-    if (!current || isTerminal(current.status as RunStatus)) return null;
-    const [stopped] = await cancelRunsInTransaction(tx, [current], new Date());
-    if (!stopped) return null;
-    const event = await appendEventInTransaction(tx, {
-      spaceId: run.spaceId,
-      threadId: run.threadId,
-      botId: run.botId,
-      runId: run.id,
-      type: "run.cancelled",
-      payload: {},
-    });
-    // Remaining members' messages waited behind this run; give them their own.
-    const continuationId = await createPendingSteeringRun(tx, run);
-    return { seq: event.seq, continuationId };
-  });
-  if (!cancelled) return true;
-  await deps.events.notify(run.threadId, cancelled.seq).catch(() => undefined);
-  if (cancelled.continuationId) await wakeRun(deps.jobs, cancelled.continuationId);
+  await cancelActiveRun(deps, run);
   return true;
 }

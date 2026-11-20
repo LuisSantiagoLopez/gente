@@ -3,6 +3,7 @@ import { isSignedIn, signInToGente, signOutOfGente } from "../burrow/account.js"
 import { openTelegramWindow } from "../burrow/telegram-window.js";
 import type { DesktopMenuCommand, DesktopUpdateState } from "@rakazo/contracts";
 import { app, dialog, Menu } from "electron";
+import { meetingNotetaker } from "../burrow/meeting-window.js";
 import { desktop } from "../desktop-state.js";
 import { desktopLocale, t } from "../i18n.js";
 import { showSetupWindow } from "../setup/setup-window.js";
@@ -143,6 +144,14 @@ export function applicationMenuInstaller({
       label: t("Connect Telegram…"),
       click: () => openTelegramWindow(),
     };
+    const meetingNotes: Electron.MenuItemConstructorOptions = {
+      label: meetingNotetaker()?.isRecording() ? t("Stop Meeting Notes") : t("Take Meeting Notes…"),
+      click: () => {
+        const notetaker = meetingNotetaker();
+        if (!notetaker) return;
+        void (notetaker.isRecording() ? notetaker.finish() : notetaker.startByHand());
+      },
+    };
     const changeServer: Electron.MenuItemConstructorOptions = {
       id: "change-rakazo-server",
       label: t("Change Gente Server…"),
@@ -273,6 +282,7 @@ export function applicationMenuInstaller({
                 revokeComputerAccess,
                 account,
                 connectTelegram,
+                meetingNotes,
                 changeServer,
                 { type: "separator" },
                 { role: "hide", label: t("Hide {name}", { name: app.name }) },
@@ -317,6 +327,7 @@ export function applicationMenuInstaller({
                 revokeComputerAccess,
                 account,
                 connectTelegram,
+                meetingNotes,
                 changeServer,
                 { type: "separator" },
                 checkForUpdates,

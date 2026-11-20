@@ -13,7 +13,13 @@ type Account = { id: string; status: string };
 /** A stateful stand-in for the Connect MCP endpoint: accounts per app, SSE answers. */
 function fakeConnect(initial: Record<string, Account[]> = {}) {
   const accounts = new Map(Object.entries(initial));
-  const calls: Array<{ method: string; params: Record<string, unknown>; key: string | null }> = [];
+  const calls: Array<{
+    method: string;
+    params: Record<string, unknown>;
+    key: string | null;
+    bearer: string | null;
+    session: string | null;
+  }> = [];
   let added = 0;
   const answer = (id: unknown, result: unknown) =>
     new Response(
@@ -28,7 +34,15 @@ function fakeConnect(initial: Record<string, Account[]> = {}) {
       method: body.method,
       params: body.params,
       key: headers.get("x-consumer-api-key"),
+      bearer: headers.get("authorization"),
+      session: headers.get("mcp-session-id"),
     });
+    if (body.method === "initialize") {
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: body.id, result: {} }), {
+        headers: { "mcp-session-id": "sess-1", "content-type": "application/json" },
+      });
+    }
+    if (body.method === "notifications/initialized") return new Response(null, { status: 202 });
     if (body.method === "tools/list") {
       return answer(body.id, {
         tools: [
@@ -102,7 +116,10 @@ async function collect(events: AsyncIterable<ConnectorEvent>) {
 describe("ComposioConnectConnector", () => {
   it("sends the consumer key and lists the money apps with their connection state", async () => {
     const fake = fakeConnect({ gmail: [{ id: "gmail_a", status: "ACTIVE" }] });
-    const connector = new ComposioConnectConnector({ key: "ck_test", fetch: fake.fetchImpl });
+    const connector = new ComposioConnectConnector({
+      auth: { consumerKey: "ck_test" },
+      fetch: fake.fetchImpl,
+    });
     const catalog = await connector.catalog(context());
     expect(catalog.find((item) => item.slug === "gmail")).toMatchObject({
       connectorId: "composio",
@@ -111,12 +128,36 @@ describe("ComposioConnectConnector", () => {
     });
     expect(catalog.find((item) => item.slug === "hubspot")?.connected).toBe(false);
     expect(fake.calls.every((call) => call.key === "ck_test")).toBe(true);
-    // One request lists every app.
-    expect(fake.calls).toHaveLength(1);
+    // After opening the session once, one request lists every app.
+    expect(fake.calls.map((call) => call.method)).toEqual([
+      "initialize",
+      "notifications/initialized",
+      "tools/call",
+    ]);
+    expect(fake.calls[2]?.session).toBe("sess-1");
+  });
+
+  it("goes through the cloud proxy with the person's token instead of a key", async () => {
+    const fake = fakeConnect({ gmail: [{ id: "gmail_a", status: "ACTIVE" }] });
+    const connector = new ComposioConnectConnector({
+      auth: { bearer: async () => "tok_person" },
+      endpoint: "https://cloud.example.test/v1/proxy/composio/mcp",
+      fetch: fake.fetchImpl,
+    });
+    expect(await connector.listConnectedExternalIds(context())).toEqual(["gmail"]);
+    expect(fake.calls.every((call) => call.bearer === "Bearer tok_person" && !call.key)).toBe(true);
+    const signedOut = new ComposioConnectConnector({
+      auth: { bearer: async () => undefined },
+      fetch: fake.fetchImpl,
+    });
+    await expect(signedOut.catalog(context())).rejects.toThrow("Sign in to Gente");
   });
 
   it("filters by name and still offers an unlisted app by its exact slug", async () => {
-    const connector = new ComposioConnectConnector({ key: "k", fetch: fakeConnect().fetchImpl });
+    const connector = new ComposioConnectConnector({
+      auth: { consumerKey: "k" },
+      fetch: fakeConnect().fetchImpl,
+    });
     expect((await connector.catalog(context(), "hubsp")).map((item) => item.slug)).toEqual([
       "hubspot",
     ]);
@@ -128,7 +169,10 @@ describe("ComposioConnectConnector", () => {
 
   it("connects through the hosted link and is ready once the account is active", async () => {
     const fake = fakeConnect();
-    const connector = new ComposioConnectConnector({ key: "k", fetch: fake.fetchImpl });
+    const connector = new ComposioConnectConnector({
+      auth: { consumerKey: "k" },
+      fetch: fake.fetchImpl,
+    });
     const started = await connector.begin(
       { provider: "hubspot", redirectUrl: "https://app.test/back" },
       context(),
@@ -149,7 +193,10 @@ describe("ComposioConnectConnector", () => {
       google_business_profile: [{ id: "google_business_profile_old", status: "EXPIRED" }],
       gmail: [{ id: "gmail_a", status: "ACTIVE" }],
     });
-    const connector = new ComposioConnectConnector({ key: "k", fetch: fake.fetchImpl });
+    const connector = new ComposioConnectConnector({
+      auth: { consumerKey: "k" },
+      fetch: fake.fetchImpl,
+    });
     expect(await connector.listReconnectRefs(context())).toEqual(["google_business_profile_old"]);
     expect(await connector.needsReconnect(context(), "google_business_profile")).toBe(true);
     expect(await connector.needsReconnect(context(), "gmail")).toBe(false);
@@ -159,7 +206,10 @@ describe("ComposioConnectConnector", () => {
   });
 
   it("offers only the find, inputs and run tools, with short descriptions, once an app is connected", async () => {
-    const connector = new ComposioConnectConnector({ key: "k", fetch: fakeConnect().fetchImpl });
+    const connector = new ComposioConnectConnector({
+      auth: { consumerKey: "k" },
+      fetch: fakeConnect().fetchImpl,
+    });
     expect(await connector.discoverTools(context())).toEqual([]);
     const tools = await connector.discoverTools(context(["gmail"]));
     expect(tools.map((tool) => tool.name)).toEqual([
@@ -173,7 +223,10 @@ describe("ComposioConnectConnector", () => {
   });
 
   it("refuses actions from apps the person did not connect, including pay-per-call ones", async () => {
-    const connector = new ComposioConnectConnector({ key: "k", fetch: fakeConnect().fetchImpl });
+    const connector = new ComposioConnectConnector({
+      auth: { consumerKey: "k" },
+      fetch: fakeConnect().fetchImpl,
+    });
     const refused = await collect(
       connector.execute(
         {

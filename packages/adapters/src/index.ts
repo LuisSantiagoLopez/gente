@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 export * from "./analytics/product-analytics.js";
 export * from "./approvals/auto-review.js";
 export {
@@ -84,6 +85,13 @@ export * from "./integrations/integration-provider-settings.js";
 export * from "./integrations/plugin-connectors.js";
 export * from "./integrations/plugin-marketplace.js";
 export * from "./integrations/third-party-connector-emulator.js";
+export * from "./knowledge/brain-distillation.js";
+export * from "./knowledge/knowledge-store.js";
+export * from "./knowledge/project-tool.js";
+export * from "./proactive/goal-tool.js";
+export * from "./proactive/proactive-runtime.js";
+export * from "./proactive/proactive-store.js";
+export * from "./proactive/proactive-undo.js";
 export * from "./locks/advisory-lock.js";
 export * from "./mcp/mcp-connector.js";
 export * from "./mcp/mcp-emulator.js";
@@ -103,6 +111,7 @@ export { purgeClearedConversationMemory } from "./memory/conversation-memory-cle
 export { readAgentMemory } from "./memory/memory-context.js";
 export { AGENT_MEMORY_MAX_BYTES, buildAgentMemoryPrompt } from "./memory/memory-context.prompt.js";
 export * from "./memory/memory-provider-factory.js";
+export * from "./memory/skill-learning-store.js";
 export * from "./messaging/bot-messages.js";
 export * from "./messaging/chat-sdk-surface.js";
 export * from "./messaging/installed-messaging-surface.js";

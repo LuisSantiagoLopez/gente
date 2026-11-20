@@ -18,6 +18,13 @@ const STATIC_FILES = [
   "support-renderer/support.html",
   "support-renderer/support.css",
   "support-renderer/support.js",
+  "preload/computer-pill-preload.cjs",
+  "computer-pill-renderer/computer-pill.html",
+  "computer-pill-renderer/computer-pill.css",
+  "computer-pill-renderer/computer-pill.js",
+  "preload/meeting-preload.cjs",
+  "meeting-renderer/meeting.html",
+  "meeting-renderer/meeting.js",
 ];
 // Gente's help articles, read by the support window and its local search.
 const HELP_DIR = path.resolve(

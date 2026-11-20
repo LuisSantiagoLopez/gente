@@ -43,6 +43,11 @@ msgstr "{0, plural, other {# 个月免费使用期}}"
 msgid "{0, plural, one {# more} other {# more}}"
 msgstr "{0, plural, one {还有 # 个} other {还有 # 个}}"
 
+#. placeholder {0}: brain.facts.length
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "{0, plural, one {# note} other {# notes}}"
+msgstr "{0, plural, one {# 条笔记} other {# 条笔记}}"
+
 #. placeholder {0}: skillCount(install)
 #: apps/web/src/components/integrations/skills-dialog.tsx
 msgid "{0, plural, one {# skill} other {# skills}}"
@@ -165,10 +170,28 @@ msgstr "{0} 的合并间隔（小时）"
 msgid "{0} TB"
 msgstr "{0} TB"
 
+#. placeholder {0}: metrics.actions
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "{0} things done so far."
+msgstr "目前已完成 {0} 件事。"
+
+#. placeholder {0}: metrics.actions
+#. placeholder {1}: percent(metrics.acceptanceRate)
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "{0} things done, you kept {1}."
+msgstr "已完成 {0} 件事，你保留了 {1} 件。"
+
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
 msgstr "{0}，开启前保持暂停"
+
+#. placeholder {0}: task.title
+#. placeholder {1}: statusLabel(task.status)
+#. placeholder {2}: statusLabel(NEXT_STATUS[task.status])
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "{0}: {1}. Move to {2}"
+msgstr "{0}：{1}。移到{2}"
 
 #. placeholder {0}: Math.round(used)
 #: apps/web/src/components/billing/PlanUsage.tsx
@@ -368,6 +391,11 @@ msgstr "免费 {days} 天，之后每年 {price}。可随时取消。"
 #: apps/web/src/lib/locale/relative-time.ts
 msgid "{days}d ago"
 msgstr "{days} 天前"
+
+#. placeholder {0}: project.tasks.length
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "{done} of {0} done"
+msgstr "已完成 {done}/{0}"
 
 #: apps/mobile/components/thread/message-bubble.tsx
 msgid "{from} messaged {to}"
@@ -763,6 +791,23 @@ msgstr "@{name}"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**$6,250 overdue across 3 invoices**\n"
+"\n"
+"1. Acme, $3,000, 12 days late. Second reminder drafted.\n"
+"2. Lumen Studio, $2,400, 4 days late. Friendly nudge drafted.\n"
+"3. Ode Cafe, $850, 31 days late. Firm reminder drafted.\n"
+"\n"
+"3 Gmail drafts saved. Nothing sent."
+msgstr "**3 张发票共逾期 $6,250**\n"
+"\n"
+"1. Acme，$3,000，逾期 12 天。已起草第二次提醒。\n"
+"2. Lumen Studio，$2,400，逾期 4 天。已起草友好提醒。\n"
+"3. Ode Cafe，$850，逾期 31 天。已起草正式催款。\n"
+"\n"
+"已保存 3 份 Gmail 草稿。什么都没发送。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "**12 new since 8:00**\n"
 "\n"
 "**Reply needed**\n"
@@ -786,6 +831,36 @@ msgstr "**8:00 以来 12 封新邮件**\n"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 booking requests**\n"
+"\n"
+"1. Jon wants a deep clean Thursday. Free: Thu 10:00 or 14:00. Draft ready.\n"
+"2. Sofia asks the price for a 3-bedroom. Quote from your price list: $180. Draft ready.\n"
+"\n"
+"Gmail drafts saved. Nothing booked until a client picks a time."
+msgstr "**2 个预约请求**\n"
+"\n"
+"1. Jon 想在周四做一次深度清洁。空闲时间：周四 10:00 或 14:00。草稿已备好。\n"
+"2. Sofia 询问三居室的价格。按你的价目表报价：$180。草稿已备好。\n"
+"\n"
+"Gmail 草稿已保存。客户选好时间前不会预约。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 new leads**\n"
+"\n"
+"1. Maya, 14 Oak St listing, pre-approved. Showing times offered: Sat 11:00 or Sun 15:00. Draft ready.\n"
+"2. Chris, 'looking in Eastside under $600k'. 3 matching listings from your sheet. Draft ready.\n"
+"\n"
+"Both added to your Leads sheet."
+msgstr "**2 个新线索**\n"
+"\n"
+"1. Maya，Oak St 14 号房源，已获贷款预批。可看房时间：周六 11:00 或周日 15:00。草稿已备好。\n"
+"2. Chris，“想在 Eastside 找 $600k 以下的房子”。你的表格里有 3 套匹配房源。草稿已备好。\n"
+"\n"
+"两人都已加入你的 Leads 表格。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "**2 pull requests are waiting on you**\n"
 "\n"
 "**#482 Add retry to webhook delivery**\n"
@@ -806,6 +881,203 @@ msgstr "**有 2 个拉取请求在等你**\n"
 "\n"
 "**#479 修复报表中的日期解析**\n"
 "看起来不错。建议审查结果：批准。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**28 transactions to sort, 24 suggested**\n"
+"\n"
+"- 18 software and ads, matched to past categories\n"
+"- 6 meals and travel\n"
+"- 4 unclear: listed below with questions\n"
+"\n"
+"Missing receipts: 3. Reminder drafted to you."
+msgstr "**28 笔交易待分类，已建议 24 笔**\n"
+"\n"
+"- 18 笔软件和广告，按以往类别匹配\n"
+"- 6 笔餐饮和差旅\n"
+"- 4 笔不确定：列在下方并附问题\n"
+"\n"
+"缺少收据：3 张。已给你起草提醒。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**3 new reviews this week**\n"
+"\n"
+"1. ★★★★★ Marta: \"Best haircut in years.\" Draft: \"Thank you, Marta! See you next time.\"\n"
+"2. ★★☆☆☆ Leo: \"Waited 40 minutes.\" Draft: \"Sorry for the wait, Leo. We've added a second chair on Saturdays.\"\n"
+"3. ★★★★☆ Ana. Draft ready.\n"
+"\n"
+"Approve to post, or edit any draft."
+msgstr "**本周 3 条新评价**\n"
+"\n"
+"1. ★★★★★ Marta：“几年来最好的一次理发。”草稿：“谢谢你，Marta！下次见。”\n"
+"2. ★★☆☆☆ Leo：“等了 40 分钟。”草稿：“抱歉让你久等了，Leo。我们周六加了第二把椅子。”\n"
+"3. ★★★★☆ Ana。草稿已备好。\n"
+"\n"
+"批准即可发布，也可以修改任何草稿。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**4 customer emails**\n"
+"\n"
+"1. #1042 Where is my order? Shipped Monday, arriving Thursday. Draft ready.\n"
+"2. #1039 Wrong size. Exchange policy applies. Draft ready.\n"
+"3. #1051 Refund request, $64.00. Needs your OK.\n"
+"4. Wholesale question. Draft ready."
+msgstr "**4 封客户邮件**\n"
+"\n"
+"1. #1042 我的订单在哪？周一已发货，周四送达。草稿已备好。\n"
+"2. #1039 尺码不对。适用换货政策。草稿已备好。\n"
+"3. #1051 退款申请，$64.00。需要你确认。\n"
+"4. 批发咨询。草稿已备好。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 deals need a nudge**\n"
+"\n"
+"1. Northwind, $12k, no reply in 9 days. Follow-up drafted.\n"
+"2. Bluebird, $4k, demo done Tuesday. Recap drafted.\n"
+"3. Kite Labs, $30k, contract sent 6 days ago. Check-in drafted.\n"
+"\n"
+"Notes logged on each deal in your CRM."
+msgstr "**5 笔交易需要跟进**\n"
+"\n"
+"1. Northwind，$12k，9 天未回复。已起草跟进邮件。\n"
+"2. Bluebird，$4k，周二已演示。已起草回顾。\n"
+"3. Kite Labs，$30k，合同 6 天前已发出。已起草问候。\n"
+"\n"
+"每笔交易的备注都已记入你的 CRM。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 new jobs that fit**\n"
+"\n"
+"1. Product Designer, Lumen (remote, $120-140k). Cover letter drafted.\n"
+"2. UX Lead, Kite Labs (NYC). CV tailored: Kite Labs CV (Docs).\n"
+"3. Follow-up due: Northwind, applied 8 days ago. Draft ready.\n"
+"\n"
+"Tracker sheet updated."
+msgstr "**5 个合适的新职位**\n"
+"\n"
+"1. 产品设计师，Lumen（远程，$120-140k）。已起草求职信。\n"
+"2. UX 负责人，Kite Labs（纽约）。简历已调整：Kite Labs CV (Docs)。\n"
+"3. 该跟进了：Northwind，8 天前已申请。草稿已备好。\n"
+"\n"
+"跟踪表已更新。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery check-in, Thu 10:00**\n"
+"\n"
+"**Decisions**\n"
+"- Online ordering goes ahead on the store app\n"
+"\n"
+"**Action items**\n"
+"- You: send the setup quote by Friday\n"
+"- You: share the analytics report on Monday\n"
+"\n"
+"**Open**: delivery zones at launch or January?\n"
+"\n"
+"Recap email drafted. Next check-in Thu 10:00 waits for your OK."
+msgstr "**Bluebird Bakery 例会，周四 10:00**\n"
+"\n"
+"**决定**\n"
+"- 在门店应用上推进在线订购\n"
+"\n"
+"**待办事项**\n"
+"- 你：周五前发送搭建报价\n"
+"- 你：周一分享分析报告\n"
+"\n"
+"**待定**：配送范围是上线时定还是一月定？\n"
+"\n"
+"已起草回顾邮件。下次例会周四 10:00，等你确认。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery: week of 10 Nov**\n"
+"\n"
+"- Visits 4,210 (+8%), orders from search 61 (+14%)\n"
+"- Top page: Holiday cakes, 1,020 visits\n"
+"- Search: 'custom cakes near me' moved from 9th to 4th\n"
+"- Next: add a holiday FAQ page\n"
+"\n"
+"Report doc and email draft saved."
+msgstr "**Bluebird Bakery：11 月 10 日这一周**\n"
+"\n"
+"- 访问 4,210（+8%），搜索带来的订单 61（+14%）\n"
+"- 热门页面：节日蛋糕，1,020 次访问\n"
+"- 搜索：“custom cakes near me”从第 9 名升到第 4 名\n"
+"- 下一步：添加节日常见问题页面\n"
+"\n"
+"报告文档和邮件草稿已保存。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**From your video: '5 mistakes new runners make'**\n"
+"\n"
+"- X thread: 6 posts\n"
+"- LinkedIn post: 180 words\n"
+"- Instagram caption with 8 hashtags\n"
+"- 3 short clip ideas with timestamps\n"
+"\n"
+"All saved to your Content calendar in Notion. Nothing posted."
+msgstr "**来自你的视频：“新手跑者常犯的 5 个错误”**\n"
+"\n"
+"- X 帖子串：6 条\n"
+"- LinkedIn 帖子：180 字\n"
+"- Instagram 文案，含 8 个话题标签\n"
+"- 3 个短视频片段创意，附时间点\n"
+"\n"
+"全部已保存到你 Notion 里的内容日历。什么都没发布。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Listing draft: Hand-thrown mug, speckled glaze**\n"
+"\n"
+"Title: Speckled Ceramic Mug, 12 oz, Handmade Stoneware Coffee Cup\n"
+"Tags: handmade mug, ceramic, stoneware, coffee lover gift, speckled\n"
+"Description: 3 short paragraphs, care notes, size.\n"
+"\n"
+"Saved as a draft product in your store. Not published."
+msgstr "**商品草稿：手拉坯马克杯，斑点釉**\n"
+"\n"
+"标题：斑点陶瓷马克杯，12 oz，手工粗陶咖啡杯\n"
+"标签：手工马克杯、陶瓷、粗陶、咖啡爱好者礼物、斑点\n"
+"描述：3 段短文，含保养说明和尺寸。\n"
+"\n"
+"已作为草稿商品保存在你的店铺。尚未发布。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Proposal ready for Lumen Studio**\n"
+"\n"
+"- Scope: new website, 6 pages, 3 weeks\n"
+"- Price: $4,800 in two payments (from your rate card)\n"
+"- Doc: Proposal - Lumen Studio (Google Docs)\n"
+"\n"
+"Reply draft saved in Gmail with the link. Not sent."
+msgstr "**给 Lumen Studio 的方案已备好**\n"
+"\n"
+"- 范围：新网站，6 个页面，3 周\n"
+"- 价格：$4,800，分两次付款（按你的报价单）\n"
+"- 文档：Proposal - Lumen Studio (Google Docs)\n"
+"\n"
+"附链接的回复草稿已保存在 Gmail。尚未发送。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Senior designer role: 6 candidates**\n"
+"\n"
+"- 4 outreach drafts, each naming one thing from their portfolio\n"
+"- 2 replied yes: interview times offered (Tue 11:00, Wed 15:00)\n"
+"\n"
+"Pipeline sheet updated. Nothing sent."
+msgstr "**资深设计师职位：6 位候选人**\n"
+"\n"
+"- 4 份联系草稿，每份都提到对方作品集里的一处亮点\n"
+"- 2 人已答应：已提供面试时间（周二 11:00，周三 15:00）\n"
+"\n"
+"招聘进度表已更新。什么都没发送。"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
@@ -858,6 +1130,38 @@ msgstr "**星期四**\n"
 "**值得了解**\n"
 "- 下午 4 点后有小雨\n"
 "- 你关注的话题有两篇新报道"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tomorrow 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n"
+"\n"
+"- Deal: $30k, contract sent last week\n"
+"- Last email: asked about onboarding time\n"
+"- News: Kite Labs raised a Series A on Monday\n"
+"- Ask: who signs, and by when?"
+msgstr "**明天 10:00：Kite Labs（Dana Ruiz，运营副总裁）**\n"
+"\n"
+"- 交易：$30k，合同上周已发出\n"
+"- 最近一封邮件：问了上手需要多久\n"
+"- 新闻：Kite Labs 周一完成了 A 轮融资\n"
+"- 要问：谁来签字，什么时候签？"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tuesday: $2,340 from 31 orders** (up 12% on last Tuesday)\n"
+"\n"
+"- Best seller: Linen shirt, 9 sold\n"
+"- Refunds: 1, $48\n"
+"- Low stock: Linen shirt (4 left), Canvas tote (2 left)\n"
+"\n"
+"Added to your Sales sheet, row 212."
+msgstr "**周二：31 笔订单，收入 $2,340**（比上周二高 12%）\n"
+"\n"
+"- 最畅销：亚麻衬衫，卖出 9 件\n"
+"- 退款：1 笔，$48\n"
+"- 库存不足：亚麻衬衫（剩 4 件），帆布包（剩 2 个）\n"
+"\n"
+"已添加到你的销售表格第 212 行。"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "/ month"
@@ -926,6 +1230,10 @@ msgstr "什么都做一点"
 msgid "A command's output"
 msgstr "命令的输出"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "a file"
+msgstr "一个文件"
+
 #: apps/mobile/app/(settings)/labs.tsx
 #: apps/web/src/pages/settings/LabsSettingsPanel.tsx
 msgid "A kanban board of tickets your bots can work on"
@@ -935,6 +1243,11 @@ msgstr "以看板形式管理 Bot 可处理的工单"
 #: apps/web/src/components/settings/ApprovalRulesSettings.tsx
 msgid "A model approves routine actions and asks you about the rest."
 msgstr "由模型批准常规操作，其余操作会询问你。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A one-page brief before every client or sales call"
+msgstr "每次客户或销售通话前的一页简报"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "A sign-in page opened — enter this code there:"
@@ -950,6 +1263,11 @@ msgstr "已在 <0>{0}</0> 打开登录页。请在那里输入验证码，这个
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
 msgid "A weekly digest of what changed on topics you follow"
 msgstr "每周汇总你关注话题的最新变化"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A weekly marketing report per client, with a draft email"
+msgstr "每位客户一份每周营销报告，附邮件草稿"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "About"
@@ -1041,6 +1359,7 @@ msgid "Actions for space"
 msgstr "空间操作"
 
 #: apps/mobile/app/routine.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Active"
@@ -1070,6 +1389,8 @@ msgstr "活动日志"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 #: apps/web/src/components/messages/SecretAskCard.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/plugins/domain-search.tsx
 #: apps/web/src/pages/plugins/parts.tsx
 #: apps/web/src/pages/space/ScratchpadSection.tsx
@@ -1118,6 +1439,10 @@ msgstr "请填写服务器名称。"
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
 msgid "Add a stdio command."
 msgstr "请填写 stdio 命令。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Add a task"
+msgstr "添加任务"
 
 #: apps/mobile/app/routine.tsx
 #: apps/web/src/pages/shell/use-routine-editor.ts
@@ -1370,6 +1695,10 @@ msgstr "{price} 全部用于模型使用。"
 msgid "All bots"
 msgstr "全部 Bot"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "All brains"
+msgstr "所有大脑"
+
 #: apps/mobile/app/artifacts.tsx
 #: apps/web/src/pages/space/Artifacts.tsx
 msgid "All files"
@@ -1378,6 +1707,14 @@ msgstr "全部文件"
 #: apps/web/src/pages/settings/UsageSettingsPanel.tsx
 msgid "All models"
 msgstr "全部模型"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "All projects"
+msgstr "所有项目"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "All skills"
+msgstr "所有技能"
 
 #: apps/mobile/components/settings/space-availability.tsx
 #: apps/web/src/components/integrations/space-availability.tsx
@@ -1580,6 +1917,16 @@ msgstr "已回答"
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Answered: {answer}"
 msgstr "已回答：{answer}"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers booking and quote requests with your open times"
+msgstr "按你的空闲时间回复预约和报价请求"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers new property leads in minutes and books showings"
+msgstr "几分钟内回复新的房产线索并安排看房"
 
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
 msgid "Anthropic API"
@@ -1991,6 +2338,7 @@ msgstr "阻止"
 #: apps/mobile/app/(settings)/approvals.tsx
 #: apps/mobile/lib/board/board.ts
 #: apps/web/src/components/settings/ApprovalRulesSettings.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/space/ticket-status.ts
 msgid "Blocked"
 msgstr "已阻塞"
@@ -2003,6 +2351,20 @@ msgstr "已阻塞"
 #: apps/web/src/pages/space/Board.tsx
 msgid "Board"
 msgstr "看板"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Booking desk"
+msgstr "预约台"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Bookkeeping"
+msgstr "记账"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Books tidy-up"
+msgstr "账目整理"
 
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
@@ -2128,9 +2490,22 @@ msgstr "使用自己模型的 Bot"
 msgid "Bound to bots"
 msgstr "已绑定 Bot"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Brain file"
+msgstr "大脑文件"
+
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Brain label"
 msgstr "Brain 标签"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Brains"
+msgstr "大脑"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Brains and skills"
+msgstr "大脑和技能"
 
 #: apps/mobile/app/(settings)/skills.tsx
 #: apps/web/src/components/integrations/skills-dialog.tsx
@@ -2293,6 +2668,9 @@ msgstr "无法读取图像"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/onboarding/model-step.tsx
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
@@ -2352,6 +2730,11 @@ msgstr "已取消"
 #: apps/web/src/pages/shell/composer/composer-error.tsx
 msgid "Cancelled trials have no computer hours."
 msgstr "已取消的试用没有电脑时长。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Candidate outreach"
+msgstr "候选人联系"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -2646,6 +3029,11 @@ msgstr "清除筛选"
 msgid "Clearing…"
 msgstr "正在清空…"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Client report"
+msgstr "客户报告"
+
 #: apps/mobile/app/new-group.tsx
 #: apps/mobile/app/page.tsx
 #: apps/mobile/app/paywall.tsx
@@ -2656,6 +3044,7 @@ msgstr "正在清空…"
 #: apps/mobile/components/native/sheet-close-button.tsx
 #: apps/web/src/components/ErrorBoundary.tsx
 #: apps/web/src/components/WindowChrome.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
@@ -2671,6 +3060,10 @@ msgstr "关闭"
 msgid "Close bot templates"
 msgstr "关闭 Bot 模板"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Close brains"
+msgstr "关闭大脑"
+
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "Close chart"
 msgstr "关闭图表"
@@ -2683,6 +3076,10 @@ msgstr "关闭聊天整理"
 #: apps/web/src/pages/shell/computers/computer-overlay.tsx
 msgid "Close computer"
 msgstr "关闭电脑"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Close goals"
+msgstr "关闭目标"
 
 #: apps/mobile/components/media/image-artifact-viewer.tsx
 msgid "Close image"
@@ -2727,6 +3124,10 @@ msgstr "关闭面板"
 #: apps/web/src/components/messages/ArtifactFileCard.tsx
 msgid "Close preview"
 msgstr "关闭预览"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Close projects"
+msgstr "关闭项目"
 
 #: apps/web/src/components/integrations/skills-dialog.tsx
 msgid "Close skills"
@@ -3126,6 +3527,10 @@ msgstr "连接"
 msgid "Connector"
 msgstr "连接器"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Consultant or agency"
+msgstr "顾问或代理机构"
+
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
 #: apps/web/src/components/vault/kinds.tsx
@@ -3141,6 +3546,11 @@ msgstr "联系人"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Contains code to run"
 msgstr "包含可运行的代码"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Content repurposer"
+msgstr "内容再利用"
 
 #: apps/mobile/app/(settings)/model-settings.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
@@ -4417,9 +4827,21 @@ msgstr "无法更新钱包"
 msgid "Could not verify computer setup ({failureMessage}). Fix the connection, then check again."
 msgstr "无法确认电脑是否就绪（{failureMessage}）。请修复连接后再检查一次。"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't confirm that. Try again."
+msgstr "无法确认。请重试。"
+
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Couldn't copy. Select the link and copy it."
 msgstr "无法复制。请选中链接后复制。"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't delete that. Try again."
+msgstr "无法删除。请重试。"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't dismiss that. Try again."
+msgstr "无法忽略。请重试。"
 
 #: apps/web/src/pages/auth/AdminAccessPage.tsx
 msgid "Couldn't load grants"
@@ -4441,13 +4863,33 @@ msgstr "无法加载提交记录"
 msgid "Couldn't load this page. Try again."
 msgstr "无法加载此页面。请重试。"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't load your brains. Try again."
+msgstr "无法加载你的大脑。请重试。"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Couldn't load your goals. Try again."
+msgstr "无法加载你的目标。请重试。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Couldn't load your projects. Try again."
+msgstr "无法加载你的项目。请重试。"
+
 #: apps/web/src/pages/settings/PaymentWalletSettingsPanel.tsx
 msgid "Couldn't load your wallet"
 msgstr "无法加载钱包"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't open what I learned. Try again in a moment."
+msgstr "无法打开我学到的内容。请稍后再试。"
+
 #: apps/mobile/components/thread/thread-error-notice.tsx
 msgid "Couldn't refresh — showing the last loaded messages."
 msgstr "无法刷新——显示最近加载的消息。"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Couldn't save. Open it again and retry."
+msgstr "无法保存。请重新打开后再试。"
 
 #: apps/mobile/app/computer.tsx
 msgid "Couldn't start the computer"
@@ -4457,6 +4899,10 @@ msgstr "无法启动电脑"
 #: apps/web/src/components/messages/OutgoingDraftCard.tsx
 msgid "Couldn’t submit the draft"
 msgstr "无法提交草稿"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Couldn't undo that. Try again."
+msgstr "无法撤销。请重试。"
 
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
@@ -4567,6 +5013,10 @@ msgstr "已创建例行任务“{name}”"
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "Creating…"
 msgstr "正在创建…"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Creator"
+msgstr "创作者"
 
 #: apps/web/src/pages/plugins/source-form.tsx
 msgid "Credential"
@@ -4708,6 +5158,11 @@ msgstr "日常工作"
 msgid "days"
 msgstr "天"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Deal follow-up"
+msgstr "交易跟进"
+
 #: apps/mobile/app/(settings)/messaging.tsx
 #: apps/mobile/components/calls/IncomingCall.tsx
 #: apps/mobile/components/cards/ToolQuestionCard.tsx
@@ -4782,6 +5237,7 @@ msgstr "默认范围"
 #: apps/web/src/components/account/PasskeySettings.tsx
 #: apps/web/src/components/pages/PagesList.tsx
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineEditor.tsx
 #: apps/web/src/pages/settings/OrganizationSettingsPanel.tsx
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
@@ -4851,6 +5307,11 @@ msgstr "要删除 {name} 吗？"
 msgid "Delete account"
 msgstr "删除账户"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Delete for good"
+msgstr "永久删除"
+
 #: apps/mobile/app/group-settings.tsx
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "Delete group"
@@ -4867,6 +5328,10 @@ msgstr "同时删除记忆"
 #: apps/web/src/pages/settings/OrganizationSettingsPanel.tsx
 msgid "Delete organization"
 msgstr "删除组织"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Delete project"
+msgstr "删除项目"
 
 #: apps/mobile/app/routine.tsx
 msgid "Delete routine"
@@ -4987,6 +5452,7 @@ msgid "Details"
 msgstr "详情"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Developer"
 msgstr "开发"
@@ -5135,6 +5601,7 @@ msgstr "正在断开…"
 #: apps/web/src/components/messages/SecretAskCard.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
 msgid "Dismiss"
@@ -5176,6 +5643,10 @@ msgstr "文档"
 msgid "Document changed. Reopen to edit the latest version."
 msgstr "文档已更改。请重新打开以编辑最新版本。"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Doing"
+msgstr "进行中"
+
 #: apps/mobile/app/sign-in.tsx
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Don’t have an account?"
@@ -5194,6 +5665,8 @@ msgstr "还没有账户？"
 #: apps/web/src/components/messages/ToolActivityDisclosure.tsx
 #: apps/web/src/components/settings/AccountDataSettings.tsx
 #: apps/web/src/components/vault/VaultImport.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
 #: apps/web/src/pages/shell/bots/import-setup-card.tsx
 #: apps/web/src/pages/space/ActivityList.tsx
@@ -5240,6 +5713,16 @@ msgstr "正在下载…"
 msgid "Draft skill"
 msgstr "技能草稿"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts a reply to every new Google review"
+msgstr "为每条新的 Google 评价起草回复"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts replies to customer emails using real order data"
+msgstr "根据真实订单数据起草客户邮件回复"
+
 #: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
 msgid "Drag, drop, or paste an image"
 msgstr "拖放或粘贴图片"
@@ -5260,6 +5743,7 @@ msgstr "每个名称只能使用一次。"
 #: apps/web/src/components/messages/AskCard.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
 #: apps/web/src/pages/integrations/McpServersOverlay.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 #: apps/web/src/pages/settings/MemorySettingsOverlay.tsx
 msgid "Edit"
@@ -5649,6 +6133,10 @@ msgstr "失败。"
 msgid "Failure handling"
 msgstr "失败处理"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Feedback"
+msgstr "反馈"
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "要比较的字段（可选）"
@@ -5660,6 +6148,10 @@ msgstr "要比较的字段（可选）"
 #: apps/web/src/pages/space/SpaceSearch.tsx
 msgid "File"
 msgstr "文件"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Files and assets"
+msgstr "文件和素材"
 
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Files or folders on the computer"
@@ -5720,6 +6212,21 @@ msgstr "查找模型"
 #: apps/web/src/pages/onboarding/model-step.tsx
 msgid "Finding…"
 msgstr "正在查找…"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds fitting jobs, tailors your CV, and tracks applications"
+msgstr "寻找合适的职位，调整你的简历，并跟踪申请"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds stalled deals and drafts the next email"
+msgstr "找出停滞的交易并起草下一封邮件"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds unpaid invoices and drafts polite reminders"
+msgstr "找出未付发票并起草礼貌的提醒"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/mobile/app/(settings)/plugin.tsx
@@ -5800,6 +6307,10 @@ msgstr "免费至"
 msgid "Free until {date}"
 msgstr "{date} 前免费"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Freelancer"
+msgstr "自由职业者"
+
 #: apps/mobile/lib/routines/cron.ts
 #: apps/web/src/lib/routines/cron.ts
 msgid "Friday"
@@ -5821,6 +6332,18 @@ msgstr "从 {0}"
 #: apps/web/src/pages/plugins/github-import.tsx
 msgid "From GitHub"
 msgstr "来自 GitHub"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From how a task went"
+msgstr "来自任务的结果"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From outside content"
+msgstr "来自外部内容"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "From what you said"
+msgstr "来自你说过的话"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Full access, nothing to pay"
@@ -5868,6 +6391,22 @@ msgstr "Gente"
 msgid "Gente credits"
 msgstr "Gente 额度"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Gente is easing off this one for now."
+msgstr "Gente 暂时会放慢这一项。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Gente keeps each project's tasks up to date as it works."
+msgstr "Gente 工作时会随时更新每个项目的任务。"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Gente works toward these on its own and tells you what it did."
+msgstr "Gente 会自己朝这些目标努力，并告诉你它做了什么。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Gente:"
+msgstr "Gente："
+
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "每有一位朋友开始试用，你就能获得一个月免费。"
@@ -5912,6 +6451,14 @@ msgstr "Git 事件"
 msgid "Give a friend {weeks} weeks free"
 msgstr "送朋友 {weeks} 周免费"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Go ahead"
+msgstr "继续吧"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Go hard"
+msgstr "全力以赴"
+
 #: apps/web/src/pages/NotFound.tsx
 msgid "Go home"
 msgstr "返回首页"
@@ -5919,6 +6466,15 @@ msgstr "返回首页"
 #: apps/web/src/pages/shell/keyboard-shortcuts-dialog.tsx
 msgid "Go to bot"
 msgstr "前往 Bot"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Goal"
+msgstr "目标"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Goals"
+msgstr "目标"
 
 #: apps/web/src/pages/auth/AdminAccessPage.tsx
 msgid "Grant"
@@ -6043,6 +6599,10 @@ msgstr "你好 {name}，我是 {bot}。"
 msgid "Hello, {bot} here."
 msgstr "你好，我是 {bot}。"
 
+#: apps/web/src/pages/Shell.tsx
+msgid "Here is the transcript of the call I just finished, recorded and transcribed on this computer. Write the notes (summary, decisions, action items, open questions), remember the decisions and my action items, and save drafts of the follow-ups. Lines marked You: are me; Them: are the others."
+msgstr "这是我刚结束的通话记录，在这台电脑上录音并转写。请写好笔记（摘要、决定、待办事项、待定问题），记住这些决定和我的待办事项，并保存跟进邮件的草稿。标有 You: 的是我，标有 Them: 的是其他人。"
+
 #: apps/mobile/app/bot-settings.tsx
 msgid "Hi, I'm {name}."
 msgstr "你好，我是 {name}。"
@@ -6085,6 +6645,10 @@ msgstr "隐藏键盘"
 #: apps/web/src/components/I18nBootstrap.tsx
 msgid "Hide password"
 msgstr "隐藏密码"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Hide the change"
+msgstr "隐藏改动"
 
 #: apps/mobile/components/calls/VoiceChatCard.tsx
 #: apps/web/src/components/call/VoiceChatCard.tsx
@@ -6152,6 +6716,11 @@ msgstr "频率"
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "How other bots see it"
 msgstr "其他 Bot 如何了解它"
+
+#. placeholder {0}: goal.title
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "How proactive for {0}"
+msgstr "{0} 的主动程度"
 
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "How to check"
@@ -6265,6 +6834,10 @@ msgstr "会议中"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "In this bot"
 msgstr "已在此 Bot"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "In use"
+msgstr "使用中"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 msgid "Inactive"
@@ -6421,6 +6994,11 @@ msgstr "邀请成员"
 msgid "Invited"
 msgstr "已邀请"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Invoice chaser"
+msgstr "催款助手"
+
 #: apps/web/src/pages/settings/MemorySettingsOverlay.tsx
 msgid "Isolated"
 msgstr "隔离"
@@ -6436,6 +7014,22 @@ msgstr "无法打开。请从侧边栏重试。"
 #: apps/web/src/components/pages/PageViewHost.tsx
 msgid "It may have been deleted, or it belongs to someone else."
 msgstr "它可能已被删除，或属于其他人。"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would agree to terms"
+msgstr "这会同意条款"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would delete your data"
+msgstr "这会删除你的数据"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would send something as you"
+msgstr "这会以你的名义发送内容"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "It would spend money"
+msgstr "这会花钱"
 
 #: apps/mobile/lib/inbox/sections/confirm-delete-section.ts
 #: apps/web/src/pages/shell/shell-dialogs.tsx
@@ -6457,6 +7051,11 @@ msgstr "它的链接将失效。此操作无法撤销。"
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Its shared link stops working and its cards in chat show it as deleted. This can't be undone."
 msgstr "其共享链接将失效，聊天中的卡片会显示为已删除。此操作无法撤销。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Job hunt"
+msgstr "找工作"
 
 #: apps/web/src/pages/auth/Invite.tsx
 #: apps/web/src/pages/auth/JoinOrganization.tsx
@@ -6511,6 +7110,7 @@ msgstr "刚刚"
 
 #. Keeps the account's current timezone instead of switching
 #: apps/mobile/lib/i18n/device-timezone.ts
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/shell/timezone-prompt.tsx
 msgid "Keep"
 msgstr "保留"
@@ -6592,6 +7192,11 @@ msgstr "上次使用"
 #: apps/web/src/components/DesktopUpdates.tsx
 msgid "Later"
 msgstr "稍后"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Lead responder"
+msgstr "线索回复"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Learn from conversations"
@@ -6682,6 +7287,11 @@ msgstr "聆听"
 #: apps/web/src/pages/shell/composer/hold-to-talk.tsx
 msgid "Listening…"
 msgstr "正在聆听…"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Listing writer"
+msgstr "商品文案"
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Live update settings"
@@ -6802,6 +7412,10 @@ msgstr "加载中…"
 msgid "Local access lets bots run commands without asking. Avoid it on shared or public servers."
 msgstr "本地访问权限允许 Bot 无需询问就执行命令。请勿在共享或公开服务器上启用。"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Local business"
+msgstr "本地商家"
+
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Local computer access requires the latest desktop app."
 msgstr "访问本机电脑需要最新版桌面应用。"
@@ -6837,6 +7451,10 @@ msgstr "长按可置顶或移动到分组"
 #: apps/mobile/components/inbox/inbox-rows.tsx
 msgid "Long press to pin, move, or silence notifications"
 msgstr "长按可置顶、移动或静音通知"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Looking for work"
+msgstr "正在找工作"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Looks like it contains a key"
@@ -6933,11 +7551,16 @@ msgstr "标为未读"
 msgid "Mark as Unread"
 msgstr "标为未读"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Mark done"
+msgstr "标记完成"
+
 #: apps/web/src/components/messages/markdown-copy.tsx
 msgid "Markdown table"
 msgstr "Markdown 表格"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Marketing"
 msgstr "营销"
@@ -7014,6 +7637,16 @@ msgstr "无法加入会议。"
 #: apps/web/src/pages/shell/meetings/meetings-dialog.tsx
 msgid "Meeting link"
 msgstr "会议链接"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting notes"
+msgstr "会议笔记"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting prep"
+msgstr "会议准备"
 
 #: apps/mobile/app/_layout.tsx
 #: apps/mobile/app/bot-profile.tsx
@@ -7507,6 +8140,10 @@ msgstr "新电脑运行于"
 msgid "New contact"
 msgstr "新建联系人"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "New goal"
+msgstr "新目标"
+
 #: apps/web/src/pages/space/GroupPanel.tsx
 msgid "New group"
 msgstr "新建群组"
@@ -7559,6 +8196,10 @@ msgstr "新密码"
 msgid "New private space"
 msgstr "新建私人空间"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "New project"
+msgstr "新项目"
+
 #: apps/mobile/app/routine.tsx
 #: apps/mobile/app/routines.tsx
 #: apps/web/src/pages/routines/RoutineList.tsx
@@ -7582,6 +8223,10 @@ msgstr "新建技能"
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "New space"
 msgstr "新建空间"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "New task"
+msgstr "新任务"
 
 #: apps/web/src/pages/space/Board.tsx
 msgid "New ticket"
@@ -7664,6 +8309,10 @@ msgstr "没有匹配的 Bot"
 #: packages/i18n/src/computer-usage.ts
 msgid "No computer hours used yet"
 msgstr "尚未使用电脑时长"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "No goals yet. Tell Gente what you want, or add one here."
+msgstr "还没有目标。告诉 Gente 你想要什么，或在这里添加一个。"
 
 #: apps/mobile/components/cards/OutgoingDraftCard.tsx
 #: apps/mobile/components/thread/message-bubble.tsx
@@ -7750,6 +8399,10 @@ msgstr "没有套餐或密钥？使用额度"
 #: apps/mobile/components/media/video-preview.tsx
 msgid "No preview for this file type."
 msgstr "此文件类型无法预览。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "No projects yet. Start one, or ask Gente to start one in a chat."
+msgstr "还没有项目。新建一个，或在聊天中让 Gente 帮你新建。"
 
 #: apps/web/src/components/integrations/IntegrationSetup.tsx
 msgid "No remote MCP servers found"
@@ -7844,6 +8497,7 @@ msgstr "未找到网站列和密码列。"
 msgid "None"
 msgstr "无"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/space/ticket-priority.ts
 msgid "Normal"
 msgstr "普通"
@@ -7891,6 +8545,11 @@ msgstr "不在 Gente 目录中"
 msgid "Not in the plugin catalog"
 msgstr "不在插件目录中"
 
+#. placeholder {0}: earlier.length
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Not in use ({0})"
+msgstr "未使用（{0}）"
+
 #: apps/mobile/components/cards/McpApprovalCard.tsx
 #: apps/mobile/lib/auth/passkey.ts
 #: apps/mobile/lib/composer/composer-dictation.ts
@@ -7936,6 +8595,10 @@ msgstr "未发送。轻点重试"
 msgid "Not supported in Gente"
 msgstr "Gente 不支持"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Not this"
+msgstr "不要这个"
+
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Not used by Gente"
 msgstr "Gente 不使用"
@@ -7945,6 +8608,15 @@ msgstr "Gente 不使用"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "无法正常工作"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Notes, decisions and follow-ups from every call, kept on your computer"
+msgstr "每次通话的笔记、决定和跟进，都保存在你的电脑上"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "Nothing here yet. When Gente researches something or hears your feedback, it keeps notes here."
+msgstr "这里还没有内容。Gente 研究某件事或听到你的反馈时，会在这里记笔记。"
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -7962,6 +8634,10 @@ msgstr "还没有收到。请检查你是否按显示的内容原样把代码发
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
 msgstr "还没有收到。WhatsApp 需要一个 Meta 商业应用和一个 Meta 能访问到的地址，而且 Meta 还没有在所有国家允许通用 AI 助手。Telegram 可以立即使用：在 Gente 菜单中选择“连接 Telegram”。"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Nothing yet. When you tell me how you like things done, it shows up here."
+msgstr "还没有内容。当你告诉我你喜欢怎么做事时，会显示在这里。"
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
@@ -8052,6 +8728,10 @@ msgstr "一次性"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "One-time purchase. Credits do not expire."
 msgstr "单次购买，额度不会过期。"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Online store"
+msgstr "网店"
 
 #: apps/web/src/components/messages/SecretAskCard.tsx
 msgid "Only enter a code {codeHost} sent you."
@@ -8457,11 +9137,14 @@ msgstr "请粘贴你的 API 密钥，然后重新测试。"
 
 #: apps/mobile/components/calls/voice-player-bar.tsx
 #: apps/mobile/components/media/audio-attachment.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "Pause"
 msgstr "暂停"
 
 #: apps/mobile/lib/cards/import-setup.ts
 #: apps/mobile/lib/routines/routine.ts
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/routines/RoutineList.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Paused"
@@ -8496,6 +9179,11 @@ msgstr "人设"
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "Personal"
 msgstr "个人"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Personal outreach drafts and interview times for your shortlist"
+msgstr "为你的候选名单准备个性化联系草稿和面试时间"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -8706,11 +9394,33 @@ msgstr "资料"
 msgid "Program: {name}"
 msgstr "程序：{name}"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Progress"
+msgstr "进度"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "project feedback"
+msgstr "项目反馈"
+
 #: apps/mobile/app/(settings)/model-connection.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/onboarding/model-step.tsx
 msgid "Project ID"
 msgstr "项目 ID"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Project name"
+msgstr "项目名称"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
+msgid "Projects"
+msgstr "项目"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Proposal writer"
+msgstr "方案撰写"
 
 #: apps/web/src/components/teach/TeachRecordingChrome.tsx
 msgid "Protected input"
@@ -8758,6 +9468,10 @@ msgstr "提问、审批和接管"
 #: apps/web/src/pages/space/ActivityList.tsx
 msgid "Queued"
 msgstr "排队中"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Quiet"
+msgstr "安静"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/mobile/components/thread/quote-sheet.tsx
@@ -8809,6 +9523,10 @@ msgstr "正在读取…"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
 msgstr "就绪"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Real estate"
+msgstr "房地产"
 
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
 msgid "Reason"
@@ -8949,6 +9667,10 @@ msgstr "恢复操作会还原上次保存的工作区。未保存的工作可能
 msgid "Recreating the computer"
 msgstr "正在重建电脑"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Recruiting"
+msgstr "招聘"
+
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Recruiting & HR"
@@ -9036,6 +9758,7 @@ msgstr "远程 MCP 服务器"
 #: apps/web/src/components/vault/LoginFieldsInput.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/plugins/connector-detail.tsx
 #: apps/web/src/pages/plugins/manage-view.tsx
@@ -9386,6 +10109,10 @@ msgstr "已恢复"
 msgid "Restoring your workspace"
 msgstr "正在恢复工作区"
 
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Resume"
+msgstr "继续"
+
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/components/inbox/inbox-swipe-row.ios.tsx
 msgid "Resume notifications"
@@ -9418,6 +10145,8 @@ msgstr "恢复通知"
 #: apps/web/src/pages/auth/Auth.tsx
 #: apps/web/src/pages/auth/Invite.tsx
 #: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
 #: apps/web/src/pages/plugins/manage-view.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
@@ -9455,6 +10184,11 @@ msgstr "返回收件箱"
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
 msgstr "请检查提供商设置并重新测试。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Review replies"
+msgstr "评价回复"
 
 #: apps/mobile/lib/bots/bot-template-copy.ts
 #: apps/web/src/components/bot-templates/bot-template-copy.ts
@@ -9581,10 +10315,19 @@ msgstr "运行"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "这个 Bot 收到该提供商发来的已验证消息时会运行。"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Sales"
+msgstr "销售"
+
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Sales & CRM"
 msgstr "销售与 CRM"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sales digest"
+msgstr "销售日报"
 
 #: apps/mobile/app/(settings)/team-conversation.tsx
 msgid "Same as {bot}"
@@ -9633,6 +10376,7 @@ msgstr "周六"
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 #: apps/web/src/pages/integrations/McpServerForm.tsx
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
 #: apps/web/src/pages/model-settings/model-settings-panel.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
@@ -9897,6 +10641,10 @@ msgstr "安全与运维"
 msgid "Security code"
 msgstr "安全码"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "See the change"
+msgstr "查看改动"
+
 #: apps/web/src/pages/shell/chat/chat-header.tsx
 msgid "Select a bot"
 msgstr "选择 Bot"
@@ -9955,6 +10703,10 @@ msgstr "作为文件发送"
 #: apps/web/src/components/account/AccountAccess.tsx
 msgid "Send deletion code"
 msgstr "发送删除验证码"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Send feedback"
+msgstr "发送反馈"
 
 #: apps/web/src/pages/shell/composer/hold-to-talk.tsx
 msgid "Send recording"
@@ -10371,6 +11123,7 @@ msgstr "技能 {position}"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 #: apps/web/src/components/integrations/skills-dialog.tsx
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
+#: apps/web/src/pages/shell/composer/learn-shortcuts.tsx
 #: apps/web/src/pages/shell/sidebar/sidebar-footer.tsx
 #: apps/web/src/pages/shell/use-palette-actions.ts
 msgid "Skills"
@@ -10380,6 +11133,7 @@ msgstr "技能"
 #: apps/mobile/app/new-group.tsx
 #: apps/mobile/components/cards/ComputerCard.tsx
 #: apps/web/src/components/computers/ComputerCard.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/shell/computers/computer-release-actions.tsx
 msgid "Skip"
 msgstr "跳过"
@@ -10515,6 +11269,11 @@ msgstr "按 {column} 排序，降序"
 msgid "Sorts new email and drafts the replies"
 msgstr "分拣新邮件并起草回复"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sorts uncategorized transactions and lists missing receipts"
+msgstr "整理未分类的交易，并列出缺少的收据"
+
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Sounds"
 msgstr "声音"
@@ -10598,6 +11357,7 @@ msgstr "SSO 暂时不可用，请重试。"
 msgid "Star on GitHub"
 msgstr "在 GitHub 上点星"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/shell/computers/computer-overlay.tsx
 msgid "Start"
 msgstr "启动"
@@ -10679,6 +11439,10 @@ msgstr "州/省/地区"
 msgid "Status"
 msgstr "状态"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Stays on this computer. Undo anything."
+msgstr "保存在这台电脑上。一切都能撤销。"
+
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "Steps"
 msgstr "步骤"
@@ -10719,6 +11483,11 @@ msgstr "已停止"
 #: apps/web/src/lib/platform/browser-notifications.ts
 msgid "Stopped."
 msgstr "已停止。"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Store support"
+msgstr "店铺客服"
 
 #: apps/web/src/pages/integrations/McpServerForm.tsx
 msgid "Stored encrypted"
@@ -10891,6 +11660,10 @@ msgstr "点按打开"
 msgid "Target"
 msgstr "目标"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Tasks"
+msgstr "任务"
+
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 msgid "Teach a task"
 msgstr "示范任务"
@@ -10919,6 +11692,10 @@ msgstr "Teams 消息"
 #: apps/mobile/components/cards/run-error-sheet.tsx
 msgid "Technical details"
 msgstr "技术详情"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Tell Gente what to keep or change"
+msgstr "告诉 Gente 要保留或修改什么"
 
 #: apps/web/src/components/computers/ComputerProviderSettings.tsx
 msgid "Template"
@@ -10959,6 +11736,11 @@ msgstr "正在测试…"
 #: apps/web/src/components/BotEmailAddressField.tsx
 msgid "That address isn't available"
 msgstr "该地址不可用"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "That didn't go through. Try again."
+msgstr "没有成功。请重试。"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That doesn’t look like a URL"
@@ -11478,6 +12260,10 @@ msgstr "周四"
 msgid "Time of day"
 msgstr "时间"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Timeline"
+msgstr "时间线"
+
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Timezone"
 msgstr "时区"
@@ -11508,6 +12294,7 @@ msgid "To add"
 msgstr "待添加"
 
 #: apps/mobile/lib/board/board.ts
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 #: apps/web/src/pages/space/ticket-status.ts
 msgid "To do"
 msgstr "待办"
@@ -11519,6 +12306,7 @@ msgstr "至:"
 
 #: apps/mobile/app/paywall.tsx
 #: apps/mobile/components/thread/time-separator.tsx
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/settings/UsageSettingsPanel.tsx
 #: apps/web/src/pages/shell/chat/chat-context.tsx
 #: apps/web/src/pages/space/Artifacts.tsx
@@ -11728,9 +12516,20 @@ msgstr "关闭"
 msgid "Turn on"
 msgstr "开启"
 
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Turn on Composio apps"
-msgstr "开启 Composio 应用"
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns a client inquiry into a proposal and a reply draft"
+msgstr "把客户询问变成方案和回复草稿"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns product notes into ready listings with titles and tags"
+msgstr "把商品笔记变成带标题和标签的现成商品信息"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns your latest video into posts for every channel"
+msgstr "把你最新的视频变成适合各个渠道的帖子"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -11762,8 +12561,22 @@ msgstr "未分配"
 
 #: apps/mobile/components/cards/change-undo.tsx
 #: apps/web/src/components/messages/AskCard.tsx
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Undo"
 msgstr "撤销"
+
+#. placeholder {0}: action.title
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Undo {0}"
+msgstr "撤销{0}"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Undone"
+msgstr "已撤销"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Undone."
+msgstr "已撤销。"
 
 #: apps/mobile/components/integrations/integration-detail.tsx
 #: apps/web/src/pages/plugins/connector-detail.tsx
@@ -12027,6 +12840,10 @@ msgstr "使用 Gente 额度"
 msgid "Use in this bot"
 msgstr "用于此 Bot"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Use it"
+msgstr "使用"
+
 #: apps/mobile/app/(settings)/memory-note.tsx
 msgid "Use latest"
 msgstr "使用最新版本"
@@ -12229,6 +13046,10 @@ msgstr "等待登录——链接将在约 {minutes} 分钟后过期。"
 msgid "Waiting for this bot’s response."
 msgstr "正在等待这个 Bot 的回复。"
 
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "Waiting for you"
+msgstr "等你处理"
+
 #: apps/web/src/lib/chat/roster-status.ts
 msgid "Waiting in line…"
 msgstr "排队等候…"
@@ -12251,6 +13072,10 @@ msgstr "唤醒"
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Wallet"
 msgstr "钱包"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "web search"
+msgstr "网页搜索"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Web, desktop and mobile"
@@ -12311,9 +13136,17 @@ msgstr "欢迎使用 Gente"
 msgid "What about its memories?"
 msgstr "它的记忆怎么处理？"
 
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "What are you working on?"
+msgstr "你在做什么？"
+
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What can this space use?"
 msgstr "这个空间可以使用什么？"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "What do you do?"
+msgstr "你是做什么的？"
 
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "What do you most want Gente to help with?"
@@ -12326,6 +13159,18 @@ msgstr "你最希望 Gente 帮你做什么？"
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"
 msgstr "你想让我先做什么？"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "What do you want? For example, land a job"
+msgstr "你想要什么？比如：找到一份工作"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "What Gente learned on each topic, with where it learned it. Stays on this computer."
+msgstr "Gente 在每个主题上学到的内容，以及学到的出处。保存在这台电脑上。"
+
+#: apps/web/src/pages/learning/LearnedOverlay.tsx
+msgid "What I learned about you"
+msgstr "我对你的了解"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "What it remembers"
@@ -12520,6 +13365,15 @@ msgstr "按年 −{percent}%"
 msgid "Yesterday"
 msgstr "昨天"
 
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Yesterday's sales, refunds and low stock in one message"
+msgstr "昨天的销售、退款和库存不足，一条消息全掌握"
+
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "you"
+msgstr "你"
+
 #: apps/mobile/app/index.tsx
 #: apps/mobile/app/page-share.tsx
 #: apps/mobile/components/calls/CallCard.tsx
@@ -12554,6 +13408,10 @@ msgstr "你已拒接"
 #: apps/web/src/components/spaces/InviteDialog.tsx
 msgid "You get a free month when they start their trial with a new card."
 msgstr "对方用新卡开始试用后，你将获得一个月免费。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "You:"
+msgstr "你："
 
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
@@ -12600,6 +13458,10 @@ msgstr "今天将从你的卡中扣除按比例计算的差额。"
 msgid "Your card was not charged"
 msgstr "你的银行卡未被扣款"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "your chat"
+msgstr "你的聊天"
+
 #: apps/mobile/app/computer.tsx
 #: apps/web/src/pages/Shell.tsx
 msgid "Your computer's disk is nearly full. Free up space by removing build output and caches you no longer need."
@@ -12625,6 +13487,10 @@ msgstr "你的邮箱"
 #: apps/mobile/app/paywall.tsx
 msgid "Your free trial has started"
 msgstr "你的免费试用已开始"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your goals"
+msgstr "你的目标"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts

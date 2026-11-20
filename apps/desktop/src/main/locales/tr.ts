@@ -266,4 +266,11 @@ export const TR_MESSAGES: Record<string, string> = {
   "Sign In to Gente…": "Gente'ye giriş yap…",
   "Sign Out of Gente": "Gente'den çıkış yap",
   "Gente Support…": "Gente Destek…",
+  // Computer use pill
+  "Gente is using your computer": "Gente bilgisayarını kullanıyor",
+  "Press {key} to stop": "Durdurmak için {key} tuşuna bas",
+  Stop: "Durdur",
+  Stopped: "Durduruldu",
+  "Stop Meeting Notes": "Toplantı notlarını durdur",
+  "Take Meeting Notes…": "Toplantı notu al…",
 };

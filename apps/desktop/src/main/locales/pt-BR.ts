@@ -270,4 +270,11 @@ export const PT_BR_MESSAGES: Record<string, string> = {
     "Sua IA mora no seu computador. Suas conversas nunca saem dele.",
   "Sign In to Gente…": "Entrar no Gente…",
   "Sign Out of Gente": "Sair do Gente",
+  // Computer use pill
+  "Gente is using your computer": "O Gente está usando seu computador",
+  "Press {key} to stop": "Pressione {key} para parar",
+  Stop: "Parar",
+  Stopped: "Parado",
+  "Take Meeting Notes…": "Fazer notas da reunião…",
+  "Stop Meeting Notes": "Parar notas da reunião",
 };

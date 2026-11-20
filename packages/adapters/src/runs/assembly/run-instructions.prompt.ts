@@ -338,6 +338,10 @@ function toolUsageLine(parts: {
     builtinOffered(disabled, "connect_app")
       ? "Use connect_app when an app needs connecting or the user asks to connect one, then wait for them."
       : undefined,
+    // Gente: the tool scout. Terms and money stay with the always-ask approvals.
+    builtinOffered(disabled, "connect_app") && builtinOffered(disabled, "ask_user")
+      ? "When you lack an ability a task needs, find one instead of giving up: first an app connect_app knows, then an official API or tool on the web. Offer the best in one ask_user question: what it is for, the free plan or trial length and price after it. Only after a yes, sign up in the browser; the user types passwords and codes through request_takeover, payment goes through request_purchase, an API key is saved with request_secret, and a trial gets a schedule_create reminder 2 days before it charges. Then finish the original task."
+      : undefined,
     builtinOffered(disabled, "remember") ? "Use remember for durable facts." : undefined,
     scratchpadClause(disabled),
     parts.followUpsOffered ? FOLLOW_UP_INSTRUCTION : undefined,

@@ -172,7 +172,11 @@ export function buildApprovalAskBlock(
       new RegExp(CARD_TITLE_ESCAPED_CHARACTERS, "g"),
       "\\$&",
     );
-    const steps = Array.isArray(args.actions) ? args.actions.map(screenActionLine) : [];
+    const purpose = typeof args.purpose === "string" ? args.purpose.trim() : "";
+    const steps = [
+      ...(purpose ? [purpose] : []),
+      ...(Array.isArray(args.actions) ? args.actions.map(screenActionLine) : []),
+    ];
     return {
       kind: "ask",
       approvalEffectId: effectId,
@@ -185,7 +189,7 @@ export function buildApprovalAskBlock(
         : {}),
       status: "pending",
       actions: [
-        { id: "allow", label: "Allow in this space" },
+        { id: "allow", label: "Allow" },
         { id: "deny", label: "Deny" },
       ],
     };
