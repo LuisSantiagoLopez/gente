@@ -240,3 +240,33 @@ describe("staged rollout", () => {
     );
   });
 });
+
+describe("fleet learning", () => {
+  it("turns a self-repair seen on enough devices into one group, counting devices not events", async () => {
+    const { groupRepairs } = await import("./intake.js");
+    const e = (installId: string, outcome = "fixed", platform = "darwin") => ({
+      failureId: "worker-stalled",
+      outcome,
+      ms: 1500,
+      version: "0.2.9",
+      platform,
+      installId,
+    });
+    const events = [
+      e("a"),
+      e("a"),
+      e("b"),
+      e("c", "needs-person", "win32"),
+      { ...e("d"), failureId: "disk-full" },
+    ];
+    const groups = groupRepairs(events, 3);
+    expect(groups).toHaveLength(1);
+    expect(groups[0]).toMatchObject({
+      failureId: "worker-stalled",
+      devices: 3,
+      events: 4,
+      fixedShare: 0.75,
+      runners: ["macos-15", "windows-2025"],
+    });
+  });
+});

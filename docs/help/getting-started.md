@@ -6,7 +6,7 @@ computer, and keeps working on the web, desktop, and mobile apps.
 
 ## Create your first bot
 
-   [self-hosting guide](./self-host.md).
+[self-hosting guide](./self-host.md).
 2. Tell the bot its job in plain words. It asks for anything else it needs.
 
 More in [Bots and chats](./bots-and-chats.md).

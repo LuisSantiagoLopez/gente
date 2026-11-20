@@ -65,11 +65,11 @@ Los bots pueden hacer páginas simples, como un tablero o un documento, para mos
 
 ## Atajos de teclado
 
-| Acción | Mac | Windows |
-| --- | --- | --- |
-| Chat o bot nuevo | Cmd+N | Ctrl+N |
+| Acción              | Mac         | Windows      |
+| ------------------- | ----------- | ------------ |
+| Chat o bot nuevo    | Cmd+N       | Ctrl+N       |
 | Chat en grupo nuevo | Cmd+Shift+N | Ctrl+Shift+N |
-| Conectar apps | Cmd+Shift+M | Ctrl+Shift+M |
-| Configuración | Cmd+, | Ctrl+, |
-| Todos los atajos | Cmd+/ | Ctrl+/ |
-| Soporte de Gente | Cmd+Shift+/ | Ctrl+Shift+/ |
+| Conectar apps       | Cmd+Shift+M | Ctrl+Shift+M |
+| Configuración       | Cmd+,       | Ctrl+,       |
+| Todos los atajos    | Cmd+/       | Ctrl+/       |
+| Soporte de Gente    | Cmd+Shift+/ | Ctrl+Shift+/ |

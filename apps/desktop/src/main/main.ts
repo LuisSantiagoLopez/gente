@@ -54,7 +54,8 @@ import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
 import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
-import { startWatchdogs } from "./burrow/watchdogs.js";
+import { startSelfHeal } from "./self-heal/start.js";
+import type { RouterHandle } from "./self-heal/desktop-env.js";
 import { appWindowTargets, desktop, permissionTarget } from "./desktop-state.js";
 import {
   createLocaleHandler,
@@ -782,6 +783,7 @@ app.whenReady().then(async () => {
   // Gente: Fast (Gente Cloud) or Private (this computer), decided per request on this computer.
   const aiMode = createAiMode(app.getPath("userData"), isPaidPlan);
   let modelRouterBase: string | null = null;
+  let modelRouter: RouterHandle | null = null;
   void startModelRouter({
     localBase: OLLAMA_URL,
     cloudBase: `${GENTE_CLOUD_URL}/v1/inference`,
@@ -790,6 +792,7 @@ app.whenReady().then(async () => {
   })
     .then((router) => {
       modelRouterBase = router.base;
+      modelRouter = router;
     })
     .catch(() => undefined);
   // Gente: connected apps (Composio) through Gente Cloud, with the person's own sign-in.
@@ -1188,8 +1191,13 @@ app.whenReady().then(async () => {
     (text) => desktop.mainWindow?.webContents.send("desktop.meetings.transcript", text),
     () => installApplicationMenu(),
   );
-  // Gente: keep Ollama and the workspace alive without asking the person to do anything.
-  startWatchdogs(() => desktop.localStack);
+  // Gente: self-healing (failure catalog, detectors every second or two, cheapest repair first).
+  startSelfHeal({
+    userDataDir: app.getPath("userData"),
+    stackDir: stackDir(app.getPath("userData")),
+    router: () => modelRouter,
+    mode: () => aiMode.current(),
+  });
   registerSetupIpc({
     userDataDir,
     appOpener,

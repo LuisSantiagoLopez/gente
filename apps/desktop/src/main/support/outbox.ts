@@ -73,3 +73,23 @@ export async function sendHealthEvent(
     return false;
   }
 }
+
+/** One self-repair, anonymous, for fleet learning (only with "Always send"). */
+export async function sendRepairEvent(
+  event: {
+    version: string;
+    platform: string;
+    installId: string;
+    failureId: string;
+    outcome: string;
+    fixedBy?: string;
+    ms?: number;
+  },
+  fetcher: typeof fetch = fetch,
+) {
+  try {
+    return await post("/diagnostics", { kind: "repair", ...event }, fetcher, SELFHEAL_URL);
+  } catch {
+    return false;
+  }
+}

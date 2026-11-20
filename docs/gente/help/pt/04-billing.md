@@ -4,12 +4,12 @@ O Gente roda a IA no seu computador, então você não paga por pergunta. Você 
 
 ## Planos
 
-| Plano | O que inclui |
-| --- | --- |
-| **Free** | 10 mensagens para experimentar o Gente. |
-| **Pro** | Conversas com seus bots no seu computador, mais **39 horas** de trabalho online por mês. |
-| **Max** | Tudo do Pro, com **230 horas** de trabalho online por mês. |
-| **Max Plus** | Tudo do Pro, com **460 horas** de trabalho online por mês. |
+| Plano        | O que inclui                                                                             |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| **Free**     | 10 mensagens para experimentar o Gente.                                                  |
+| **Pro**      | Conversas com seus bots no seu computador, mais **39 horas** de trabalho online por mês. |
+| **Max**      | Tudo do Pro, com **230 horas** de trabalho online por mês.                               |
+| **Max Plus** | Tudo do Pro, com **460 horas** de trabalho online por mês.                               |
 
 O preço de cada plano aparece quando você escolhe.
 

@@ -4,12 +4,12 @@ Gente runs its AI on your computer, so you don't pay per question. You pay for t
 
 ## Plans
 
-| Plan | What you get |
-| --- | --- |
-| **Free** | 10 messages to try Gente. |
-| **Pro** | Chats with your bots on your computer, plus **39 hours** of online work each month. |
-| **Max** | Everything in Pro, with **230 hours** of online work each month. |
-| **Max Plus** | Everything in Pro, with **460 hours** of online work each month. |
+| Plan         | What you get                                                                        |
+| ------------ | ----------------------------------------------------------------------------------- |
+| **Free**     | 10 messages to try Gente.                                                           |
+| **Pro**      | Chats with your bots on your computer, plus **39 hours** of online work each month. |
+| **Max**      | Everything in Pro, with **230 hours** of online work each month.                    |
+| **Max Plus** | Everything in Pro, with **460 hours** of online work each month.                    |
 
 The price of each plan is shown when you choose it.
 

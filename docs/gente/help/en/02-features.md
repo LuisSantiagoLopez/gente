@@ -65,11 +65,11 @@ Bots can build simple pages, like a dashboard or a document, to show their work.
 
 ## Keyboard shortcuts
 
-| Action | Mac | Windows |
-| --- | --- | --- |
-| New chat or bot | Cmd+N | Ctrl+N |
-| New group chat | Cmd+Shift+N | Ctrl+Shift+N |
-| Connect apps | Cmd+Shift+M | Ctrl+Shift+M |
-| Settings | Cmd+, | Ctrl+, |
-| All shortcuts | Cmd+/ | Ctrl+/ |
-| Gente Support | Cmd+Shift+/ | Ctrl+Shift+/ |
+| Action          | Mac         | Windows      |
+| --------------- | ----------- | ------------ |
+| New chat or bot | Cmd+N       | Ctrl+N       |
+| New group chat  | Cmd+Shift+N | Ctrl+Shift+N |
+| Connect apps    | Cmd+Shift+M | Ctrl+Shift+M |
+| Settings        | Cmd+,       | Ctrl+,       |
+| All shortcuts   | Cmd+/       | Ctrl+/       |
+| Gente Support   | Cmd+Shift+/ | Ctrl+Shift+/ |

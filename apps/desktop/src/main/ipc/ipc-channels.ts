@@ -155,6 +155,7 @@ export const ipcChannels = {
   "gente.support.answerReport": supportPage<GenteSupportBridge["answerReport"]>(false),
   "gente.support.saveSettings": supportPage<GenteSupportBridge["saveSettings"]>(REJECTS),
   "gente.support.articles": supportPage<GenteSupportBridge["articles"]>([]),
+  "gente.support.timeline": supportPage<GenteSupportBridge["timeline"]>([]),
 };
 
 export type IpcChannelName = keyof typeof ipcChannels;

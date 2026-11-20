@@ -4,17 +4,17 @@ How Gente finds problems on people's computers, fixes what it can there, and shi
 
 ## The pieces
 
-| Piece | Where | What it does |
-| --- | --- | --- |
-| Help articles | `docs/gente/help/{en,es,pt}` | Setup, features, troubleshooting, billing, privacy, support. Shown in the app and on the site. |
-| Support window | `apps/desktop/src/main/support`, `src/support-renderer` | Help → Gente Support. Local model answers from the articles; one-tap fixes; a person only when stuck. |
-| Health checks | `support/health.ts`, `support/probes.ts` | Model server, model files, disk, ports, app files, workspace, Telegram. Every 5 minutes and after errors. |
-| Self-heal | `support/monitor.ts` | Runs the safe automatic fixes (restart services) once per 30 minutes per problem. |
-| Error catcher | `support/diagnostics.ts` | Main-process crashes, window and child-process crashes, problems the checks find. Saved redacted in `logs/errors.jsonl`. |
-| Reports | `support/diagnostics.ts`, `support/redact.ts` | Version, OS, codes, stacks, log tails. Chat lines and personal data removed. Sent only with the person's yes ("Ask each time" by default). |
-| Intake | Gente Cloud: `cloud/db/migrations/010_self_heal.sql`, `cloud/supabase/functions/gente-selfheal` | Receives reports and health counts; serves the update feed. |
-| Pipeline | `scripts/self-heal` | Group → reproduce → fix → PR → gates → canary → 5% → 25% → 100%, rollback. |
-| Workflows | `.github/workflows/gente-*.yml` | The pipeline on GitHub Actions. |
+| Piece          | Where                                                                                           | What it does                                                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Help articles  | `docs/gente/help/{en,es,pt}`                                                                    | Setup, features, troubleshooting, billing, privacy, support. Shown in the app and on the site.                                             |
+| Support window | `apps/desktop/src/main/support`, `src/support-renderer`                                         | Help → Gente Support. Local model answers from the articles; one-tap fixes; a person only when stuck.                                      |
+| Health checks  | `support/health.ts`, `support/probes.ts`                                                        | Model server, model files, disk, ports, app files, workspace, Telegram. Every 5 minutes and after errors.                                  |
+| Self-heal      | `support/monitor.ts`                                                                            | Runs the safe automatic fixes (restart services) once per 30 minutes per problem.                                                          |
+| Error catcher  | `support/diagnostics.ts`                                                                        | Main-process crashes, window and child-process crashes, problems the checks find. Saved redacted in `logs/errors.jsonl`.                   |
+| Reports        | `support/diagnostics.ts`, `support/redact.ts`                                                   | Version, OS, codes, stacks, log tails. Chat lines and personal data removed. Sent only with the person's yes ("Ask each time" by default). |
+| Intake         | Gente Cloud: `cloud/db/migrations/010_self_heal.sql`, `cloud/supabase/functions/gente-selfheal` | Receives reports and health counts; serves the update feed.                                                                                |
+| Pipeline       | `scripts/self-heal`                                                                             | Group → reproduce → fix → PR → gates → canary → 5% → 25% → 100%, rollback.                                                                 |
+| Workflows      | `.github/workflows/gente-*.yml`                                                                 | The pipeline on GitHub Actions.                                                                                                            |
 
 ## The pipeline
 

@@ -214,6 +214,21 @@ const { Client } = require(path.join(store, dir, "node_modules", "pg"));
 `;
 
 export class WindowsStackController extends StackLifecycle {
+
+  /** Gente self-heal: whether one service is running (null when the stack has no such service). */
+  serviceAlive(name: string): boolean | null {
+    const service = this.services.find((s) => s.spec.name === name);
+    return service ? service.alive : null;
+  }
+
+  /** Gente self-heal: restarts one service, leaving the others running. */
+  async restartService(name: string): Promise<boolean> {
+    const service = this.services.find((s) => s.spec.name === name);
+    if (!service) return false;
+    await service.stop();
+    service.start();
+    return true;
+  }
   private services: Service[] = [];
   /** Set once the bundle is unpacked, so a stop can ask Postgres to shut down cleanly. */
   private serverDir: string | null = null;

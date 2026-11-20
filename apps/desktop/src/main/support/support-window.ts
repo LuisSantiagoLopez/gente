@@ -16,6 +16,7 @@ import { readTelegramToken, telegramBotName } from "../burrow/telegram.js";
 import { openTelegramWindow } from "../burrow/telegram-window.js";
 import { desktop } from "../desktop-state.js";
 import { handleIpc } from "../ipc/ipc.js";
+import { selfHealTimeline } from "../self-heal/start.js";
 import { NATIVE_PORTS_FILE } from "../this-computer/native-stack.js";
 import { findMissingAppFiles } from "./app-files.js";
 import { askSupport, prewarmSupport, shouldOfferHuman } from "./assistant.js";
@@ -284,6 +285,8 @@ export function startSupport(options: SupportOptions) {
       return ok;
     },
     onChange: pushState,
+    // Repairs belong to the self-healing engine; this monitor shows health and prepares reports.
+    autoFix: false,
   });
 
   // Anonymous health counts for the staged rollout, only when reports are on ("Always send").
@@ -428,6 +431,7 @@ export function startSupport(options: SupportOptions) {
       next.updateChannel = patch.updateChannel;
     return writeSupportSettings(options.userDataDir, next);
   });
+  handleIpc("gente.support.timeline", async () => selfHealTimeline(helpLang(options.locale())));
   handleIpc("gente.support.articles", async () => {
     const lang = helpLang(options.locale());
     const all = await helpArticles();

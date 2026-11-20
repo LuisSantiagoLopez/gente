@@ -17,7 +17,13 @@ import { promisify } from "node:util";
 import { commandAgent, git, repair } from "./agent.js";
 import { runCommand } from "./gates.js";
 import type { Cluster } from "./intake.js";
-import { bundlesFromCloud, bundlesFromDir, groupBySignature } from "./intake.js";
+import {
+  bundlesFromCloud,
+  bundlesFromDir,
+  groupBySignature,
+  groupRepairs,
+  repairsFromCloud,
+} from "./intake.js";
 import type { RunRecord } from "./pipeline.js";
 import type { FeedStore, Stage, VersionMetrics } from "./rollout.js";
 import {
@@ -267,6 +273,67 @@ const commands: Record<string, () => Promise<number>> = {
       if (!put.ok) throw new Error(`upload ${file} answered ${put.status}`);
       console.log(`uploaded ${file}`);
     }
+    return 0;
+  },
+
+  /**
+   * Fleet learning: self-repairs seen on at least --min-devices installs become a GitHub issue
+   * (then, with the repair agent, a failing test, a proposed fix and the canary rollout).
+   */
+  async fleet() {
+    const events = await repairsFromCloud(
+      env("GENTE_SELFHEAL_URL"),
+      env("SELF_HEAL_CLOUD_TOKEN"),
+      arg("since"),
+    );
+    const groups = groupRepairs(events, Number(arg("min-devices", "5")));
+    for (const g of groups) {
+      const title = `self-heal fleet: ${g.failureId} on ${g.devices} devices`;
+      const { stdout: open } = await exec("gh", [
+        "issue",
+        "list",
+        "--label",
+        "self-heal",
+        "--state",
+        "open",
+        "--search",
+        `self-heal fleet: ${g.failureId} in:title`,
+        "--json",
+        "url",
+        "-q",
+        ".[0].url",
+      ]);
+      if (open.trim()) {
+        console.log(`${g.failureId}: already tracked in ${open.trim()}`);
+        continue;
+      }
+      const body = [
+        `${g.devices} Gente installs hit \`${g.failureId}\` (${g.events} times) on ${g.platforms.join(", ")}, versions ${g.versions.join(", ")}.`,
+        `They healed by themselves ${(g.fixedShare * 100).toFixed(0)}% of the time; median recovery ${g.medianMs === null ? "unknown" : `${(g.medianMs / 1000).toFixed(1)} s`}.`,
+        "",
+        "Self-healing hides the symptom; this issue is for the cause. The failure's detector and repair are in `apps/desktop/src/main/self-heal/catalog.ts`; its chaos test is in `scripts/self-heal/chaos-catalog.ts`.",
+        "",
+        process.env.SELF_HEAL_AGENT
+          ? "The repair agent will write a failing test and a proposed fix as a pull request to `canary`."
+          : "**Blocked on owner:** the repair agent has no key yet, so no failing test or fix is written automatically.",
+      ].join("\n");
+      const labels = [
+        "--label",
+        "self-heal",
+        ...(process.env.SELF_HEAL_AGENT ? [] : ["--label", "blocked-on-owner"]),
+      ];
+      const { stdout } = await exec("gh", [
+        "issue",
+        "create",
+        ...labels,
+        "--title",
+        title,
+        "--body",
+        body,
+      ]);
+      console.log(`${g.failureId}: ${stdout.trim()}`);
+    }
+    await writeFile("fleet.json", JSON.stringify(groups, null, 2));
     return 0;
   },
 

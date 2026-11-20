@@ -47,11 +47,15 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Chaos subset (five real faults against the real health checks)
         run: pnpm exec tsx scripts/self-heal/chaos.ts --json chaos-${{ matrix.os }}.json
+      - name: Full failure catalog (every failure injected, repaired and timed)
+        run: pnpm exec tsx scripts/self-heal/chaos-catalog.ts --json chaos-catalog-${{ matrix.os }}.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: chaos-${{ matrix.os }}
-          path: chaos-${{ matrix.os }}.json
+          path: |
+            chaos-${{ matrix.os }}.json
+            chaos-catalog-${{ matrix.os }}.json
 
   smoke-windows:
     uses: ./.github/workflows/gente-windows.yml

@@ -53,6 +53,16 @@ jobs:
           open=$(gh pr list --repo "$GITHUB_REPOSITORY" --label self-heal --state open --json headRefName -q '.[].headRefName' | tr '\n' ' ')
           matrix=$(node -e 'const m=JSON.parse(process.argv[1]);const open=process.argv[2];m.include=m.include.filter(j=>!open.includes(j.signature));console.log(JSON.stringify(m))' "$matrix" "$open")
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+      - name: Fleet learning (self-repairs seen on 5+ devices become issues)
+        env:
+          GENTE_SELFHEAL_URL: ${{ vars.GENTE_SELFHEAL_URL }}
+          SELF_HEAL_CLOUD_TOKEN: ${{ secrets.SELF_HEAL_CLOUD_TOKEN }}
+          SELF_HEAL_AGENT: ${{ vars.SELF_HEAL_AGENT }}
+          GH_TOKEN: ${{ secrets.SELF_HEAL_TOKEN || github.token }}
+        run: |
+          since=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          pnpm exec tsx scripts/self-heal/cli.ts fleet --since "$since" --min-devices 5 \
+            || echo "::warning title=Fleet learning::Gente Cloud has no /repairs endpoint yet (asked for); skipped."
       - uses: actions/upload-artifact@v4
         with:
           name: clusters

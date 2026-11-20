@@ -405,6 +405,21 @@ export const servicesFailed = () =>
   t("Gente services did not start. Check the output below, then retry.");
 
 export class NativeStackController extends StackLifecycle {
+
+  /** Gente self-heal: whether one service is running (null when the stack has no such service). */
+  serviceAlive(name: string): boolean | null {
+    const service = this.services.find((s) => s.spec.name === name);
+    return service ? service.alive : null;
+  }
+
+  /** Gente self-heal: restarts one service, leaving the others running. */
+  async restartService(name: string): Promise<boolean> {
+    const service = this.services.find((s) => s.spec.name === name);
+    if (!service) return false;
+    await service.stop();
+    service.start();
+    return true;
+  }
   private background: AbortController | null = null;
   private services: Service[] = [];
 
