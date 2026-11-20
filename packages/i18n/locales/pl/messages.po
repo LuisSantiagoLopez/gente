@@ -941,7 +941,7 @@ msgstr "Cotygodniowe podsumowanie zmian w obserwowanych tematach"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "About"
-msgstr ""
+msgstr "Informacje"
 
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "About {kb} KB of memory no longer reaches the bot."
@@ -1146,7 +1146,7 @@ msgstr "Dodaj kolejne {name}"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Add Context7 docs"
-msgstr ""
+msgstr "Dodaj dokumentację Context7"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -1923,7 +1923,7 @@ msgstr "Bazowy adres URL"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI."
-msgstr ""
+msgstr "Oparte na Rakazo autorstwa Elie Steinbocka (Apache-2.0). Swift od UkisAI."
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
@@ -3107,7 +3107,7 @@ msgstr "Połączenie z {0} wciąż oczekuje. Możesz zamknąć to okno i sprawdz
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Connections"
-msgstr ""
+msgstr "Połączenia"
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -6146,7 +6146,7 @@ msgstr "Jak będziesz korzystać z Gente?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
-msgstr ""
+msgstr "Jak będziesz korzystać z Gente?"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -7931,7 +7931,7 @@ msgstr "Nie działa"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
-msgstr ""
+msgstr "Nic nie opuszcza Twojego komputera, dopóki nie połączysz aplikacji. Dane połączonej aplikacji przechodzą przez chmurę Composio, po jednej aplikacji, tylko dla aplikacji, które wybierzesz."
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -7944,11 +7944,11 @@ msgstr "Jeszcze nic nie zapisano."
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. Check that you sent the code to the right chat, exactly as shown. The code works for 10 minutes."
-msgstr ""
+msgstr "Jeszcze nic. Sprawdź, czy kod został wysłany do właściwego czatu, dokładnie tak, jak jest pokazany. Kod działa przez 10 minut."
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
-msgstr ""
+msgstr "Jeszcze nic. WhatsApp wymaga firmowej aplikacji Meta i adresu, do którego Meta może dotrzeć, a Meta nie we wszystkich krajach pozwala jeszcze na ogólnych asystentów AI. Telegram działa od razu: w menu Gente wybierz Połącz Telegram."
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
@@ -8427,7 +8427,7 @@ msgstr "Wklej ze swojego serwera adres zgodny z OpenAI. Gente doda /v1, jeśli b
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
-msgstr ""
+msgstr "Wklej ze swojego serwera adres zgodny z OpenAI. Gente doda /v1, jeśli będzie potrzebne."
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -8759,12 +8759,12 @@ msgstr "Cytuj zaznaczenie"
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
 msgid "Rakazo"
-msgstr ""
+msgstr "Gente"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 msgid "Rakazo credits"
-msgstr ""
+msgstr "Środki Gente"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
@@ -8791,7 +8791,7 @@ msgstr "Czytaj odpowiedzi na głos"
 
 #: apps/web/src/pages/shell/chat/transcript.tsx
 msgid "Reading…"
-msgstr ""
+msgstr "Czytam…"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
@@ -10252,7 +10252,7 @@ msgstr "Zaloguj się do Gente"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
-msgstr ""
+msgstr "Zaloguj się do Gente"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -10284,7 +10284,7 @@ msgstr "Zarejestruj się"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign up for Rakazo"
-msgstr ""
+msgstr "Zarejestruj się w Gente"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -10503,7 +10503,7 @@ msgstr "Sortuje nowe e-maile i przygotowuje szkice odpowiedzi"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Sounds"
-msgstr ""
+msgstr "Dźwięki"
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/lib/bots/identity-display.ts
@@ -10619,7 +10619,7 @@ msgstr "Rozpocznij nagrywanie"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Start using Rakazo"
-msgstr ""
+msgstr "Zacznij korzystać z Gente"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -10765,7 +10765,7 @@ msgstr "Subskrybuj z własnym AI"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Subscription"
-msgstr ""
+msgstr "Subskrypcja"
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -10960,7 +10960,7 @@ msgstr "To nie jest eksport z Grok Bot. Wklej całą odpowiedź Bota."
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL did not look like a Rakazo server"
-msgstr ""
+msgstr "Ten adres nie wygląda na serwer Gente"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11098,7 +11098,7 @@ msgstr "Transkrypcja zostanie usunięta z Gente."
 
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
-msgstr ""
+msgstr "Transkrypcja zostanie usunięta z Gente."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11230,7 +11230,7 @@ msgstr "ten komputer"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
 msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr ""
+msgstr "Ten komputer działa w chmurze (E2B), a nie na Twoim Macu czy PC. Oglądaj go na żywo i przejmij sterowanie, aby samodzielnie się zalogować."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -11441,7 +11441,7 @@ msgstr "To logowanie przez subskrypcję nie jest jeszcze dostępne w Gente. Uży
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr ""
+msgstr "To logowanie przez subskrypcję nie jest jeszcze dostępne w Gente. Użyj danych uwierzytelniających wdrożenia lub wybierz innego dostawcę."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -11720,7 +11720,7 @@ msgstr "Włącz"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Turn on Composio apps"
-msgstr ""
+msgstr "Włącz aplikacje Composio"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -12040,7 +12040,7 @@ msgstr "Do haseł używaj opcji Chronione wprowadzanie."
 
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Use Rakazo credits"
-msgstr ""
+msgstr "Użyj środków Gente"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12291,7 +12291,7 @@ msgstr "Witaj w Gente"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 msgid "Welcome to Rakazo"
-msgstr ""
+msgstr "Witaj w Gente"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -12307,7 +12307,7 @@ msgstr "W czym Gente ma Ci najbardziej pomóc?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
-msgstr ""
+msgstr "W czym Gente ma Ci najbardziej pomóc?"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"
