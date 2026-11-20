@@ -1,0 +1,35 @@
+# Gente Android: unit tests and a debug build on a GitHub runner (no local Mac load).
+name: gente-android
+on:
+  push:
+    branches: [android]
+    paths: ["android/**", ".github/workflows/gente-android.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gente-android-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Unit tests
+        working-directory: android
+        run: ./gradlew --no-daemon testDebugUnitTest
+      - name: Debug build
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gente-android-test-results
+          path: android/app/build/reports/tests
+          retention-days: 7
