@@ -18,6 +18,7 @@ import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { telegramSecret } from "../burrow/telegram.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
+import { ensureServerLinks } from "./server-links.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
   allocateLoopbackPort,
@@ -327,6 +328,9 @@ export class WindowsStackController extends StackLifecycle {
         },
         this.deps.serverBundle,
       );
+      // Windows: put pnpm's links back as junctions (a no-op once they are in place).
+      const linked = ensureServerLinks(server.dir);
+      if (linked > 0) this.push({ type: "output", line: `linked ${linked} server packages` });
     } catch (error) {
       if (signal.aborted) throw error;
       const detail = error instanceof Error ? error.message : String(error);

@@ -35,10 +35,26 @@ const into = path.join(desktopBuild, "server-dir");
 fs.rmSync(into, { recursive: true, force: true });
 fs.mkdirSync(into, { recursive: true });
 // Relative paths only: GNU tar on Windows reads "D:\\..." as a remote host.
+// MSYS tar on Windows turns links into copies unless told to make real ones; copies break how
+// Node finds each pnpm package's dependencies.
 const untar = (archive, cwd) =>
-  execFileSync("tar", ["-xJf", path.relative(cwd, archive)], { cwd, stdio: "inherit" });
+  execFileSync("tar", ["-xJf", path.relative(cwd, archive)], {
+    cwd,
+    stdio: "inherit",
+    env: { ...process.env, MSYS: "winsymlinks:nativestrict" },
+  });
 untar(path.resolve(bundleDir, source), into);
 const server = path.join(into, "rakazo-server");
+let links = 0;
+const countLinks = (dir) => {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isSymbolicLink()) links++;
+    else if (entry.isDirectory()) countLinks(path.join(dir, entry.name));
+  }
+};
+countLinks(server);
+console.log(`server unpacked with ${links} package links`);
+if (links === 0) throw new Error("The server lost its package links while unpacking");
 
 const url = `https://repo1.maven.org/maven2/io/zonky/test/postgres/embedded-postgres-binaries-${pin.name}/${VERSION}/embedded-postgres-binaries-${pin.name}-${VERSION}.jar`;
 const response = await fetch(url);

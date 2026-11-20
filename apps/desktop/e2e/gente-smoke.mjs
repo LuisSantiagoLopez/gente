@@ -75,8 +75,8 @@ try {
     await setup.waitForSelector("#continue", { timeout: 120_000 });
     mark("setup-shown");
     await shot(setup, "01-setup.png");
-    await setup.click("#continue");
-    log("clicked Get started");
+    // Gente may start the workspace on its own; otherwise press Get started once it is enabled.
+    let clicked = false;
     let page;
     const deadline = Date.now() + 25 * 60_000;
     let last = "";
@@ -84,6 +84,15 @@ try {
     while (!page && Date.now() < deadline) {
       page = app.windows().find((w) => w.url().startsWith("http"));
       if (page) break;
+      if (!clicked && (await setup.isEnabled("#continue", { timeout: 1000 }).catch(() => false))) {
+        await setup.click("#continue", { timeout: 5000 }).then(
+          () => {
+            clicked = true;
+            log("clicked Get started");
+          },
+          () => {},
+        );
+      }
       const state = await setup
         .evaluate(() => [
           document.querySelector("#brain-status")?.textContent,
