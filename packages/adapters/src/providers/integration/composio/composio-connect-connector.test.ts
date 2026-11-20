@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   ComposioConnectConnector,
   parseRpcBody,
+  searchNext,
   slimSearch,
   usesConnectedApp,
 } from "./composio-connect-connector.js";
@@ -213,6 +214,16 @@ describe("ComposioConnectConnector", () => {
 });
 
 describe("Connect helpers", () => {
+  it("steers a search back to connected apps before offering a new one", () => {
+    expect(searchNext(["sentfromai"], ["gmail", "googlecalendar"])).toContain(
+      "Connected: gmail, googlecalendar. Search again naming one of those apps.",
+    );
+    expect(searchNext(["gmail", "outlook"], ["gmail"])).toBe(
+      "Use the actions of the connected apps: gmail.",
+    );
+    expect(searchNext(["hubspot"], [])).toContain("connect_app");
+  });
+
   it("reads plain JSON and server-sent event bodies", () => {
     expect(parseRpcBody('{"id":1,"result":2}')).toEqual({ id: 1, result: 2 });
     expect(parseRpcBody(': hi\n\nevent: message\ndata: {"id":1,"result":3}\n\n')).toEqual({
@@ -261,8 +272,9 @@ describe("Connect helpers", () => {
       results: [{ actions: ["GMAIL_FETCH_EMAILS"] }],
       apps: [
         { app: "gmail", connected: true },
-        { app: "firecrawl", connected: false, next: expect.stringContaining("connect_app") },
+        { app: "firecrawl", connected: false },
       ],
+      next: expect.stringContaining("gmail"),
       inputs: { GMAIL_FETCH_EMAILS: { type: "object" } },
     });
   });

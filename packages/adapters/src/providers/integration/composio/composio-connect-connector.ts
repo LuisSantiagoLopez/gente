@@ -367,14 +367,12 @@ export function slimSearch(parsed: unknown, connected: readonly string[]): unkno
     })),
     apps: statuses.map((status) => {
       const slug = String(status.toolkit ?? "");
-      return {
-        app: slug,
-        connected: connected.includes(slug.toLowerCase()),
-        ...(connected.includes(slug.toLowerCase())
-          ? {}
-          : { next: `Not connected. Call connect_app with "${slug}" and wait.` }),
-      };
+      return { app: slug, connected: connected.includes(slug.toLowerCase()) };
     }),
+    next: searchNext(
+      statuses.map((status) => String(status.toolkit ?? "")),
+      connected,
+    ),
     inputs: isRecord(data.tool_schemas)
       ? Object.fromEntries(
           Object.entries(data.tool_schemas).map(([slug, schema]) => [
@@ -384,6 +382,19 @@ export function slimSearch(parsed: unknown, connected: readonly string[]): unkno
         )
       : undefined,
   };
+}
+
+/**
+ * What to do after a search. A search that does not name an app can land on an obscure one; when
+ * the person has apps connected, steer back to those before offering to connect something new.
+ */
+export function searchNext(found: readonly string[], connected: readonly string[]): string {
+  const hit = found.filter((slug) => connected.includes(slug.toLowerCase()));
+  if (hit.length > 0) return `Use the actions of the connected apps: ${hit.join(", ")}.`;
+  if (connected.length > 0) {
+    return `None of these apps is connected. Connected: ${connected.join(", ")}. Search again naming one of those apps. Only if none can do the task, call connect_app for the app the user would expect, and wait.`;
+  }
+  return "No app here is connected. Call connect_app for the app the user would expect, and wait.";
 }
 
 function mcpText(result: unknown): string {
