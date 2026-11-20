@@ -17,6 +17,7 @@ Algunas cosas necesitan internet. Esta es la lista completa:
 - **Apps que conectas:** cuando un bot usa Gmail, Calendar u otra app que conectaste, le manda a esa app lo que la tarea necesita, como un correo que le pediste mandar.
 - **Telegram, si lo conectas:** los mensajes que le mandas a tu bot en Telegram pasan por Telegram, como cualquier mensaje de Telegram. Tus chats en la app de Gente no.
 - **Trabajo en línea:** cuando una tarea corre en una computadora en la nube, esa computadora visita el sitio que la tarea necesita. Tu historial de chats no se manda ahí.
+- **Imágenes y videos que creas:** tu descripción va a nuestro servicio de imágenes y video (fal.ai) para hacer el archivo. Gente guarda el archivo terminado en tu computadora de inmediato. Es tuyo y privado. La copia en la nube solo sirve para entregártelo y se borra a los 30 días.
 - **Soporte, solo si tú quieres:** un mensaje que le mandas a una persona, y un reporte de error si lo permites.
 
 ## Reportes de error
