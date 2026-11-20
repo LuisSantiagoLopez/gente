@@ -20,6 +20,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.produceIn
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
@@ -59,6 +62,8 @@ class ChatEngine(
     private val scope: CoroutineScope,
     private val clock: () -> Long = System::currentTimeMillis,
     private val demoText: () -> String = { DEMO_REPLY },
+    private val heal: SelfHeal? = null,
+    private val slowReplyMs: Long = SelfHeal.SLOW_REPLY_MS,
 ) {
     private val _notices = MutableSharedFlow<Notice>(extraBufferCapacity = 16)
     val notices: SharedFlow<Notice> = _notices
@@ -117,11 +122,8 @@ class ChatEngine(
             while (true) {
                 val calls = mutableListOf<InferenceEvent.ToolCall>()
                 var stub = false
-                val stream: Flow<InferenceEvent> = if (where == AiLocation.DESKTOP) {
-                    flow { link.privateInfer(wire).collect { emit(InferenceEvent.Text(it)) }; emit(InferenceEvent.Done(false)) }
-                } else cloud.streamChat(wire, ContextBuilder.tools(link.firstDevice() != null))
                 var lastWrite = 0L
-                stream.collect { e ->
+                val onEvent: suspend (InferenceEvent) -> Unit = { e ->
                     when (e) {
                         is InferenceEvent.Text -> {
                             acc.append(e.delta)
@@ -130,6 +132,12 @@ class ChatEngine(
                         is InferenceEvent.ToolCall -> calls += e
                         is InferenceEvent.Done -> stub = e.stub
                     }
+                }
+                val ranOn = runRound(where, wire, onEvent)
+                if (ranOn != where) {
+                    // A self-heal fallback answered somewhere else: the badge must say where.
+                    where = ranOn
+                    dao.upsertMessage(dao.messagesNow(chatId).first { it.id == replyId }.copy(ranOn = if (ranOn == AiLocation.DESKTOP) Ran.DESKTOP else Ran.CLOUD, text = acc.toString()))
                 }
                 if (stub) dao.upsertMessage(dao.messagesNow(chatId).first { it.id == replyId }.copy(ranOn = Ran.CLOUD_PREVIEW, text = acc.toString()))
                 if (calls.isEmpty() || rounds++ >= 4) break
@@ -147,6 +155,63 @@ class ChatEngine(
             else { dao.updateMessage(replyId, acc.toString(), "failed"); _notices.emit(Notice.Problem(e.code)) }
         } catch (e: Exception) {
             dao.updateMessage(replyId, acc.toString(), "failed"); _notices.emit(Notice.Problem("unknown"))
+        }
+    }
+
+    private fun desktopFlow(wire: List<WireMessage>): Flow<InferenceEvent> =
+        flow { link.privateInfer(wire).collect { emit(InferenceEvent.Text(it)) }; emit(InferenceEvent.Done(false)) }
+
+    /** The flow, or null if its first event did not come within [ms]. */
+    private suspend fun firstWithin(f: Flow<InferenceEvent>, ms: Long): Flow<InferenceEvent>? {
+        val ch = f.buffer(kotlinx.coroutines.channels.Channel.UNLIMITED).produceIn(scope)
+        val first = withTimeoutOrNull(ms) { ch.receiveCatching() }
+        if (first == null) { ch.cancel(); return null }
+        first.exceptionOrNull()?.let { throw it }
+        return flow { first.getOrNull()?.let { emit(it) }; for (e in ch) emit(e) }
+    }
+
+    /**
+     * One model round with the self-heal ladder from the shared catalog:
+     * - slow-replies (computer): no first word in 20 s -> answer-from-cloud, only if the person allowed it
+     *   in Settings; otherwise keep waiting and say so (the person chose their computer for privacy).
+     * - cloud-model-unavailable: 502/503/504 -> answer-on-this-computer if paired, else retry once.
+     * - sign-in-expired: handled inside withSignInHeal (refresh-sign-in, then retry once).
+     * Returns where the answer was actually made.
+     */
+    private suspend fun runRound(where: AiLocation, wire: List<WireMessage>, onEvent: suspend (InferenceEvent) -> Unit): AiLocation {
+        if (where == AiLocation.DESKTOP) {
+            val started = clock()
+            val fast = firstWithin(desktopFlow(wire), slowReplyMs)
+            if (fast != null) { fast.collect { onEvent(it) }; return AiLocation.DESKTOP }
+            if (settings.now().slowFallbackToCloud && signedIn()) {
+                cloud.withSignInHeal { cloud.streamChat(wire, ContextBuilder.tools(true)).collect { onEvent(it) } }
+                heal?.record(Failure.SLOW_REPLIES, Outcome.FIXED, Step.ANSWER_FROM_CLOUD, clock() - started)
+                return AiLocation.CLOUD
+            }
+            heal?.record(Failure.SLOW_REPLIES, Outcome.STILL_TRYING, Step.RETRY_REQUEST)
+            desktopFlow(wire).collect { onEvent(it) }
+            return AiLocation.DESKTOP
+        }
+        try {
+            cloud.withSignInHeal { cloud.streamChat(wire, ContextBuilder.tools(link.firstDevice() != null)).collect { onEvent(it) } }
+            return AiLocation.CLOUD
+        } catch (e: CloudException) {
+            if (e.status !in 502..504 && e.code != "model_unavailable") throw e
+            val started = clock()
+            if (link.firstDevice() != null) {
+                desktopFlow(wire).collect { onEvent(it) }
+                heal?.record(Failure.CLOUD_MODEL_UNAVAILABLE, Outcome.FIXED, Step.ANSWER_ON_THIS_COMPUTER, clock() - started)
+                return AiLocation.DESKTOP
+            }
+            delay(2_000)
+            try {
+                cloud.streamChat(wire, ContextBuilder.tools(false)).collect { onEvent(it) }
+                heal?.record(Failure.CLOUD_MODEL_UNAVAILABLE, Outcome.FIXED, Step.RETRY_REQUEST, clock() - started)
+                return AiLocation.CLOUD
+            } catch (again: CloudException) {
+                heal?.record(Failure.CLOUD_MODEL_UNAVAILABLE, Outcome.NEEDS_PERSON)
+                throw again
+            }
         }
     }
 

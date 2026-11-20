@@ -18,6 +18,10 @@ data class Prefs(
     val dynamicColor: Boolean = false,
     val haptics: Boolean = true,
     val onboarded: Boolean = false,
+    /** Off by default: someone who chose their computer for privacy is not moved to the cloud silently. */
+    val slowFallbackToCloud: Boolean = false,
+    /** "Always send" anonymous repair reports (failure, step, outcome, time, version). Off by default. */
+    val shareRepairs: Boolean = false,
 )
 
 private val Context.store by preferencesDataStore("prefs")
@@ -28,6 +32,8 @@ class Settings(private val context: Context) {
     private val kDyn = booleanPreferencesKey("dynamic_color")
     private val kHap = booleanPreferencesKey("haptics")
     private val kOnb = booleanPreferencesKey("onboarded")
+    private val kSlow = booleanPreferencesKey("slow_fallback_cloud")
+    private val kShare = booleanPreferencesKey("share_repairs")
 
     val prefs: Flow<Prefs> = context.store.data.map { p ->
         Prefs(
@@ -36,6 +42,8 @@ class Settings(private val context: Context) {
             dynamicColor = p[kDyn] ?: false,
             haptics = p[kHap] ?: true,
             onboarded = p[kOnb] ?: false,
+            slowFallbackToCloud = p[kSlow] ?: false,
+            shareRepairs = p[kShare] ?: false,
         )
     }
 
@@ -44,6 +52,8 @@ class Settings(private val context: Context) {
     suspend fun setCloudVoice(v: Boolean) = context.store.edit { it[kVoice] = v }
     suspend fun setDynamicColor(v: Boolean) = context.store.edit { it[kDyn] = v }
     suspend fun setHaptics(v: Boolean) = context.store.edit { it[kHap] = v }
+    suspend fun setSlowFallbackToCloud(v: Boolean) = context.store.edit { it[kSlow] = v }
+    suspend fun setShareRepairs(v: Boolean) = context.store.edit { it[kShare] = v }
     suspend fun setOnboarded() = context.store.edit { it[kOnb] = true }
     suspend fun clear() = context.store.edit { it.clear() }
 }

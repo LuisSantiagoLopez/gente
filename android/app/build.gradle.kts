@@ -29,6 +29,8 @@ android {
         // Public values (not secrets). Dev instance today; production values come from env at release time.
         buildConfigField("String", "CLERK_FRONTEND_API", "\"${System.getenv("GENTE_CLERK_FRONTEND_API") ?: "cool-airedale-3945.clerk.accounts.dev"}\"")
         buildConfigField("String", "CLERK_OAUTH_CLIENT_ID", "\"${System.getenv("GENTE_CLERK_OAUTH_CLIENT_ID") ?: "7N6zZzl5EMOxXydE"}\"")
+        // Self-heal fleet reports go here only with "Always send"; a build without it sends nothing (same as desktop).
+        buildConfigField("String", "SELFHEAL_URL", "\"${System.getenv("GENTE_SELFHEAL_URL") ?: ""}\"")
         buildConfigField("String", "SUPPORT_URL", "\"https://gente-cloud.vercel.app/support\"")
         buildConfigField("String", "PRIVACY_URL", "\"https://gente-cloud.vercel.app/privacy\"")
         buildConfigField("String", "DELETE_URL", "\"https://gente-cloud.vercel.app/delete-account\"")

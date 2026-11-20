@@ -90,6 +90,10 @@ class CloudApi(
     egress: EgressSink,
     private val token: suspend () -> String?,
     clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder(),
+    /** Self-heal hook for "sign-in-expired": renew the sign-in, true if it worked. */
+    private val reauth: suspend () -> Boolean = { false },
+    /** Told about each sign-in repair: (fixed, ms). */
+    private val onSignInHeal: suspend (Boolean, Long) -> Unit = { _, _ -> },
 ) {
     val http: OkHttpClient = clientBuilder
         .addInterceptor(EgressInterceptor(egress))
@@ -115,7 +119,23 @@ class CloudApi(
         return b.build()
     }
 
+    /** Runs [block]; on an expired sign-in, renews it once and runs again (self-heal "refresh-sign-in"). */
+    suspend fun <T> withSignInHeal(block: suspend () -> T): T = try {
+        block()
+    } catch (e: CloudException) {
+        if (e.status != 401 || e.code == "missing_token") throw e
+        val started = System.currentTimeMillis()
+        val renewed = reauth()
+        if (!renewed) { onSignInHeal(false, System.currentTimeMillis() - started); throw e }
+        val r = block()
+        onSignInHeal(true, System.currentTimeMillis() - started)
+        r
+    }
+
     private suspend fun call(path: String, method: String = "GET", body: JsonElement? = null, auth: Boolean = true): JsonElement =
+        if (auth) withSignInHeal { rawCall(path, method, body, true) } else rawCall(path, method, body, false)
+
+    private suspend fun rawCall(path: String, method: String, body: JsonElement?, auth: Boolean): JsonElement =
         withContext(Dispatchers.IO) {
             val req = request(path, method, body, auth)
             val res = try { http.newCall(req).execute() } catch (e: IOException) { throw CloudException("offline", 0) }

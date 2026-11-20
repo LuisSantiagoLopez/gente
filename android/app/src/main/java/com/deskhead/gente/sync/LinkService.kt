@@ -43,6 +43,9 @@ import java.util.concurrent.ConcurrentHashMap
 
 /** Talks to the ciphertext-only relay: POST /v1/relay/:channel and GET /v1/relay/:channel?after=n. */
 class RelayClient(private val base: String, private val http: OkHttpClient, private val token: suspend () -> String?) {
+    /** Self-heal "restart-relay": drop every pooled connection so the next call opens a fresh one. */
+    fun restart() = http.connectionPool.evictAll()
+
     data class Item(val seq: Long, val env: LinkCrypto.Envelope)
     @Serializable data class Raw(val seq: Long, val envelope: String)
     @Serializable data class Page(val envelopes: List<Raw> = emptyList())
@@ -88,6 +91,7 @@ class LinkService(
     private val approvals: ApprovalCenter,
     private val phoneName: String,
     private val clock: () -> Long = System::currentTimeMillis,
+    private val heal: com.deskhead.gente.agent.SelfHeal? = null,
 ) {
     private val lock = Mutex()
     private val _events = MutableSharedFlow<LinkEvent>(extraBufferCapacity = 32)
@@ -255,10 +259,38 @@ class LinkService(
     }
 
     /** Keeps polling while the app is open. */
+    private var relayFailures = 0
+    private var relayDownSince = 0L
+    private var relayTold = false
+
+    /**
+     * One poll with self-heal "relay-down": after 2 failures in a row the relay connection is
+     * restarted; when a poll works again the repair is recorded as fixed. If it is still down
+     * after 8 s, it is recorded once as still trying.
+     */
+    suspend fun pollWithHeal() {
+        try {
+            pollOnce()
+            if (relayFailures >= 2) heal?.record(com.deskhead.gente.agent.Failure.RELAY_DOWN, com.deskhead.gente.agent.Outcome.FIXED, com.deskhead.gente.agent.Step.RESTART_RELAY, clock() - relayDownSince)
+            relayFailures = 0; relayTold = false
+        } catch (e: CloudException) {
+            if (e.status == 401) throw e // that is sign-in-expired, not the relay
+            if (relayFailures++ == 0) relayDownSince = clock()
+            if (relayFailures >= 2) {
+                relay.restart()
+                if (!relayTold && clock() - relayDownSince >= 8_000) {
+                    relayTold = true
+                    heal?.record(com.deskhead.gente.agent.Failure.RELAY_DOWN, com.deskhead.gente.agent.Outcome.STILL_TRYING, com.deskhead.gente.agent.Step.RESTART_RELAY)
+                }
+            }
+        }
+    }
+
     suspend fun loop(active: () -> Boolean) {
         while (true) {
-            if (active() && dao.devicesNow().isNotEmpty()) runCatching { pollOnce() }
-            delay(if (privateStreams.isEmpty()) 8_000 else 1_000)
+            if (active() && dao.devicesNow().isNotEmpty()) runCatching { pollWithHeal() }
+            // Down: retry every 2 s (the catalog's detector rate). Streaming: every second. Idle: 8 s.
+            delay(if (relayFailures > 0) 2_000 else if (privateStreams.isEmpty()) 8_000 else 1_000)
         }
     }
 

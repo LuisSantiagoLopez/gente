@@ -216,3 +216,19 @@ object ErrorText {
         else -> R.string.err_generic
     }
 }
+
+/** One calm sentence for the "Gente fixed itself" list, same shape as desktop's describe(). */
+object HealText {
+    fun sentence(ctx: android.content.Context, e: com.deskhead.gente.agent.RepairEvent, at: Long): String {
+        fun res(prefix: String, id: String?) = id?.let { ctx.resources.getIdentifier(prefix + it.replace('-', '_'), "string", ctx.packageName) }?.takeIf { it != 0 }
+        val time = java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(java.util.Date(at))
+        val what = res("heal_what_", e.failureId)?.let(ctx::getString) ?: return ""
+        val did = res("heal_did_", e.fixedBy)
+        return if ((e.outcome == "fixed" || e.outcome == "reported") && did != null) {
+            ctx.getString(R.string.heal_fixed, time, what, ctx.getString(did), maxOf(1L, ((e.ms ?: 0L) + 500) / 1000).toInt())
+        } else {
+            val calm = res("heal_calm_", e.failureId)?.let(ctx::getString) ?: ctx.getString(R.string.heal_calm_generic)
+            ctx.getString(R.string.heal_open, time, what, calm)
+        }
+    }
+}

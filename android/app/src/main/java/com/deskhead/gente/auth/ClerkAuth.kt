@@ -108,6 +108,14 @@ class ClerkAuth(
         read()?.access_token
     }
 
+    /** Self-heal "refresh-sign-in": renew now, whatever the token's age. False means the person must sign in. */
+    suspend fun forceRefresh(): Boolean = mutex.withLock {
+        val rt = read()?.refresh_token ?: return false
+        withContext(Dispatchers.IO) {
+            exchange(FormBody.Builder().add("grant_type", "refresh_token").add("refresh_token", rt).add("client_id", clientId).build())
+        }
+    }
+
     fun signOut() {
         file.delete(); pending.delete()
         _state.value = AuthState.SignedOut

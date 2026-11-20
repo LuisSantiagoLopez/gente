@@ -32,6 +32,9 @@ class FakeCloud : Dispatcher() {
     private var seq = 0L
     var inferenceRound = 0
     var toolFirst = true
+    var unauthorizedOnce = false
+    var inferenceFailures = 0
+    var relayGetFailures = 0
     var toolName = "web_search"
     var toolArgs = "{\\\"query\\\":\\\"weather today\\\"}"
 
@@ -40,7 +43,11 @@ class FakeCloud : Dispatcher() {
         val body = request.body?.utf8() ?: ""
         requests += path to body
         fun json(s: String, code: Int = 200) = MockResponse.Builder().code(code).addHeader("content-type", "application/json").body(s).build()
+        if (unauthorizedOnce && path.startsWith("/v1/")) { unauthorizedOnce = false; return json("""{"error":"invalid_token"}""", 401) }
         return when {
+            path.endsWith("/diagnostics") -> json("""{"ok":true}""", 201)
+            path == "/v1/inference/chat/completions" && inferenceFailures > 0 -> { inferenceFailures--; json("""{"error":"model_unavailable"}""", 503) }
+            path.startsWith("/v1/relay/") && request.method == "GET" && relayGetFailures > 0 -> { relayGetFailures--; json("""{"error":"server"}""", 500) }
             path == "/v1/messages/consume" -> json("""{"allowed":true,"used":1,"limit":10}""")
             path == "/v1/inference/chat/completions" -> {
                 inferenceRound++

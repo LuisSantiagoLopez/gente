@@ -253,4 +253,26 @@
     <string name="err_stt">El dictado por voz aún no está disponible en este teléfono. Puedes escribir.</string>
     <string name="err_billing">Google Play no está disponible ahora. Intenta pronto.</string>
     <string name="err_generic">Eso no funcionó. Intenta de nuevo.</string>
+    <string name="heal_title">Gente se arregló sola</string>
+    <string name="heal_empty">Nada ha necesitado arreglo todavía.</string>
+    <string name="heal_fixed">%1$s: %2$s, así que %3$s (%4$d s).</string>
+    <string name="heal_open">%1$s: %2$s. %3$s</string>
+    <string name="heal_what_sign_in_expired">tu sesión venció</string>
+    <string name="heal_what_relay_down">se cayó el enlace con tu computadora</string>
+    <string name="heal_what_cloud_model_unavailable">Gente Cloud se estaba encendiendo</string>
+    <string name="heal_what_slow_replies">tu computadora tardaba en responder</string>
+    <string name="heal_did_refresh_sign_in">renové tu inicio de sesión</string>
+    <string name="heal_did_restart_relay">volví a conectar con tu computadora</string>
+    <string name="heal_did_answer_on_this_computer">respondí en tu computadora</string>
+    <string name="heal_did_answer_from_cloud">respondí desde Gente Cloud</string>
+    <string name="heal_did_retry_request">volví a preguntar</string>
+    <string name="heal_calm_sign_in_expired">Vuelve a iniciar sesión en Gente. Tus chats están a salvo.</string>
+    <string name="heal_calm_relay_down">No se puede llegar a tu computadora ahora. Gente sigue intentando.</string>
+    <string name="heal_calm_cloud_model_unavailable">Gente Cloud no responde ahora. Intenta en un minuto.</string>
+    <string name="heal_calm_slow_replies">Tu computadora sigue trabajando en ello.</string>
+    <string name="heal_calm_generic">Sigo trabajando en ello.</string>
+    <string name="share_repairs">Enviar reportes anónimos de arreglos</string>
+    <string name="share_repairs_body">Solo qué falló, cómo lo arregló Gente y cuánto tardó. Nunca tus chats.</string>
+    <string name="slow_fallback">Usar la nube si mi computadora va lenta</string>
+    <string name="slow_fallback_body">Si tu computadora tarda más de 20 segundos, Gente responde desde Gente Cloud, que no guarda nada. Apagado: Gente espera a tu computadora.</string>
 </resources>

@@ -48,14 +48,32 @@ class AppGraph(
     }
     private val authHttp = OkHttpClient.Builder().addInterceptor(com.deskhead.gente.net.EgressInterceptor(egress)).build()
     val auth = ClerkAuth(app, keys, authHttp, BuildConfig.CLERK_FRONTEND_API, BuildConfig.CLERK_OAUTH_CLIENT_ID)
-    val cloud = CloudApi(cloudBase, egress, { auth.token() })
+
+    /** Anonymous id for repair reports only; random, kept outside backup, never linked to the account. */
+    private val installId: String by lazy {
+        val f = java.io.File(app.noBackupFilesDir, "install-id")
+        f.takeIf { it.exists() }?.readText()?.trim()?.takeIf { it.isNotEmpty() } ?: java.util.UUID.randomUUID().toString().also { f.writeText(it) }
+    }
+    val heal = com.deskhead.gente.agent.SelfHeal(
+        db.dao(), BuildConfig.VERSION_NAME, { installId }, { settings.now().shareRepairs },
+        BuildConfig.SELFHEAL_URL, authHttp,
+    )
+    val cloud = CloudApi(
+        cloudBase, egress, { auth.token() },
+        reauth = { auth.forceRefresh() },
+        onSignInHeal = { fixed, ms ->
+            if (fixed) heal.record(com.deskhead.gente.agent.Failure.SIGN_IN_EXPIRED, com.deskhead.gente.agent.Outcome.FIXED, com.deskhead.gente.agent.Step.REFRESH_SIGN_IN, ms)
+            else { heal.record(com.deskhead.gente.agent.Failure.SIGN_IN_EXPIRED, com.deskhead.gente.agent.Outcome.NEEDS_PERSON); auth.signOut() }
+        },
+    )
     val approvals = ApprovalCenter(dao)
-    val link = LinkService(dao, keys, RelayClient(cloudBase, cloud.http) { auth.token() }, approvals, Build.MODEL ?: "Android")
+    val link = LinkService(dao, keys, RelayClient(cloudBase, cloud.http) { auth.token() }, approvals, Build.MODEL ?: "Android", heal = heal)
     val chats = ChatEngine(
         dao, cloud, link, approvals, settings,
         signedIn = { auth.state.value is AuthState.SignedIn },
         filesDir = app.filesDir, scope = scope,
         demoText = { app.getString(R.string.demo_reply) },
+        heal = heal,
     )
     val billing = PlayBilling(app, cloud, scope)
     val speech = SpeechInput(app)

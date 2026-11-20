@@ -268,4 +268,26 @@
     <string name="err_stt">Voice typing isn\'t available on this phone yet. You can type instead.</string>
     <string name="err_billing">Google Play isn\'t available right now. Try again soon.</string>
     <string name="err_generic">That didn\'t work. Try again.</string>
+    <string name="heal_title">Gente fixed itself</string>
+    <string name="heal_empty">Nothing needed fixing yet.</string>
+    <string name="heal_fixed">%1$s: %2$s, so I %3$s (%4$d s).</string>
+    <string name="heal_open">%1$s: %2$s. %3$s</string>
+    <string name="heal_what_sign_in_expired">your sign-in ran out</string>
+    <string name="heal_what_relay_down">the link to your computer dropped</string>
+    <string name="heal_what_cloud_model_unavailable">Gente Cloud was warming up</string>
+    <string name="heal_what_slow_replies">your computer was slow to answer</string>
+    <string name="heal_did_refresh_sign_in">renewed your sign-in</string>
+    <string name="heal_did_restart_relay">reconnected to your computer</string>
+    <string name="heal_did_answer_on_this_computer">answered on your computer instead</string>
+    <string name="heal_did_answer_from_cloud">answered from Gente Cloud</string>
+    <string name="heal_did_retry_request">asked again</string>
+    <string name="heal_calm_sign_in_expired">Please sign in to Gente again. Your chats are safe.</string>
+    <string name="heal_calm_relay_down">Your computer can\'t be reached right now. Gente keeps trying.</string>
+    <string name="heal_calm_cloud_model_unavailable">Gente Cloud isn\'t answering right now. Try again in a minute.</string>
+    <string name="heal_calm_slow_replies">Your computer is still working on it.</string>
+    <string name="heal_calm_generic">I\'m still working on it.</string>
+    <string name="share_repairs">Send anonymous repair reports</string>
+    <string name="share_repairs_body">Only what broke, how Gente fixed it and how long it took. Never your chats.</string>
+    <string name="slow_fallback">Use the cloud when my computer is slow</string>
+    <string name="slow_fallback_body">If your computer takes more than 20 seconds, Gente answers from Gente Cloud, which keeps nothing. Off: Gente waits for your computer.</string>
 </resources>

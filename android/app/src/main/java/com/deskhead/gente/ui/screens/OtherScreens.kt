@@ -301,10 +301,18 @@ fun DataScreen(graph: AppGraph, back: () -> Unit, openEgress: () -> Unit, toast:
                         Icon(Icons.AutoMirrored.Rounded.OpenInNew, null)
                     }
                 }
+                SectionTitle(stringResource(R.string.heal_title))
+                val repairs = events.filter { it.kind == "repair" }.take(30)
+                if (repairs.isEmpty()) Text(stringResource(R.string.heal_empty), style = MaterialTheme.typography.bodyMedium, color = LocalGenteExtras.current.muted)
+                repairs.forEach { r ->
+                    com.deskhead.gente.agent.SelfHeal.parse(r.detail)?.let { e ->
+                        Text(com.deskhead.gente.ui.components.HealText.sentence(ctx, e, r.at), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(vertical = 6.dp))
+                    }
+                }
                 SectionTitle(stringResource(R.string.data_timeline))
             }
-            if (events.isEmpty()) item { Text(stringResource(R.string.data_timeline_empty), style = MaterialTheme.typography.bodyMedium, color = LocalGenteExtras.current.muted) }
-            items(events.take(50), key = { "ev${it.id}" }) { e ->
+            if (events.none { it.kind != "repair" }) item { Text(stringResource(R.string.data_timeline_empty), style = MaterialTheme.typography.bodyMedium, color = LocalGenteExtras.current.muted) }
+            items(events.filter { it.kind != "repair" }.take(50), key = { "ev${it.id}" }) { e ->
                 val label = when (e.kind) {
                     "sync" -> R.string.ev_sync; "delete" -> R.string.ev_delete; "export" -> R.string.ev_export
                     "receipt" -> R.string.ev_receipt; "pair" -> R.string.ev_pair; else -> R.string.ev_send
@@ -477,6 +485,11 @@ fun SettingsScreen(graph: AppGraph, back: () -> Unit, openPaywall: () -> Unit, o
                 }
                 SectionTitle(stringResource(R.string.voice))
                 Card { SwitchRow(stringResource(R.string.cloud_voice), stringResource(R.string.cloud_voice_body), prefs.cloudVoice) { scope.launch { graph.settings.setCloudVoice(it) } } }
+                SectionTitle(stringResource(R.string.heal_title))
+                Card {
+                    SwitchRow(stringResource(R.string.slow_fallback), stringResource(R.string.slow_fallback_body), prefs.slowFallbackToCloud) { scope.launch { graph.settings.setSlowFallbackToCloud(it) } }
+                    SwitchRow(stringResource(R.string.share_repairs), stringResource(R.string.share_repairs_body), prefs.shareRepairs) { scope.launch { graph.settings.setShareRepairs(it) } }
+                }
                 SectionTitle(stringResource(R.string.look))
                 Card {
                     SwitchRow(stringResource(R.string.dynamic_color), stringResource(R.string.dynamic_color_body), prefs.dynamicColor) { scope.launch { graph.settings.setDynamicColor(it) } }
