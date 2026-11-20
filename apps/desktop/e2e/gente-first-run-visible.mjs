@@ -44,7 +44,7 @@ const app = await electron.launch({ executablePath: exe, args: ["--lang=en-US", 
 try {
   const first = await app.firstWindow();
   await first.waitForLoadState("domcontentloaded");
-  await first.waitForTimeout(3000);
+  await first.waitForLoadState("networkidle").catch(() => {});
   const text0 = await look(first, "welcome");
   // A first run starts by itself. Pressing anything here counts as a click a beginner had to make.
   let clicks = 0;
@@ -107,22 +107,31 @@ try {
       [...document.querySelectorAll('[data-gente-msg="theirs"]')].map((m) => m.innerText.trim()),
     );
   // Let the bot finish its own hello first, so that message isn't taken for the reply.
-  for (let i = 0; i < 1800; i++) {
-    const busy = await page.evaluate(() => document.querySelector("[data-gente-working-composer]") !== null).catch(() => true);
-    if (!busy && (await theirs()).length > 0) break;
-    await page.waitForTimeout(100);
-  }
+  await page
+    .waitForFunction(
+      () =>
+        document.querySelector("[data-gente-working-composer]") === null &&
+        document.querySelectorAll('[data-gente-msg="theirs"]').length > 0,
+      null,
+      { timeout: 180_000, polling: 100 },
+    )
+    .catch(() => {});
   const before = (await theirs()).length;
   await page.keyboard.type("hey");
   const sent = Date.now();
   await page.keyboard.press("Enter");
-  let reply = "";
-  while (!reply && Date.now() - sent < 300_000) {
-    const now = await theirs().catch(() => []);
-    const fresh = now.slice(before).find((t) => t.replace(/Reading…|Working…/g, "").trim().length > 1);
-    if (fresh) reply = fresh;
-    else await page.waitForTimeout(100);
-  }
+  const answered = (t) => t.replace(/Reading…|Working…/g, "").trim().length > 1;
+  await page
+    .waitForFunction(
+      (count) =>
+        [...document.querySelectorAll('[data-gente-msg="theirs"]')]
+          .slice(count)
+          .some((m) => m.innerText.replace(/Reading…|Working…/g, "").trim().length > 1),
+      before,
+      { timeout: 300_000, polling: 100 },
+    )
+    .catch(() => {});
+  const reply = (await theirs().catch(() => [])).slice(before).find(answered) ?? "";
   if (!reply) throw new Error("No reply to \"hey\" within 5 minutes");
   step(`Reply arrived after ${((Date.now() - sent) / 1000).toFixed(1)}s: ${reply.slice(0, 80)}`);
   await look(page, "reply");

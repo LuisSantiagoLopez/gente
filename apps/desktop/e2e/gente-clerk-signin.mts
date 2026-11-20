@@ -19,7 +19,14 @@ const tokens = await signInWithBrowser({
     await shot("sign-in");
     await page.locator('input[name="identifier"]').fill(process.env.GENTE_CLERK_TEST_EMAIL ?? "gente-dev-test+clerk_test@example.com");
     await page.getByRole("button", { name: "Continue", exact: true }).click();
-    await page.waitForTimeout(2500);
+    // The next step is a password field or an email code, depending on the account.
+    await page
+      .locator('input[name="password"]')
+      .or(page.getByText("Check your email"))
+      .or(page.locator('input[autocomplete="one-time-code"]'))
+      .first()
+      .waitFor({ timeout: 15_000 })
+      .catch(() => {});
     await shot("after-email");
     const pw = page.locator('input[name="password"]');
     if (await pw.isVisible().catch(() => false)) {
@@ -28,18 +35,18 @@ const tokens = await signInWithBrowser({
     } else {
       await page.keyboard.type("424242");
     }
-    await page.waitForTimeout(4000);
+    await page.waitForLoadState("networkidle").catch(() => {});
     await shot("after-secret");
     if (await page.getByText("Check your email").isVisible().catch(() => false)) {
       // Clerk test addresses (+clerk_test) accept the code 424242.
       await page.locator("input").first().click();
       await page.keyboard.type("424242");
-      await page.waitForTimeout(4000);
+      await page.waitForLoadState("networkidle").catch(() => {});
       await shot("after-code");
     }
     const consent = page.getByRole("button", { name: /allow|accept|authorize/i });
     if (await consent.isVisible().catch(() => false)) await consent.click();
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState("networkidle").catch(() => {});
     await shot("end");
   },
 });
