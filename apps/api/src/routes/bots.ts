@@ -52,8 +52,10 @@ import {
 import { ACTIVE_RUN_STATUSES, ClientError, computerUsingRuns, displayName } from "@rakazo/core";
 import type { Prisma } from "@rakazo/db";
 import {
+  appendEventInTransaction,
   botProfileLabelsChanged,
   commitBotUpdate,
+  createThreadMessageInTransaction,
   expireComputerExecutionLeases,
   IsolationError,
   isRecordNotFound,
@@ -303,6 +305,14 @@ export async function enqueueBotIntroRun(deps: RouterDeps, actor: Actor, bot: Bo
       select: { name: true, isDefault: true },
     }),
   ]);
+  // Gente (QA-015, QA-022): a local model needs a long time to read the intro prompt, and the
+  // person's first message cancelled it, so new people saw no greeting and waited minutes for
+  // their first reply. Gente greets instantly, in the person's language, with no model run; the
+  // first message then gets the fast, cached chat prompt.
+  if (process.env.BURROW_FAST_CHAT === "on") {
+    await postInstantGreeting(deps, actor, bot, threadId, displayName(user?.name, ""), user?.locale ?? null);
+    return;
+  }
   const prompt = botIntroPrompt({
     userName: displayName(user?.name, ""),
     locale: user?.locale ?? null,
@@ -337,6 +347,62 @@ export async function enqueueBotIntroRun(deps: RouterDeps, actor: Actor, bot: Bo
     });
   }, THREAD_LOCK_TRANSACTION_OPTIONS);
   if (run) await wakeRun(deps.jobs, run.id);
+}
+
+const GREETINGS: Record<string, (name: string, bot: string) => string> = {
+  en: (name, bot) => `Hi${name ? ` ${name}` : ""}! I'm ${bot}. Ask me anything, or tell me what you'd like help with.`,
+  es: (name, bot) => `¡Hola${name ? ` ${name}` : ""}! Soy ${bot}. Pregúntame lo que quieras o cuéntame en qué te ayudo.`,
+  pt: (name, bot) => `Oi${name ? `, ${name}` : ""}! Eu sou ${bot}. Pergunte o que quiser ou me diga como posso ajudar.`,
+  fr: (name, bot) => `Bonjour${name ? ` ${name}` : ""} ! Je suis ${bot}. Posez-moi n'importe quelle question, ou dites-moi comment vous aider.`,
+  de: (name, bot) => `Hallo${name ? ` ${name}` : ""}! Ich bin ${bot}. Frag mich alles, oder sag mir, wobei ich helfen kann.`,
+  nl: (name, bot) => `Hoi${name ? ` ${name}` : ""}! Ik ben ${bot}. Vraag me wat je wilt, of vertel me waarmee ik kan helpen.`,
+  pl: (name, bot) => `Cześć${name ? ` ${name}` : ""}! Jestem ${bot}. Zapytaj o cokolwiek albo powiedz, w czym pomóc.`,
+  it: (name, bot) => `Ciao${name ? ` ${name}` : ""}! Sono ${bot}. Chiedimi quello che vuoi, o dimmi come posso aiutarti.`,
+  tr: (name, bot) => `Merhaba${name ? ` ${name}` : ""}! Ben ${bot}. Bana istediğini sor ya da neye yardım edebileceğimi söyle.`,
+  ru: (name, bot) => `Привет${name ? `, ${name}` : ""}! Я ${bot}. Спрашивайте что угодно или расскажите, чем помочь.`,
+  he: (name, bot) => `היי${name ? ` ${name}` : ""}! אני ${bot}. אפשר לשאול אותי כל דבר, או לספר לי במה לעזור.`,
+  hi: (name, bot) => `नमस्ते${name ? ` ${name}` : ""}! मैं ${bot} हूँ। कुछ भी पूछिए, या बताइए कि मैं किसमें मदद करूँ।`,
+  ja: (name, bot) => `こんにちは${name ? `、${name}さん` : ""}！${bot} です。何でも聞いてください。`,
+  ko: (name, bot) => `안녕하세요${name ? ` ${name}님` : ""}! 저는 ${bot}예요. 무엇이든 물어보세요.`,
+  "zh-CN": (name, bot) => `你好${name ? `，${name}` : ""}！我是 ${bot}。有什么都可以问我。`,
+  "zh-TW": (name, bot) => `你好${name ? `，${name}` : ""}！我是 ${bot}。有什麼都可以問我。`,
+};
+
+/** The greeting for a locale like "es-MX" or "zh-TW"; English when unknown. */
+export function instantGreeting(locale: string | null, name: string, bot: string): string {
+  const tag = locale ?? "en";
+  const pick = GREETINGS[tag] ?? GREETINGS[tag.split("-")[0] ?? "en"] ?? GREETINGS.en!;
+  return pick(name.split(/\s+/)[0] ?? "", bot);
+}
+
+async function postInstantGreeting(
+  deps: RouterDeps,
+  actor: Actor,
+  bot: Bot,
+  threadId: string,
+  userName: string,
+  locale: string | null,
+) {
+  const blocks = [{ kind: "text" as const, text: instantGreeting(locale, userName, bot.name) }];
+  const event = await deps.prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM threads WHERE id = ${threadId} FOR UPDATE`;
+    // One greeting per bot, and none once the person has written.
+    if (await tx.message.findFirst({ where: { threadId }, select: { id: true } })) return null;
+    const message = await createThreadMessageInTransaction(tx, {
+      threadId,
+      role: "bot",
+      markUnread: false,
+      blocks,
+    });
+    return appendEventInTransaction(tx, {
+      spaceId: actor.spaceId,
+      threadId,
+      botId: bot.id,
+      type: "thread.message.created",
+      payload: { messageId: message.id, role: "bot", blocks },
+    });
+  }, THREAD_LOCK_TRANSACTION_OPTIONS);
+  if (event) await deps.events.notify(threadId, event.seq);
 }
 
 export function botsRoutes(ctx: RouterContext) {

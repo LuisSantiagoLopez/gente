@@ -257,8 +257,6 @@ export const ES_MESSAGES: Record<string, string> = {
   "Model choices": "Opciones de modelo",
   "Model download": "Descarga del modelo",
   "No ads. Ever.": "Sin anuncios. Nunca.",
-  "No usage limits. Message as much as you want.":
-    "Sin límites de uso. Escribe todo lo que quieras.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "Nadie lee tus datos, entrena con ellos ni los vende. Ni nosotros ni nadie.",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":

@@ -233,7 +233,6 @@ export const HE_MESSAGES: Record<string, string> = {
   "Model choices": "בחירת מודל",
   "Model download": "הורדת המודל",
   "No ads. Ever.": "בלי פרסומות. אף פעם.",
-  "No usage limits. Message as much as you want.": "בלי הגבלות שימוש. אפשר לכתוב כמה שרוצים.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "אף אחד לא קורא את הנתונים שלך, לא מאמן עליהם ולא מוכר אותם. לא אנחנו ולא אף אחד אחר.",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
