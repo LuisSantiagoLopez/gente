@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   MODEL_OUTAGE_ATTEMPT_NOTE,
   MODEL_OUTAGE_REQUEUES,
+  requeueRunAfterLostLease,
   requeueRunAfterModelOutage,
 } from "./run-fail.js";
 
@@ -69,5 +70,26 @@ describe("a model server outage", () => {
       false,
     );
     for (const { updateMany } of [fresh, other, spent]) expect(updateMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("an attempt that stopped because its lease could have lapsed", () => {
+  it("hands the run back to resume instead of failing it", async () => {
+    const { ctx, updateMany } = context({ saved: true, attempts: 0 });
+    await requeueRunAfterLostLease(ctx as never);
+    expect(updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: "run-1", status: "running", leaseOwner: "worker-1", leaseFence: 3 },
+        data: expect.objectContaining({ status: "queued" }),
+      }),
+    );
+    expect(ctx.state.lease.handedBack).toBe(true);
+  });
+
+  it("leaves a run another process claimed meanwhile alone", async () => {
+    const { ctx, updateMany } = context({ saved: true, attempts: 0 });
+    updateMany.mockResolvedValueOnce({ count: 0 });
+    await requeueRunAfterLostLease(ctx as never);
+    expect(ctx.state.lease.handedBack).toBe(false);
   });
 });

@@ -25,6 +25,7 @@ import {
   failRun,
   handoffEndedTurn,
   requeueRunAfterDatabaseOutage,
+  requeueRunAfterLostLease,
   requeueRunAfterModelOutage,
 } from "../lifecycle/run-fail.js";
 import { followUpsOffered, offeredFleetTools } from "../tools/run-tool-selection.js";
@@ -85,6 +86,11 @@ export async function runModelTurn(
       } catch (completionError) {
         caughtError = completionError;
       }
+    }
+    // Gente (modified from Rakazo): stopped for a lapsed lease, not by a fault of the turn.
+    if (!state.lease.valid) {
+      await requeueRunAfterLostLease(ctx);
+      return;
     }
     if (isDatabaseUnavailable(caughtError)) {
       await requeueRunAfterDatabaseOutage(ctx);

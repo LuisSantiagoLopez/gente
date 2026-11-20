@@ -135,6 +135,19 @@ export async function requeueRunAfterModelOutage(
   return handedBack;
 }
 
+/**
+ * Gente (modified from Rakazo): the attempt stopped itself because its leases could have lapsed,
+ * as after a laptop sleeps or the process is frozen. Nothing failed: hand the run back so this or
+ * another process resumes it after its last saved step. When another process already claimed it,
+ * the requeue matches nothing and that process carries on.
+ */
+export async function requeueRunAfterLostLease(ctx: RunContext): Promise<void> {
+  const { deps, runId, workerId, fence } = ctx;
+  const handedBack = await requeueInterruptedRun(deps, runId, workerId, fence);
+  ctx.state.lease.handedBack ||= handedBack;
+  getLogger().warn("run.lease_lost_requeued", { "run.id": runId, "run.handed_back": handedBack });
+}
+
 /** The turn failed: keep the reply streamed so far, record the error, and retry or notify. */
 export async function failRun(
   ctx: RunContext,
