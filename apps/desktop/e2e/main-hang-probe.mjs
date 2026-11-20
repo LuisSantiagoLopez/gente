@@ -4,7 +4,7 @@
 // CI diagnostic: starts the installed app with the Node inspector, waits, then pauses the main
 // process and prints where its JavaScript is (or says it is idle), plus whether Electron is ready.
 //   node e2e/main-hang-probe.mjs <app-executable> [wait-seconds]
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 
 const [exe, waitArg] = process.argv.slice(2);
 const port = 9339;
@@ -16,6 +16,21 @@ const output = [];
 for (const s of [child.stdout, child.stderr]) s.on("data", (d) => output.push(String(d)));
 await new Promise((r) => setTimeout(r, Number(waitArg ?? 45) * 1000));
 console.log("--- app output\n" + output.join("").slice(-6000));
+// Native stack of the main thread (macOS `sample`), for a thread stuck outside JavaScript.
+if (process.platform === "darwin") {
+  try {
+    const text = execFileSync("/usr/bin/sample", [String(child.pid), "2"], { encoding: "utf8", timeout: 60_000 });
+    const start = text.indexOf("Call graph:");
+    console.log("--- native stacks (sample)\n" + text.slice(start, start + 12000));
+  } catch (error) {
+    console.log("sample failed:", error.message);
+  }
+}
+if (process.platform === "win32") {
+  try {
+    console.log(execFileSync("tasklist", ["/v", "/fi", `PID eq ${child.pid}`], { encoding: "utf8" }));
+  } catch {}
+}
 try {
   const [target] = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
   const ws = new WebSocket(target.webSocketDebuggerUrl);
@@ -29,7 +44,8 @@ try {
     else events.push(msg);
   };
   const send = (method, params = {}) =>
-    new Promise((r) => {
+    new Promise((r, j) => {
+      setTimeout(() => j(new Error(`${method}: no answer in 8 s (main thread stuck outside JavaScript)`)), 8000);
       const n = ++id;
       pending.set(n, r);
       ws.send(JSON.stringify({ id: n, method, params }));
