@@ -42,6 +42,38 @@
     "%@%@": {
       "shouldTranslate": false
     },
+    "%@: %@, so I %@ (%lld s).": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@, así que %@ (%lld s)."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@, então eu %@ (%lld s)."
+          }
+        }
+      }
+    },
+    "%@: %@. %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@. %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@. %@"
+          }
+        }
+      }
+    },
     "%lld chats, %lld messages": {
       "localizations": {
         "es": {
@@ -922,6 +954,22 @@
         }
       }
     },
+    "Each note says only what broke, what fixed it, how long it took, the app version and “iOS”. Never your words or your account. It helps fix the same problem for everyone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada nota dice solo qué falló, qué lo arregló, cuánto tardó, la versión de la app y “iOS”. Nunca tus palabras ni tu cuenta. Ayuda a arreglar el mismo problema para todos."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada nota diz só o que quebrou, o que consertou, quanto tempo levou, a versão do app e “iOS”. Nunca suas palavras nem sua conta. Ajuda a consertar o mesmo problema para todos."
+          }
+        }
+      }
+    },
     "Each question sends only what it needs. Our servers answer and keep nothing.": {
       "localizations": {
         "es": {
@@ -1312,6 +1360,22 @@
         }
       }
     },
+    "Gente Cloud was warming up": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud se estaba encendiendo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o Gente Cloud estava ligando"
+          }
+        }
+      }
+    },
     "Gente always asks before money, sending as you, deleting data or accepting terms.": {
       "localizations": {
         "es": {
@@ -1324,6 +1388,38 @@
           "stringUnit": {
             "state": "translated",
             "value": "O Gente sempre pergunta antes de gastar dinheiro, enviar algo como você, apagar dados ou aceitar termos."
+          }
+        }
+      }
+    },
+    "Gente can't reach your computer right now. It keeps trying.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente no puede llegar a tu computadora ahora. Sigue intentando."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente não consegue alcançar seu computador agora. Continua tentando."
+          }
+        }
+      }
+    },
+    "Gente fixed itself": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente se arregló solo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente se consertou sozinho"
           }
         }
       }
@@ -1548,6 +1644,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Concordo em enviar isso quando eu pedir"
+          }
+        }
+      }
+    },
+    "I'm still working on it.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigo trabajando en ello."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ainda estou resolvendo."
           }
         }
       }
@@ -1968,6 +2080,22 @@
         }
       }
     },
+    "Nothing needed fixing yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hubo nada que arreglar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada precisou de conserto ainda."
+          }
+        }
+      }
+    },
     "On my computer": {
       "localizations": {
         "es": {
@@ -2284,6 +2412,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entre de novo para continuar."
+          }
+        }
+      }
+    },
+    "Please sign in to Gente again. Your chats are safe.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuelve a iniciar sesión en Gente. Tus chats están a salvo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre no Gente de novo. Suas conversas estão seguras."
           }
         }
       }
@@ -2844,6 +2988,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Enviar"
+          }
+        }
+      }
+    },
+    "Send anonymous repair notes": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar notas anónimas de reparación"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar notas anônimas de conserto"
           }
         }
       }
@@ -3792,6 +3952,22 @@
         }
       }
     },
+    "When something goes wrong, Gente tries to fix it on its own and writes down what it did here.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando algo falla, Gente intenta arreglarlo solo y anota aquí lo que hizo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando algo dá errado, o Gente tenta consertar sozinho e anota aqui o que fez."
+          }
+        }
+      }
+    },
     "When you ask, Gente sends the words it needs to these services, and nothing more:": {
       "localizations": {
         "es": {
@@ -4160,6 +4336,22 @@
         }
       }
     },
+    "answered on your computer instead": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "respondí en tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "respondi no seu computador"
+          }
+        }
+      }
+    },
     "fal.ai: pictures you ask for.": {
       "localizations": {
         "es": {
@@ -4172,6 +4364,102 @@
           "stringUnit": {
             "state": "translated",
             "value": "fal.ai: imagens que você pedir."
+          }
+        }
+      }
+    },
+    "reconnected to your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "volví a conectar con tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "reconectei ao seu computador"
+          }
+        }
+      }
+    },
+    "renewed your sign-in": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "renové tu inicio de sesión"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "renovei seu login"
+          }
+        }
+      }
+    },
+    "replies were slow because the model was busy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "las respuestas iban lentas porque el modelo estaba ocupado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "as respostas estavam lentas porque o modelo estava ocupado"
+          }
+        }
+      }
+    },
+    "the link to your computer dropped": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "se cortó el enlace con tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o link com seu computador caiu"
+          }
+        }
+      }
+    },
+    "waited for it and then answered": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "esperé a que estuviera listo y respondí"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "esperei ficar pronto e respondi"
+          }
+        }
+      }
+    },
+    "your sign-in ran out": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tu sesión venció"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "seu login expirou"
           }
         }
       }

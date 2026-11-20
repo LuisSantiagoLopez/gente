@@ -117,6 +117,14 @@ final class Auth: NSObject {
         return t.accessToken
     }
 
+    /// Renews the access token now (used when Gente Cloud says it expired early).
+    func forceRefresh() async throws {
+        guard let data = try keys.read("tokens") else { throw AuthError.signedOut }
+        let t = try JSONDecoder().decode(OAuthTokens.self, from: data)
+        guard let refresh = t.refreshToken else { throw AuthError.signedOut }
+        try await exchange(["grant_type": "refresh_token", "refresh_token": refresh, "client_id": Config.clerkClientID])
+    }
+
     func signOut() {
         keys.eraseAll()
         email = nil

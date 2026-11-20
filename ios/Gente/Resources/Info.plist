@@ -21,6 +21,7 @@
 		</dict>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key><false/>
+	<key>GenteSelfHealURL</key><string></string>
 	<key>LSRequiresIPhoneOS</key><true/>
 	<key>NSMicrophoneUsageDescription</key><string>Gente listens only while you hold the mic, so you can talk instead of type.</string>
 	<key>NSSpeechRecognitionUsageDescription</key><string>Gente turns your voice into text on this iPhone. Your voice is not sent anywhere.</string>

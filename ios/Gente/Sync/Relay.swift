@@ -15,7 +15,7 @@ final class CloudRelay: RelayTransport {
     var api = CloudAPI.shared
 
     private func call(_ r: URLRequest) async throws -> Data {
-        let (data, resp) = try await api.http.data(r, service: .relay, carries: .encrypted)
+        let (data, resp) = try await api.send(r, service: .relay, carries: .encrypted)
         guard (200..<300).contains(resp.statusCode) else { throw CloudAPI.failure(resp.statusCode, data) }
         return data
     }

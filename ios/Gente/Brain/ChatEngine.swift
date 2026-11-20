@@ -42,6 +42,10 @@ final class ChatEngine {
     var store = EncryptedStore.shared
     var inference = InferenceClient()
     var tools = ToolRunner()
+    var sync: SyncEngine { syncOverride ?? SyncEngine.shared }
+    var syncOverride: SyncEngine?
+    /// Self-heal "slow-replies": no first word from Gente Cloud after this long, and a computer is paired.
+    var slowAfter: Duration = .seconds(12)
     var context = ContextBuilder()
 
     var chats: [Chat] = []
@@ -137,10 +141,13 @@ final class ChatEngine {
                 let by: AnsweredBy
                 switch place {
                 case .desktop:
-                    stream = try await SyncEngine.shared.privateInfer(wire); by = .desktop
+                    stream = try await sync.privateInfer(wire); by = .desktop
                 default:
-                    try await waitForFastMode(chatId)
-                    stream = try await inference.stream(wire, tools: ToolSpec.all); by = .cloud
+                    if try await waitForFastMode(chatId) {
+                        stream = try await sync.privateInfer(wire); by = .desktop
+                    } else {
+                        (stream, by) = try await cloudWithSlowGuard(wire)
+                    }
                 }
                 var text = ""
                 var calls: [ToolCall] = []
@@ -185,11 +192,16 @@ final class ChatEngine {
         }
     }
 
-    /// The cloud GPU sleeps overnight. If it is waking, say so and wait (about a minute).
-    private func waitForFastMode(_ chatId: String) async throws {
-        // "off" means no GPU right now; the server still answers (a short stub until the GPU is
-        // live), so we only wait when it is waking.
+    /// Self-heal "cloud-model-unavailable". The cloud GPU sleeps overnight. With a paired
+    /// computer, that computer answers instead (returns true). Without one, wait while it wakes.
+    /// "off" with no computer: the server still answers (a short placeholder until the GPU is live).
+    private func waitForFastMode(_ chatId: String) async throws -> Bool {
+        let start = Date()
         var status = await inference.api.inferenceStatus()
+        if status != .warm && sync.paired {
+            SelfHeal.shared.record(.cloudModelUnavailable, .fixed, fixedBy: .answerOnYourComputer, since: start)
+            return true
+        }
         var tries = 0
         while status == .waking && tries < 30 {
             liveSteps[chatId] = [String(localized: "Waking up the fast AI (about a minute)…")]
@@ -198,6 +210,37 @@ final class ChatEngine {
             tries += 1
         }
         liveSteps[chatId] = nil
+        if tries > 0 {
+            SelfHeal.shared.record(.cloudModelUnavailable, status == .warm ? .fixed : .stillTrying,
+                                   fixedBy: status == .warm ? .waitForCloud : nil, since: start)
+        }
+        return false
+    }
+
+    /// Self-heal "slow-replies": if Gente Cloud sends no first word in time and a computer is
+    /// paired, the computer answers instead. Without a computer we keep waiting (silent).
+    private func cloudWithSlowGuard(_ wire: [WireMessage]) async throws -> (AsyncThrowingStream<StreamEvent, Error>, AnsweredBy) {
+        let start = Date()
+        let cloud = try await inference.stream(wire, tools: ToolSpec.all)
+        guard sync.paired else { return (cloud, .cloud) }
+        let (out, cont) = AsyncThrowingStream<StreamEvent, Error>.makeStream()
+        let seen = FirstWord()
+        let pump = Task {
+            do {
+                for try await e in cloud { await seen.mark(); cont.yield(e) }
+                cont.finish()
+            } catch { cont.finish(throwing: error) }
+        }
+        let deadline = ContinuousClock.now + slowAfter
+        while ContinuousClock.now < deadline {
+            if await seen.value { return (out, .cloud) }
+            try await Task.sleep(for: .milliseconds(50))
+        }
+        if await seen.value { return (out, .cloud) }
+        pump.cancel()
+        cont.finish()
+        SelfHeal.shared.record(.slowReplies, .fixed, fixedBy: .answerOnYourComputer, since: start)
+        return (try await sync.privateInfer(wire), .desktop)
     }
 
     static func stepInProgress(_ tool: String) -> String {
@@ -230,4 +273,9 @@ final class ChatEngine {
         if call.name == "browse" { return String(localized: "Gente wants to act on a web page.") }
         return String(localized: "Gente wants to use \(call.name).")
     }
+}
+
+private actor FirstWord {
+    private(set) var value = false
+    func mark() { value = true }
 }

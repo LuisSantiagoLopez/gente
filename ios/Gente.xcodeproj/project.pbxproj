@@ -35,6 +35,7 @@
 		780F9C7F470B396854B1175C /* GenteActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A370A2D58ECE4B16AA1E3 /* GenteActivityAttributes.swift */; };
 		7C0E8907619F8ABD095BB579 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED02D74F90EB509FD1234B9D /* StoreKit.framework */; };
 		844CAF866E5DEED9595B24BB /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603877E90B1772DB36C7E252 /* Config.swift */; };
+		8A2D61530FA243F4C2C1FE0D /* SelfHeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF3964F7C2372DB7B0EF9C /* SelfHeal.swift */; };
 		96DEE3A0151C10943E85742D /* PrivacyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341201547D930896F2403891 /* PrivacyViews.swift */; };
 		99CEB4278E83D02F65CE9023 /* GenteActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A370A2D58ECE4B16AA1E3 /* GenteActivityAttributes.swift */; };
 		9CD60743AF0B40A74E512E37 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0635DC61D5BA0843C6B5A720 /* PaywallView.swift */; };
@@ -45,6 +46,7 @@
 		A8C66E270B01CBFF62D66E07 /* GenteWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1634FE08C656F3FDB44DD /* GenteWidgets.swift */; };
 		ABA799947E39DB35D66010A5 /* Approvals.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AC45263F6A51BF9815FEED /* Approvals.swift */; };
 		ACA42B28FDF62246B6EA4DDA /* Gente.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 79B25AAEA02C62BBA1C5BD93 /* Gente.storekit */; };
+		AEC51D054498059ACE64D6C7 /* SelfHealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFDC718851E4EABD3B7B5D /* SelfHealView.swift */; };
 		AFBDD9CDBE40268201395A79 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C0855C029B988AD7C47E0E5A /* AppShortcuts.xcstrings */; };
 		B12A9B7401F2D3EEB2DF240E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F296FB3021DBB71D2ECBBB /* Models.swift */; };
 		B2B6B65F8AF1F90248CC68A1 /* GenteWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB5423220943DA1339D2E2C9 /* GenteWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -122,6 +124,7 @@
 		32C825B153DCDFF89AD8039C /* Friendly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friendly.swift; sourceTree = "<group>"; };
 		341201547D930896F2403891 /* PrivacyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViews.swift; sourceTree = "<group>"; };
 		3642ACD73150330403469408 /* GenteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenteUITests.swift; sourceTree = "<group>"; };
+		3ACFDC718851E4EABD3B7B5D /* SelfHealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfHealView.swift; sourceTree = "<group>"; };
 		3C4D3817232C205EEB2A07C2 /* Gente.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Gente.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F1634FE08C656F3FDB44DD /* GenteWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenteWidgets.swift; sourceTree = "<group>"; };
 		45E366E7F4E948A818B106F6 /* StreamingSpeaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingSpeaker.swift; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 		80218A8F758C848463589311 /* Inference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inference.swift; sourceTree = "<group>"; };
 		805B8165EE78AFD42DA5AA97 /* DemoSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSeed.swift; sourceTree = "<group>"; };
 		80BB535150254A5E2C917257 /* Listener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listener.swift; sourceTree = "<group>"; };
+		81FF3964F7C2372DB7B0EF9C /* SelfHeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfHeal.swift; sourceTree = "<group>"; };
 		8551380C9AF3B7CB7BC672E8 /* KeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStore.swift; sourceTree = "<group>"; };
 		8DFC88F1B18099B7657902BA /* GenteTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = GenteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DFDC2082111D1BC99A70DAC /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				0635DC61D5BA0843C6B5A720 /* PaywallView.swift */,
 				341201547D930896F2403891 /* PrivacyViews.swift */,
 				55DADF8C6F3E79FBA4089495 /* RootView.swift */,
+				3ACFDC718851E4EABD3B7B5D /* SelfHealView.swift */,
 				CFD0005878B78657F98E6096 /* SettingsView.swift */,
 			);
 			path = Features;
@@ -384,6 +389,7 @@
 				22AD4E22F61BBF2681C9E203 /* ChatEngine.swift */,
 				9E6A34478379A1938775F17C /* ContextBuilder.swift */,
 				235D185B11A46AC324637F97 /* Notifications.swift */,
+				81FF3964F7C2372DB7B0EF9C /* SelfHeal.swift */,
 				9C29EAC078B74ABFC5A1B97B /* Tools.swift */,
 			);
 			path = Brain;
@@ -602,6 +608,8 @@
 				2470697D1B18D3F7FD847514 /* Relay.swift in Sources */,
 				E32BE8A8A3BD28CAC4A36AF8 /* RootView.swift in Sources */,
 				224B6D6E2A757E6E2605DF4C /* Sealer.swift in Sources */,
+				8A2D61530FA243F4C2C1FE0D /* SelfHeal.swift in Sources */,
+				AEC51D054498059ACE64D6C7 /* SelfHealView.swift in Sources */,
 				05F773EE92270091021174BD /* SettingsView.swift in Sources */,
 				E8A251F13D9B1009F6269044 /* StreamingSpeaker.swift in Sources */,
 				2005DB1C678467311DBD408C /* SyncEngine.swift in Sources */,

@@ -27,6 +27,27 @@ final class CloudAPI {
     static let shared = CloudAPI()
     var http = GenteHTTP.shared
     var tokens: () async throws -> String = { try await Auth.shared.accessToken() }
+    /// Renews the sign-in (self-heal "sign-in-expired", step "refresh-sign-in").
+    var refresh: () async throws -> Void = { try await Auth.shared.forceRefresh() }
+
+    /// Sends an authorized request. On 401 it renews the sign-in once and tries again.
+    func send(_ r: URLRequest, service: Service, carries: Carries) async throws -> (Data, HTTPURLResponse) {
+        let (data, resp) = try await http.data(r, service: service, carries: carries)
+        guard resp.statusCode == 401, r.value(forHTTPHeaderField: "Authorization") != nil else { return (data, resp) }
+        let start = Date()
+        do {
+            try await refresh()
+            var again = r
+            again.setValue("Bearer \(try await tokens())", forHTTPHeaderField: "Authorization")
+            let (d2, r2) = try await http.data(again, service: service, carries: carries)
+            await MainActor.run { _ = SelfHeal.shared.record(.signInExpired, r2.statusCode == 401 ? .needsPerson : .fixed,
+                                                             fixedBy: r2.statusCode == 401 ? nil : .refreshSignIn, since: start) }
+            return (d2, r2)
+        } catch {
+            await MainActor.run { _ = SelfHeal.shared.record(.signInExpired, .needsPerson, since: start) }
+            return (data, resp)
+        }
+    }
     var base: URL { Config.cloudBase }
 
     func request(_ path: String, method: String = "GET", json: Any? = nil) async throws -> URLRequest {
@@ -43,7 +64,7 @@ final class CloudAPI {
 
     func call<T: Decodable>(_ path: String, method: String = "GET", json: Any? = nil, service: Service, carries: Carries = .none, as: T.Type) async throws -> T {
         let r = try await request(path, method: method, json: json)
-        let (data, resp) = try await http.data(r, service: service, carries: carries)
+        let (data, resp) = try await send(r, service: service, carries: carries)
         guard (200..<300).contains(resp.statusCode) else { throw Self.failure(resp.statusCode, data) }
         return try JSONDecoder().decode(T.self, from: data)
     }
@@ -82,7 +103,7 @@ final class CloudAPI {
                                   json: ["jsonrpc": "2.0", "id": UUID().uuidString, "method": method, "params": params])
         r.setValue("application/json, text/event-stream", forHTTPHeaderField: "Accept")
         if let mcpSession { r.setValue(mcpSession, forHTTPHeaderField: "mcp-session-id") }
-        let (data, resp) = try await http.data(r, service: .apps, carries: .toolInput)
+        let (data, resp) = try await send(r, service: .apps, carries: .toolInput)
         if let s = resp.value(forHTTPHeaderField: "mcp-session-id") { mcpSession = s }
         guard (200..<300).contains(resp.statusCode) else { throw Self.failure(resp.statusCode, data) }
         var body = data

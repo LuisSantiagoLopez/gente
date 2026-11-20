@@ -78,7 +78,20 @@ final class InferenceClient {
         r.httpBody = try body(messages, tools: tools)
         r.setValue("application/json", forHTTPHeaderField: "Content-Type")
         r.setValue("text/event-stream", forHTTPHeaderField: "Accept")
-        let (lines, resp) = try await api.http.lines(r, service: .inference, carries: .chatContext)
+        var (lines, resp) = try await api.http.lines(r, service: .inference, carries: .chatContext)
+        if resp.statusCode == 401 {
+            // Self-heal "sign-in-expired": renew once, then send the same request again.
+            let start = Date()
+            do {
+                try await api.refresh()
+                r.setValue("Bearer \(try await api.tokens())", forHTTPHeaderField: "Authorization")
+                (lines, resp) = try await api.http.lines(r, service: .inference, carries: .chatContext)
+                let ok = resp.statusCode != 401
+                await MainActor.run { _ = SelfHeal.shared.record(.signInExpired, ok ? .fixed : .needsPerson, fixedBy: ok ? .refreshSignIn : nil, since: start) }
+            } catch {
+                await MainActor.run { _ = SelfHeal.shared.record(.signInExpired, .needsPerson, since: start) }
+            }
+        }
         if !(200..<300).contains(resp.statusCode) {
             var raw = ""
             for try await l in lines { raw += l }

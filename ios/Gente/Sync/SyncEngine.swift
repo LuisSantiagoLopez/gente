@@ -187,7 +187,7 @@ final class SyncEngine {
         loop = Task { [weak self] in
             while !Task.isCancelled {
                 guard let self else { return }
-                try? await self.pull()
+                await self.pullHealing()
                 let busy = self.fast || !self.privateStreams.isEmpty || self.tasks.contains { !["done", "failed", "stopped"].contains($0.state) }
                 try? await Task.sleep(for: .seconds(busy ? 1 : 8))
             }
@@ -195,6 +195,34 @@ final class SyncEngine {
     }
 
     func stop() { loop?.cancel(); loop = nil; fast = false }
+
+    // MARK: Self-heal "relay-down" (2 failed reads in a row, then reconnect; budget 8 s)
+
+    var makeRelay: () -> RelayTransport = { CloudRelay() }
+    private(set) var relayFailures = 0
+    private var relayDownSince: Date?
+    private var reportedStillTrying = false
+
+    func pullHealing() async {
+        do {
+            try await pull()
+            if let since = relayDownSince {
+                SelfHeal.shared.record(.relayDown, .fixed, fixedBy: .restartRelay, since: since)
+            }
+            relayFailures = 0; relayDownSince = nil; reportedStillTrying = false
+        } catch {
+            relayFailures += 1
+            guard relayFailures >= 2 else { return }
+            if relayDownSince == nil {
+                relayDownSince = Date()
+                // Restart the link: a fresh relay client (new connection) and quick retries.
+                if relay is CloudRelay { relay = makeRelay() }
+            } else if !reportedStillTrying, let since = relayDownSince, Date().timeIntervalSince(since) > 8 {
+                reportedStillTrying = true
+                SelfHeal.shared.record(.relayDown, .stillTrying, since: since)
+            }
+        }
+    }
 
     func pull() async throws {
         for var d in desktops {

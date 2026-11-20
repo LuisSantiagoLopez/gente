@@ -42,6 +42,7 @@ struct SettingsView: View {
                 NavigationLink(value: Route.data) { Label("Where's my data", systemImage: "externaldrive.badge.checkmark") }.accessibilityIdentifier("settings.data")
                 NavigationLink(value: Route.egress) { Label("What left your phone", systemImage: "arrow.up.right.circle") }.accessibilityIdentifier("settings.egress")
                 NavigationLink(value: Route.devices) { Label("Your devices", systemImage: "laptopcomputer.and.iphone") }
+                NavigationLink(value: Route.selfHeal) { Label("Gente fixed itself", systemImage: "wrench.and.screwdriver") }.accessibilityIdentifier("settings.selfHeal")
             } header: { Text("Privacy") }
             Section {
                 NavigationLink(value: Route.brain) { Label("Memory, skills and projects", systemImage: "brain") }

@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc.
 import SwiftUI
 
-enum Route: Hashable { case chat(String), settings, egress, data, devices, brain, routines, paywall, apps }
+enum Route: Hashable { case chat(String), settings, egress, data, devices, brain, routines, paywall, apps, selfHeal }
 
 struct HomeView: View {
     @Environment(ChatEngine.self) private var engine
@@ -69,6 +69,7 @@ struct HomeView: View {
                 case .routines: RoutinesView()
                 case .paywall: PaywallView()
                 case .apps: AppsView()
+                case .selfHeal: SelfHealView()
                 }
             }
         }
