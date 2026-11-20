@@ -254,7 +254,9 @@ export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
     // QA-022: then the long task prompt (system prompt plus about 23 tool schemas, ~10k tokens),
     // so the first real question after launch also finds its prefix cached. It runs after the
     // small-talk warm-up, in the background, and never delays a reply.
-    if (res.ok) void warmTaskPrefix(stackDirectory, model);
+    // Measured on Santi's Mac: warming it right away made the first "hey" after launch wait 6 s
+    // behind it, so it waits two minutes, when the person is most likely reading.
+    if (res.ok) setTimeout(() => void warmTaskPrefix(stackDirectory, model), 120_000).unref();
     return res.ok;
   } catch {
     // No chat yet, or the model server is busy: the first reply reads the prompt instead.

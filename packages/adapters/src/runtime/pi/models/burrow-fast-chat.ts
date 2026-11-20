@@ -51,9 +51,51 @@ export function isQuickChat(messages: readonly ChatMessage[]): boolean {
 
 /** A short question or remark with no task words, sent as a new turn (not inside a tool loop). */
 export function isPlainQuestion(messages: readonly ChatMessage[]): boolean {
-  if (!isQuickChat(messages)) return false;
-  const previous = messages.at(-2);
-  return !(previous && (previous.role === "tool" || previous.tool_calls));
+  // The newest message is the person's, so this is a new turn even if the last one used tools.
+  return isQuickChat(messages);
+}
+
+/** Words that make a turn about code. */
+const CODE_WORDS =
+  /```|\b(code|coding|function|functions|script|program|python|javascript|typescript|java|rust|golang|kotlin|swift code|c\+\+|c#|sql|regex|bash|shell script|html|css|react|bug|debug|compile|compiler|stack trace|traceback|refactor|algorithm|unit test|json|yaml)\b/i;
+/** The tools a coding turn needs: files, a shell, the web for docs, and a question back. */
+const CODE_TOOLS = new Set([
+  "shell", "read_file", "write_file", "list_files", "attach_file", "ask_user", "web_search", "web_fetch",
+]);
+
+/** The person's newest message in the conversation (the turn this request belongs to). */
+function latestUserWords(messages: readonly ChatMessage[]): string {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i]?.role === "user") return userWords(messages[i]!.content);
+  }
+  return "";
+}
+
+export function isCodingTurn(messages: readonly ChatMessage[]): boolean {
+  return CODE_WORDS.test(latestUserWords(messages));
+}
+
+/**
+ * A coding turn: the bot's identity and memory without the long manual, only the code tools, and
+ * light thinking. Every request of the turn (including tool follow-ups) gets the same shape, so the
+ * model server keeps its cache across the turn.
+ */
+export function codingBody(parsed: { messages: ChatMessage[]; tools?: unknown[]; [key: string]: unknown }) {
+  const [first, ...rest] = parsed.messages;
+  const system =
+    first?.role === "system"
+      ? [{ role: "system", content: `${slimSystemPrompt(messageText(first.content))}\n\nFor code: answer with the code first, briefly explained. Use the shell and files only when the task needs running or saving something.` }]
+      : [];
+  const tools = (parsed.tools ?? []).filter((tool) => {
+    const name = (tool as { function?: { name?: string } }).function?.name;
+    return typeof name === "string" && CODE_TOOLS.has(name);
+  });
+  return {
+    ...parsed,
+    messages: [...system, ...(first?.role === "system" ? rest : parsed.messages)],
+    tools,
+    ...(parsed.reasoning_effort !== undefined ? { reasoning_effort: "low" } : {}),
+  };
 }
 
 export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
@@ -122,6 +164,9 @@ export function quickChatBody(
     if (quick) slim.model = quick;
     const messages = slim.messages as unknown[];
     return { body: JSON.stringify(slim), prefix, chatPrefix: { ...slim, messages: messages.slice(0, -1) } };
+  }
+  if (Array.isArray((parsed as { tools?: unknown[] }).tools) && isCodingTurn(parsed.messages)) {
+    return { body: JSON.stringify(codingBody(parsed as { messages: ChatMessage[] })), prefix };
   }
   if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
     parsed.reasoning_effort = "none";
