@@ -2,7 +2,7 @@
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { createServer } from "node:http";
 import { afterEach, describe, expect, it } from "vitest";
-import { startComposioRelay } from "./composio-relay.js";
+import { startAppsRelay } from "./apps-relay.js";
 
 const closers: Array<() => Promise<void>> = [];
 afterEach(async () => {
@@ -19,7 +19,7 @@ describe("Composio through Gente Cloud", () => {
     });
     await new Promise<void>((r) => cloud.listen(0, "127.0.0.1", () => r()));
     closers.push(() => new Promise((r) => cloud.close(() => r())));
-    const relay = await startComposioRelay({
+    const relay = await startAppsRelay({
       cloudUrl: `http://127.0.0.1:${(cloud.address() as { port: number }).port}/v1/proxy/composio/mcp`,
       token: async () => "tok",
     });
@@ -31,7 +31,7 @@ describe("Composio through Gente Cloud", () => {
   });
 
   it("asks to sign in when there is no sign-in and no developer key", async () => {
-    const relay = await startComposioRelay({ cloudUrl: "http://127.0.0.1:9/never", token: async () => null });
+    const relay = await startAppsRelay({ cloudUrl: "http://127.0.0.1:9/never", token: async () => null });
     closers.push(relay.close);
     const res = await fetch(relay.url, { method: "POST", body: "{}" });
     expect(res.status).toBe(401);

@@ -401,8 +401,8 @@ export function PluginsOverlay({
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
               <Trans>
                 When Gente works online for you (searching, browsing, apps), only what that task
-                needs goes out. A connected app's data goes through Composio's cloud, only for the
-                apps you choose.
+                needs goes out. A connected app's data goes through our connected-apps provider's
+                cloud, only for the apps you choose.
               </Trans>
             </p>
             {/* Gente: apps connect from their tiles below or from a card in chat; no setup step. */}

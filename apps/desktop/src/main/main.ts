@@ -36,7 +36,7 @@ import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { startSearchBroker } from "./burrow/search-broker.js";
 import { createAiMode } from "./burrow/ai-mode.js";
 import { startModelRouter } from "./burrow/model-router.js";
-import { startComposioRelay } from "./burrow/composio-relay.js";
+import { startAppsRelay } from "./burrow/apps-relay.js";
 import { startComputerBroker } from "./burrow/computer-broker.js";
 import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
 import { createDesktopLink } from "./burrow/link/link-desktop.js";
@@ -52,7 +52,11 @@ import {
   signInToGente,
   signOutOfGente,
 } from "./burrow/account.js";
-import { readComposioKey, readKeychainSecret, vendorKeysAllowed } from "./burrow/composio.js";
+import { readServiceKey, vendorKeysAllowed } from "./burrow/service-keys.js";
+import {
+  CONNECTED_APPS_CLOUD_PATH,
+  type ServiceKey,
+} from "@rakazo/adapters/desktop-server-env";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
 import { readTelegramToken } from "./burrow/telegram.js";
@@ -190,6 +194,9 @@ const devVendorKeys = () =>
     packaged: app.isPackaged,
     devFlagFile: existsSync(path.join(app.getPath("userData"), "dev-vendor-keys")),
   });
+/** Gente: a developer's key for a service, only where vendor keys are allowed. */
+const devServiceKey = (key: ServiceKey) =>
+  devVendorKeys() ? readServiceKey(key) : Promise.resolve(undefined);
 const reportsErrors = desktopReportsErrors(app.isPackaged);
 const updaterEnvironment = {
   // A `--dir` build has no update feed to read.
@@ -798,17 +805,17 @@ app.whenReady().then(async () => {
       modelRouter = router;
     })
     .catch(() => undefined);
-  // Gente: connected apps (Composio) through Gente Cloud, with the person's own sign-in.
-  let composioProxy: string | null = null;
+  // Gente: connected apps through Gente Cloud, with the person's own sign-in.
+  let appsRelay: string | null = null;
   let mediaRelay: string | null = null;
-  void startComposioRelay({
-    cloudUrl: `${GENTE_CLOUD_URL}/v1/proxy/composio/mcp`,
+  void startAppsRelay({
+    cloudUrl: `${GENTE_CLOUD_URL}${CONNECTED_APPS_CLOUD_PATH}`,
     mediaUrl: `${GENTE_CLOUD_URL}/v1/proxy/media`,
     token: accountToken,
-    devKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
+    devKey: () => devServiceKey("connectedApps"),
   })
     .then((relay) => {
-      composioProxy = relay.url;
+      appsRelay = relay.url;
       mediaRelay = relay.mediaUrl;
     })
     .catch(() => undefined);
@@ -913,12 +920,11 @@ app.whenReady().then(async () => {
       onState,
       importFromDocker: moving ? (target) => moveDockerStack(moveDeps, target) : undefined,
       sealer,
-      composioKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
-      cloudComputerKey: () =>
-        devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
+      connectedAppsKey: () => devServiceKey("connectedApps"),
+      cloudComputerKey: () => devServiceKey("cloudComputers"),
       searchBroker: () => searchBroker,
       modelRouter: () => modelRouterBase,
-      composioProxy: () => composioProxy,
+      appsRelay: () => appsRelay,
       computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
       mediaRelay: () => (isPaidPlan() ? mediaRelay : null),
       telegramToken: () => readTelegramToken(),
@@ -977,12 +983,11 @@ app.whenReady().then(async () => {
           randomHex,
           onState,
           sealer,
-          composioKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
-          cloudComputerKey: () =>
-            devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
+          connectedAppsKey: () => devServiceKey("connectedApps"),
+          cloudComputerKey: () => devServiceKey("cloudComputers"),
           searchBroker: () => searchBroker,
       modelRouter: () => modelRouterBase,
-      composioProxy: () => composioProxy,
+      appsRelay: () => appsRelay,
       computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
       mediaRelay: () => (isPaidPlan() ? mediaRelay : null),
       telegramToken: () => readTelegramToken(),

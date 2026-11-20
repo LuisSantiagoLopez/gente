@@ -1,20 +1,25 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// Composio (connected apps) through Gente Cloud: Gente's server sends its Composio MCP traffic to
-// this loopback relay (secret path), which forwards it to ${GENTE_CLOUD_URL}/v1/proxy/composio/mcp
-// with the person's fresh sign-in and passes the mcp-session-id header both ways. No Composio key
-// is needed on this computer. A developer build without a sign-in may still use its own key.
+// Connected apps through Gente Cloud: Gente's server sends its connected-apps MCP traffic to this
+// loopback relay (secret path), which forwards it to Gente Cloud's connected-apps proxy with the
+// person's fresh sign-in and passes the mcp-session-id header both ways. No vendor key is needed
+// on this computer. A developer build without a sign-in may still use its own key.
 import { randomBytes } from "node:crypto";
 import { createServer, type Server } from "node:http";
 import { Readable } from "node:stream";
+import {
+  CONNECTED_APPS_DIRECT_URL,
+  CONNECTED_APPS_KEY_HEADER,
+} from "@rakazo/adapters/desktop-server-env";
 
-export interface ComposioRelayDeps {
-  cloudUrl: string; // ${GENTE_CLOUD_URL}/v1/proxy/composio/mcp
+export interface AppsRelayDeps {
+  /** Gente Cloud's connected-apps proxy. */
+  cloudUrl: string;
   /** Gente Cloud's media proxy (${GENTE_CLOUD_URL}/v1/proxy/media); the relay also serves /media. */
   mediaUrl?: string;
   token: () => Promise<string | null>;
-  /** Developer builds only: a Composio key for connect.composio.dev when signed out. */
+  /** Developer builds only: a key for the connected-apps service itself when signed out. */
   devKey?: () => Promise<string | undefined>;
   fetch?: typeof fetch;
 }
@@ -22,7 +27,7 @@ export interface ComposioRelayDeps {
 const PASS_UP = ["content-type", "accept", "mcp-session-id", "mcp-protocol-version", "last-event-id"];
 const PASS_DOWN = ["content-type", "mcp-session-id", "cache-control"];
 
-export async function startComposioRelay(deps: ComposioRelayDeps) {
+export async function startAppsRelay(deps: AppsRelayDeps) {
   const doFetch = deps.fetch ?? fetch;
   const secret = randomBytes(24).toString("hex");
   const server: Server = createServer(async (req, res) => {
@@ -73,8 +78,8 @@ export async function startComposioRelay(deps: ComposioRelayDeps) {
         res.end(JSON.stringify({ error: "missing_token", message: "Sign in to Gente to use connected apps." }));
         return;
       }
-      target = "https://connect.composio.dev/mcp";
-      headers["x-consumer-api-key"] = key;
+      target = CONNECTED_APPS_DIRECT_URL;
+      headers[CONNECTED_APPS_KEY_HEADER] = key;
     }
     const upstream = await doFetch(target, {
       method: req.method,

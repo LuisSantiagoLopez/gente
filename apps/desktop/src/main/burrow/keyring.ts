@@ -7,6 +7,7 @@
 // value is never on disk in the clear and existing data keeps the same key.
 import { readFile, mkdir } from "node:fs/promises";
 import path from "node:path";
+import { SERVICE_KEY_ENV } from "@rakazo/adapters/desktop-server-env";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
 import { parseStackEnv, STACK_ENV_FILE } from "../this-computer/local-stack.js";
 
@@ -19,8 +20,8 @@ export interface Sealer {
 export const SEALED_SECRETS = [
   "ENCRYPTION_KEY",
   "BETTER_AUTH_SECRET",
-  "GENTE_COMPOSIO_KEY",
-  "E2B_API_KEY",
+  SERVICE_KEY_ENV.connectedApps,
+  SERVICE_KEY_ENV.cloudComputers,
   "POSTGRES_PASSWORD",
   "POSTGRES_APP_PASSWORD",
   "SCREEN_PROXY_SECRET",

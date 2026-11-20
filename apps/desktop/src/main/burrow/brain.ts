@@ -105,7 +105,7 @@ export function swiftServerEnv(saved: SavedBrain | null): Record<string, string>
     RAKAZO_LOCAL_REASONING_MODELS: installed.join(","),
     RAKAZO_LOCAL_VISION_MODELS: (saved.vision ?? []).join(","),
     BURROW_FAST_CHAT: "on",
-    // Stripe Link agent wallet: bots ask for a purchase (amount, merchant, reason), the person
+    // The Link agent wallet: bots ask for a purchase (amount, merchant, reason), the person
     // approves each one in Link, and Link issues a one-time card or pay token. No card is stored.
     PAYMENT_WALLET_PROVIDER: "link",
     ...(saved.chatAlias && saved.chatAlias !== saved.alias ? { BURROW_CHAT_MODEL: saved.chatAlias } : {}),

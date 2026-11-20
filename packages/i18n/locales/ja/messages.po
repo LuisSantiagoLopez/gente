@@ -12083,8 +12083,8 @@ msgid "this computer"
 msgstr "このコンピューター"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "このコンピューターはMacやPCではなく、クラウド（E2B）で動いています。ライブで様子を見て、操作を代わって自分でログインできます。"
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "このコンピューターはMacやPCではなく、クラウドで動いています。ライブで様子を見て、操作を代わって自分でログインできます。"
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13295,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "ボットが実行前に確認するタイミング。"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "Gente があなたのためにオンラインで作業するとき（検索、閲覧、アプリ）、その作業に必要なものだけが外に出ます。連携したアプリのデータは、あなたが選んだアプリについてのみ Composio のクラウドを経由します。"
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "Gente があなたの代わりにオンラインで作業するとき（検索、閲覧、アプリ）、外に出るのはそのタスクに必要なものだけです。接続したアプリのデータは、あなたが選んだアプリについてのみ、当社の接続アプリ提供元のクラウドを通ります。"
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

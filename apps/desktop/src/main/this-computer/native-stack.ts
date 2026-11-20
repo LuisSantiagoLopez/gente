@@ -14,7 +14,12 @@ import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/con
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
-import { computerEnv, readComputerChoice } from "../burrow/composio.js";
+import { computerEnv, readComputerChoice } from "../burrow/service-keys.js";
+import {
+  connectedAppsEnv,
+  SERVER_TELEMETRY_OFF,
+  storedServiceKey,
+} from "@rakazo/adapters/desktop-server-env";
 import { telegramSecret } from "../burrow/telegram.js";
 import { t } from "../i18n.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
@@ -346,16 +351,16 @@ export interface NativeStackDeps {
   searchBroker?: () => { url: string; token: string } | null;
   /** Gente: the loopback model router (Fast or Private), used as the model server's address. */
   modelRouter?: () => string | null;
-  /** Gente: the loopback relay for Composio through Gente Cloud. */
-  composioProxy?: () => string | null;
+  /** Gente: the loopback relay for connected apps through Gente Cloud. */
+  appsRelay?: () => string | null;
   /** Gente: the loopback broker for Gente Cloud computers; null unless the plan has hours. */
   computerBroker?: () => string | null;
   /** Gente: images and video through Gente Cloud (the relay's /media address). */
   mediaRelay?: () => string | null;
-  /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
+  /** A developer's cloud-computer key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
-  /** The Composio Connect consumer key from the OS keychain, if the person set one. */
-  composioKey?: () => Promise<string | undefined>;
+  /** A developer's connected-apps key from the OS keychain, if set. */
+  connectedAppsKey?: () => Promise<string | undefined>;
   /** Seals the workspace's master secrets with the OS keychain (Electron safeStorage). */
   sealer?: Sealer;
   stackDir: string;
@@ -731,14 +736,14 @@ export class NativeStackController extends StackLifecycle {
     await writePrivateFile(this.dir(STACK_WEB_URL_FILE), this.currentWebUrl);
 
     const computerImage = `${stackEnv.get("RAKAZO_COMPUTER_IMAGE") || COMPUTER_IMAGE}:${this.deps.imageTag}`;
-    const composioKey =
-      (await this.deps.composioKey?.().catch(() => undefined)) ??
-      (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
-    const e2bKey =
+    const connectedAppsKey =
+      (await this.deps.connectedAppsKey?.().catch(() => undefined)) ??
+      storedServiceKey(stackEnv, "connectedApps");
+    const cloudComputerKey =
       (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
-      (stackEnv.get("E2B_API_KEY") || undefined);
+      storedServiceKey(stackEnv, "cloudComputers");
     const computer = computerEnv(
-      e2bKey,
+      cloudComputerKey,
       await readComputerChoice(this.deps.stackDir),
       "local-vm",
       this.deps.computerBroker?.() ?? null,
@@ -749,7 +754,7 @@ export class NativeStackController extends StackLifecycle {
       LOCAL_VM_CLI: runtime.cli,
       LOCAL_VM_COMPUTER_IMAGE: computerImage,
       RAKAZO_DESKTOP_STACK_TOKEN: stackToken,
-      ...(composioKey ? { GENTE_COMPOSIO_KEY: composioKey } : {}),
+      ...connectedAppsEnv({ key: connectedAppsKey, relayUrl: this.deps.appsRelay?.() }),
       ...computer,
       // Updates arrive through Gente's long-poll hand-off, signed with this computer's secret.
       ...(telegramToken
@@ -760,7 +765,6 @@ export class NativeStackController extends StackLifecycle {
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
-      ...(this.deps.composioProxy?.() ? { GENTE_COMPOSIO_PROXY_URL: this.deps.composioProxy()! } : {}),
       ...(this.deps.mediaRelay?.()
         ? { MEDIA_GENERATION_PROVIDER: "gente-cloud", GENTE_MEDIA_URL: this.deps.mediaRelay()! }
         : {}),
@@ -1309,10 +1313,7 @@ export class NativeStackController extends StackLifecycle {
 /** Every telemetry switch the server reads, held off. */
 export const NO_TELEMETRY: Record<string, string> = {
   ANALYTICS_PROVIDER: "none",
-  SENTRY_DSN: "",
-  SENTRY_BROWSER_DSN: "",
-  AXIOM_TOKEN: "",
-  AXIOM_DATASET: "",
+  ...SERVER_TELEMETRY_OFF,
   OTEL_EXPORTER_OTLP_ENDPOINT: "",
   OTEL_CAPTURE_CONTENT: "false",
   CRISP_WEBSITE_ID: "",

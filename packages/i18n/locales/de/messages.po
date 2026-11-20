@@ -12083,8 +12083,8 @@ msgid "this computer"
 msgstr "dieser Computer"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
-msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr "Dieser Computer läuft in der Cloud (E2B), nicht auf deinem Mac oder PC. Schau live zu und übernimm die Steuerung, um dich selbst anzumelden."
+msgid "This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control to sign in yourself."
+msgstr "Dieser Computer läuft in der Cloud, nicht auf deinem Mac oder PC. Schau live zu und übernimm die Steuerung, um dich selbst anzumelden."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -13295,8 +13295,8 @@ msgid "When bots check with you before acting."
 msgstr "Wann Bots bei dir nachfragen, bevor sie handeln."
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
-msgstr "Wenn Gente online für dich arbeitet (suchen, surfen, Apps), geht nur das hinaus, was die Aufgabe braucht. Daten einer verbundenen App laufen über die Cloud von Composio, nur für die Apps, die du auswählst."
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "Wenn Gente online für dich arbeitet (suchen, surfen, Apps), geht nur das hinaus, was diese Aufgabe braucht. Die Daten einer verbundenen App laufen über die Cloud unseres Anbieters für verbundene Apps, nur für die Apps, die du auswählst."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"

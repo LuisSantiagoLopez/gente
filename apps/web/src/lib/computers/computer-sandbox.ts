@@ -13,6 +13,14 @@ export function runsOnUserMachine(
   return computer?.runsOnUserMachine ?? computer?.kind === "desktop";
 }
 
+/** Kinds that run on hardware the person owns or hosts: this Mac's VMs, Docker, their own machine. */
+const LOCAL_KINDS = new Set(["local-vm", "docker", "desktop", "none", "fake"]);
+
+/** Gente: a computer some provider hosts online, not on the person's Mac or PC. */
+export function runsInCloud(computer: Pick<ComputerStatus, "kind" | "runsOnUserMachine">): boolean {
+  return !runsOnUserMachine(computer) && !LOCAL_KINDS.has(computer.kind);
+}
+
 export function computersAreUnavailable(sandboxProvider: string | null | undefined): boolean {
   return sandboxProvider === "none" || sandboxProvider === "";
 }

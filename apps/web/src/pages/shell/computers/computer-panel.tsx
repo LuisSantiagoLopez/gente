@@ -8,7 +8,7 @@ import { BotAvatar, Button } from "@rakazo/ui-web";
 import { HardDrive, Maximize2, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { ComputersUnavailableHint } from "../../../components/computers/ComputersUnavailableHint";
-import { runsOnUserMachine } from "../../../lib/computers/computer-sandbox";
+import { runsInCloud, runsOnUserMachine } from "../../../lib/computers/computer-sandbox";
 import { screenFrames, screenIframeSandbox } from "../../../lib/computers/computer-screen";
 import { DesktopKindEmptyState } from "./computer-view";
 
@@ -137,11 +137,11 @@ function ComputerPreview({
     : "";
   return (
     <div>
-      {computer?.kind === "e2b" ? (
+      {computer && runsInCloud(computer) ? (
         <p className="mb-2 text-body-sm text-muted-foreground">
           <Trans>
-            This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take
-            control to sign in yourself.
+            This computer runs in the cloud, not on your Mac or PC. Watch it live, and take control
+            to sign in yourself.
           </Trans>
         </p>
       ) : null}
