@@ -2004,6 +2004,10 @@ msgstr "ब्लॉक किया गया"
 msgid "Board"
 msgstr "बोर्ड"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Bookkeeping"
+msgstr "बहीखाता"
+
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
 msgid "Booting live desktop…"
@@ -3125,6 +3129,10 @@ msgstr "कनेक्शन"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Connector"
 msgstr "कनेक्टर"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Consultant or agency"
+msgstr "सलाहकार या एजेंसी"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -4568,6 +4576,10 @@ msgstr "रूटीन \"{name}\" बनाया गया"
 msgid "Creating…"
 msgstr "बनाया जा रहा है…"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Creator"
+msgstr "क्रिएटर"
+
 #: apps/web/src/pages/plugins/source-form.tsx
 msgid "Credential"
 msgstr "क्रेडेंशियल"
@@ -4987,6 +4999,7 @@ msgid "Details"
 msgstr "विवरण"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Developer"
 msgstr "डेवलपर"
@@ -5649,6 +5662,14 @@ msgstr "विफल।"
 msgid "Failure handling"
 msgstr "विफलता प्रबंधन"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "तेज़"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "तेज़ मोड जल्दी जवाब देने के लिए आपके संदेश हमारे सर्वर पर भेजता है। हम उन्हें न सहेजते हैं, न उन पर ट्रेनिंग करते हैं।"
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "तुलना के लिए फ़ील्ड (वैकल्पिक)"
@@ -5799,6 +5820,10 @@ msgstr "तब तक मुफ़्त"
 #: apps/mobile/app/paywall.tsx
 msgid "Free until {date}"
 msgstr "{date} तक मुफ़्त"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Freelancer"
+msgstr "फ्रीलांसर"
 
 #: apps/mobile/lib/routines/cron.ts
 #: apps/web/src/lib/routines/cron.ts
@@ -6802,6 +6827,10 @@ msgstr "लोड हो रहा है…"
 msgid "Local access lets bots run commands without asking. Avoid it on shared or public servers."
 msgstr "स्थानीय पहुँच मिलने पर बॉट्स बिना पूछे कमांड चला सकते हैं। साझा या सार्वजनिक सर्वर पर इससे बचें।"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Local business"
+msgstr "स्थानीय व्यवसाय"
+
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Local computer access requires the latest desktop app."
 msgstr "स्थानीय कंप्यूटर पहुँच के लिए नवीनतम डेस्कटॉप ऐप आवश्यक है।"
@@ -6837,6 +6866,10 @@ msgstr "पिन करने या सेक्शन में ले जा
 #: apps/mobile/components/inbox/inbox-rows.tsx
 msgid "Long press to pin, move, or silence notifications"
 msgstr "पिन करने, ले जाने या सूचनाएँ बंद करने के लिए देर तक दबाएँ"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Looking for work"
+msgstr "नौकरी की तलाश"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Looks like it contains a key"
@@ -6938,6 +6971,7 @@ msgid "Markdown table"
 msgstr "Markdown तालिका"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Marketing"
 msgstr "मार्केटिंग"
@@ -8053,6 +8087,10 @@ msgstr "एक बार"
 msgid "One-time purchase. Credits do not expire."
 msgstr "एक-बार की खरीदारी। क्रेडिट समाप्त नहीं होते।"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Online store"
+msgstr "ऑनलाइन स्टोर"
+
 #: apps/web/src/components/messages/SecretAskCard.tsx
 msgid "Only enter a code {codeHost} sent you."
 msgstr "केवल वही कोड दर्ज करें जो {codeHost} ने आपको भेजा है।"
@@ -8679,6 +8717,7 @@ msgid "Privacy policy"
 msgstr "गोपनीयता नीति"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "निजी"
@@ -8690,6 +8729,14 @@ msgstr "निजी कंप्यूटर"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "अपने बॉट्स और समूहों वाला निजी वर्कस्पेस।"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "निजी: AI इसी कंप्यूटर पर चलता है। तेज़ मोड पेड प्लान के साथ आता है।"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "निजी: AI इसी कंप्यूटर पर चलता है। धीमा, और कुछ भी बाहर नहीं जाता।"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -8809,6 +8856,10 @@ msgstr "पढ़ रहा है…"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
 msgstr "तैयार"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Real estate"
+msgstr "रियल एस्टेट"
 
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
 msgid "Reason"
@@ -8948,6 +8999,10 @@ msgstr "रिकवरी आखिरी सहेजे गए कार्�
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Recreating the computer"
 msgstr "कंप्यूटर फिर से बनाया जा रहा है"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Recruiting"
+msgstr "भर्ती"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -9580,6 +9635,10 @@ msgstr "रन"
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "जब इस बॉट को इस प्रोवाइडर से सत्यापित संदेश मिलता है, तब चलता है।"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Sales"
+msgstr "बिक्री"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -11728,10 +11787,6 @@ msgstr "बंद करें"
 msgid "Turn on"
 msgstr "चालू करें"
 
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Turn on Composio apps"
-msgstr "Composio ऐप्स चालू करें"
-
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
@@ -12315,6 +12370,10 @@ msgstr "इसकी मेमोरी का क्या करें?"
 msgid "What can this space use?"
 msgstr "यह स्पेस क्या उपयोग कर सकता है?"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "What do you do?"
+msgstr "आप क्या करते हैं?"
+
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "What do you most want Gente to help with?"
 msgstr "आप Gente से सबसे ज़्यादा किसमें मदद चाहते हैं?"
@@ -12406,6 +12465,10 @@ msgstr "कब उपयोग करें"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "बॉट कहां चलने चाहिए?"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "AI कहाँ चलता है"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

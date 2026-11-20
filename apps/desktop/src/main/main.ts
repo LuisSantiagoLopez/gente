@@ -31,11 +31,16 @@ import { openBrowserAuth } from "./auth/browser-auth.js";
 import { associatedPasskeyRpIds } from "./auth/passkeys.js";
 import { installSessionPermissions } from "./auth/session-permissions.js";
 import { createUserDeviceAccess, deviceName } from "./auth/user-device.js";
-import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
+import { moveToFastDefault, OLLAMA_URL, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { startSearchBroker } from "./burrow/search-broker.js";
+import { createAiMode } from "./burrow/ai-mode.js";
+import { startModelRouter } from "./burrow/model-router.js";
+import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
 import {
   accountCloud,
+  accountToken,
+  isPaidPlan,
   isSignedIn,
   accountState,
   consumeFreeMessage,
@@ -763,6 +768,19 @@ app.whenReady().then(async () => {
       }
     : undefined;
   initAccount({ sealer, rebuildMenu: () => installApplicationMenu() });
+  // Gente: Fast (Gente Cloud) or Private (this computer), decided per request on this computer.
+  const aiMode = createAiMode(app.getPath("userData"), isPaidPlan);
+  let modelRouterBase: string | null = null;
+  void startModelRouter({
+    localBase: OLLAMA_URL,
+    cloudBase: `${GENTE_CLOUD_URL}/v1/inference`,
+    mode: () => aiMode.current(),
+    token: accountToken,
+  })
+    .then((router) => {
+      modelRouterBase = router.base;
+    })
+    .catch(() => undefined);
   // Gente: the server's searches go through Gente Cloud when the person is signed in.
   let searchBroker: { url: string; token: string } | null = null;
   void startSearchBroker(accountCloud, isSignedIn)
@@ -852,6 +870,7 @@ app.whenReady().then(async () => {
       cloudComputerKey: () =>
         devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
       searchBroker: () => searchBroker,
+      modelRouter: () => modelRouterBase,
       telegramToken: () => readTelegramToken(),
     });
   };
@@ -901,6 +920,7 @@ app.whenReady().then(async () => {
           cloudComputerKey: () =>
             devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
           searchBroker: () => searchBroker,
+      modelRouter: () => modelRouterBase,
       telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null
@@ -1107,6 +1127,16 @@ app.whenReady().then(async () => {
   handleIpc("desktop.passkeys.rpIds", () => passkeyRpIds);
   handleIpc("desktop.monitoring.enabled", () => reportsErrors);
   handleIpc("desktop.gente.account", () => accountState());
+  const aiModeState = () => ({
+    mode: aiMode.current(),
+    picked: aiMode.picked() !== null,
+    fastAvailable: isPaidPlan(),
+  });
+  handleIpc("desktop.gente.aiMode", () => aiModeState());
+  handleIpc("desktop.gente.setAiMode", async (_event, mode: unknown) => {
+    await aiMode.set(mode);
+    return aiModeState();
+  });
   handleIpc("desktop.gente.consumeMessage", (_event, messageId: unknown) => consumeFreeMessage(messageId));
   handleIpc("desktop.gente.signIn", async () => {
     await signInToGente();

@@ -2004,6 +2004,10 @@ msgstr "חסום"
 msgid "Board"
 msgstr "לוח"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Bookkeeping"
+msgstr "הנהלת חשבונות"
+
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
 msgid "Booting live desktop…"
@@ -3125,6 +3129,10 @@ msgstr "חיבורים"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Connector"
 msgstr "חיבור"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Consultant or agency"
+msgstr "ייעוץ או סוכנות"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -4568,6 +4576,10 @@ msgstr "הרוטינה \"{name}\" נוצרה"
 msgid "Creating…"
 msgstr "יוצר…"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Creator"
+msgstr "יוצר תוכן"
+
 #: apps/web/src/pages/plugins/source-form.tsx
 msgid "Credential"
 msgstr "פרטי גישה"
@@ -4987,6 +4999,7 @@ msgid "Details"
 msgstr "פרטים"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Developer"
 msgstr "מפתחים"
@@ -5649,6 +5662,14 @@ msgstr "נכשל."
 msgid "Failure handling"
 msgstr "טיפול בכשלים"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "מהיר"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "מצב מהיר שולח את ההודעות שלך לשרתים שלנו כדי לענות מהר. אנחנו לא שומרים אותן ולא מאמנים עליהן."
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "שדות להשוואה (אופציונלי)"
@@ -5799,6 +5820,10 @@ msgstr "חינם עד"
 #: apps/mobile/app/paywall.tsx
 msgid "Free until {date}"
 msgstr "חינם עד {date}"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Freelancer"
+msgstr "פרילנסר"
 
 #: apps/mobile/lib/routines/cron.ts
 #: apps/web/src/lib/routines/cron.ts
@@ -6802,6 +6827,10 @@ msgstr "טוען…"
 msgid "Local access lets bots run commands without asking. Avoid it on shared or public servers."
 msgstr "גישה מקומית מאפשרת לבוטים להריץ פקודות בלי לבקש אישור. לא מומלץ להפעיל אותה בשרתים משותפים או ציבוריים."
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Local business"
+msgstr "עסק מקומי"
+
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Local computer access requires the latest desktop app."
 msgstr "גישה למחשב המקומי דורשת את הגרסה העדכנית של אפליקציית הדסקטופ."
@@ -6837,6 +6866,10 @@ msgstr "לחיצה ארוכה להצמדה או להעברה למקטע"
 #: apps/mobile/components/inbox/inbox-rows.tsx
 msgid "Long press to pin, move, or silence notifications"
 msgstr "לחיצה ארוכה להצמדה, להעברה או להשתקת התראות"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Looking for work"
+msgstr "מחפש עבודה"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Looks like it contains a key"
@@ -6938,6 +6971,7 @@ msgid "Markdown table"
 msgstr "טבלת Markdown"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Marketing"
 msgstr "שיווק"
@@ -8053,6 +8087,10 @@ msgstr "חד-פעמי"
 msgid "One-time purchase. Credits do not expire."
 msgstr "רכישה חד-פעמית. הקרדיטים לא פגים."
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Online store"
+msgstr "חנות אונליין"
+
 #: apps/web/src/components/messages/SecretAskCard.tsx
 msgid "Only enter a code {codeHost} sent you."
 msgstr "יש להזין רק קוד ש-{codeHost} שלח לך."
@@ -8679,6 +8717,7 @@ msgid "Privacy policy"
 msgstr "מדיניות הפרטיות"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "פרטי"
@@ -8690,6 +8729,14 @@ msgstr "מחשב פרטי"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "סביבת עבודה פרטית עם בוטים וקבוצות משלה."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "פרטי: ה־AI פועל במחשב הזה. מצב מהיר מגיע עם תוכנית בתשלום."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "פרטי: ה־AI פועל במחשב הזה. איטי יותר, ושום דבר לא יוצא ממנו."
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -8809,6 +8856,10 @@ msgstr "קורא…"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
 msgstr "מוכן"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Real estate"
+msgstr "נדל״ן"
 
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
 msgid "Reason"
@@ -8948,6 +8999,10 @@ msgstr "השחזור מחזיר את סביבת העבודה האחרונה שנ
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Recreating the computer"
 msgstr "יוצר מחדש את המחשב"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Recruiting"
+msgstr "גיוס"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -9580,6 +9635,10 @@ msgstr "הרצות"
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "רץ כשהבוט הזה מקבל הודעה מאומתת מהספק הזה."
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Sales"
+msgstr "מכירות"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -11728,10 +11787,6 @@ msgstr "כיבוי"
 msgid "Turn on"
 msgstr "הפעלה"
 
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Turn on Composio apps"
-msgstr "הפעלת אפליקציות Composio"
-
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
@@ -12315,6 +12370,10 @@ msgstr "ומה עם הזיכרונות שלו?"
 msgid "What can this space use?"
 msgstr "במה המרחב הזה יכול להשתמש?"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "What do you do?"
+msgstr "במה אתה עוסק?"
+
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "What do you most want Gente to help with?"
 msgstr "במה הכי חשוב לך ש-Gente יעזור?"
@@ -12406,6 +12465,10 @@ msgstr "מתי להשתמש"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "איפה הבוטים ירוצו?"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "איפה ה־AI פועל"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

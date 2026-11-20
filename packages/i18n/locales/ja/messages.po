@@ -2004,6 +2004,10 @@ msgstr "ブロック中"
 msgid "Board"
 msgstr "ボード"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Bookkeeping"
+msgstr "経理"
+
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
 msgid "Booting live desktop…"
@@ -3125,6 +3129,10 @@ msgstr "接続"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Connector"
 msgstr "コネクタ"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Consultant or agency"
+msgstr "コンサルタント・代理店"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -4568,6 +4576,10 @@ msgstr "ルーティン「{name}」を作成しました"
 msgid "Creating…"
 msgstr "作成中…"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Creator"
+msgstr "クリエイター"
+
 #: apps/web/src/pages/plugins/source-form.tsx
 msgid "Credential"
 msgstr "認証情報"
@@ -4987,6 +4999,7 @@ msgid "Details"
 msgstr "詳細"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Developer"
 msgstr "開発者"
@@ -5649,6 +5662,14 @@ msgstr "失敗しました。"
 msgid "Failure handling"
 msgstr "失敗時の対応"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "高速"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "高速モードでは、すばやく答えるためにメッセージを当社のサーバーに送ります。保存も学習もしません。"
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "比較するフィールド（任意）"
@@ -5799,6 +5820,10 @@ msgstr "無料期間の終了日"
 #: apps/mobile/app/paywall.tsx
 msgid "Free until {date}"
 msgstr "{date}まで無料"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Freelancer"
+msgstr "フリーランス"
 
 #: apps/mobile/lib/routines/cron.ts
 #: apps/web/src/lib/routines/cron.ts
@@ -6802,6 +6827,10 @@ msgstr "読み込み中…"
 msgid "Local access lets bots run commands without asking. Avoid it on shared or public servers."
 msgstr "ローカルアクセスでは、ボットが確認なしでコマンドを実行できます。共有サーバーや公開サーバーでは使用しないでください。"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Local business"
+msgstr "地域のお店"
+
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Local computer access requires the latest desktop app."
 msgstr "ローカルコンピューターへのアクセスには最新のデスクトップアプリが必要です。"
@@ -6837,6 +6866,10 @@ msgstr "長押しでピン留め、またはセクションに移動"
 #: apps/mobile/components/inbox/inbox-rows.tsx
 msgid "Long press to pin, move, or silence notifications"
 msgstr "長押しでピン留め、移動、または通知をミュート"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Looking for work"
+msgstr "求職中"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Looks like it contains a key"
@@ -6938,6 +6971,7 @@ msgid "Markdown table"
 msgstr "Markdown テーブル"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Marketing"
 msgstr "マーケティング"
@@ -8053,6 +8087,10 @@ msgstr "1回のみ"
 msgid "One-time purchase. Credits do not expire."
 msgstr "1回限りの購入です。クレジットは失効しません。"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Online store"
+msgstr "オンラインストア"
+
 #: apps/web/src/components/messages/SecretAskCard.tsx
 msgid "Only enter a code {codeHost} sent you."
 msgstr "{codeHost}から送られたコードのみを入力してください。"
@@ -8679,6 +8717,7 @@ msgid "Privacy policy"
 msgstr "プライバシーポリシー"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "非公開"
@@ -8690,6 +8729,14 @@ msgstr "プライベートコンピューター"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "専用のボットとグループを持つ非公開のワークスペースです。"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "プライベート：AI はこのコンピュータで動きます。高速モードは有料プランで使えます。"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "プライベート：AI はこのコンピュータで動きます。遅めですが、何も外に出ません。"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -8809,6 +8856,10 @@ msgstr "読み込み中…"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
 msgstr "準備完了"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Real estate"
+msgstr "不動産"
 
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
 msgid "Reason"
@@ -8948,6 +8999,10 @@ msgstr "復旧すると最後に保存されたワークスペースが復元さ
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Recreating the computer"
 msgstr "コンピューターを再作成中"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Recruiting"
+msgstr "採用"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -9580,6 +9635,10 @@ msgstr "実行"
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "このボットがこのプロバイダーから検証済みのメッセージを受信したときに実行されます。"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Sales"
+msgstr "営業"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -11728,10 +11787,6 @@ msgstr "オフにする"
 msgid "Turn on"
 msgstr "オンにする"
 
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Turn on Composio apps"
-msgstr "Composioのアプリをオンにする"
-
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
@@ -12315,6 +12370,10 @@ msgstr "メモリはどうしますか？"
 msgid "What can this space use?"
 msgstr "このスペースで何を使えますか？"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "What do you do?"
+msgstr "お仕事は？"
+
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "What do you most want Gente to help with?"
 msgstr "Genteに最も手伝ってほしいことは何ですか？"
@@ -12406,6 +12465,10 @@ msgstr "使用するタイミング"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "ボットをどこで実行しますか？"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "AI が動く場所"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

@@ -2004,6 +2004,10 @@ msgstr "Bloqueado"
 msgid "Board"
 msgstr "Tablero"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Bookkeeping"
+msgstr "Contabilidad"
+
 #: apps/web/src/pages/shell/computers/use-computer-controls.tsx
 #: packages/i18n/src/computer-preview.ts
 msgid "Booting live desktop…"
@@ -3125,6 +3129,10 @@ msgstr "Conexiones"
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Connector"
 msgstr "Conector"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Consultant or agency"
+msgstr "Consultoría o agencia"
 
 #: apps/mobile/lib/vault/secret-destination.ts
 #: apps/mobile/lib/vault/vault.ts
@@ -4568,6 +4576,10 @@ msgstr "Se creó la rutina \"{name}\""
 msgid "Creating…"
 msgstr "Creando…"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Creator"
+msgstr "Creador de contenido"
+
 #: apps/web/src/pages/plugins/source-form.tsx
 msgid "Credential"
 msgstr "Credencial"
@@ -4987,6 +4999,7 @@ msgid "Details"
 msgstr "Detalles"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Developer"
 msgstr "Desarrollo"
@@ -5649,6 +5662,14 @@ msgstr "Falló."
 msgid "Failure handling"
 msgstr "Manejo de fallos"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "Rápido"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "El modo rápido envía tus mensajes a nuestros servidores para responder rápido. No los guardamos ni entrenamos con ellos."
+
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Fields to compare (optional)"
 msgstr "Campos para comparar (opcional)"
@@ -5799,6 +5820,10 @@ msgstr "Gratis hasta"
 #: apps/mobile/app/paywall.tsx
 msgid "Free until {date}"
 msgstr "Gratis hasta el {date}"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Freelancer"
+msgstr "Freelance"
 
 #: apps/mobile/lib/routines/cron.ts
 #: apps/web/src/lib/routines/cron.ts
@@ -6802,6 +6827,10 @@ msgstr "Cargando…"
 msgid "Local access lets bots run commands without asking. Avoid it on shared or public servers."
 msgstr "El acceso local permite que los bots ejecuten comandos sin preguntar. Evítalo en servidores compartidos o públicos."
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Local business"
+msgstr "Negocio local"
+
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Local computer access requires the latest desktop app."
 msgstr "El acceso a la computadora local requiere la versión más reciente de la app de escritorio."
@@ -6837,6 +6866,10 @@ msgstr "Mantén pulsado para fijar o mover a una sección"
 #: apps/mobile/components/inbox/inbox-rows.tsx
 msgid "Long press to pin, move, or silence notifications"
 msgstr "Mantén pulsado para fijar, mover o silenciar notificaciones"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Looking for work"
+msgstr "Buscando trabajo"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 msgid "Looks like it contains a key"
@@ -6938,6 +6971,7 @@ msgid "Markdown table"
 msgstr "Tabla Markdown"
 
 #: apps/mobile/app/(settings)/integrations.tsx
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
 msgid "Marketing"
 msgstr "Marketing"
@@ -8053,6 +8087,10 @@ msgstr "Una vez"
 msgid "One-time purchase. Credits do not expire."
 msgstr "Compra única. Los créditos no vencen."
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Online store"
+msgstr "Tienda en línea"
+
 #: apps/web/src/components/messages/SecretAskCard.tsx
 msgid "Only enter a code {codeHost} sent you."
 msgstr "Introduce solo un código que te haya enviado {codeHost}."
@@ -8679,6 +8717,7 @@ msgid "Privacy policy"
 msgstr "Política de privacidad"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "Privado"
@@ -8690,6 +8729,14 @@ msgstr "Computadora privada"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "Espacio de trabajo privado con sus propios bots y grupos."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "Privado: la IA funciona en esta computadora. El modo rápido viene con un plan de pago."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "Privado: la IA funciona en esta computadora. Más lento, y nada sale de ella."
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -8809,6 +8856,10 @@ msgstr "Leyendo…"
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
 msgstr "Listo"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Real estate"
+msgstr "Bienes raíces"
 
 #: apps/web/src/pages/plugins/PluginSubmissionsPanel.tsx
 msgid "Reason"
@@ -8948,6 +8999,10 @@ msgstr "La recuperación restaura el último espacio de trabajo guardado. El tra
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
 msgid "Recreating the computer"
 msgstr "Recreando la computadora"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Recruiting"
+msgstr "Reclutamiento"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -9580,6 +9635,10 @@ msgstr "Ejecuciones"
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "Se ejecuta cuando este bot recibe un mensaje verificado de este proveedor."
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Sales"
+msgstr "Ventas"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -11728,10 +11787,6 @@ msgstr "Desactivar"
 msgid "Turn on"
 msgstr "Activar"
 
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Turn on Composio apps"
-msgstr "Activar apps de Composio"
-
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
@@ -12315,6 +12370,10 @@ msgstr "¿Qué hay de sus memorias?"
 msgid "What can this space use?"
 msgstr "¿Qué puede usar este espacio?"
 
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "What do you do?"
+msgstr "¿A qué te dedicas?"
+
 #: apps/web/src/components/account/SignupSurvey.tsx
 msgid "What do you most want Gente to help with?"
 msgstr "¿Con qué quieres que Gente te ayude más?"
@@ -12406,6 +12465,10 @@ msgstr "Cuándo usar"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "¿Dónde deben ejecutarse los bots?"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "Dónde funciona la IA"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

@@ -13,6 +13,8 @@ type Sealer = { seal(value: string): Buffer; unseal(sealed: Buffer): string };
 let session: ReturnType<typeof createClerkSession> | null = null;
 let cloud: GenteCloud | null = null;
 let signedIn = false;
+/** Whether the last plan seen from Gente Cloud includes cloud work (paid). */
+let paidPlan = false;
 let onChange: () => void = () => undefined;
 
 export function initAccount(input: { sealer: Sealer | undefined; rebuildMenu: () => void }) {
@@ -65,6 +67,7 @@ export async function accountState(): Promise<GenteAccountState> {
   if (!signedIn || !cloud) return { signedIn, ...EMPTY };
   try {
     const me = await cloud.me();
+    paidPlan = (me.plan as { cloud?: boolean } | undefined)?.cloud === true;
     return {
       signedIn: true,
       plan: me.plan?.name ?? null,
@@ -92,3 +95,8 @@ export async function consumeFreeMessage(messageId: unknown): Promise<boolean> {
     return true;
   }
 }
+
+export const isPaidPlan = () => signedIn && paidPlan;
+
+/** The person's own token for Gente Cloud, refreshed as needed; null when signed out. */
+export const accountToken = () => session?.accessToken() ?? Promise.resolve(null);

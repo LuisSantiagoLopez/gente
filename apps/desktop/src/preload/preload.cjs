@@ -32,6 +32,8 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
     signIn: () => ipcRenderer.invoke("desktop.gente.signIn"),
     signOut: () => ipcRenderer.invoke("desktop.gente.signOut"),
     consumeMessage: (messageId) => ipcRenderer.invoke("desktop.gente.consumeMessage", messageId),
+    aiMode: () => ipcRenderer.invoke("desktop.gente.aiMode"),
+    setAiMode: (mode) => ipcRenderer.invoke("desktop.gente.setAiMode", mode),
   },
   server: {
     change: () => ipcRenderer.invoke("desktop.server.change"),

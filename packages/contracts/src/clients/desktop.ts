@@ -24,6 +24,14 @@ export interface DesktopUpdateState {
   checkedAt: string | null;
 }
 
+/** Gente: where the AI runs now, and whether the person picked it (otherwise it follows the plan). */
+export interface GenteAiMode {
+  mode: "fast" | "private";
+  picked: boolean;
+  /** Fast needs a paid plan; Private always works. */
+  fastAvailable: boolean;
+}
+
 /** Gente: what the app shows about the person's account. Unknown values stay null. */
 export interface GenteAccountState {
   signedIn: boolean;
@@ -157,6 +165,9 @@ export interface RakazoDesktop {
     signOut: () => Promise<GenteAccountState>;
     /** Counts one message against the free plan; false means the free messages are used up. */
     consumeMessage: (messageId: string) => Promise<boolean>;
+    /** Where the AI runs: Fast (Gente Cloud) or Private (this computer). */
+    aiMode: () => Promise<GenteAiMode>;
+    setAiMode: (mode: "fast" | "private") => Promise<GenteAiMode>;
   };
   /** Absent on older desktop releases, which have no Settings… menu item. */
   settings?: {
