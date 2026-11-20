@@ -2673,6 +2673,7 @@ msgstr "तस्वीरें नहीं पढ़ सकता"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/lib/gente/devices.tsx
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
@@ -5466,6 +5467,10 @@ msgstr "डेवलपर"
 msgid "Device voice"
 msgstr "डिवाइस की आवाज़"
 
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Devices"
+msgstr "डिवाइस"
+
 #: apps/mobile/components/messages/mermaid-diagram.tsx
 msgid "Diagram"
 msgstr "डायग्राम"
@@ -7902,7 +7907,6 @@ msgstr "मॉडल: {model}, {detail}"
 #: apps/mobile/components/models/connection-model-list.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/model-settings/provider-page.tsx
-#: apps/web/src/pages/settings/settings-nav.ts
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Models"
 msgstr "मॉडल्स"
@@ -8859,6 +8863,10 @@ msgstr "बाहरी लिंक खोलें?"
 msgid "Open Gente"
 msgstr "Gente खोलें"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Open Gente on your phone and scan this code."
+msgstr "अपने फ़ोन पर Gente खोलें और यह कोड स्कैन करें।"
+
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "इमेज {name} खोलें"
@@ -9069,6 +9077,18 @@ msgstr "यह समूह आपके लिए जो पेज बनात
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Pages this group builds for you appear here. Ask for a dashboard, tracker or plan to make one."
 msgstr "यह समूह आपके लिए जो पेज बनाता है, वे यहाँ दिखते हैं। कोई डैशबोर्ड, ट्रैकर या योजना माँगकर एक बनवाएँ।"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Pair a phone"
+msgstr "फ़ोन जोड़ें"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with {phoneName}"
+msgstr "{phoneName} से जुड़ा है"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with your phone"
+msgstr "आपके फ़ोन से जुड़ा है"
 
 #: apps/mobile/app/(settings)/profile.tsx
 #: apps/web/src/components/account/PasskeySettings.tsx
@@ -10345,6 +10365,10 @@ msgstr "रन"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "जब इस बॉट को इस प्रोवाइडर से सत्यापित संदेश मिलता है, तब चलता है।"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Safety code <0>{code}</0>. Your phone shows the same code."
+msgstr "सुरक्षा कोड <0>{code}</0>। आपका फ़ोन भी यही कोड दिखाता है।"
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Sales"
 msgstr "सेल्स"
@@ -11045,6 +11069,10 @@ msgstr "<0>{0}</0> पर साइन इन करें, फिर कोड 
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in to Gente"
 msgstr "Gente में साइन इन करें"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Sign in to Gente to pair your phone."
+msgstr "अपना फ़ोन जोड़ने के लिए Gente में साइन इन करें।"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -12631,6 +12659,10 @@ msgstr "अनलिंक करें"
 msgid "Unmute"
 msgstr "अनम्यूट करें"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Unpair"
+msgstr "अलग करें"
+
 #: apps/mobile/app/pages.tsx
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/lib/inbox/inbox-swipe.ts
@@ -12864,6 +12896,14 @@ msgstr "{label} के लिए अपने डिफ़ॉल्ट इस्
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Use Gente credits"
 msgstr "Gente क्रेडिट उपयोग करें"
+
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Use Gente on your phone."
+msgstr "अपने फ़ोन पर Gente इस्तेमाल करें।"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Use Gente on your phone. Chats and tasks run on this computer, sealed end to end."
+msgstr "अपने फ़ोन पर Gente इस्तेमाल करें। चैट और काम इसी कंप्यूटर पर चलते हैं, एंड-टू-एंड एन्क्रिप्टेड।"
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -13294,10 +13334,6 @@ msgstr "आपके बॉट कहाँ से भुगतान करत�
 msgid "Which Bot?"
 msgstr "कौन-सा बॉट?"
 
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Which LLMs your bots use."
-msgstr "आपके बॉट कौन से LLM उपयोग करते हैं।"
-
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Who can open this page"
 msgstr "यह पेज कौन खोल सकता है"
@@ -13552,6 +13588,10 @@ msgstr "आपका OpenRouter"
 #: apps/web/src/components/spaces/SharedSpaceRules.tsx
 msgid "Your other spaces stay private"
 msgstr "आपके दूसरे स्पेस निजी रहते हैं"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Your phone"
+msgstr "आपका फ़ोन"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Your plan becomes {annualPrice} / year when your trial ends."

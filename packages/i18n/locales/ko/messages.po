@@ -2673,6 +2673,7 @@ msgstr "이미지를 읽을 수 없음"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/lib/gente/devices.tsx
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
@@ -5466,6 +5467,10 @@ msgstr "개발자"
 msgid "Device voice"
 msgstr "기기 음성"
 
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Devices"
+msgstr "기기"
+
 #: apps/mobile/components/messages/mermaid-diagram.tsx
 msgid "Diagram"
 msgstr "다이어그램"
@@ -7902,7 +7907,6 @@ msgstr "AI 모델: {model}, {detail}"
 #: apps/mobile/components/models/connection-model-list.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/model-settings/provider-page.tsx
-#: apps/web/src/pages/settings/settings-nav.ts
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Models"
 msgstr "AI 모델"
@@ -8859,6 +8863,10 @@ msgstr "외부 링크를 열까요?"
 msgid "Open Gente"
 msgstr "Gente 열기"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Open Gente on your phone and scan this code."
+msgstr "휴대폰에서 Gente를 열고 이 코드를 스캔하세요."
+
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "이미지 {name} 열기"
@@ -9069,6 +9077,18 @@ msgstr "이 그룹이 만든 페이지가 여기에 표시됩니다."
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Pages this group builds for you appear here. Ask for a dashboard, tracker or plan to make one."
 msgstr "이 그룹이 만든 페이지가 여기에 표시됩니다. 대시보드, 트래커 또는 계획을 요청해 만들어 보세요."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Pair a phone"
+msgstr "휴대폰 연결"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with {phoneName}"
+msgstr "{phoneName}에 연결됨"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with your phone"
+msgstr "휴대폰에 연결됨"
 
 #: apps/mobile/app/(settings)/profile.tsx
 #: apps/web/src/components/account/PasskeySettings.tsx
@@ -10345,6 +10365,10 @@ msgstr "실행"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "이 봇이 이 서비스에서 확인된 메시지를 받으면 실행됩니다."
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Safety code <0>{code}</0>. Your phone shows the same code."
+msgstr "보안 코드 <0>{code}</0>. 휴대폰에도 같은 코드가 표시됩니다."
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Sales"
 msgstr "영업"
@@ -11045,6 +11069,10 @@ msgstr "<0>{0}</0>에서 로그인한 다음 코드를 여기에 붙여넣으세
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in to Gente"
 msgstr "Gente 로그인"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Sign in to Gente to pair your phone."
+msgstr "휴대폰을 연결하려면 Gente에 로그인하세요."
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -12631,6 +12659,10 @@ msgstr "연결 해제"
 msgid "Unmute"
 msgstr "음소거 해제"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Unpair"
+msgstr "연결 해제"
+
 #: apps/mobile/app/pages.tsx
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/lib/inbox/inbox-swipe.ts
@@ -12864,6 +12896,14 @@ msgstr "{label}에 기본값 사용"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Use Gente credits"
 msgstr "Gente 크레딧 사용"
+
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Use Gente on your phone."
+msgstr "휴대폰에서 Gente를 사용하세요."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Use Gente on your phone. Chats and tasks run on this computer, sealed end to end."
+msgstr "휴대폰에서 Gente를 사용하세요. 채팅과 작업은 이 컴퓨터에서 실행되며 종단 간 암호화됩니다."
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -13294,10 +13334,6 @@ msgstr "봇이 결제에 사용하는 곳."
 msgid "Which Bot?"
 msgstr "어느 봇인가요?"
 
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Which LLMs your bots use."
-msgstr "봇이 사용하는 LLM."
-
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Who can open this page"
 msgstr "이 페이지를 열 수 있는 사람"
@@ -13552,6 +13588,10 @@ msgstr "사용 중인 OpenRouter"
 #: apps/web/src/components/spaces/SharedSpaceRules.tsx
 msgid "Your other spaces stay private"
 msgstr "다른 스페이스는 비공개로 유지됩니다"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Your phone"
+msgstr "내 휴대폰"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Your plan becomes {annualPrice} / year when your trial ends."

@@ -12,6 +12,7 @@ import {
   Monitor,
   Settings,
   ShieldCheck,
+  Smartphone,
   Volume2,
   Wallet,
 } from "lucide-react";
@@ -34,6 +35,7 @@ export function useSettingsNavItems(available: {
   billing: boolean;
   updates: boolean;
   labs: boolean;
+  devices?: boolean;
 }): SettingsNavItem[] {
   const { t } = useLingui();
   return [
@@ -92,6 +94,16 @@ export function useSettingsNavItems(available: {
             label: t`Computer`,
             icon: Monitor,
             description: t`The computer your bots work on.`,
+          },
+        ]
+      : []),
+    ...(available.devices
+      ? [
+          {
+            id: "devices" as const,
+            label: t`Devices`,
+            icon: Smartphone,
+            description: t`Use Gente on your phone.`,
           },
         ]
       : []),

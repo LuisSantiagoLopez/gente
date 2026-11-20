@@ -24,6 +24,16 @@ export interface DesktopUpdateState {
   checkedAt: string | null;
 }
 
+/** Gente: the phone pairing state shown in Settings → Devices. */
+export interface GenteLinkState {
+  status: "off" | "waiting" | "paired" | "signed_out";
+  /** The QR code to scan, as an image data URL, while waiting. */
+  qrImage?: string;
+  /** The 4-digit safety code both screens show once the phone said hello. */
+  code?: string;
+  phoneName?: string;
+}
+
 /** Gente: the "Make my AI private" offer, a waitlist for now. */
 export interface GentePrivateOffer {
   monthlyCents: number;
@@ -178,6 +188,10 @@ export interface RakazoDesktop {
     /** "Make my AI private" waitlist; null when signed out or offline. */
     privateOffer: () => Promise<GentePrivateOffer | null>;
     setPrivateWaitlist: (join: boolean) => Promise<GentePrivateOffer | null>;
+    /** Settings → Devices: pairing a phone (Gente Link v1). */
+    linkState: () => Promise<GenteLinkState>;
+    linkStart: () => Promise<GenteLinkState>;
+    linkUnpair: () => Promise<GenteLinkState>;
   };
   /** Absent on older desktop releases, which have no Settings… menu item. */
   settings?: {
