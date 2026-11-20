@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { ComputerSize } from "@rakazo/contracts";
 import type {
   AdapterContext,
@@ -108,6 +109,13 @@ export interface SandboxProvider {
   ownsReference?(computer: Pick<ComputerRef, "kind" | "providerRef">): boolean;
   /** True when every running minute is billed, so the active-lifetime cap applies. */
   billsWhileRunning?(computer: Pick<ComputerRef, "kind">): boolean;
+  /**
+   * Machines this deployment started that the provider runs right now, for the sweep that stops
+   * ones nothing uses. Only providers that tag their machines with the deployment implement it.
+   */
+  listOwnedRunning?(
+    signal: AbortSignal,
+  ): Promise<Array<{ kind: ComputerRef["kind"]; providerRef: string; startedAt: Date }>>;
   /** Whether the provider running this computer keeps its disk when it stops. */
   keepsHome?(computer: ComputerRef): Promise<boolean>;
   describe(): AdapterDescriptor<SandboxCapabilities>;

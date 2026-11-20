@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   CommandRequest,
@@ -509,6 +510,11 @@ export class ConfiguredSandbox implements SandboxProvider {
     }
     // An unresolved or invalidated remote connection must not disable idle shutdown.
     return true;
+  }
+
+  /** The deployment's own provider only: machines on accounts' own connections are theirs. */
+  async listOwnedRunning(signal: AbortSignal) {
+    return (await this.primary.listOwnedRunning?.(signal)) ?? [];
   }
 
   async keepsHome(computer: ComputerRef) {

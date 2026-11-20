@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { RemoteDesktopSdk } from "../../../computers/sandbox/remote-desktop-sandbox.js";
 import { RemoteDesktopSandboxProvider } from "../../../computers/sandbox/remote-desktop-sandbox.js";
 import { E2B_COMPUTER_TEMPLATE, E2B_DESKTOP_TEMPLATE } from "./e2b-template.js";
@@ -26,6 +27,16 @@ const e2bSdk: RemoteDesktopSdk = {
     (await (await e2b()).getInfo(id, { ...options, ...noRetries })).state === "running",
   pause: async (id, options) => (await e2b()).pause(id, { ...options, ...noRetries }),
   kill: async (id, options) => (await e2b()).kill(id, { ...options, ...noRetries }),
+  // Gente (modified from Rakazo): lists this deployment's running sandboxes for the orphan sweep.
+  listRunning: async ({ apiKey, metadata, signal }) => {
+    const pages = (await e2b()).list({ apiKey, query: { metadata, state: ["running"] } });
+    const found: Array<{ id: string; startedAt: Date }> = [];
+    while (pages.hasNext && !signal.aborted) {
+      for (const info of await pages.nextItems({ signal }))
+        found.push({ id: info.sandboxId, startedAt: new Date(info.startedAt) });
+    }
+    return found;
+  },
 };
 
 export class E2BSandboxProvider extends RemoteDesktopSandboxProvider {

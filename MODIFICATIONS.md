@@ -119,18 +119,23 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `apps/web/src/pages/shell/bots/import-status.ts`
 - `apps/web/src/pages/shell/composer/github-star-prompt.tsx`
 - `apps/web/src/pages/shell/meetings/meeting-transcript.tsx`
+- `apps/worker/src/index.ts`
 - `docs/RAKAZO_README.ja.md`
 - `docs/RAKAZO_README.md`
 - `docs/RAKAZO_README.th-TH.md`
 - `docs/RAKAZO_README.zh-CN.md`
+- `packages/adapter-kit/src/interfaces.ts`
 - `packages/adapter-kit/src/sandbox-errors.ts`
 - `packages/adapters/src/bots/agent-import-settings.test.ts`
 - `packages/adapters/src/computers/host/user-device-gateway.test.ts`
 - `packages/adapters/src/computers/host/user-device-gateway.ts`
+- `packages/adapters/src/computers/sandbox/configured-sandbox.ts`
+- `packages/adapters/src/computers/sandbox/remote-desktop-sandbox.ts`
 - `packages/adapters/src/computers/screens/agent-desktop-host-screen.test.ts`
 - `packages/adapters/src/computers/screens/agent-desktop-host-screen.ts`
 - `packages/adapters/src/computers/screens/cua-host-screen.test.ts`
 - `packages/adapters/src/computers/screens/cua-host-screen.ts`
+- `packages/adapters/src/index.ts`
 - `packages/adapters/src/mcp/mcp-oauth.test.ts`
 - `packages/adapters/src/mcp/mcp-oauth.ts`
 - `packages/adapters/src/mcp/mcp-transport.test.ts`
@@ -161,6 +166,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/providers/computer/boat/boat-sandbox.test.ts`
 - `packages/adapters/src/providers/computer/desktop/desktop-sandbox-paths.test.ts`
 - `packages/adapters/src/providers/computer/e2b/e2b-sandbox.test.ts`
+- `packages/adapters/src/providers/computer/e2b/e2b-sandbox.ts`
 - `packages/adapters/src/providers/computer/e2b/e2b-template.test.ts`
 - `packages/adapters/src/providers/computer/novita/novita-sandbox.test.ts`
 - `packages/adapters/src/providers/email/resend/resend-email.test.ts`
@@ -178,6 +184,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/runs/assembly/run-assembly-capabilities.ts`
 - `packages/adapters/src/runs/assembly/run-computer.ts`
 - `packages/adapters/src/runs/assembly/run-instructions.prompt.ts`
+- `packages/adapters/src/runs/assembly/run-runtime.ts`
 - `packages/adapters/src/runs/executor/executor-readonly-approval.test.ts`
 - `packages/adapters/src/runs/executor/executor-team-chat-sender.test.ts`
 - `packages/adapters/src/runs/executor/executor.test.ts`
@@ -185,6 +192,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/runs/lifecycle/run-fail.ts`
 - `packages/adapters/src/runs/tools/run-tools-user-computer.ts`
 - `packages/adapters/src/runs/turn/run-turn.ts`
+- `packages/adapters/src/runs/wakeups/job-reconciler.ts`
 - `packages/adapters/src/runtime/context/history-compaction.prompt.ts`
 - `packages/adapters/src/runtime/context/history-compaction.test.ts`
 - `packages/adapters/src/runtime/context/runtime-context.test.ts`
@@ -245,3 +253,5 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `brand/burrow-mark.svg`, `brand/burrow-mark.png`
 - `packages/adapters/src/computers/computer-task-limit.test.ts`
 - `packages/adapters/src/computers/computer-task-limit.ts`
+- `packages/adapters/src/computers/orphan-computers.test.ts`
+- `packages/adapters/src/computers/orphan-computers.ts`

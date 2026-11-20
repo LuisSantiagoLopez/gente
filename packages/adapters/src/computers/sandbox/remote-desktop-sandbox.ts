@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { randomUUID } from "node:crypto";
 import type {
   AdapterContext,
@@ -24,6 +25,7 @@ import { installPageBrowserCommand, privatePageInput } from "../../browser/page-
 import { shouldSkipPortableWorkspaceFile } from "../../storage/workspace-save-policy.js";
 import { sandboxIdleMs } from "../computer-idle.js";
 import { PortableFileBatcher } from "../computer-workspace.js";
+import { COMPUTER_OWNER_METADATA_KEY, computerOwnerTag } from "../orphan-computers.js";
 import {
   normalizeWorkspacePath,
   shellQuote,
@@ -111,13 +113,27 @@ export interface RemoteDesktopSdk {
   isRunning?(id: string, options: { apiKey: string; signal: AbortSignal }): Promise<boolean>;
   pause(id: string, options: { apiKey: string }): Promise<unknown>;
   kill(id: string, options: { apiKey: string }): Promise<boolean>;
+  /** Running sandboxes whose metadata has every given value. */
+  listRunning?(options: {
+    apiKey: string;
+    metadata: Record<string, string>;
+    signal: AbortSignal;
+  }): Promise<Array<{ id: string; startedAt: Date }>>;
 }
 
-export function remoteDesktopCreateOptions(botId: string, apiKey: string) {
+export function remoteDesktopCreateOptions(
+  botId: string,
+  apiKey: string,
+  owner = computerOwnerTag(),
+) {
   return {
     apiKey,
     timeoutMs: sandboxIdleMs(),
-    metadata: { botId, rakazo: "computer" },
+    metadata: {
+      botId,
+      rakazo: "computer",
+      ...(owner ? { [COMPUTER_OWNER_METADATA_KEY]: owner } : {}),
+    },
     resolution: [1280, 800] as [number, number],
     lifecycle: { onTimeout: "pause" as const, autoResume: false },
   };
@@ -679,6 +695,21 @@ export class RemoteDesktopSandboxProvider implements SandboxProvider {
     this.forget(id);
     // A failed pause leaves the sandbox running and billing, so the caller must know.
     await this.config.sdk.pause(id, { apiKey: this.config.apiKey });
+  }
+
+  async listOwnedRunning(signal: AbortSignal) {
+    const owner = computerOwnerTag();
+    if (!owner || !this.config.sdk.listRunning) return [];
+    const machines = await this.config.sdk.listRunning({
+      apiKey: this.config.apiKey,
+      metadata: { [COMPUTER_OWNER_METADATA_KEY]: owner },
+      signal,
+    });
+    return machines.map((machine) => ({
+      kind: this.config.id,
+      providerRef: machine.id,
+      startedAt: machine.startedAt,
+    }));
   }
 
   async destroy(computer: ComputerRef, _context: AdapterContext): Promise<void> {

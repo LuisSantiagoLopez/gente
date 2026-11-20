@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { hostname } from "node:os";
 import type {
   ArtifactStore,
@@ -378,7 +379,11 @@ export function createRunReconciler(
   },
   workerOnly: Pick<
     JobReconcilerDeps,
-    "leadership" | "reconcileRoutineRetryNotices" | "reconcileHomeStorage" | "reconcileDeadJobs"
+    | "leadership"
+    | "reconcileRoutineRetryNotices"
+    | "reconcileHomeStorage"
+    | "reconcileDeadJobs"
+    | "reconcileOrphanComputers"
   > = {},
   chat: { messagingDelivery?: MessagingDelivery; teamChat?: TeamChat } = {},
 ) {
