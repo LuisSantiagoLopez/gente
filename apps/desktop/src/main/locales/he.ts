@@ -257,4 +257,6 @@ export const HE_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "הבינה המלאכותית שלך מוכנה.",
   "Your AI lives on your computer. Your chats never leave it.":
     "הבינה המלאכותית שלך חיה במחשב שלך. הצ׳אטים שלך אף פעם לא יוצאים ממנו.",
+  "Sign In to Gente…": "התחברות ל־Gente…",
+  "Sign Out of Gente": "התנתקות מ־Gente",
 };
