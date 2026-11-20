@@ -197,6 +197,11 @@ export interface RunDockerOptions {
   onLine?: (line: string) => void;
   /** Written to stdin, which is otherwise closed. */
   input?: string;
+  /**
+   * Gente: finish when the program exits, not when its output closes. For launchers such as
+   * `pg_ctl start`, whose server inherits the output pipes and keeps them open.
+   */
+  untilExit?: boolean;
 }
 
 export interface RunDockerResult {
@@ -291,6 +296,17 @@ export function runDocker(
       captured.stderr += error.message;
       finish(1);
     });
+    if (options.untilExit)
+      child.on("exit", (code) => {
+        // Collect what is already buffered, then stop listening to the inherited pipes.
+        setTimeout(() => {
+          child.stdout?.destroy();
+          child.stderr?.destroy();
+          emit(pending.stdout);
+          emit(pending.stderr);
+          finish(code ?? 1);
+        }, 200);
+      });
     child.on("close", (code) => {
       emit(pending.stdout);
       emit(pending.stderr);
