@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRuntimeEvent } from "@rakazo/adapter-kit";
 import { isBackgroundRunTrigger, redactSecrets, redactSecretsAfter } from "@rakazo/core";
 import { RunHistoryWriteError, recordUsage } from "@rakazo/db";
@@ -133,6 +134,12 @@ export async function consumeRunEvents(
         return true;
       } else if (event.type === "tool") {
         if (await onToolCalled(ctx, event)) return true;
+      } else if (event.type === "checkpoint") {
+        // Gente (modified from Rakazo): progress saved between steps; a later save replaces it.
+        await bestEffort(
+          "run.progress_checkpoint",
+          saveTurnCheckpoint(ctx, event.blob, snapshotReply(ctx.state.reply)),
+        );
       } else if (event.type === "yielded") {
         const ended = await handBackBetweenSteps(ctx, event.checkpoint);
         event.answer(ended);
