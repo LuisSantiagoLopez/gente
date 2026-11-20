@@ -71,10 +71,12 @@ jobs:
           if [ "${{ matrix.kind }}" = win ]; then
             exe=$(ls apps/desktop/out/*.exe | head -1)
             powershell -NoProfile -Command "Start-Process -Wait -FilePath '$(cygpath -w "$exe")' -ArgumentList '/S'"
-            app="$LOCALAPPDATA/Programs/Your AI/Your AI.exe"
+            echo "installed under:"; ls "$LOCALAPPDATA/Programs/"
+            app=$(ls -d "$LOCALAPPDATA"/Programs/*/"Your AI.exe" | head -1)
+            dir=$(dirname "$app")
             # The installer writes the server out with Node (paths over 260 characters).
-            ls "$LOCALAPPDATA/Programs/Your AI/resources/"
-            cat "$LOCALAPPDATA/Programs/Your AI/resources/rakazo-server/.complete" && echo " (server written out by the installer)"
+            ls "$dir/resources/"
+            cat "$dir/resources/rakazo-server/.complete" && echo " (server written out by the installer)"
           else
             dmg=$(ls apps/desktop/out/*.dmg | head -1)
             mnt=$(hdiutil attach -nobrowse -readonly "$dmg" | tail -1 | cut -f3-)
