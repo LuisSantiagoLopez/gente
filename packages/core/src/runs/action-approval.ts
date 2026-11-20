@@ -97,7 +97,9 @@ const EXPLICIT_APPROVAL_BUILTIN_TOOLS = new Set([
   "set_child_instructions",
 ]);
 
-const READ_ONLY_CONNECTOR_PATTERN = /(^|[_-])(get|list|search|find|read)([_-]|$)/i;
+// Fetch reads: it is how Composio names its everyday reads (GMAIL_FETCH_EMAILS), which otherwise
+// asked the owner before every look at their inbox.
+const READ_ONLY_CONNECTOR_PATTERN = /(^|[_-])(get|list|search|find|read|fetch)([_-]|$)/i;
 /** App slug before a hyphenated action: letters and digits, with at most one underscore. */
 const PLAIN_CONNECTOR_SLUG = /^[a-z0-9]+(?:_[a-z0-9]+)?$/;
 const MUTATING_CONNECTOR_PATTERN =

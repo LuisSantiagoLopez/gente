@@ -164,6 +164,13 @@ describe("connectorToolRequiresApproval", () => {
     expect(connectorToolRequiresApproval("profile_card", true)).toBe(true);
   });
 
+  it("reads a fetch, unless its name also changes something", () => {
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_EMAILS")).toBe(false);
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_MESSAGE_BY_THREAD_ID", true)).toBe(false);
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_AND_DELETE_EMAILS")).toBe(true);
+    expect(connectorToolRequiresApproval("GMAIL_FETCH_EMAILS", false)).toBe(true);
+  });
+
   it("still requires approval for a declared read whose name says load", () => {
     expect(connectorToolRequiresApproval("warehouse-load-rows", true)).toBe(true);
   });
