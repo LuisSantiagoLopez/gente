@@ -17,7 +17,7 @@ Some things need the internet. Here is the full list:
 - **Apps you connect:** when a bot uses Gmail, Calendar or another app you connected, it sends that app what the task needs, like an email you asked it to send.
 - **Telegram, if you connect it:** messages you send your bot in Telegram travel through Telegram, like any Telegram message. Your chats in the Gente app don't.
 - **Online work:** when a task runs on a cloud computer, that computer visits the site the task needs. Your chat history is not sent there.
-- **Images and videos you make:** your description goes to our image and video service, fal.ai, to make the file. Gente saves it on your computer. A temporary cloud copy is deleted after 30 days. fal.ai has its own rules: by default it keeps the request (your description and the result) for 90 days. See [fal.ai's data retention](https://fal.ai/docs/model-apis/data-retention).
+- **Images and videos you make:** your description goes to our image and video service, fal.ai, to make the file. fal.ai keeps no record of the request, and its copy of the file is deleted after 1 hour. Gente saves the file on your computer; our temporary cloud copy is deleted after 30 days.
 - **Support, only if you choose:** a message you send to a person, and an error report if you allow it.
 
 ## Error reports

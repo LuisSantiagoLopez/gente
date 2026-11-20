@@ -80,3 +80,7 @@ No signing certificates exist on this Mac (`security find-identity -v -p codesig
 
 - **Mac:** an Apple Developer Program membership, a "Developer ID Application" certificate exported as .p12 → `CSC_LINK` (base64 or URL) and `CSC_KEY_PASSWORD`; for notarization `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID`. Unsigned Mac apps cannot update themselves with Squirrel.Mac, so Mac auto-update needs this.
 - **Windows:** an OV or EV code-signing certificate (or Azure Trusted Signing) → `WIN_CSC_LINK`, `WIN_CSC_KEY_PASSWORD`. Without it, SmartScreen warns on install and `verifyUpdateCodeSignature` has to stay off.
+
+## Pending checks
+
+- **Media privacy line** (`docs/gente/help/*/05-privacy.md`, "Images and videos you make"): says fal.ai keeps no record of the request and deletes its file copy after 1 hour. That comes from Gente Cloud sending `X-Fal-Store-IO: 0` and a 1-hour `X-Fal-Object-Lifecycle-Preference` (cloud commit 6716250c8). Pending until the first real fal job confirms both (no entry in fal's request history; the fal file link stops working after 1 hour).
