@@ -40,6 +40,8 @@ jobs:
           packages/adapters/src/providers/web
           packages/adapters/src/runtime/pi/models
           packages/adapters/src/mcp
+          packages/adapters/src/storage/thread-artifacts.test.ts
+          packages/adapters/src/storage/thread-artifacts.store.test.ts
           packages/core/src/primitives/user-error.test.ts
           apps/api/src/bots/hidden-turns.prompt.test.ts
   mac-package:
