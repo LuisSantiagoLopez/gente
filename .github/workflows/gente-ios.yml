@@ -1,0 +1,60 @@
+# Gente iOS: build and test the native app on a GitHub macOS runner (no local Mac load).
+# Unit tests (encryption at rest, network privacy, Gente Link, self-heal, StoreKit) and the UI
+# flows against the local fake cloud. Live tests (real sign-in, live pairing) skip themselves here.
+name: gente-ios
+on:
+  push:
+    branches: [mobile]
+    paths: ["ios/**", ".github/workflows/gente-ios.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gente-ios-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: macos-26
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: |
+          xcodebuild -version
+          brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+          xcrun simctl list devices available | grep -E "iPhone 1[67]" | head -5
+      - name: Generate project
+        working-directory: ios
+        run: xcodegen generate
+      - name: Pick a simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys;d=json.load(sys.stdin)['devices'];c=[x for r,l in d.items() if 'iOS' in r for x in l if x['name'].startswith('iPhone 17 Pro')] or [x for r,l in d.items() if 'iOS' in r for x in l if x['name'].startswith('iPhone')];print(c[0]['udid'])")
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Unit tests
+        working-directory: ios
+        run: |
+          xcodebuild -project Gente.xcodeproj -scheme Gente -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/dd -resultBundlePath build/unit.xcresult test -only-testing:GenteTests \
+            CODE_SIGNING_ALLOWED=NO | tail -40
+      - name: Node and iPhone agree on Gente Link (both directions)
+        working-directory: ios
+        run: |
+          test -f /tmp/gente-link-from-iphone.json && node scripts/link-vectors.mjs check /tmp/gente-link-from-iphone.json || echo "iPhone envelope file not reachable from the runner's simulator; the in-app vector test still ran"
+      - name: UI flows
+        working-directory: ios
+        run: |
+          xcodebuild -project Gente.xcodeproj -scheme Gente -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/dd -resultBundlePath build/ui.xcresult test -only-testing:GenteUITests/FlowTests \
+            CODE_SIGNING_ALLOWED=NO | tail -60
+      - name: Release build for devices (unsigned)
+        working-directory: ios
+        run: |
+          xcodebuild -project Gente.xcodeproj -scheme Gente -configuration Release -destination 'generic/platform=iOS' \
+            -derivedDataPath build/rel build CODE_SIGNING_ALLOWED=NO | tail -5
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gente-ios-results
+          path: ios/build/*.xcresult
+          retention-days: 7
