@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// Puts the server inside the macOS app and proves it boots before the build can ship.
+// Puts the server inside the macOS and Windows app and proves it boots before the build can ship.
 // electron-builder's resource copy breaks pnpm's linked node_modules (a 0.2.0 build failed with
 // ERR_MODULE_NOT_FOUND for zod), so the folder is copied with `ditto`, which keeps the links.
 // Then two checks fail the build:
@@ -40,6 +40,12 @@ function bootOnce(exe, entry, cwd) {
         ELECTRON_RUN_AS_NODE: "1",
         PATH: process.env.PATH,
         HOME: process.env.HOME,
+        // Windows programs need these; absent elsewhere.
+        ...Object.fromEntries(
+          ["SystemRoot", "TEMP", "TMP", "USERPROFILE", "LOCALAPPDATA", "APPDATA"]
+            .filter((name) => process.env[name])
+            .map((name) => [name, process.env[name]]),
+        ),
         NODE_ENV: "production",
         DATABASE_URL: "postgresql://gente-boot-check:x@127.0.0.1:1/none",
         // Never touch a running Gente: port 0 picks a free port if anything listens at all.
@@ -61,20 +67,28 @@ function bootOnce(exe, entry, cwd) {
 }
 
 exports.default = async function afterPack(context) {
-  if (context.electronPlatformName !== "darwin") return;
+  const mac = context.electronPlatformName === "darwin";
+  const windows = context.electronPlatformName === "win32";
+  if (!mac && !windows) return;
   const source = path.resolve(__dirname, "../build/server-dir/rakazo-server");
   if (!fs.existsSync(source)) throw new Error(`Server folder missing at ${source}`);
   const appName = `${context.packager.appInfo.productFilename}.app`;
-  const resources = path.join(context.appOutDir, appName, "Contents/Resources");
+  const resources = mac
+    ? path.join(context.appOutDir, appName, "Contents/Resources")
+    : path.join(context.appOutDir, "resources");
   const server = path.join(resources, "rakazo-server");
   fs.rmSync(server, { recursive: true, force: true });
-  execFileSync("ditto", [source, server]);
+  // Windows installers carry plain files, so links become copies there.
+  if (mac) execFileSync("ditto", [source, server]);
+  else fs.cpSync(source, server, { recursive: true, dereference: true });
 
   const broken = brokenLinks(server);
   if (broken.length > 0)
     throw new Error(`Server has ${broken.length} broken links, first: ${broken.slice(0, 5).join(", ")}`);
 
-  const exe = path.join(context.appOutDir, appName, "Contents/MacOS", context.packager.appInfo.productFilename);
+  const exe = mac
+    ? path.join(context.appOutDir, appName, "Contents/MacOS", context.packager.appInfo.productFilename)
+    : path.join(context.appOutDir, `${context.packager.appInfo.productFilename}.exe`);
   const manifest = JSON.parse(fs.readFileSync(path.join(server, "manifest.json"), "utf8"));
   for (const [name, rel] of Object.entries(manifest.entrypoints)) {
     const entry = path.join(server, rel);
