@@ -12,7 +12,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { KeylessHttpWebProvider } from "../../../providers/web/keyless-http/keyless-http-web.js";
-import { userWords } from "./burrow-fast-chat.js";
+import { smallTalkBody, userWords } from "./burrow-fast-chat.js";
 
 type ChatMessage = { role?: string; content?: unknown; tool_calls?: unknown };
 export interface WebSource {
@@ -192,14 +192,17 @@ export async function planWebAnswer(rawBody: string, deps: WebAnswerDeps = {}): 
     .join("\n\n");
   const last = messages.at(-1)!;
   const content = `${typeof last.content === "string" ? last.content : userWords(last.content)}\n\n<web_results>\nFresh web results for this message. Answer from them in a few short sentences, cite them like [1], and say plainly if they don't answer it. Don't call tools.\n\n${block}\n</web_results>`;
-  const { tools: _tools, tool_choice: _choice, parallel_tool_calls: _parallel, ...rest } = parsed;
+  // The same slim, cached prompt as small talk (identity, memory, recent text turns, no tools),
+  // so the model only reads the sources and the question.
+  const slim = smallTalkBody({ ...parsed, messages } as { messages: ChatMessage[] });
+  const slimMessages = slim.messages as ChatMessage[];
   return {
     kind: "ask",
     cacheKey,
     preface: sourcesLine(sources),
     body: JSON.stringify({
-      ...rest,
-      messages: [...messages.slice(0, -1), { ...last, content }],
+      ...slim,
+      messages: [...slimMessages.slice(0, -1), { ...last, content }],
       reasoning_effort: "none",
     }),
   };
