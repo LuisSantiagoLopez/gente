@@ -1,0 +1,94 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSMicrophoneUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente listens only while you hold the mic, so you can talk instead of type."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente solo escucha mientras usas el micrófono, para que puedas hablar en vez de escribir."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente só ouve enquanto você usa o microfone, para você falar em vez de digitar."
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente turns your voice into text on this iPhone. Your voice is not sent anywhere."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente convierte tu voz en texto en este iPhone. Tu voz no se envía a ningún lado."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente transforma sua voz em texto neste iPhone. Sua voz não é enviada a lugar nenhum."
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente uses the camera only to scan the pairing code on your computer."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente usa la cámara solo para escanear el código de vinculación de tu computadora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente usa a câmera só para ler o código de pareamento do seu computador."
+          }
+        }
+      }
+    },
+    "CFBundleDisplayName": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

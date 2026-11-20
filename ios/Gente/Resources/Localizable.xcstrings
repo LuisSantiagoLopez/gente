@@ -1,0 +1,3925 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "": {
+      "shouldTranslate": false
+    },
+    " ": {
+      "shouldTranslate": false
+    },
+    " / month": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " / mes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " / mês"
+          }
+        }
+      }
+    },
+    " / year": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " / año"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " / ano"
+          }
+        }
+      }
+    },
+    "%@%@": {
+      "shouldTranslate": false
+    },
+    "%lld online hours a month": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld horas en línea al mes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld horas online por mês"
+          }
+        }
+      }
+    },
+    "A small model on this iPhone. Not available yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un modelo pequeño en este iPhone. Aún no disponible."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um modelo pequeno neste iPhone. Ainda não disponível."
+          }
+        }
+      }
+    },
+    "A tool didn't answer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una herramienta no respondió"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma ferramenta não respondeu"
+          }
+        }
+      }
+    },
+    "AI": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IA"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IA"
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conta"
+          }
+        }
+      }
+    },
+    "Account and plan details": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos de la cuenta y el plan"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dados da conta e do plano"
+          }
+        }
+      }
+    },
+    "Account record": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registro de la cuenta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registro da conta"
+          }
+        }
+      }
+    },
+    "Account, plan and hours": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta, plan y horas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conta, plano e horas"
+          }
+        }
+      }
+    },
+    "Add": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar"
+          }
+        }
+      }
+    },
+    "Add 8 hours for %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar 8 horas por %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar 8 horas por %@"
+          }
+        }
+      }
+    },
+    "Add routine": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar rutina"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar rotina"
+          }
+        }
+      }
+    },
+    "Allow once": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir esta vez"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir desta vez"
+          }
+        }
+      }
+    },
+    "Allow the microphone and speech in Settings to talk to Gente.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite el micrófono y el reconocimiento de voz en Ajustes para hablar con Gente."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permita o microfone e a fala nos Ajustes para falar com o Gente."
+          }
+        }
+      }
+    },
+    "Answered on our servers, not stored": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido en nuestros servidores, sin guardar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido em nossos servidores, sem guardar"
+          }
+        }
+      }
+    },
+    "Answered on our servers, not stored.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido en nuestros servidores, sin guardar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido em nossos servidores, sem guardar."
+          }
+        }
+      }
+    },
+    "Answered on this iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido en este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido neste iPhone"
+          }
+        }
+      }
+    },
+    "Answered on your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido en tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respondido no seu computador"
+          }
+        }
+      }
+    },
+    "Apple couldn't verify that purchase.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple no pudo verificar esa compra."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Apple não conseguiu verificar essa compra."
+          }
+        }
+      }
+    },
+    "Apps (Composio)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps (Composio)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps (Composio)"
+          }
+        }
+      }
+    },
+    "Ask Gente": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregúntale a Gente"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pergunte ao Gente"
+          }
+        }
+      }
+    },
+    "Ask Gente anything. The chat stays on your iPhone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregúntale lo que sea a Gente. El chat se queda en tu iPhone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pergunte qualquer coisa ao Gente. A conversa fica no seu iPhone."
+          }
+        }
+      }
+    },
+    "Before Gente uses the cloud": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antes de que Gente use la nube"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antes de o Gente usar a nuvem"
+          }
+        }
+      }
+    },
+    "Browserbase and E2B: cloud browsers and computers for tasks.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browserbase y E2B: navegadores y computadoras en la nube para tareas."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browserbase e E2B: navegadores e computadores na nuvem para tarefas."
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        }
+      }
+    },
+    "Chat context (recent turns and memory)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contexto del chat (mensajes recientes y memoria)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contexto da conversa (mensagens recentes e memória)"
+          }
+        }
+      }
+    },
+    "Chats": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chats"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conversas"
+          }
+        }
+      }
+    },
+    "Chats, memory, routines and the log are erased, and the key is replaced. This can't be undone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se borran los chats, la memoria, las rutinas y el registro, y se cambia la clave. No se puede deshacer."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conversas, memória, rotinas e o registro são apagados, e a chave é trocada. Não dá para desfazer."
+          }
+        }
+      }
+    },
+    "Check that your computer shows this code:": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa que tu computadora muestre este código:"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confira se o seu computador mostra este código:"
+          }
+        }
+      }
+    },
+    "Cloud (fast)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nube (rápido)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuvem (rápido)"
+          }
+        }
+      }
+    },
+    "Cloud browser": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navegador en la nube"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navegador na nuvem"
+          }
+        }
+      }
+    },
+    "Cloud copy of an image or video": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia en la nube de una imagen o video"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cópia na nuvem de uma imagem ou vídeo"
+          }
+        }
+      }
+    },
+    "Composio: actions in apps you connect.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Composio: acciones en las apps que conectes."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Composio: ações nos apps que você conectar."
+          }
+        }
+      }
+    },
+    "Continue": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        }
+      }
+    },
+    "Continue on my computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir en mi computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar no meu computador"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar"
+          }
+        }
+      }
+    },
+    "Delete account": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar cuenta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir conta"
+          }
+        }
+      }
+    },
+    "Delete account and data": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar cuenta y datos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir conta e dados"
+          }
+        }
+      }
+    },
+    "Delete everything": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar todo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar tudo"
+          }
+        }
+      }
+    },
+    "Delete everything on this iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar todo en este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar tudo neste iPhone"
+          }
+        }
+      }
+    },
+    "Delete everything on this iPhone?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Borrar todo en este iPhone?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar tudo neste iPhone?"
+          }
+        }
+      }
+    },
+    "Delete your Gente account?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar tu cuenta de Gente?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir sua conta do Gente?"
+          }
+        }
+      }
+    },
+    "Deleting your account removes it from Gente Cloud and erases everything Gente keeps on this iPhone. Subscriptions bought through Apple are managed in your Apple Account settings.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar tu cuenta la quita de Gente Cloud y borra todo lo que Gente guarda en este iPhone. Las suscripciones compradas con Apple se administran en los ajustes de tu Cuenta de Apple."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir sua conta a remove do Gente Cloud e apaga tudo o que o Gente guarda neste iPhone. Assinaturas compradas pela Apple são gerenciadas nos ajustes da sua Conta Apple."
+          }
+        }
+      }
+    },
+    "Deletion receipts appear here once Gente Cloud sends them.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los comprobantes de borrado aparecen aquí cuando Gente Cloud los envía."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os comprovantes de exclusão aparecem aqui quando o Gente Cloud os envia."
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalles"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalhes"
+          }
+        }
+      }
+    },
+    "Don't do it": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No lo hagas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não faça"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "Each question sends only what it needs. Our servers answer and keep nothing.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada pregunta envía solo lo necesario. Nuestros servidores responden y no guardan nada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada pergunta envia só o necessário. Nossos servidores respondem e não guardam nada."
+          }
+        }
+      }
+    },
+    "ElevenLabs: text to read aloud, if you turn on the cloud voice.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ElevenLabs: texto para leer en voz alta, si activas la voz en la nube."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ElevenLabs: texto para ler em voz alta, se você ativar a voz na nuvem."
+          }
+        }
+      }
+    },
+    "Encrypted on the phone, with a key only this iPhone holds.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cifrados en el teléfono, con una clave que solo tiene este iPhone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criptografadas no celular, com uma chave que só este iPhone tem."
+          }
+        }
+      }
+    },
+    "Encrypted relay": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relevo cifrado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retransmissão criptografada"
+          }
+        }
+      }
+    },
+    "Encryption keys": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claves de cifrado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaves de criptografia"
+          }
+        }
+      }
+    },
+    "Erase": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar"
+          }
+        }
+      }
+    },
+    "Erase Gente data on this iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar los datos de Gente en este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar os dados do Gente neste iPhone"
+          }
+        }
+      }
+    },
+    "Erase Gente data on this iPhone?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Borrar los datos de Gente en este iPhone?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar os dados do Gente neste iPhone?"
+          }
+        }
+      }
+    },
+    "Every time Gente talks to the internet, it's listed here: when, which service, how big, and what kind of thing went. Your words themselves are never kept, here or on our servers.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada vez que Gente usa internet, aparece aquí: cuándo, qué servicio, qué tamaño y qué tipo de cosa salió. Tus palabras nunca se guardan, ni aquí ni en nuestros servidores."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toda vez que o Gente usa a internet, aparece aqui: quando, qual serviço, qual tamanho e que tipo de coisa saiu. Suas palavras nunca são guardadas, nem aqui nem nos nossos servidores."
+          }
+        }
+      }
+    },
+    "Exa: web search words.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exa: palabras de búsqueda web."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exa: palavras de busca na web."
+          }
+        }
+      }
+    },
+    "Export everything (encrypted)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exportar todo (cifrado)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exportar tudo (criptografado)"
+          }
+        }
+      }
+    },
+    "Fast mode (AI)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo rápido (IA)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo rápido (IA)"
+          }
+        }
+      }
+    },
+    "Fast mode comes with Pro. You can also use Gente on your own computer for free.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El modo rápido viene con Pro. También puedes usar Gente gratis en tu propia computadora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O modo rápido vem com o Pro. Você também pode usar o Gente de graça no seu computador."
+          }
+        }
+      }
+    },
+    "Fast mode is resting right now. Pair your computer to keep going, or try again later.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El modo rápido está descansando. Vincula tu computadora para seguir, o inténtalo más tarde."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O modo rápido está descansando. Pareie seu computador para continuar, ou tente mais tarde."
+          }
+        }
+      }
+    },
+    "Fast mode, web search, voice and cloud browsers.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo rápido, búsqueda web, voz y navegadores en la nube."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo rápido, busca na web, voz e navegadores na nuvem."
+          }
+        }
+      }
+    },
+    "Files": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arquivos"
+          }
+        }
+      }
+    },
+    "For people who hand Gente real work every day.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para quien le da trabajo real a Gente todos los días."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para quem entrega trabalho de verdade ao Gente todo dia."
+          }
+        }
+      }
+    },
+    "Free": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grátis"
+          }
+        }
+      }
+    },
+    "Gente": {
+      "shouldTranslate": false
+    },
+    "Gente %@ · DeskHead Inc.": {
+      "shouldTranslate": false
+    },
+    "Gente Cloud (DeskHead Inc.): the AI answer. Not stored, not used for training.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud (DeskHead Inc.): la respuesta de la IA. Sin guardar ni usar para entrenar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud (DeskHead Inc.): a resposta da IA. Sem guardar nem usar para treinar."
+          }
+        }
+      }
+    },
+    "Gente Cloud (needed to bill you)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud (necesario para cobrarte)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud (necessário para cobrar)"
+          }
+        }
+      }
+    },
+    "Gente Cloud couldn't delete the account right now. Nothing was erased. Try again, or write to support.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud no pudo eliminar la cuenta ahora. No se borró nada. Inténtalo otra vez o escribe a soporte."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente Cloud não conseguiu excluir a conta agora. Nada foi apagado. Tente de novo ou fale com o suporte."
+          }
+        }
+      }
+    },
+    "Gente Cloud deletion receipts": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobantes de borrado de Gente Cloud"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprovantes de exclusão do Gente Cloud"
+          }
+        }
+      }
+    },
+    "Gente Cloud didn't answer. Your message is safe on your phone. Try again.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud no respondió. Tu mensaje está a salvo en tu teléfono. Inténtalo otra vez."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente Cloud não respondeu. Sua mensagem está segura no celular. Tente de novo."
+          }
+        }
+      }
+    },
+    "Gente Cloud got only this question, a few recent turns and the notes it needed. It answered in memory, then forgot it. No logs of your words, no storage, no training.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente Cloud recibió solo esta pregunta, algunos mensajes recientes y las notas que necesitaba. Respondió en memoria y luego lo olvidó. Sin registros de tus palabras, sin guardar, sin entrenar."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente Cloud recebeu só esta pergunta, algumas mensagens recentes e as notas necessárias. Respondeu na memória e depois esqueceu. Sem registros das suas palavras, sem guardar, sem treinar."
+          }
+        }
+      }
+    },
+    "Gente always asks before money, sending as you, deleting data or accepting terms.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente siempre pregunta antes de gastar dinero, enviar algo como tú, borrar datos o aceptar términos."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente sempre pergunta antes de gastar dinheiro, enviar algo como você, apagar dados ou aceitar termos."
+          }
+        }
+      }
+    },
+    "Gente is a little busy. Try again in a moment.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente está un poco ocupado. Inténtalo en un momento."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente está um pouco ocupado. Tente daqui a pouco."
+          }
+        }
+      }
+    },
+    "Gente is browsing": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente está navegando"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente está navegando"
+          }
+        }
+      }
+    },
+    "Gente is thinking": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente está pensando"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente está pensando"
+          }
+        }
+      }
+    },
+    "Gente needs your OK": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente necesita tu OK"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente precisa do seu OK"
+          }
+        }
+      }
+    },
+    "Gente remembers what you ask it to. It all stays on this iPhone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente recuerda lo que le pidas. Todo se queda en este iPhone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente lembra o que você pedir. Tudo fica neste iPhone."
+          }
+        }
+      }
+    },
+    "Gente stopped a request that wasn't private. Nothing was sent.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente detuvo una solicitud que no era privada. No se envió nada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente parou uma solicitação que não era privada. Nada foi enviado."
+          }
+        }
+      }
+    },
+    "Gente wants to act on a web page.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente quiere actuar en una página web."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente quer agir em uma página da web."
+          }
+        }
+      }
+    },
+    "Gente wants to use %@.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente quiere usar %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente quer usar %@."
+          }
+        }
+      }
+    },
+    "Gente wants to: %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente quiere: %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente quer: %@"
+          }
+        }
+      }
+    },
+    "Get more done with Gente": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz más con Gente"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faça mais com o Gente"
+          }
+        }
+      }
+    },
+    "Help": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayuda"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajuda"
+          }
+        }
+      }
+    },
+    "Hours left": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horas restantes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horas restantes"
+          }
+        }
+      }
+    },
+    "I agree to send these when I ask": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acepto enviar esto cuando lo pida"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concordo em enviar isso quando eu pedir"
+          }
+        }
+      }
+    },
+    "If it's different, remove the device below.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si es distinto, quita el dispositivo abajo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se for diferente, remova o dispositivo abaixo."
+          }
+        }
+      }
+    },
+    "Images and video": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imágenes y video"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imagens e vídeo"
+          }
+        }
+      }
+    },
+    "Images you made": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imágenes que creaste"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imagens que você criou"
+          }
+        }
+      }
+    },
+    "It stops getting your chats and memory, and can't use this iPhone's Gente.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deja de recibir tus chats y tu memoria, y no podrá usar el Gente de este iPhone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ele deixa de receber suas conversas e memória, e não pode usar o Gente deste iPhone."
+          }
+        }
+      }
+    },
+    "Last synced %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última sincronización %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última sincronização %@"
+          }
+        }
+      }
+    },
+    "Listening…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escuchando…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvindo…"
+          }
+        }
+      }
+    },
+    "Live view": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En vivo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ao vivo"
+          }
+        }
+      }
+    },
+    "Made an image": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creó una imagen"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criou uma imagem"
+          }
+        }
+      }
+    },
+    "Making an image…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creando una imagen…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criando uma imagem…"
+          }
+        }
+      }
+    },
+    "Memory": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memoria"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memória"
+          }
+        }
+      }
+    },
+    "Memory and more": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memoria y más"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memória e mais"
+          }
+        }
+      }
+    },
+    "Memory, skills and projects": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memoria, habilidades y proyectos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memória, habilidades e projetos"
+          }
+        }
+      }
+    },
+    "Monthly": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mensual"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mensal"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome"
+          }
+        }
+      }
+    },
+    "New Gente chat": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo chat de Gente"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova conversa no Gente"
+          }
+        }
+      }
+    },
+    "New chat": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo chat"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova conversa"
+          }
+        }
+      }
+    },
+    "No deletions on Gente Cloud yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay borrados en Gente Cloud."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ainda não há exclusões no Gente Cloud."
+          }
+        }
+      }
+    },
+    "No personal content": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin contenido personal"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem conteúdo pessoal"
+          }
+        }
+      }
+    },
+    "No purchases to restore on this Apple Account.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay compras para restaurar en esta Cuenta de Apple."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não há compras para restaurar nesta Conta Apple."
+          }
+        }
+      }
+    },
+    "Not in iCloud backups. Not on Gente's servers. AI answers are made in memory and not stored.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No está en respaldos de iCloud ni en los servidores de Gente. Las respuestas de la IA se hacen en memoria y no se guardan."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não fica em backups do iCloud nem nos servidores do Gente. As respostas da IA são feitas na memória e não são guardadas."
+          }
+        }
+      }
+    },
+    "Not in iCloud backups. Not on our servers.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No en respaldos de iCloud. No en nuestros servidores."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nem em backups do iCloud. Nem nos nossos servidores."
+          }
+        }
+      }
+    },
+    "Not now": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora no"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agora não"
+          }
+        }
+      }
+    },
+    "Not stored": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin guardar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem guardar"
+          }
+        }
+      }
+    },
+    "Not stored by Gente": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente no lo guarda"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Gente não guarda"
+          }
+        }
+      }
+    },
+    "Nothing has left your phone yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no ha salido nada de tu teléfono."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada saiu do seu celular ainda."
+          }
+        }
+      }
+    },
+    "Nothing here yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay nada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada aqui ainda."
+          }
+        }
+      }
+    },
+    "On my computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En mi computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No meu computador"
+          }
+        }
+      }
+    },
+    "On this iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neste iPhone"
+          }
+        }
+      }
+    },
+    "On-device speech isn't available for this language yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El reconocimiento de voz en el dispositivo aún no está disponible para este idioma."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O reconhecimento de voz no aparelho ainda não está disponível para este idioma."
+          }
+        }
+      }
+    },
+    "Only on this iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo en este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só neste iPhone"
+          }
+        }
+      }
+    },
+    "Only on this iPhone, in the Keychain": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo en este iPhone, en el Llavero"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só neste iPhone, nas Chaves"
+          }
+        }
+      }
+    },
+    "Only on this iPhone, in the Secure Enclave": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo en este iPhone, en el Secure Enclave"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só neste iPhone, no Secure Enclave"
+          }
+        }
+      }
+    },
+    "Open on your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abierto en tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aberto no seu computador"
+          }
+        }
+      }
+    },
+    "Opening a browser…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abriendo un navegador…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrindo um navegador…"
+          }
+        }
+      }
+    },
+    "Or pay on the web": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O paga en la web"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ou pague na web"
+          }
+        }
+      }
+    },
+    "Pair a computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vincular una computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parear um computador"
+          }
+        }
+      }
+    },
+    "Pair your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vincula tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pareie seu computador"
+          }
+        }
+      }
+    },
+    "Pair your computer first.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero vincula tu computadora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeiro pareie seu computador."
+          }
+        }
+      }
+    },
+    "Pair your computer to use Gente's AI on it from anywhere, keep chats and memory the same on both, and approve its tasks from here. Everything between your devices is sealed end to end. Gente Cloud only passes along boxes it can't open.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vincula tu computadora para usar su IA de Gente desde cualquier lugar, tener los mismos chats y memoria en ambos, y aprobar sus tareas desde aquí. Todo entre tus dispositivos va cifrado de extremo a extremo. Gente Cloud solo pasa cajas que no puede abrir."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pareie seu computador para usar a IA do Gente nele de qualquer lugar, manter as mesmas conversas e memória nos dois e aprovar tarefas daqui. Tudo entre seus aparelhos é criptografado de ponta a ponta. O Gente Cloud só repassa caixas que não consegue abrir."
+          }
+        }
+      }
+    },
+    "Paired %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vinculado %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pareado %@"
+          }
+        }
+      }
+    },
+    "Pick a passphrase for the export": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige una frase de contraseña para exportar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha uma frase-senha para exportar"
+          }
+        }
+      }
+    },
+    "Plan": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plano"
+          }
+        }
+      }
+    },
+    "Plan my week": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planea mi semana"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planeje minha semana"
+          }
+        }
+      }
+    },
+    "Plans": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planos"
+          }
+        }
+      }
+    },
+    "Plans and hours": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planes y horas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planos e horas"
+          }
+        }
+      }
+    },
+    "Please sign in again to keep going.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión otra vez para seguir."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre de novo para continuar."
+          }
+        }
+      }
+    },
+    "Please sign in to use Fast mode.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión para usar el modo rápido."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre para usar o modo rápido."
+          }
+        }
+      }
+    },
+    "Point at the code on your computer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apunta al código en tu computadora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aponte para o código no seu computador"
+          }
+        }
+      }
+    },
+    "Privacy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidad"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidade"
+          }
+        }
+      }
+    },
+    "Privacy policy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidad"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidade"
+          }
+        }
+      }
+    },
+    "Private. On your iPhone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privado. En tu iPhone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privado. No seu iPhone."
+          }
+        }
+      }
+    },
+    "Projects": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proyectos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projetos"
+          }
+        }
+      }
+    },
+    "Projects and files": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proyectos y archivos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projetos e arquivos"
+          }
+        }
+      }
+    },
+    "Purchase received. Hours will appear as soon as Gente Cloud confirms it.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compra recibida. Las horas aparecerán en cuanto Gente Cloud la confirme."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compra recebida. As horas aparecem assim que o Gente Cloud confirmar."
+          }
+        }
+      }
+    },
+    "Question": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregunta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pergunta"
+          }
+        }
+      }
+    },
+    "Read aloud": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer en voz alta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ler em voz alta"
+          }
+        }
+      }
+    },
+    "Reading the page": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leyendo la página"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lendo a página"
+          }
+        }
+      }
+    },
+    "Remembered this on your phone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo recordó en tu teléfono"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lembrou disso no seu celular"
+          }
+        }
+      }
+    },
+    "Remove": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover"
+          }
+        }
+      }
+    },
+    "Remove this device?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quitar este dispositivo?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover este aparelho?"
+          }
+        }
+      }
+    },
+    "Removed device": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dispositivo quitado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aparelho removido"
+          }
+        }
+      }
+    },
+    "Restore purchases": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurar compras"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurar compras"
+          }
+        }
+      }
+    },
+    "Restored.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurado."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurado."
+          }
+        }
+      }
+    },
+    "Result kept 30 days, then deleted": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resultado guardado 30 días y luego borrado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resultado guardado 30 dias e depois apagado"
+          }
+        }
+      }
+    },
+    "Routines": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rutinas"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rotinas"
+          }
+        }
+      }
+    },
+    "Routines remind you at a set time and run with one tap.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las rutinas te avisan a una hora fija y se ejecutan con un toque."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As rotinas avisam num horário fixo e rodam com um toque."
+          }
+        }
+      }
+    },
+    "Safety code": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código de seguridad"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código de segurança"
+          }
+        }
+      }
+    },
+    "Save": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salvar"
+          }
+        }
+      }
+    },
+    "Save the export": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar la exportación"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salvar a exportação"
+          }
+        }
+      }
+    },
+    "Sealed data only your devices can open": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos sellados que solo tus dispositivos pueden abrir"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dados lacrados que só seus aparelhos podem abrir"
+          }
+        }
+      }
+    },
+    "Sealed sync message": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mensaje de sincronización sellado"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mensagem de sincronização lacrada"
+          }
+        }
+      }
+    },
+    "Sealed; deleted once your device picks it up": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sellado; se borra cuando tu dispositivo lo recibe"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lacrado; apagado quando seu aparelho recebe"
+          }
+        }
+      }
+    },
+    "Search your chats": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Busca en tus chats"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Busque nas suas conversas"
+          }
+        }
+      }
+    },
+    "Searched the web": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscó en la web"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pesquisou na web"
+          }
+        }
+      }
+    },
+    "Searching the web…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscando en la web…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pesquisando na web…"
+          }
+        }
+      }
+    },
+    "See every request": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver cada solicitud"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver cada solicitação"
+          }
+        }
+      }
+    },
+    "See everything that left your phone, any time.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira todo lo que salió de tu teléfono, cuando quieras."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veja tudo o que saiu do seu celular, quando quiser."
+          }
+        }
+      }
+    },
+    "See plans": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver planes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver planos"
+          }
+        }
+      }
+    },
+    "See what left your phone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver qué salió de tu teléfono"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver o que saiu do seu celular"
+          }
+        }
+      }
+    },
+    "Send": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        }
+      }
+    },
+    "Shows where this answer was made": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestra dónde se hizo esta respuesta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra onde esta resposta foi feita"
+          }
+        }
+      }
+    },
+    "Sign in": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar sesión"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrar"
+          }
+        }
+      }
+    },
+    "Sign in or create account": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión o crea una cuenta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre ou crie uma conta"
+          }
+        }
+      }
+    },
+    "Sign out": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair"
+          }
+        }
+      }
+    },
+    "Sign-in": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicio de sesión"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login"
+          }
+        }
+      }
+    },
+    "Sign-in didn't finish. Try again.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El inicio de sesión no terminó. Inténtalo otra vez."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O login não terminou. Tente de novo."
+          }
+        }
+      }
+    },
+    "Signature checked": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firma verificada"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assinatura verificada"
+          }
+        }
+      }
+    },
+    "Skills": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Habilidades"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Habilidades"
+          }
+        }
+      }
+    },
+    "Start a private chat in one tap.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza un chat privado con un toque."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comece uma conversa privada com um toque."
+          }
+        }
+      }
+    },
+    "Starting…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezando…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Começando…"
+          }
+        }
+      }
+    },
+    "Stop": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detener"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar"
+          }
+        }
+      }
+    },
+    "Stop reading": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dejar de leer"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de ler"
+          }
+        }
+      }
+    },
+    "Stopped.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detenido."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parado."
+          }
+        }
+      }
+    },
+    "Subscribe": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suscribirse"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assinar"
+          }
+        }
+      }
+    },
+    "Subscriptions renew automatically until you cancel in your Apple Account settings, at least 24 hours before the period ends. Payment is charged to your Apple Account. Free users can use Gente from their own computer at no cost.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las suscripciones se renuevan solas hasta que las canceles en los ajustes de tu Cuenta de Apple, al menos 24 horas antes de que termine el periodo. El pago se cobra a tu Cuenta de Apple. Sin plan puedes usar Gente desde tu propia computadora sin costo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As assinaturas renovam sozinhas até você cancelar nos ajustes da sua Conta Apple, pelo menos 24 horas antes do fim do período. O pagamento é cobrado na sua Conta Apple. Sem plano, você pode usar o Gente do seu computador sem custo."
+          }
+        }
+      }
+    },
+    "Talk": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hablar"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falar"
+          }
+        }
+      }
+    },
+    "Tap to run it now.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca para hacerlo ahora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque para rodar agora."
+          }
+        }
+      }
+    },
+    "Terms": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Términos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termos"
+          }
+        }
+      }
+    },
+    "Terms of use": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Términos de uso"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termos de uso"
+          }
+        }
+      }
+    },
+    "Text to speak": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Texto para leer en voz alta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Texto para falar"
+          }
+        }
+      }
+    },
+    "That didn't work. Try again.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eso no funcionó. Inténtalo otra vez."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso não funcionou. Tente de novo."
+          }
+        }
+      }
+    },
+    "That isn't a Gente pairing code. On your computer, open Settings, then Devices, then Pair a phone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese no es un código de vinculación de Gente. En tu computadora abre Ajustes, luego Dispositivos, luego Vincular un teléfono."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esse não é um código de pareamento do Gente. No computador, abra Ajustes, depois Aparelhos, depois Parear um celular."
+          }
+        }
+      }
+    },
+    "The camera isn't available. Allow it in Settings.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cámara no está disponible. Permítela en Ajustes."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A câmera não está disponível. Permita nos Ajustes."
+          }
+        }
+      }
+    },
+    "The export is sealed with your passphrase (8 characters or more). Without it, no one can open the file, including us.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La exportación se sella con tu frase de contraseña (8 caracteres o más). Sin ella nadie puede abrir el archivo, ni nosotros."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A exportação é lacrada com sua frase-senha (8 caracteres ou mais). Sem ela ninguém abre o arquivo, nem nós."
+          }
+        }
+      }
+    },
+    "The microphone isn't available right now.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El micrófono no está disponible ahora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O microfone não está disponível agora."
+          }
+        }
+      }
+    },
+    "The most hours, for long tasks and teams of agents.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La mayor cantidad de horas, para tareas largas y equipos de agentes."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O máximo de horas, para tarefas longas e equipes de agentes."
+          }
+        }
+      }
+    },
+    "The purchase didn't go through. You weren't charged.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La compra no se completó. No se te cobró."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A compra não foi concluída. Você não foi cobrado."
+          }
+        }
+      }
+    },
+    "Thinking…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pensando…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pensando…"
+          }
+        }
+      }
+    },
+    "This accepts legal terms": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto acepta términos legales"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso aceita termos legais"
+          }
+        }
+      }
+    },
+    "This can't be undone. Your chats, memory and keys on this iPhone are erased.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede deshacer. Se borran tus chats, memoria y claves en este iPhone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não dá para desfazer. Suas conversas, memória e chaves neste iPhone são apagadas."
+          }
+        }
+      }
+    },
+    "This deletes data": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto borra datos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso apaga dados"
+          }
+        }
+      }
+    },
+    "This iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este iPhone"
+          }
+        }
+      }
+    },
+    "This iPhone, synced end to end with %lld of your devices": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este iPhone, sincronizado de extremo a extremo con %lld de tus dispositivos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este iPhone, sincronizado de ponta a ponta com %lld dos seus aparelhos"
+          }
+        }
+      }
+    },
+    "This iPhone. A temporary cloud copy is deleted 30 days after it was made.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este iPhone. La copia temporal en la nube se borra 30 días después de crearse."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este iPhone. A cópia temporária na nuvem é apagada 30 dias depois de criada."
+          }
+        }
+      }
+    },
+    "This sends something as you": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto envía algo como tú"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso envia algo como você"
+          }
+        }
+      }
+    },
+    "This spends money": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto gasta dinero"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso gasta dinheiro"
+          }
+        }
+      }
+    },
+    "This tool needs a paid plan": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta herramienta necesita un plan de pago"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta ferramenta precisa de um plano pago"
+          }
+        }
+      }
+    },
+    "Time": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horário"
+          }
+        }
+      }
+    },
+    "Timeline: sends and syncs": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historial: envíos y sincronizaciones"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linha do tempo: envios e sincronizações"
+          }
+        }
+      }
+    },
+    "Title": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        }
+      }
+    },
+    "Tool words you approved (for example a search)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palabras para una herramienta que aprobaste (por ejemplo, una búsqueda)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palavras para uma ferramenta que você aprovou (por exemplo, uma busca)"
+          }
+        }
+      }
+    },
+    "Tried to make an image": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intentó crear una imagen"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentou criar uma imagem"
+          }
+        }
+      }
+    },
+    "Try again": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intentar otra vez"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar de novo"
+          }
+        }
+      }
+    },
+    "Used the cloud browser": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usó el navegador en la nube"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usou o navegador na nuvem"
+          }
+        }
+      }
+    },
+    "Voice": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voz"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voz"
+          }
+        }
+      }
+    },
+    "Waiting for approval. We'll add it when it's approved.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando aprobación. Lo agregaremos cuando se apruebe."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aguardando aprovação. Vamos adicionar quando for aprovado."
+          }
+        }
+      }
+    },
+    "Waking up the fast AI (about a minute)…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despertando la IA rápida (como un minuto)…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acordando a IA rápida (cerca de um minuto)…"
+          }
+        }
+      }
+    },
+    "Web search": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Búsqueda web"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Busca na web"
+          }
+        }
+      }
+    },
+    "What left your phone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qué salió de tu teléfono"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que saiu do seu celular"
+          }
+        }
+      }
+    },
+    "What should Gente do?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué debe hacer Gente?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que o Gente deve fazer?"
+          }
+        }
+      }
+    },
+    "What should we do?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué hacemos?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que vamos fazer?"
+          }
+        }
+      }
+    },
+    "What's new in AI today?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué hay de nuevo en IA hoy?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que há de novo em IA hoje?"
+          }
+        }
+      }
+    },
+    "When you ask, Gente sends the words it needs to these services, and nothing more:": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando lo pides, Gente envía a estos servicios las palabras que necesita, y nada más:"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando você pede, o Gente envia a estes serviços as palavras necessárias, e nada mais:"
+          }
+        }
+      }
+    },
+    "Where each thing lives": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dónde vive cada cosa"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onde cada coisa fica"
+          }
+        }
+      }
+    },
+    "Where the AI runs": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dónde corre la IA"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onde a IA roda"
+          }
+        }
+      }
+    },
+    "Where's my data": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dónde están mis datos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onde estão meus dados"
+          }
+        }
+      }
+    },
+    "Worked in your apps": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajó en tus apps"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabalhou nos seus apps"
+          }
+        }
+      }
+    },
+    "Working in your apps…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajando en tus apps…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabalhando nos seus apps…"
+          }
+        }
+      }
+    },
+    "Working…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajando…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabalhando…"
+          }
+        }
+      }
+    },
+    "Write a kind reply to my landlord": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe una respuesta amable a mi casero"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreva uma resposta gentil para o meu senhorio"
+          }
+        }
+      }
+    },
+    "Yearly": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anual"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anual"
+          }
+        }
+      }
+    },
+    "You said no, so Gente stopped": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dijiste que no, así que Gente se detuvo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você disse não, então o Gente parou"
+          }
+        }
+      }
+    },
+    "You're offline. Your chats are still here.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estás sin conexión. Tus chats siguen aquí."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você está offline. Suas conversas continuam aqui."
+          }
+        }
+      }
+    },
+    "You're offline. Your chats are still here. Send again when you're back.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estás sin conexión. Tus chats siguen aquí. Envía de nuevo cuando vuelvas."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você está offline. Suas conversas continuam aqui. Envie de novo quando voltar."
+          }
+        }
+      }
+    },
+    "You're out of hours this month. Add hours to keep going.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te quedaste sin horas este mes. Agrega horas para seguir."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas horas do mês acabaram. Adicione horas para continuar."
+          }
+        }
+      }
+    },
+    "Your chats stay on this iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus chats se quedan en este iPhone"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas conversas ficam neste iPhone"
+          }
+        }
+      }
+    },
+    "Your chats stay on your iPhone on every plan.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus chats se quedan en tu iPhone en todos los planes."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas conversas ficam no seu iPhone em todos os planos."
+          }
+        }
+      }
+    },
+    "Your computer is thinking…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu computadora está pensando…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu computador está pensando…"
+          }
+        }
+      }
+    },
+    "Your copy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu copia"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua cópia"
+          }
+        }
+      }
+    },
+    "Your devices": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus dispositivos"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seus aparelhos"
+          }
+        }
+      }
+    },
+    "Your own computer answers. Sealed end to end; the cloud only passes it along.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Responde tu propia computadora. Cifrado de extremo a extremo; la nube solo lo pasa."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu próprio computador responde. Criptografado de ponta a ponta; a nuvem só repassa."
+          }
+        }
+      }
+    },
+    "Your own computer made this answer with its local AI. The question and answer crossed the internet sealed end to end; Gente Cloud only passed the sealed box along.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu propia computadora hizo esta respuesta con su IA local. La pregunta y la respuesta viajaron selladas de extremo a extremo; Gente Cloud solo pasó la caja sellada."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu próprio computador fez esta resposta com a IA local. A pergunta e a resposta viajaram lacradas de ponta a ponta; o Gente Cloud só repassou a caixa lacrada."
+          }
+        }
+      }
+    },
+    "Your private AI that gets things done.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu IA privada que hace las cosas."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua IA privada que resolve as coisas."
+          }
+        }
+      }
+    },
+    "fal.ai: pictures you ask for.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fal.ai: imágenes que pidas."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fal.ai: imagens que você pedir."
+          }
+        }
+      }
+    },
+    "Source %lld": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuente %lld"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fonte %lld"
+          }
+        }
+      }
+    },
+    "%lld chats, %lld messages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld chats, %lld mensajes"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld conversas, %lld mensagens"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

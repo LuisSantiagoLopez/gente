@@ -1,0 +1,140 @@
+{
+  "appPolicies": {
+    "eula": "",
+    "policies": [
+      {
+        "locale": "en_US",
+        "policyText": "",
+        "policyURL": ""
+      }
+    ]
+  },
+  "identifier": "6E1D5C2A",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "5.99",
+      "familyShareable": false,
+      "internalID": "6745000001",
+      "localizations": [
+        {
+          "description": "8 more online hours for Gente's cloud.",
+          "displayName": "8 hours",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "gente_hours_8",
+      "referenceName": "Hours pack 8",
+      "type": "Consumable"
+    }
+  ],
+  "settings": {
+    "_applicationInternalID": "6745000000",
+    "_developerTeamID": "",
+    "_failTransactionsEnabled": false,
+    "_locale": "en_US",
+    "_storefront": "USA",
+    "_storeKitErrors": []
+  },
+  "subscriptionGroups": [
+    {
+      "id": "21580001",
+      "localizations": [],
+      "name": "Gente plans",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "239.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "3230440409",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "430 online hours a month.",
+              "displayName": "Max Plus",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "gente_max_plus_month",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Max Plus monthly",
+          "subscriptionGroupID": "21580001",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "119.99",
+          "familyShareable": false,
+          "groupNumber": 2,
+          "internalID": "1588507014",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "215 online hours a month.",
+              "displayName": "Max",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "gente_max_month",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Max monthly",
+          "subscriptionGroupID": "21580001",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "244.99",
+          "familyShareable": false,
+          "groupNumber": 3,
+          "internalID": "1494342700",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "37 online hours a month, billed yearly.",
+              "displayName": "Pro (yearly)",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "gente_pro_year",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Pro yearly",
+          "subscriptionGroupID": "21580001",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "23.99",
+          "familyShareable": false,
+          "groupNumber": 3,
+          "internalID": "2065539137",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "37 online hours a month.",
+              "displayName": "Pro",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "gente_pro_month",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Pro monthly",
+          "subscriptionGroupID": "21580001",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 4,
+    "minor": 0
+  }
+}

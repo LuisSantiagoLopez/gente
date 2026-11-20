@@ -1,0 +1,98 @@
+name: Gente
+options:
+  bundleIdPrefix: com.deskhead
+  deploymentTarget:
+    iOS: "18.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    # Set Santi's Team ID here (or in Xcode > Signing) once the Apple Developer account exists.
+    DEVELOPMENT_TEAM: ""
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+targets:
+  Gente:
+    type: application
+    platform: iOS
+    sources:
+      - path: Gente
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.deskhead.gente
+        PRODUCT_NAME: Gente
+        INFOPLIST_FILE: Gente/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Gente/Resources/Gente.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+    dependencies:
+      - target: GenteWidgets
+        embed: true
+      - sdk: StoreKit.framework
+      - sdk: ActivityKit.framework
+      - sdk: WidgetKit.framework
+  GenteWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: GenteWidgets
+      - path: Gente/Live/GenteActivityAttributes.swift
+      - path: Gente/Design/Theme.swift
+      - path: Gente/Design/GenteMark.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.deskhead.gente.widgets
+        INFOPLIST_FILE: GenteWidgets/Info.plist
+        TARGETED_DEVICE_FAMILY: "1"
+        SKIP_INSTALL: YES
+  GenteTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: GenteTests
+      - path: Gente/Resources/Gente.storekit
+        buildPhase: resources
+    dependencies:
+      - target: Gente
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Gente.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Gente
+  GenteUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [GenteUITests]
+    dependencies:
+      - target: Gente
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Gente
+schemes:
+  Gente:
+    build:
+      targets:
+        Gente: all
+        GenteTests: [test]
+        GenteUITests: [test]
+    run:
+      config: Debug
+      storeKitConfiguration: Gente/Resources/Gente.storekit
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - GenteTests
+        - GenteUITests
+    archive:
+      config: Release
