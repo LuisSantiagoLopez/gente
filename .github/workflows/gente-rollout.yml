@@ -1,0 +1,49 @@
+name: gente-rollout
+# Gente self-healing, step 7: every hour, compare the new version's crash-free rate and setup
+# success with the version before it. Healthy and long enough at this stage: 5% → 25% → 100%.
+# Worse: roll back the feed at once and revert the fix on canary, which ships a newer, good build
+# through the same gates.
+on:
+  schedule:
+    - cron: "41 * * * *"
+  # Schedules only run from the default branch; until these files are there, a push to canary runs it.
+  push:
+    branches: [canary]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: gente-rollout
+jobs:
+  rollout:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: canary
+          fetch-depth: 20
+          token: ${{ secrets.SELF_HEAL_TOKEN || github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - id: decide
+        name: Read metrics and move the rollout
+        env:
+          GENTE_SELFHEAL_URL: ${{ vars.GENTE_SELFHEAL_URL }}
+          SELF_HEAL_CLOUD_TOKEN: ${{ secrets.SELF_HEAL_CLOUD_TOKEN }}
+          GENTE_UPDATE_URL: ${{ vars.GENTE_UPDATE_URL }}
+        run: |
+          set +e
+          pnpm exec tsx scripts/self-heal/cli.ts rollout --feed cloud --apply
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          [ "$code" = "0" ] || [ "$code" = "3" ]
+      - name: Rolled back, so revert the last fix on canary (it rebuilds through every gate)
+        if: steps.decide.outputs.code == '3'
+        run: |
+          git config user.name "gente-self-heal"
+          git config user.email "self-heal@users.noreply.github.com"
+          git revert --no-edit HEAD
+          git push origin canary

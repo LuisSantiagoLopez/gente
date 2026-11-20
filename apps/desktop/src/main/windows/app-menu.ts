@@ -6,6 +6,7 @@ import { app, dialog, Menu } from "electron";
 import { desktop } from "../desktop-state.js";
 import { desktopLocale, t } from "../i18n.js";
 import { showSetupWindow } from "../setup/setup-window.js";
+import { openSupportWindow } from "../support/support-window.js";
 import type { createLocalComputerChoice } from "../this-computer/local-settings.js";
 import { quitAndStopBotsItem } from "../this-computer/stop-local-stack.js";
 import { updaterSupport } from "../updates/auto-update.js";
@@ -182,7 +183,14 @@ export function applicationMenuInstaller({
     const helpMenu: Electron.MenuItemConstructorOptions = {
       label: t("Help"),
       role: "help",
-      submenu: [command(t("Keyboard Shortcuts"), "CmdOrCtrl+/", "shortcuts")],
+      submenu: [
+        {
+          label: t("Gente Support…"),
+          accelerator: "CmdOrCtrl+Shift+/",
+          click: () => openSupportWindow(),
+        },
+        command(t("Keyboard Shortcuts"), "CmdOrCtrl+/", "shortcuts"),
+      ],
     };
     // Electron's own Edit menu, plus Search. Electron names role items in English, so each one
     // gets its label to translate it.

@@ -267,4 +267,5 @@ export const JA_MESSAGES: Record<string, string> = {
     "あなたのAIはあなたのコンピュータの中にあります。チャットが外に出ることはありません。",
   "Sign In to Gente…": "Gente にサインイン…",
   "Sign Out of Gente": "Gente からサインアウト",
+  "Gente Support…": "Gente サポート…",
 };

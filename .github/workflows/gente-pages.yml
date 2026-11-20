@@ -1,0 +1,49 @@
+name: gente-pages
+# Publishes Gente's help site (docs/gente/help) and the self-healing status page to GitHub Pages:
+#   https://<owner>.github.io/gente/help/        help in English, Spanish and Portuguese
+#   https://<owner>.github.io/gente/self-heal/   the pipeline's latest status
+on:
+  push:
+    branches: [canary]
+  workflow_run:
+    workflows: [gente-self-heal]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+concurrency:
+  group: gente-pages
+jobs:
+  pages:
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: canary
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - name: Help site
+        run: pnpm exec tsx scripts/gente-help-site.ts site/help --base "/${{ github.event.repository.name }}/help"
+      - name: Latest self-heal status (if a run has made one)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p site/self-heal
+          run=$(gh run list --workflow gente-self-heal.yml --json databaseId,conclusion -q '[.[] | select(.conclusion != "")][0].databaseId' || true)
+          if [ -n "$run" ]; then gh run download "$run" -n self-heal-status -D site/self-heal || true; fi
+          [ -f site/self-heal/index.html ] || echo '<!doctype html><meta charset="utf-8"><title>Gente self-healing</title><p>No self-heal run yet.</p>' > site/self-heal/index.html
+          printf '<!doctype html><meta charset="utf-8"><title>Gente</title><meta http-equiv="refresh" content="0; url=help/">' > site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -272,4 +272,5 @@ export const DE_MESSAGES: Record<string, string> = {
     "Deine KI lebt auf deinem Computer. Deine Chats verlassen ihn nie.",
   "Sign In to Gente…": "Bei Gente anmelden…",
   "Sign Out of Gente": "Von Gente abmelden",
+  "Gente Support…": "Gente-Hilfe…",
 };

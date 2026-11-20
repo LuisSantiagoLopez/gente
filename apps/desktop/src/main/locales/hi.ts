@@ -261,4 +261,5 @@ export const HI_MESSAGES: Record<string, string> = {
     "आपका AI आपके कंप्यूटर पर रहता है। आपकी चैट कभी बाहर नहीं जातीं।",
   "Sign In to Gente…": "Gente में साइन इन करें…",
   "Sign Out of Gente": "Gente से साइन आउट करें",
+  "Gente Support…": "Gente सहायता…",
 };

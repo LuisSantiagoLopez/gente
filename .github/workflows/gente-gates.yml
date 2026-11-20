@@ -1,0 +1,100 @@
+name: gente-gates
+# Gente self-healing, step 5: every fix for the canary branch passes every gate, on real runners,
+# before it can merge. A fix PR labeled "self-heal" merges by itself only when all of them pass.
+# Nothing here can be skipped: the merge job needs every gate job, and a skipped job is not a pass.
+on:
+  pull_request:
+    branches: [canary]
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: gente-gates-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  full-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - name: Desktop and self-healing tests
+        run: pnpm exec vitest run apps/desktop/src scripts/self-heal
+      - name: Repo checks
+        run: pnpm checks
+      - name: Desktop typecheck
+        run: pnpm --filter @rakazo/desktop exec tsc --noEmit -p tsconfig.json
+
+  chaos:
+    strategy:
+      matrix:
+        os: [macos-15, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - name: Chaos subset (five real faults against the real health checks)
+        run: pnpm exec tsx scripts/self-heal/chaos.ts --json chaos-${{ matrix.os }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chaos-${{ matrix.os }}
+          path: chaos-${{ matrix.os }}.json
+
+  smoke-windows:
+    uses: ./.github/workflows/gente-windows.yml
+
+  smoke-mac:
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
+          mkdir -p apps/desktop/build && cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+      - name: Packaged app (unsigned folder build)
+        working-directory: apps/desktop
+        run: npx electron-builder --mac dir --arm64 --publish never -c.mac.identity=null
+      - name: Stand-in model server on 11434
+        run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
+      - name: First run, as a person sees it
+        run: node apps/desktop/e2e/gente-first-run-visible.mjs apps/desktop/out/mac-arm64/Gente.app/Contents/MacOS/Gente "$RUNNER_TEMP/first-run"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gente-mac-smoke
+          path: ${{ runner.temp }}/first-run
+
+  merge-self-heal:
+    # Runs only when every gate above passed. Fix PRs from the pipeline carry the "self-heal" label.
+    needs: [full-tests, chaos, smoke-windows, smoke-mac]
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'self-heal')
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Merge into canary (squash; the canary release workflow takes it from here)
+        env:
+          GH_TOKEN: ${{ secrets.SELF_HEAL_TOKEN || github.token }}
+        run: gh pr merge "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --squash --delete-branch

@@ -1,0 +1,124 @@
+name: gente-self-heal
+# Gente self-healing, steps 1 to 4: read the opt-in error reports, group them by signature, and
+# for each new group have an agent reproduce it on the matching OS (a failing test), fix it, and
+# open a pull request to the canary branch. gente-gates.yml takes it from there.
+#
+# Needs (repository settings):
+#   vars.GENTE_SELFHEAL_URL, secrets.SELF_HEAL_CLOUD_TOKEN  Gente Cloud's self-heal service
+#   secrets.SELF_HEAL_TOKEN   optional: a token that may open PRs that start other workflows
+#                             (falls back to the workflow's own token)
+#   vars.SELF_HEAL_AGENT      the repair agent command, reading its prompt on stdin, and
+#   vars.SELF_HEAL_AGENT_SETUP  its install command, plus its key (secrets.ANTHROPIC_API_KEY).
+#   Without the agent the run stops at an issue labeled blocked-on-owner.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  # Schedules only run from the default branch; until these files are there, a push to canary runs it.
+  push:
+    branches: [canary]
+  workflow_dispatch:
+    inputs:
+      since:
+        description: "Read reports newer than this (ISO date)"
+        required: false
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+concurrency:
+  group: gente-self-heal
+jobs:
+  intake:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.group.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: canary
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - id: group
+        name: Group reports by signature (skip groups that already have an open fix)
+        env:
+          GENTE_SELFHEAL_URL: ${{ vars.GENTE_SELFHEAL_URL }}
+          SELF_HEAL_CLOUD_TOKEN: ${{ secrets.SELF_HEAL_CLOUD_TOKEN }}
+          GH_TOKEN: ${{ secrets.SELF_HEAL_TOKEN || github.token }}
+        run: |
+          since="${{ inputs.since }}"; since="${since:-$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)}"
+          matrix=$(pnpm exec tsx scripts/self-heal/cli.ts intake --since "$since" --out clusters.json)
+          open=$(gh pr list --repo "$GITHUB_REPOSITORY" --label self-heal --state open --json headRefName -q '.[].headRefName' | tr '\n' ' ')
+          matrix=$(node -e 'const m=JSON.parse(process.argv[1]);const open=process.argv[2];m.include=m.include.filter(j=>!open.includes(j.signature));console.log(JSON.stringify(m))' "$matrix" "$open")
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clusters
+          path: clusters.json
+
+  repair:
+    needs: intake
+    if: fromJSON(needs.intake.outputs.matrix).include[0] != null
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.intake.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: canary
+          token: ${{ secrets.SELF_HEAL_TOKEN || github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: clusters
+      - name: Install the repair agent
+        if: vars.SELF_HEAL_AGENT_SETUP != ''
+        run: ${{ vars.SELF_HEAL_AGENT_SETUP }}
+      - name: Reproduce (failing test), fix, open the PR (or an issue while the agent is blocked on owner)
+        env:
+          SELF_HEAL_AGENT: ${{ vars.SELF_HEAL_AGENT }}
+          GH_TOKEN: ${{ secrets.SELF_HEAL_TOKEN || github.token }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          git config user.name "gente-self-heal"
+          git config user.email "self-heal@users.noreply.github.com"
+          pnpm exec tsx scripts/self-heal/cli.ts repair --clusters clusters.json --signature "${{ matrix.signature }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: repair-${{ matrix.signature }}-${{ matrix.runner }}
+          path: repair-*.json
+
+  status-page:
+    # gente-pages.yml publishes this page next to the help site.
+    needs: [intake, repair]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          path: records
+          merge-multiple: true
+      - run: mkdir -p status && pnpm exec tsx scripts/self-heal/cli.ts status --records records --out status/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: self-heal-status
+          path: status

@@ -268,4 +268,5 @@ export const RU_MESSAGES: Record<string, string> = {
     "Ваш ИИ живёт на вашем компьютере. Ваши чаты никогда его не покидают.",
   "Sign In to Gente…": "Войти в Gente…",
   "Sign Out of Gente": "Выйти из Gente",
+  "Gente Support…": "Поддержка Gente…",
 };
