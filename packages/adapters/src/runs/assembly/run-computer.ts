@@ -14,6 +14,7 @@ export function lazyRunComputer(start: () => Promise<ComputerRef>, onFailure?: (
   let failure: unknown;
   return {
     get(): Promise<ComputerRef> {
+      if (failed) return Promise.reject(failure);
       started ??= start().then(
         (computer) => {
           ready = computer;
@@ -40,8 +41,6 @@ export function lazyRunComputer(start: () => Promise<ComputerRef>, onFailure?: (
       if (!failed) {
         failed = true;
         failure = error;
-        started = Promise.reject(error);
-        started.catch(() => undefined);
         onFailure?.();
       }
       throw failure;
