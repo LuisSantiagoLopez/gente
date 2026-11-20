@@ -56,7 +56,9 @@ import {
 const ACTIVE_PHASES = new Set<DesktopLocalStackPhase>(["starting", "waiting-healthy", "ready"]);
 export const NATIVE_PORTS_FILE = ".native-ports";
 /** The database VM, its network and its volume; computers are `rakazo-<uuid>` with a bot label. */
-export const DATABASE_CONTAINER = "rakazo-postgres";
+// Gente: smoke tests of a packaged build run beside a person's real Gente, so they name their
+// own database machine. Never set outside tests.
+export const DATABASE_CONTAINER = process.env.GENTE_TEST_DB_CONTAINER?.trim() || "rakazo-postgres";
 /** The image and digest Compose runs, so both stacks run the same database. */
 export const POSTGRES_IMAGE =
   "postgres:16@sha256:e17e86066e5ef83e0952a9347f5c792b7ece00972e2aa787a6986f471b3dd3d5";
@@ -1132,6 +1134,21 @@ export class NativeStackController extends StackLifecycle {
       WEB_ORIGIN: this.currentWebUrl,
       API_URL: this.currentWebUrl,
       ...fixed,
+      // Gente's promise: no analytics, error reports or tracing leave this computer. Pinned last
+      // so no `.env` line can turn them on.
+      ...NO_TELEMETRY,
     };
   }
 }
+
+/** Every telemetry switch the server reads, held off. */
+export const NO_TELEMETRY: Record<string, string> = {
+  ANALYTICS_PROVIDER: "none",
+  SENTRY_DSN: "",
+  SENTRY_BROWSER_DSN: "",
+  AXIOM_TOKEN: "",
+  AXIOM_DATASET: "",
+  OTEL_EXPORTER_OTLP_ENDPOINT: "",
+  OTEL_CAPTURE_CONTENT: "false",
+  CRISP_WEBSITE_ID: "",
+};

@@ -91,10 +91,6 @@
         {
           "from": "build/server-bundle.json",
           "to": "server-bundle.json"
-        },
-        {
-          "from": "build/server-dir/rakazo-server",
-          "to": "rakazo-server"
         }
       ],
       "target": [
@@ -161,7 +157,8 @@
         "repo": "gente"
       }
     ],
-    "copyright": "Copyright 2026 DeskHead Inc. Based on Rakazo by Elie Steinbock (Apache-2.0)."
+    "copyright": "Copyright 2026 DeskHead Inc. Based on Rakazo by Elie Steinbock (Apache-2.0).",
+    "afterPack": "scripts/gente-after-pack.cjs"
   },
   "description": "Gente: the AI of the people. Private AI coworkers that run on your computer. Based on Rakazo by Elie Steinbock (Apache-2.0)."
 }

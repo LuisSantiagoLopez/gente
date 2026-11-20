@@ -1,9 +1,10 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { MCP_OAUTH_REDIRECT_MISMATCH } from "@rakazo/contracts";
 
 /** Only reviewed, public documentation links belong here; never use URLs from an error body. */
 const ERROR_GUIDES: Readonly<Record<string, string>> = {
   [MCP_OAUTH_REDIRECT_MISMATCH]:
-    "https://rakazo.com/docs/troubleshooting/#mcp-oauth-redirect-mismatch",
+    "https://github.com/LuisSantiagoLopez/gente/blob/main/docs/help/troubleshooting.md#mcp-oauth-redirect-mismatch",
 };
 
 /** A stable error code opts into troubleshooting without depending on message wording. */

@@ -40,11 +40,10 @@ export type ServiceCall = {
 /** The offline web, except that the docs pages the Rakazo skill links serve this checkout's docs. */
 export function evalWeb(): FakeWebProvider {
   const web = new FakeWebProvider();
-  const docs = new URL("../../../../docs/", import.meta.url);
+  // Gente: help pages live in this checkout's docs/help.
+  const docs = new URL("../../../../docs/help/", import.meta.url);
   for (const url of RAKAZO_DOCS_URLS) {
-    // The site serves its first page, getting-started, at /docs.md.
-    const slug =
-      new URL(url).pathname.replace(/^\/docs\/?/, "").replace(/\.md$/, "") || "getting-started";
+    const slug = new URL(url).pathname.split("/").pop()!.replace(/\.md$/, "");
     web.pages[url] = readFileSync(new URL(`${slug}.md`, docs), "utf8");
   }
   return web;

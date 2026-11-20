@@ -20,7 +20,8 @@ function windowChrome(platform: NodeJS.Platform) {
     autoHideMenuBar: true,
     frame: mac || platform === "win32",
     titleBarStyle: mac ? ("hiddenInset" as const) : undefined,
-    trafficLightPosition: mac ? { x: 16, y: 16 } : undefined,
+    // Gente: centers the buttons on the sidebar's first row (its 32 px icons start 14 px down).
+    trafficLightPosition: mac ? { x: 16, y: 23 } : undefined,
   };
 }
 

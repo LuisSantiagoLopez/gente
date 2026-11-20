@@ -1,41 +1,41 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { buildSkillMd } from "@rakazo/core";
 
+// Gente hosts its own help pages in its public repository (docs/help). Self-hosting and plugin
+// building are left out: they are not part of the Gente app.
+export const GENTE_DOCS_BASE = "https://raw.githubusercontent.com/LuisSantiagoLopez/gente/main/docs/help";
 const RAKAZO_DOCS: ReadonlyArray<readonly [topics: string, url: string]> = [
-  ["Getting started, first bot, what Gente does", "https://rakazo.com/docs.md"],
+  ["Getting started, first bot, what Gente does", `${GENTE_DOCS_BASE}/getting-started.md`],
   [
     "Creating bots, chatting, bot settings, sidebar, search",
-    "https://rakazo.com/docs/bots-and-chats.md",
+    `${GENTE_DOCS_BASE}/bots-and-chats.md`,
   ],
   [
     "Importing an OpenClaw, Hermes, Grok Bot or ChatGPT agent",
-    "https://rakazo.com/docs/import-an-agent.md",
+    `${GENTE_DOCS_BASE}/import-an-agent.md`,
   ],
   [
     "Connecting apps and integrations (Gmail, GitHub, MCP tools)",
-    "https://rakazo.com/docs/integrations.md",
+    `${GENTE_DOCS_BASE}/integrations.md`,
   ],
-  ["Slack, Telegram, WhatsApp and other chat apps", "https://rakazo.com/docs/messaging-apps.md"],
-  ["Routines, schedules and triggers", "https://rakazo.com/docs/routines.md"],
-  ["The bot's computer, files, using your own computer", "https://rakazo.com/docs/computer.md"],
-  ["Memory", "https://rakazo.com/docs/memory.md"],
-  ["Skills", "https://rakazo.com/docs/skills.md"],
-  ["Approvals, Allow and Block lists", "https://rakazo.com/docs/approvals.md"],
-  ["Group chats, bots working together, subagents", "https://rakazo.com/docs/groups.md"],
-  ["Voice, calls, spoken replies", "https://rakazo.com/docs/voice-and-calls.md"],
-  ["Models, providers, API keys, fallbacks, usage", "https://rakazo.com/docs/models.md"],
-  ["Spaces", "https://rakazo.com/docs/spaces.md"],
-  ["Saved credentials and website logins", "https://rakazo.com/docs/bot-secrets.md"],
+  ["Slack, Telegram, WhatsApp and other chat apps", `${GENTE_DOCS_BASE}/messaging-apps.md`],
+  ["Routines, schedules and triggers", `${GENTE_DOCS_BASE}/routines.md`],
+  ["The bot's computer, files, using your own computer", `${GENTE_DOCS_BASE}/computer.md`],
+  ["Memory", `${GENTE_DOCS_BASE}/memory.md`],
+  ["Privacy: what stays on this computer and what goes out", `${GENTE_DOCS_BASE}/privacy.md`],
+  ["Skills", `${GENTE_DOCS_BASE}/skills.md`],
+  ["Approvals, Allow and Block lists", `${GENTE_DOCS_BASE}/approvals.md`],
+  ["Group chats, bots working together, subagents", `${GENTE_DOCS_BASE}/groups.md`],
+  ["Voice, calls, spoken replies", `${GENTE_DOCS_BASE}/voice-and-calls.md`],
+  ["Models, providers, API keys, fallbacks, usage", `${GENTE_DOCS_BASE}/models.md`],
+  ["Spaces", `${GENTE_DOCS_BASE}/spaces.md`],
+  ["Saved credentials and website logins", `${GENTE_DOCS_BASE}/bot-secrets.md`],
   [
     "Account, preferences, data export, credits, plans, billing",
-    "https://rakazo.com/docs/account.md",
+    `${GENTE_DOCS_BASE}/account.md`,
   ],
-  ["Desktop app", "https://rakazo.com/docs/desktop-app.md"],
-  ["Mobile app", "https://rakazo.com/docs/mobile-app.md"],
-  ["Bots that create and manage bots", "https://rakazo.com/docs/fleet-management.md"],
-  ["Building a plugin", "https://rakazo.com/docs/build-a-plugin.md"],
-  ["Self-hosting", "https://rakazo.com/docs/self-host.md"],
-  ["Self-hosted server configuration", "https://rakazo.com/docs/self-host-configuration.md"],
+  ["Desktop app", `${GENTE_DOCS_BASE}/desktop-app.md`],
+  ["Bots that create and manage bots", `${GENTE_DOCS_BASE}/fleet-management.md`],
 ];
 
 /** Fixed URLs, so fetching one can't carry anything out of a run. */
@@ -69,7 +69,7 @@ const SKILLS: Array<{ name: string; description: string; body: string }> = [
 
 ${RAKAZO_DOCS.map(([topics, url]) => `- ${topics}: ${url}`).join("\n")}
 
-Rakazo is open source; its code is at github.com/elie222/rakazo.`,
+Gente is open source; its code is at github.com/LuisSantiagoLopez/gente. It is based on Rakazo by Elie Steinbock (Apache-2.0).`,
   },
 ];
 

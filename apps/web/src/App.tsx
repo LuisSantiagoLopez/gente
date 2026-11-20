@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useTimeout } from "@rakazo/chat-ui/hooks";
 import type { LinkFavicons } from "@rakazo/chat-ui/web";
@@ -98,12 +99,18 @@ function SsoCallbackPage() {
 const linkFavicons: LinkFavicons = {
   load: (origin) => rpc.links.favicon({ origin }),
 };
+// Gente: fetching an icon tells the site someone has its link in a chat, so link icons follow
+// the "web images" choice, which is off until the person turns it on. Modified from Rakazo.
+const noLinkFavicons: LinkFavicons = {
+  endpoint: "off",
+  load: () => Promise.resolve({ icon: null }),
+};
 
 export function App() {
   const loadRemoteImages = remoteImagesPreference.use();
   return (
     <RemoteImagesContext.Provider value={loadRemoteImages}>
-      <LinkFaviconsContext.Provider value={linkFavicons}>
+      <LinkFaviconsContext.Provider value={loadRemoteImages ? linkFavicons : noLinkFavicons}>
         <ErrorBoundary fallback={<AppFailed />}>
           {window.location.pathname === SSO_CALLBACK_PATH ? (
             <SsoCallbackPage />

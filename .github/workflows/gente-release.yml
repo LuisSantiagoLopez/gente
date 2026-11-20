@@ -1,0 +1,113 @@
+# Builds signed release installers for Gente. Ready to run as soon as the certificates exist.
+#
+# Repository secrets it reads (any missing one stops the job before building, with its name):
+#   macOS signing:   MAC_CSC_LINK (base64 .p12 of the "Developer ID Application" certificate),
+#                    MAC_CSC_KEY_PASSWORD
+#   macOS notarize:  APPLE_API_KEY (base64 .p8), APPLE_API_KEY_ID, APPLE_API_ISSUER
+#   Windows signing: WIN_CSC_LINK (base64 .pfx of the code-signing certificate), WIN_CSC_KEY_PASSWORD
+#
+# Output: a draft GitHub Release with the notarized .dmg/.zip, the signed NSIS .exe and the
+# electron-updater feeds (latest-mac.yml, latest.yml). Nothing is published until a person
+# presses Publish on the draft.
+name: gente-release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, for example 0.3.0"
+        required: true
+permissions:
+  contents: write
+jobs:
+  mac:
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Signing secrets are present
+        env:
+          MAC_CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          MAC_CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+        run: node scripts/gente-check-signing.mjs mac
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle, unpacked where the app build picks it up
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${{ inputs.version }}"
+          mkdir -p apps/desktop/build/server-dir
+          cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+          tar -xJf "$RUNNER_TEMP"/bundle/rakazo-server-darwin-arm64-*.tar.xz -C apps/desktop/build/server-dir
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+      - name: Signed, notarized DMG and zip (draft release)
+        working-directory: apps/desktop
+        env:
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "${{ secrets.APPLE_API_KEY }}" | base64 --decode > "$RUNNER_TEMP/AuthKey.p8"
+          export APPLE_API_KEY="$RUNNER_TEMP/AuthKey.p8"
+          npm version --no-git-tag-version --allow-same-version "${{ inputs.version }}"
+          npx electron-builder --mac dmg zip --arm64 --publish always -c.mac.notarize=true -c.publish.releaseType=draft
+      - name: The shipped app is signed, notarized and stapled
+        working-directory: apps/desktop
+        run: |
+          app=$(ls -d out/mac-arm64/*.app | head -1)
+          codesign --verify --deep --strict --verbose=2 "$app"
+          spctl --assess --type execute --verbose "$app"
+          xcrun stapler validate "$app"
+  windows:
+    runs-on: windows-2025
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Signing secrets are present
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+        run: node scripts/gente-check-signing.mjs windows
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle (with embedded Postgres)
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${{ inputs.version }}"
+          node scripts/burrow-windows-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${{ inputs.version }}"
+          mkdir -p apps/desktop/build && cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+      - name: Signed NSIS installer (draft release)
+        working-directory: apps/desktop
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm version --no-git-tag-version --allow-same-version "${{ inputs.version }}"
+          npx electron-builder --win nsis --x64 --publish always -c.publish.releaseType=draft
+      - name: The installer is signed
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem apps/desktop/out/*.exe | Select-Object -First 1
+          $sig = Get-AuthenticodeSignature $exe.FullName
+          if ($sig.Status -ne "Valid") { throw "Installer signature: $($sig.Status)" }

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Readability } from "@mozilla/readability";
 import type {
   AdapterContext,
@@ -70,7 +71,7 @@ export class KeylessHttpWebProvider implements WebProvider {
     this.fetchTimeoutMs = options.fetchTimeoutMs ?? 15_000;
     this.maxBufferBytes = options.maxBufferBytes ?? 5 * 1024 * 1024;
     this.userAgent =
-      options.userAgent ?? "Rakazo/0.1 (+https://github.com/elie222/rakazo; web tools)";
+      options.userAgent ?? "Gente/0.2 (web tools)";
   }
 
   describe() {

@@ -1,8 +1,10 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import * as z from "zod";
 import { SettingsScopeSchema } from "../settings-scope.js";
 
 export const AI_DISCLOSURE_VERSION = "2026-11-12";
-export const AI_PRIVACY_URL = "https://rakazo.com/privacy/";
+// Gente: its own privacy page.
+export const AI_PRIVACY_URL = "https://github.com/LuisSantiagoLopez/gente/blob/main/docs/help/privacy.md";
 export const AiDataUseSchema = z.enum(["model", "voice", "memory"]);
 export type AiDataUse = z.infer<typeof AiDataUseSchema>;
 export const AiConsentQuerySchema = z

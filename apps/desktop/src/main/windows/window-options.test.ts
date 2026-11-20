@@ -14,7 +14,7 @@ describe("desktop window chrome", () => {
     const opts = browserWindowOptions("darwin", laptop);
     expect(opts.frame).toBe(true);
     expect(opts.titleBarStyle).toBe("hiddenInset");
-    expect(opts.trafficLightPosition).toEqual({ x: 16, y: 16 });
+    expect(opts.trafficLightPosition).toEqual({ x: 16, y: 23 });
   });
 
   it("uses the native Windows frame in the app and setup windows", () => {

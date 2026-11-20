@@ -391,8 +391,10 @@ export class Brain {
       return;
     }
     if (!(await ollamaRunning())) {
+      // Beginners never see an extra step: the model runner installs itself silently, and an
+      // existing install is reused. `installOllama: false` only exists for tests.
       if (!ollamaInstalled()) {
-        if (!options.installOllama) {
+        if (options.installOllama === false) {
           this.set({ phase: "ollama-missing" });
           return;
         }
@@ -657,15 +659,15 @@ async function downloadTo(url: string, file: string, onBytes: (done: number, tot
 /** Calm words for the few things a person may need to do; details go to logs/setup.log. */
 export const CALM = {
   offline:
-    "Gente needs the internet to download Swift. It will pick up where it left off. Press Try again when you're back online.",
-  install: "Gente couldn't set up Ollama just now. Press Try again in a moment.",
-  ollama: "Ollama is taking a moment to start. Press Try again.",
+    "Gente needs the internet to finish getting ready. It will pick up where it left off. Press Try again when you're back online.",
+  install: "Gente couldn't finish getting ready just now. Press Try again in a moment.",
+  ollama: "Gente is taking a moment to start. Press Try again.",
   memory:
-    "This computer is short on free memory for Swift right now. Close a few apps, then press Try again.",
+    "This computer is short on free memory right now. Close a few apps, then press Try again.",
   smallComputer:
     "Gente needs a computer with at least 16 GB of memory. This one has less, so Gente can't run its model here.",
   space: (gb: number) =>
-    `Swift needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
+    `Gente needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
 } as const;
 /** 16 GB machines report a little less than 16 GiB; allow for that. */
 export const MIN_MEMORY_BYTES = 15 * 1024 ** 3;

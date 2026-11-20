@@ -108,7 +108,7 @@ export function PeerMessagesOverlay({
         <div
           className={`app-drag grid items-center gap-4 border-b border-sidebar-border px-[18px] py-3.5 ${
             desktop
-              ? "grid-cols-[72px_minmax(0,1fr)_72px]"
+              ? "grid-cols-[80px_minmax(0,1fr)_80px]"
               : "grid-cols-[1.75rem_minmax(0,1fr)_1.75rem]"
           }`}
         >
