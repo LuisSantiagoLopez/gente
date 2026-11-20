@@ -121,7 +121,18 @@ try {
     if (!page) throw new Error("app window never opened");
     mark("workspace-ready");
     log("app window:", page.url());
-    await page.waitForSelector("input[name=email]", { timeout: 120_000 });
+    // The app window can be replaced while it settles; use whichever app window shows the form.
+    const appWindowWith = async (selector, ms) => {
+      const end = Date.now() + ms;
+      while (Date.now() < end) {
+        for (const w of app.windows().filter((x) => !x.isClosed() && x.url().startsWith("http"))) {
+          if (await w.isVisible(selector).catch(() => false)) return w;
+        }
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+      throw new Error(`no app window showed ${selector}`);
+    };
+    page = await appWindowWith("input[name=email]", 120_000);
     await shot(page, "03-signup.png");
     await page.fill("input[name=name]", "Gente Test");
     await page.fill("input[name=email]", "smoke@gente.local");

@@ -66,43 +66,6 @@ function bootOnce(exe, entry, cwd) {
   });
 }
 
-/** Copies a folder without its links and writes gente-links.json (link → target, server-relative). */
-function copyWithoutLinks(source, target) {
-  const links = [];
-  const walk = (from, to) => {
-    fs.mkdirSync(to, { recursive: true });
-    for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
-      const a = path.join(from, entry.name);
-      const b = path.join(to, entry.name);
-      if (entry.isSymbolicLink()) {
-        const real = path.resolve(path.dirname(a), fs.readlinkSync(a));
-        if (!real.startsWith(source + path.sep) || !fs.statSync(real).isDirectory())
-          throw new Error(`Server link ${a} does not point to a folder inside the server`);
-        links.push([path.relative(source, a), path.relative(source, real)]);
-      } else if (entry.isDirectory()) walk(a, b);
-      else fs.copyFileSync(a, b);
-    }
-  };
-  walk(source, target);
-  fs.writeFileSync(path.join(target, "gente-links.json"), JSON.stringify(links));
-  console.log(`  • gente server: ${links.length} links listed for the app to restore`);
-}
-
-function readLinks(server) {
-  return JSON.parse(fs.readFileSync(path.join(server, "gente-links.json"), "utf8"));
-}
-
-function linkAll(server) {
-  for (const [link, target] of readLinks(server)) {
-    fs.mkdirSync(path.dirname(path.join(server, link)), { recursive: true });
-    fs.symlinkSync(path.join(server, target), path.join(server, link), "junction");
-  }
-}
-
-function unlinkAll(server) {
-  for (const [link] of readLinks(server)) fs.rmSync(path.join(server, link), { force: true });
-}
-
 exports.default = async function afterPack(context) {
   const mac = context.electronPlatformName === "darwin";
   const windows = context.electronPlatformName === "win32";
@@ -113,14 +76,23 @@ exports.default = async function afterPack(context) {
   const resources = mac
     ? path.join(context.appOutDir, appName, "Contents/Resources")
     : path.join(context.appOutDir, "resources");
-  const server = path.join(resources, "rakazo-server");
+  // Windows: NSIS drops files whose path passes 260 characters, and pnpm's store has many. The
+  // server ships as one file (rakazo-server.pack) that the installer writes out with Node, and
+  // the boot check below runs on a copy unpacked the same way, outside the app folder.
+  let server = path.join(resources, "rakazo-server");
   fs.rmSync(server, { recursive: true, force: true });
-  // Windows installers cannot carry links: copy the server without them and list them in
-  // gente-links.json; the app puts them back as junctions (server-links.ts).
   if (mac) execFileSync("ditto", [source, server]);
-  else copyWithoutLinks(source, server);
+  else {
+    const serverPack = require("./gente-server-pack.cjs");
+    const packFile = path.join(resources, "rakazo-server.pack");
+    const packed = serverPack.pack(source, packFile);
+    fs.copyFileSync(path.join(__dirname, "gente-server-pack.cjs"), path.join(resources, "gente-server-pack.cjs"));
+    console.log(`  • gente server: packed ${packed.files} files and ${packed.links} links`);
+    server = path.join(require("node:os").tmpdir(), `gente-boot-${process.pid}`, "rakazo-server");
+    const unpacked = serverPack.unpack(packFile, server);
+    console.log(`  • gente server: unpacked ${unpacked.files} files for the boot check`);
+  }
 
-  if (windows) linkAll(server);
   const broken = brokenLinks(server);
   if (broken.length > 0)
     throw new Error(`Server has ${broken.length} broken links, first: ${broken.slice(0, 5).join(", ")}`);
@@ -136,8 +108,7 @@ exports.default = async function afterPack(context) {
     if (MISSING.test(out)) throw new Error(`${name} failed to load from inside the app:\n${out.slice(0, 2000)}`);
     console.log(`  • gente boot check: ${name} loads from inside the app`);
   }
-  // The installer must not follow the junctions made for the check.
-  if (windows) unlinkAll(server);
+  if (windows) fs.rmSync(path.dirname(server), { recursive: true, force: true });
 };
 
 exports.brokenLinks = brokenLinks;

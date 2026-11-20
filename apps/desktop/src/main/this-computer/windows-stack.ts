@@ -8,7 +8,7 @@
 // Bots have no computer of their own here (SANDBOX_PROVIDER=none); a person can still let bots
 // use this PC through Settings, as with any server.
 import { spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { DesktopLocalStackPhase } from "@rakazo/contracts";
@@ -18,7 +18,6 @@ import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { telegramSecret } from "../burrow/telegram.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
-import { ensureServerLinks } from "./server-links.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
   allocateLoopbackPort,
@@ -60,6 +59,16 @@ import {
 } from "./native-stack.js";
 
 export const WINDOWS_PORTS_FILE = ".windows-ports";
+
+/** Matches gente-server-pack.cjs: the folder was fully written from this exact pack file. */
+export function serverPackComplete(pack: string, dir: string): boolean {
+  try {
+    const stat = statSync(pack);
+    return readFileSync(path.join(dir, ".complete"), "utf8") === `${stat.size}:${Math.trunc(stat.mtimeMs)}`;
+  } catch {
+    return false;
+  }
+}
 const OWNER = "rakazo";
 const DATABASE = "rakazo";
 const APP_LOGIN = "rakazo_app";
@@ -325,6 +334,7 @@ export class WindowsStackController extends StackLifecycle {
     this.push({ type: "pull-start" });
     let server: { dir: string; manifest: ServerManifest };
     try {
+      await this.writeOutServer(signal);
       server = await (this.deps.installServer ??
         ((d, b) => installWindowsServerBundle(d, b, this.deps.tar)))(
         {
@@ -338,9 +348,6 @@ export class WindowsStackController extends StackLifecycle {
         },
         this.deps.serverBundle,
       );
-      // Windows: put pnpm's links back as junctions (a no-op once they are in place).
-      const linked = ensureServerLinks(server.dir);
-      if (linked > 0) this.push({ type: "output", line: `linked ${linked} server packages` });
     } catch (error) {
       if (signal.aborted) throw error;
       const detail = error instanceof Error ? error.message : String(error);
@@ -540,6 +547,20 @@ export class WindowsStackController extends StackLifecycle {
     }
     if (signal.aborted) throw new Error("aborted");
     throw new StartFailure(servicesFailed(), [...api.tail, ...web.tail].slice(-STACK_OUTPUT_LINES));
+  }
+
+  /** Self-repair: writes the server out from its pack if the installer did not finish that. */
+  private async writeOutServer(signal: AbortSignal) {
+    const { pack, inPlace } = this.deps.serverBundle;
+    if (!pack || !inPlace || serverPackComplete(pack, inPlace)) return;
+    this.push({ type: "output", line: "writing the server out from its pack" });
+    const result = await this.deps.run(
+      this.deps.nodeBinary,
+      [path.join(path.dirname(pack), "gente-server-pack.cjs"), "unpack", pack, inPlace],
+      { cwd: path.dirname(pack), env: this.nodeEnv(), timeoutMs: 30 * 60_000, signal, onLine: (line) => this.push({ type: "output", line }) },
+    );
+    if (result.code !== 0 || !serverPackComplete(pack, inPlace))
+      throw new Error(`Writing the server out failed: ${result.stderr.slice(-500)}`);
   }
 
   private async waitForDatabase(port: number, signal: AbortSignal) {
