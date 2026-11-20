@@ -106,6 +106,9 @@ import { shellDeletesInBulk } from "./shell-deletes.js";
 export type AppliedEffect = Awaited<ReturnType<typeof recordEffect>>;
 
 /** A tool call that passed its approval gate, as tool handlers receive it. */
+/** Tools whose handlers claim their own effect, at the point their side effect starts. */
+const CLAIMED_BY_HANDLER = new Set(["request_secret", "secret_request"]);
+
 export interface ToolCall {
   readonly name: string;
   readonly args: Record<string, unknown>;
@@ -717,6 +720,12 @@ export async function gateToolCall(
   } else if (needsApproval && applied) {
     return { result: await requestApproval(ctx, call, card) };
   } else if (call.bypassApproval && applied) {
+    const early = await call.claimOrReturn("intended");
+    if (early !== undefined) return { result: early, replayed: true };
+  } else if (applied && !CLAIMED_BY_HANDLER.has(name)) {
+    // Gente (modified from Rakazo): an ungated call used to run with its effect still intended,
+    // so when its process died mid-call the resumed turn ran it a second time. Marking it
+    // running first makes a resume report the outcome as unknown instead.
     const early = await call.claimOrReturn("intended");
     if (early !== undefined) return { result: early, replayed: true };
   }
