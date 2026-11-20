@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 /** The creation intro's hidden prompt. It names only the tools this bot still has. */
 export function botIntroPrompt(input: {
   userName: string;
@@ -6,7 +7,10 @@ export function botIntroPrompt(input: {
 }): string {
   const canAsk = !input.disabledBuiltinTools.includes("ask_user");
   const canUpdate = !input.disabledBuiltinTools.includes("update_bot");
-  const byName = input.userName ? " by first name" : "";
+  // Gente: name the first name outright. Small local models copied "by first name" as a literal
+  // "[first name]" placeholder into the greeting.
+  const firstName = input.userName.trim().split(/\s+/)[0] ?? "";
+  const byName = firstName ? ` as ${firstName}` : "";
   const options =
     "two to four short options that fit your name, anything your description or instructions already say, and what you know about them, never a stock list";
   return [
