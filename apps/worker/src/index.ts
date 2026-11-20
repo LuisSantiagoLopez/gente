@@ -481,9 +481,15 @@ async function main() {
 runAsSystem("worker process", main).catch(async (error) => {
   logger.error("worker startup failed", error);
   // Gente: the database driver's own detail (address, code) for a startup failure.
-  const detail = error as { meta?: unknown; cause?: unknown };
-  if (detail?.meta || detail?.cause)
-    console.error("worker startup failed detail:", inspect({ meta: detail.meta, cause: detail.cause }, { depth: 8 }));
+  let target = "";
+  try {
+    const url = new URL(process.env.DATABASE_URL ?? "");
+    target = `${url.hostname}:${url.port}`;
+  } catch {}
+  logger.error("worker startup failed detail", {
+    database: target,
+    detail: inspect(error, { depth: 8, showHidden: true }).slice(0, 4000),
+  });
   await logger.flush({ timeoutMs: 2_000 });
   // jobHost.start retries 53300 without bound above, so a saturated Postgres at
   // that step does not reach here. Other startup failures still exit.
