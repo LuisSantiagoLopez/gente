@@ -5,6 +5,7 @@ name: gente-platforms
 # installer to the draft release (never publishes it).
 on:
   workflow_dispatch:
+  workflow_call:
   push:
     branches: [platforms]
 permissions:
@@ -85,15 +86,6 @@ jobs:
           echo "{\"install\": $(( $(date +%s) - start ))}" > "$RUNNER_TEMP/e2e/install.json"
           echo "APP=$app" >> "$GITHUB_ENV"
           cat "$RUNNER_TEMP/e2e/install.json"
-      - name: Where the main process is after 45 s (diagnostic)
-        continue-on-error: true
-        timeout-minutes: 5
-        run: |
-          node apps/desktop/e2e/main-hang-probe.mjs "$APP" 45 | tee "$RUNNER_TEMP/e2e/main-probe.txt"
-          if [ "${{ matrix.kind }}" = mac ]; then
-            osascript -e 'tell application "System Events" to get value of every static text of every window of (every process whose name is "Gente")' || true
-          fi
-        env: { PROBE_OUT: "${{ runner.temp }}/e2e" }
       - name: Free port 11434 for the stand-in model (stop any Ollama the runner or a launch started)
         run: |
           if [ "${{ matrix.kind }}" = win ]; then
@@ -150,10 +142,11 @@ jobs:
             apps/desktop/out/*.exe
             apps/desktop/out/*.dmg
       - name: Attach the installer to the draft release (never published)
-        if: success()
+        # Only this workflow's own runs; gates that call it (gente-windows) test without attaching.
+        if: success() && github.workflow == 'gente-platforms'
         env: { GH_TOKEN: "${{ github.token }}" }
         run: |
           test "$(gh release view "$DRAFT_TAG" --json isDraft -q .isDraft)" = true
           for f in apps/desktop/out/*.exe apps/desktop/out/*.dmg; do
-            [ -f "$f" ] && gh release upload "$DRAFT_TAG" "$f" --clobber
+            if [ -f "$f" ]; then gh release upload "$DRAFT_TAG" "$f" --clobber; fi
           done

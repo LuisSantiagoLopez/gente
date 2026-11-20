@@ -1,89 +1,12 @@
 name: gente-windows
-# Builds the Windows installer and server bundle on real Windows, then installs the app and runs
-# the onboarding → workspace → chat smoke test against a stand-in model server.
+# Gente self-healing gates call this: the packaged-app smoke test (memory check → setup →
+# sign up → first reply) on real Windows x64/arm64 and macOS arm64/Intel. The steps live in
+# gente-platforms.yml; only that workflow's own runs attach installers to the draft release.
 on:
   workflow_dispatch:
-  # Gente self-healing: the gates run this same packaged-app smoke test on every fix.
   workflow_call:
-  push:
-    branches: [windows-ci]
 permissions:
   contents: write
 jobs:
-  windows:
-    runs-on: windows-2025
-    timeout-minutes: 120
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24.15.0
-      - run: npm i -g pnpm@12.18.0
-      - name: Every download address answers (release gate)
-        run: node scripts/gente-check-downloads.mjs
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm db:generate
-      - run: pnpm --filter @rakazo/web build
-        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
-      - name: Server bundle (with embedded Postgres)
-        run: |
-          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
-          node scripts/burrow-windows-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
-          mkdir -p apps/desktop/build && cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
-        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
-      - run: pnpm --filter @rakazo/desktop build
-      - name: NSIS installer
-        working-directory: apps/desktop
-        run: npx electron-builder --win nsis --x64 --publish never -c.win.verifyUpdateCodeSignature=false
-      - name: Install silently
-        shell: pwsh
-        run: |
-          $exe = Get-ChildItem apps/desktop/out/*.exe | Select-Object -First 1
-          Start-Process -Wait -FilePath $exe.FullName -ArgumentList "/S"
-          Get-ChildItem "$env:LOCALAPPDATA\Programs" | Out-String
-      - name: Seed the verified server bundle (the draft release URL is not public yet)
-        run: |
-          v=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).version)" "$RUNNER_TEMP/bundle/server-bundle.json")
-          dir="$APPDATA/Gente/stack/runtime/server-$v"
-          mkdir -p "$dir" && 7z x -y "-o$dir" "$RUNNER_TEMP"/bundle/burrow-server-win32-x64-*.zip > /dev/null && touch "$dir/.complete"
-      - name: Stand-in model server on 11434
-        run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
-      - name: Diagnose a first launch (60 s, output and data folder)
-        continue-on-error: true
-        run: |
-          mkdir -p "$RUNNER_TEMP/e2e"
-          tasklist | grep -i gente || true
-          exe="$LOCALAPPDATA/Programs/Gente/Gente.exe"
-          (ELECTRON_ENABLE_LOGGING=1 "$exe" --enable-logging > "$RUNNER_TEMP/e2e/first-launch.log" 2>&1 &)
-          sleep 60
-          tasklist | grep -i -E "gente|postgres|ollama|node" > "$RUNNER_TEMP/e2e/processes.txt" || true
-          ls -R "$APPDATA/Gente" 2>/dev/null | head -80 > "$RUNNER_TEMP/e2e/userdata.txt" || true
-          cp -r "$APPDATA/Gente/stack/logs" "$RUNNER_TEMP/e2e/first-launch-stack-logs" 2>/dev/null || true
-          taskkill //F //IM Gente.exe || true
-          sleep 5
-          echo "--- first-launch output"; tail -50 "$RUNNER_TEMP/e2e/first-launch.log" || true
-          echo "--- processes"; cat "$RUNNER_TEMP/e2e/processes.txt" || true
-          echo "--- user data"; cat "$RUNNER_TEMP/e2e/userdata.txt" || true
-          echo "--- app logs"; find "$APPDATA/Gente" "$LOCALAPPDATA/Gente" -name "*.log" 2>/dev/null | while read f; do echo "== $f"; tail -40 "$f"; done
-      - name: Smoke test on real Windows
-        run: |
-          exe=$(ls "$LOCALAPPDATA/Programs/Gente/Gente.exe" 2>/dev/null || ls "$LOCALAPPDATA"/Programs/*/Gente.exe | head -1)
-          node apps/desktop/e2e/burrow-windows-smoke.mjs "$exe" "$RUNNER_TEMP/e2e"
-      - name: Collect logs
-        if: always()
-        run: |
-          mkdir -p "$RUNNER_TEMP/e2e/stack-logs"
-          cp -r "$APPDATA/Gente/stack/logs" "$RUNNER_TEMP/e2e/stack-logs/" 2>/dev/null || true
-          cp "$RUNNER_TEMP/stub.log" "$RUNNER_TEMP/e2e/" 2>/dev/null || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: gente-windows
-          path: |
-            ${{ runner.temp }}/e2e
-            apps/desktop/out/*.exe
-            ${{ runner.temp }}/bundle/burrow-server-win32-x64-*.zip
-            ${{ runner.temp }}/bundle/server-bundle.json
+  platforms:
+    uses: ./.github/workflows/gente-platforms.yml
