@@ -242,7 +242,6 @@ export const RU_MESSAGES: Record<string, string> = {
   "Model choices": "Выбор модели",
   "Model download": "Загрузка модели",
   "No ads. Ever.": "Без рекламы. Никогда.",
-  "No usage limits. Message as much as you want.": "Без ограничений. Пишите сколько хотите.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "Никто не читает ваши данные, не обучает на них ИИ и не продаёт их. Ни мы, ни кто-либо ещё.",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":

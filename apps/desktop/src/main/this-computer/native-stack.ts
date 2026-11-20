@@ -797,6 +797,13 @@ export class NativeStackController extends StackLifecycle {
       );
     }
     if (ports.database === undefined) {
+      // Gente (QA-002): a new data folder brings a new sealed encryption key, so the database
+      // a previous folder left behind can't be read with it. Keep a full copy of it in this
+      // folder's backups, then start a fresh database. Nothing is deleted without that copy.
+      if (existing !== null) {
+        await this.setAsidePreviousDatabase(cli, signal);
+        existing = null;
+      }
       ports.database = holder;
       await writePrivateFile(this.dir(NATIVE_PORTS_FILE), JSON.stringify(ports));
     }
@@ -971,6 +978,36 @@ export class NativeStackController extends StackLifecycle {
       ...result.stderr.trim().split("\n").slice(-3),
       `container ${args.slice(0, 2).join(" ")} exited with code ${result.code}`,
     ]);
+  }
+
+  /** Dumps the database a previous data folder left behind, then removes it (QA-002). */
+  private async setAsidePreviousDatabase(cli: string, signal: AbortSignal) {
+    await this.runtimeCommand(cli, ["start", DATABASE_CONTAINER], signal).catch(() => undefined);
+    const ready = async () =>
+      (
+        await this.deps.run(cli, ["exec", DATABASE_CONTAINER, "pg_isready", "-U", NATIVE_OWNER], {
+          cwd: this.deps.stackDir,
+          env: this.baseEnv(),
+          timeoutMs: CLI_TIMEOUT_MS,
+          signal,
+        })
+      ).code === 0;
+    for (let i = 0; i < 60 && !(await ready()); i++) await (this.deps.sleep ?? defaultSleep)(1_000, signal);
+    const dump = await this.deps.run(
+      cli,
+      ["exec", DATABASE_CONTAINER, "pg_dumpall", "-U", NATIVE_OWNER],
+      { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: IMAGE_PULL_TIMEOUT_MS, signal },
+    );
+    if (dump.code !== 0 || dump.stdout.length === 0) {
+      // Without a copy, nothing is removed; the person keeps the old database as it was.
+      throw new StartFailure(servicesFailed(), ["could not back up the previous database"]);
+    }
+    await mkdir(this.dir("backups"), { recursive: true, mode: 0o700 });
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    await writePrivateFile(this.dir("backups", `previous-database-${stamp}.sql`), dump.stdout);
+    await this.runtimeCommand(cli, ["stop", "--time", "30", DATABASE_CONTAINER], signal).catch(() => undefined);
+    await this.runtimeCommand(cli, ["rm", DATABASE_CONTAINER], signal);
+    await this.runtimeCommand(cli, ["volume", "rm", DATABASE_CONTAINER], signal).catch(() => undefined);
   }
 
   /** Runs SQL as the owner over the VM's own socket, so no password is needed or passed. */

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { ConnectorRegistry } from "@rakazo/adapters";
 import type { Actor, ConnectionCatalogItem, MessageBlock } from "@rakazo/contracts";
 import { appConnectCard, connectedAppBlock, matchAppCatalog } from "@rakazo/core";
@@ -152,6 +153,8 @@ export async function promptFocus(
   actor: Actor,
   botId: string,
 ): Promise<void> {
+  // Gente: the first bot greets in the person's language without a choice card.
+  if (process.env.BURROW_FAST_CHAT === "on") return;
   const { bot, thread } = await requireBotThread(deps, actor, botId);
   const target = { spaceId: actor.spaceId, botId: bot.id, threadId: thread.id };
   const blocks: MessageBlock[] = [

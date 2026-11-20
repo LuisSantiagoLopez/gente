@@ -227,7 +227,7 @@ describe("Gente setup", () => {
     await boot(null, { lang: "es", dir: "ltr", messages: ES_MESSAGES });
     expect(document.querySelector(".heading")?.textContent).toBe("La IA de la gente.");
     expect(document.querySelector(".benefits")?.textContent).toContain(
-      ES_MESSAGES["No usage limits. Message as much as you want."]!,
+      ES_MESSAGES["No ads. Ever."]!,
     );
   });
 

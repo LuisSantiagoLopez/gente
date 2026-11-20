@@ -238,7 +238,6 @@ export const KO_MESSAGES: Record<string, string> = {
   "Model choices": "모델 선택",
   "Model download": "모델 다운로드",
   "No ads. Ever.": "광고 없음. 앞으로도 영원히.",
-  "No usage limits. Message as much as you want.": "사용 한도 없음. 원하는 만큼 메시지를 보내세요.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "누구도 내 데이터를 읽거나, 학습에 쓰거나, 팔지 않습니다. 우리도, 그 누구도.",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":

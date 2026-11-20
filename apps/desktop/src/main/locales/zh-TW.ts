@@ -225,7 +225,6 @@ export const ZH_TW_MESSAGES: Record<string, string> = {
   "Model choices": "模型選項",
   "Model download": "模型下載",
   "No ads. Ever.": "沒有廣告。永遠沒有。",
-  "No usage limits. Message as much as you want.": "沒有使用限制。想傳多少訊息都可以。",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "沒有人會讀取、拿來訓練或出售你的資料。我們不會,任何人都不會。",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":

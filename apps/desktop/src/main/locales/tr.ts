@@ -238,8 +238,6 @@ export const TR_MESSAGES: Record<string, string> = {
   "Model choices": "Model seçenekleri",
   "Model download": "Model indirme",
   "No ads. Ever.": "Reklam yok. Asla.",
-  "No usage limits. Message as much as you want.":
-    "Kullanım sınırı yok. İstediğin kadar mesaj yaz.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "Kimse verilerini okumaz, onlarla model eğitmez ya da satmaz. Ne biz ne de başkası.",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":

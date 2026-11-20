@@ -243,8 +243,6 @@ export const JA_MESSAGES: Record<string, string> = {
   "Model choices": "モデルの選択肢",
   "Model download": "モデルのダウンロード",
   "No ads. Ever.": "広告はありません。これからもずっと。",
-  "No usage limits. Message as much as you want.":
-    "利用制限はありません。好きなだけメッセージを送れます。",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "あなたのデータを読む人も、学習に使う人も、売る人もいません。私たちも、ほかの誰も。",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":

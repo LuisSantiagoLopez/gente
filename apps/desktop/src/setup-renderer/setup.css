@@ -549,3 +549,10 @@ form {
   line-height: 1.4;
   color: var(--muted-foreground, #8a8070);
 }
+
+/* Gente (QA-008): Quit sits in the top bar's corner but comes last when tabbing. */
+.titlebar-quit-fixed {
+  position: fixed;
+  top: 6px;
+  right: 14px;
+}

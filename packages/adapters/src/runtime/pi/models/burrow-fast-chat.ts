@@ -142,6 +142,32 @@ export function smallTalkBody(parsed: {
   };
 }
 
+/**
+ * QA-025: Ollama refuses a request where an assistant message with tool calls is not followed by
+ * a result for each call ("Cannot continue an assistant message that contains tool calls"), which
+ * happens after a question card is answered in chat. Each missing result is filled in.
+ */
+export function repairToolPairs(messages: ChatMessage[]): ChatMessage[] {
+  const out: ChatMessage[] = [];
+  for (let i = 0; i < messages.length; i++) {
+    const message = messages[i]!;
+    out.push(message);
+    const calls = Array.isArray(message.tool_calls) ? (message.tool_calls as { id?: string }[]) : [];
+    if (message.role !== "assistant" || calls.length === 0) continue;
+    const answered = new Set<string>();
+    while (messages[i + 1]?.role === "tool") {
+      const tool = messages[++i] as ChatMessage & { tool_call_id?: string };
+      if (tool.tool_call_id) answered.add(tool.tool_call_id);
+      out.push(tool);
+    }
+    for (const call of calls) {
+      if (call.id && !answered.has(call.id))
+        out.push({ role: "tool", tool_call_id: call.id, content: "The person answered in the chat instead." } as ChatMessage);
+    }
+  }
+  return out;
+}
+
 /** Rewrites one chat-completions body; returns null when nothing should change. */
 export function quickChatBody(
   body: string,
@@ -153,6 +179,7 @@ export function quickChatBody(
     return null;
   }
   if (!Array.isArray(parsed.messages)) return null;
+  parsed.messages = repairToolPairs(parsed.messages);
   const prefix = { ...parsed, messages: parsed.messages.slice(0, -1) };
   // Gente: small talk, and short plain questions that need no tool ("who painted the Mona
   // Lisa?"), skip the 23 tool schemas (~25k characters) and the long manual. They share one small

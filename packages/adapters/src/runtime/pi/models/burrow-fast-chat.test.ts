@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { describe, expect, it } from "vitest";
-import { codingBody, isCodingTurn, isPlainQuestion, isQuickChat, quickChatBody, userWords } from "./burrow-fast-chat.js";
+import { codingBody, isCodingTurn, isPlainQuestion, isQuickChat, quickChatBody, repairToolPairs, userWords } from "./burrow-fast-chat.js";
 
 const time = "\n\n<current_time>\nCurrent date and time: Thursday.\n</current_time>";
 const body = (messages: unknown[], effort = "medium") =>
@@ -122,5 +122,21 @@ describe("Gente routing", () => {
   it("routes a coding request through quickChatBody with fast chat on", () => {
     const out = quickChatBody(JSON.stringify({ messages: [{ role: "system", content: "a\n\nb\n\nc" }, { role: "user", content: "fix this bug in my JavaScript" }], tools, reasoning_effort: "medium" }));
     expect(JSON.parse(out!.body).tools).toHaveLength(4);
+  });
+});
+
+describe("tool call pairs (QA-025)", () => {
+  it("adds a result for a tool call the person answered in chat, so Ollama accepts the request", () => {
+    const fixed = repairToolPairs([
+      { role: "system", content: "s" },
+      { role: "assistant", content: "", tool_calls: [{ id: "a" }, { id: "b" }] },
+      { role: "tool", tool_call_id: "a", content: "ok" } as never,
+      { role: "user", content: "hola" },
+    ]);
+    expect(fixed.map((m) => `${m.role}:${(m as { tool_call_id?: string }).tool_call_id ?? ""}`)).toEqual([
+      "system:", "assistant:", "tool:a", "tool:b", "user:",
+    ]);
+    const trailing = repairToolPairs([{ role: "assistant", content: "", tool_calls: [{ id: "x" }] }]);
+    expect(trailing.at(-1)).toMatchObject({ role: "tool", tool_call_id: "x" });
   });
 });

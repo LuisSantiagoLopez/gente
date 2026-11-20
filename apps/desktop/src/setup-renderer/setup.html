@@ -14,7 +14,6 @@
   <body>
     <header class="titlebar">
       <span class="titlebar-name">Gente</span>
-      <button id="quit" class="titlebar-quit" type="button" title="Quit Gente">Quit</button>
     </header>
 
     <main class="shell">
@@ -22,7 +21,6 @@
       <h1 class="heading">The AI of the people.</h1>
       <ul class="benefits">
         <li>Your AI lives on your computer. Your chats never leave it.</li>
-        <li>No usage limits. Message as much as you want.</li>
         <li>Nobody reads your data, trains on it, or sells it. Not us, not anyone.</li>
         <li>No ads. Ever.</li>
       </ul>
@@ -108,6 +106,8 @@
       <p class="footnote">Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.</p>
     </main>
 
+    <!-- Last in the page so the first Tab reaches the setup controls, not Quit (QA-008). -->
+    <button id="quit" class="titlebar-quit titlebar-quit-fixed" type="button" title="Quit Gente">Quit</button>
     <script src="setup.js"></script>
   </body>
 </html>

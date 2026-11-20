@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { i18n } from "@lingui/core";
 import { useLingui } from "@lingui/react/macro";
 import { computerHoursOut } from "@rakazo/contracts";
@@ -151,12 +152,17 @@ export function ComposerError({
           : null;
 
   const warning = Boolean(sendError) && imageConfirmation;
+  // Gente (QA-023): when its own model is restarting, say so calmly: no red, no Details.
+  const calm =
+    !sendError &&
+    normalizedRunError?.summary === translateRunError("Getting your AI ready again…", {});
   return sendError || runError ? (
     <div
       ref={runErrorRef}
-      role="alert"
+      role={calm ? "status" : "alert"}
       data-testid="composer-error"
-      className={`mb-3 flex items-center gap-2 rounded-[14px] border px-4 py-2 text-body-sm animate-in fade-in-0 slide-in-from-bottom-1 duration-150 motion-reduce:animate-none ${warning ? "border-warning/40 bg-warning/10 text-warning" : "border-destructive/40 bg-destructive/10 text-destructive"}`}
+      data-calm={calm ? "" : undefined}
+      className={`mb-3 flex items-center gap-2 rounded-[14px] border px-4 py-2 text-body-sm animate-in fade-in-0 slide-in-from-bottom-1 duration-150 motion-reduce:animate-none ${calm ? "border-border bg-muted text-muted-foreground" : warning ? "border-warning/40 bg-warning/10 text-warning" : "border-destructive/40 bg-destructive/10 text-destructive"}`}
     >
       <div className="min-w-0 flex-1">
         {isModelRequiredSendError(sendError) ? (
@@ -204,7 +210,7 @@ export function ComposerError({
             </button>
           </>
         ) : null}
-        {!sendError && runError ? (
+        {!sendError && runError && !calm ? (
           <details key={runError} className="mt-1">
             <summary className="w-fit cursor-pointer">{t`Details`}</summary>
             <pre className="mt-2 whitespace-pre-wrap break-words text-label">
@@ -221,7 +227,7 @@ export function ComposerError({
           onDismissError();
           window.requestAnimationFrame(() => textareaRef.current?.focus());
         }}
-        className={`shrink-0 hover:text-foreground ${warning ? "text-warning" : "text-destructive"}`}
+        className={`shrink-0 hover:text-foreground ${calm ? "text-muted-foreground" : warning ? "text-warning" : "text-destructive"}`}
       >
         <X size={13} strokeWidth={2} />
       </button>

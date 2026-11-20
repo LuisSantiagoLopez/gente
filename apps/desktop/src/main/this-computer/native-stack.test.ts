@@ -378,10 +378,27 @@ describe("NativeStackController", () => {
     await controller.stop();
   });
 
+  it("never removes a previous folder's database without a backup copy (QA-002)", async () => {
+    const runtime = fakeRuntime();
+    runtime.image = true;
+    runtime.database = { running: false, port: 41000, fresh: false };
+    // A new data folder (no ports file) finds a database left by another one. The fake runtime
+    // answers the dump with nothing, so the start stops and the old database stays untouched.
+    const { deps, runs } = harness({}, runtime);
+    const controller = new NativeStackController(deps);
+    expect((await controller.start()).phase).toBe("failed");
+    const calls = runs.filter((call) => call.binary === CLI).map((call) => call.args.join(" "));
+    expect(calls.some((call) => call.includes("pg_dumpall"))).toBe(true);
+    expect(calls.some((call) => call.startsWith("rm ") || call.startsWith("volume rm"))).toBe(false);
+  });
+
   it("stops a database VM a crashed launch left running before attaching to it", async () => {
     const runtime = fakeRuntime();
     runtime.image = true;
     runtime.database = { running: true, port: 41000, fresh: false };
+    // The same data folder made this database (QA-002 keeps it; a new folder sets it aside).
+    await mkdir(stackDir, { recursive: true });
+    await writeFile(path.join(stackDir, NATIVE_PORTS_FILE), JSON.stringify({ database: "ours" }));
     const { deps, commands } = harness({}, runtime);
     const controller = new NativeStackController(deps);
     expect((await controller.start()).phase).toBe("ready");
@@ -397,6 +414,9 @@ describe("NativeStackController", () => {
     const runtime = fakeRuntime();
     runtime.image = true;
     runtime.database = { running: false, port: 41000, fresh: false };
+    // The same data folder made this database (QA-002 keeps it; a new folder sets it aside).
+    await mkdir(stackDir, { recursive: true });
+    await writeFile(path.join(stackDir, NATIVE_PORTS_FILE), JSON.stringify({ database: "ours" }));
     const { deps, runs, commands } = harness({ portFree: async (port) => port !== 41000 }, runtime);
     const controller = new NativeStackController(deps);
     expect((await controller.start()).phase).toBe("ready");
