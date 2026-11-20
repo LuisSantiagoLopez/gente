@@ -93,6 +93,8 @@ export async function requeueRunAfterDatabaseOutage(ctx: RunContext): Promise<vo
  * for a local model server to restart or a laptop to get its network back.
  */
 export const MODEL_OUTAGE_REQUEUES = 12;
+/** Marks an attempt that ended to wait for the model server, so the waits can be counted. */
+export const MODEL_OUTAGE_ATTEMPT_NOTE = "The model server could not be reached; resumed later.";
 
 /**
  * Gente (modified from Rakazo): a long turn that saved its steps should not be lost because the
@@ -106,16 +108,26 @@ export async function requeueRunAfterModelOutage(
   if (!(error instanceof TransientModelError) || !ctx.state.effects.storedTurnCheckpoint)
     return false;
   const { deps, runId, workerId, fence } = ctx;
-  const attempts = await deps.prisma.attempt.count({ where: { runId } });
-  if (attempts > MODEL_OUTAGE_REQUEUES) return false;
+  // Only earlier waits for the model count; restarts and busy-computer retries are other attempts.
+  const waits = await deps.prisma.attempt.count({
+    where: { runId, error: MODEL_OUTAGE_ATTEMPT_NOTE },
+  });
+  if (waits >= MODEL_OUTAGE_REQUEUES) return false;
   await bestEffort("run.model_outage_checkpoint", ctx.computer.checkpoint.flush());
-  const wakeAt = new Date(Date.now() + providerOutageRetryDelay(attempts - 1));
+  const wakeAt = new Date(Date.now() + providerOutageRetryDelay(waits));
   const handedBack = await requeueInterruptedRun(deps, runId, workerId, fence, wakeAt);
   if (handedBack) {
     ctx.state.lease.handedBack = true;
+    await bestEffort(
+      "run.model_outage_note",
+      deps.prisma.attempt.updateMany({
+        where: { id: ctx.attempt.id },
+        data: { error: MODEL_OUTAGE_ATTEMPT_NOTE },
+      }),
+    );
     getLogger().warn("run.model_outage_requeued", {
       "run.id": runId,
-      "run.attempts": attempts,
+      "run.model_waits": waits + 1,
       "run.wake_at": wakeAt.toISOString(),
       reason: error.message,
     });

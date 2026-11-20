@@ -2,7 +2,11 @@
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { ModelOutputError, TransientModelError } from "@rakazo/adapter-kit";
 import { describe, expect, it, vi } from "vitest";
-import { MODEL_OUTAGE_REQUEUES, requeueRunAfterModelOutage } from "./run-fail.js";
+import {
+  MODEL_OUTAGE_ATTEMPT_NOTE,
+  MODEL_OUTAGE_REQUEUES,
+  requeueRunAfterModelOutage,
+} from "./run-fail.js";
 
 function context(options: { saved: boolean; attempts: number }) {
   const updateMany = vi.fn(async () => ({ count: 1 }));
@@ -10,7 +14,10 @@ function context(options: { saved: boolean; attempts: number }) {
   const ctx = {
     deps: {
       prisma: {
-        attempt: { count: vi.fn(async () => options.attempts) },
+        attempt: {
+          count: vi.fn(async () => options.attempts),
+          updateMany: vi.fn(async () => ({ count: 1 })),
+        },
         run: { updateMany },
       },
       jobs: { enqueue, enqueueMany: enqueue, remove: vi.fn(), reschedule: vi.fn() },
@@ -18,6 +25,7 @@ function context(options: { saved: boolean; attempts: number }) {
     runId: "run-1",
     workerId: "worker-1",
     fence: 3,
+    attempt: { id: "attempt-1" },
     computer: { checkpoint: { flush: vi.fn(async () => undefined) } },
     state: { effects: { storedTurnCheckpoint: options.saved }, lease: { handedBack: false } },
   };
@@ -26,7 +34,7 @@ function context(options: { saved: boolean; attempts: number }) {
 
 describe("a model server outage", () => {
   it("hands a turn with saved steps back to resume later instead of failing it", async () => {
-    const { ctx, updateMany } = context({ saved: true, attempts: 2 });
+    const { ctx, updateMany } = context({ saved: true, attempts: 1 });
     const before = Date.now();
 
     expect(await requeueRunAfterModelOutage(ctx as never, new TransientModelError("down"))).toBe(
@@ -34,6 +42,14 @@ describe("a model server outage", () => {
     );
 
     expect(ctx.state.lease.handedBack).toBe(true);
+    // Counts only earlier waits, never restarts or busy-computer retries.
+    expect(ctx.deps.prisma.attempt.count).toHaveBeenCalledWith({
+      where: { runId: "run-1", error: MODEL_OUTAGE_ATTEMPT_NOTE },
+    });
+    expect(ctx.deps.prisma.attempt.updateMany).toHaveBeenCalledWith({
+      where: { id: "attempt-1" },
+      data: { error: MODEL_OUTAGE_ATTEMPT_NOTE },
+    });
     const data = (updateMany.mock.calls[0] as unknown as [{ data: { wakeAt: Date } }])[0].data;
     expect(data).toMatchObject({ status: "queued", leaseOwner: null });
     expect(data.wakeAt.getTime()).toBeGreaterThanOrEqual(before + 30_000);
@@ -48,7 +64,7 @@ describe("a model server outage", () => {
     expect(await requeueRunAfterModelOutage(other.ctx as never, new ModelOutputError("x"))).toBe(
       false,
     );
-    const spent = context({ saved: true, attempts: MODEL_OUTAGE_REQUEUES + 1 });
+    const spent = context({ saved: true, attempts: MODEL_OUTAGE_REQUEUES });
     expect(await requeueRunAfterModelOutage(spent.ctx as never, new TransientModelError("x"))).toBe(
       false,
     );
