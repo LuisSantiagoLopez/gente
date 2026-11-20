@@ -5,8 +5,11 @@ import type {
   ConnectorCall,
 } from "@rakazo/adapter-kit";
 import {
+  actionRecipients,
+  alwaysAskCategory,
   applyJudgeDecision,
   approvalModeFromPreference,
+  autoApproveCovers,
   BACKGROUND_HELPER_TRIGGER,
   batchActions,
   connectorKindFromToolName,
@@ -30,7 +33,7 @@ import {
 import { normalizedHttpUrl, urlSite } from "@rakazo/core/egress";
 import { approvalEffectKey, toolEffectIdempotencyKey } from "@rakazo/core/node/approval-effect-key";
 import type { AuditEventInput } from "@rakazo/db";
-import { recordAuditEvent, runSecretKind } from "@rakazo/db";
+import { recordAuditEvent, runSecretKind, spentForAutoApprove } from "@rakazo/db";
 import { bestEffort } from "@rakazo/logging";
 import type { ApprovalCardOptions } from "../../approvals/approval-ask.js";
 import {
@@ -55,7 +58,11 @@ import {
 import type { AutoReviewCandidate } from "../../approvals/auto-review-backups.js";
 import { reviewWithBackups } from "../../approvals/auto-review-backups.js";
 import { reviewOwnerMessages } from "../../approvals/review-owner-messages.js";
-import { pagePaymentPrecheck, paysWithWallet } from "../../billing/spending-gate.js";
+import {
+  pagePaymentAmount,
+  pagePaymentPrecheck,
+  paysWithWallet,
+} from "../../billing/spending-gate.js";
 import { reportBotMessageWait } from "../../messaging/bot-messages.js";
 import { findConnectedModelCredential } from "../../models/model-selection.js";
 import { paidRequestEffect } from "../../payments/paid-request.js";
@@ -93,6 +100,7 @@ import { BUILTIN_AGENT_TOOL_NAMES, READ_ONLY_AGENT_TOOLS } from "./run-tool-sele
 import { callMediaTool } from "./run-tools-files.js";
 import { callPaidService } from "./run-tools-integrations.js";
 import { USER_COMPUTER_TOOLS, userComputerGate } from "./run-tools-user-computer.js";
+import { shellDeletesInBulk } from "./shell-deletes.js";
 
 export type AppliedEffect = Awaited<ReturnType<typeof recordEffect>>;
 
@@ -287,8 +295,11 @@ export async function gateToolCall(
   const { purchase, cardUse, loginUse } = request;
   // Saved logins that ask first require the owner on every use, like saved cards.
   const paying = Boolean(purchase) || Boolean(cardUse) || Boolean(loginUse);
+  // Deleting the owner's files in bulk asks first; shell is otherwise free (see shellDeletesInBulk).
+  const deletesInBulk = name === "shell" && shellDeletesInBulk(String(args.command ?? ""));
   const requiresApprovalByDefault =
     request.heldForApproval ||
+    deletesInBulk ||
     paying ||
     unattendedWatch ||
     routineWrittenAfterOutside ||
@@ -334,7 +345,8 @@ export async function gateToolCall(
       : ignoresAllowRules && resolvedRules.source === "always_allow"
         ? { ...resolvedRules, source: "default" as const }
         : resolvedRules;
-  const mode = approvalModeFromPreference(await ctx.trust.loadAutoReviewPreference());
+  const preference = await ctx.trust.loadAutoReviewPreference();
+  const mode = approvalModeFromPreference(preference);
   const reviewable = mode === "auto" && !mandatoryInAnyRun;
   const injectedReview = reviewable ? deps.autoReview : undefined;
   const reviewSettings = !reviewable || injectedReview ? null : await ctx.trust.loadApprovalModel();
@@ -368,22 +380,80 @@ export async function gateToolCall(
             ),
           )
         : false));
-  const plan = USER_COMPUTER_TOOLS.has(name)
+  const recipients = actionRecipients(args);
+  // Spending, sending as the owner, deleting their data and accepting terms ask a person in every
+  // mode, Never ask included; only the owner's auto-approve limits below pass one by itself.
+  const alwaysAsk = alwaysAskCategory({
+    toolName: name,
+    slugs: viaConnector ? approvalToolNames : [],
+    recipients,
+    pays: Boolean(purchase) || Boolean(cardUse),
+    deletesInBulk,
+  });
+  const plannedGate = USER_COMPUTER_TOOLS.has(name)
     ? await userComputerGate(ctx, approvalResolved.decision === "deny", name, args, mode)
     : planActionGate({
         resolved: approvalResolved,
         mode,
         mandatory: mandatoryInAnyRun,
         steerable:
-          guardedInNeverAsk && mode === "never"
+          (guardedInNeverAsk || alwaysAsk) && mode === "never"
             ? !ctx.source.ownerStartedRun || (await isRunTainted(ctx))
             : undefined,
-        consequential: requiresApprovalByDefault,
+        consequential: requiresApprovalByDefault || alwaysAsk !== undefined,
         reviewOnly,
         checkerConfigured,
         newDestination: siteGate === "new",
         purchase: paying,
+        alwaysAsk,
       });
+  // The owner's auto-approve limits pass an approval that fits them: a spend that keeps this task
+  // and this month within the caps, a send only to trusted contacts, or an action in a trusted
+  // app. Never on the owner's own computer, for an unattended watch, or once outside content
+  // entered the run.
+  const limits = preference.autoApprove;
+  const payment = !paying
+    ? undefined
+    : purchase
+      ? pagePaymentAmount(purchase)
+      : ("unknown" as const);
+  const autoApproved =
+    (plannedGate === "ask" || plannedGate === "judge") &&
+    limits?.enabled === true &&
+    !USER_COMPUTER_TOOLS.has(name) &&
+    siteGate !== "new" &&
+    !(await isRunTainted(ctx)) &&
+    autoApproveCovers(
+      limits,
+      {
+        recipients,
+        connectorKinds: viaConnector
+          ? approvalToolNames.map((toolName) =>
+              connectorKindFromToolName(toolName, connectorProviders),
+            )
+          : [],
+        payment,
+      },
+      {
+        tainted: false,
+        mandatory:
+          unattendedWatch ||
+          toolRequiresExplicitApproval(name) ||
+          Boolean(cardUse) ||
+          Boolean(loginUse),
+        spent:
+          payment && payment !== "unknown"
+            ? await spentForAutoApprove(deps.prisma, {
+                userId: run.userId,
+                threadId: ctx.thread.id,
+                runStartedAt: run.createdAt,
+                currency: payment.currency,
+              })
+            : undefined,
+      },
+    );
+  const plan = autoApproved ? "allow" : plannedGate;
+  if (autoApproved) await auditToolCall(ctx, name, "success", { reason: "auto_approved" });
   if (plan === "deny") {
     await auditToolCall(ctx, name, "denied", {
       reason: approvalResolved.decision === "deny" ? "rule" : "never_asks",

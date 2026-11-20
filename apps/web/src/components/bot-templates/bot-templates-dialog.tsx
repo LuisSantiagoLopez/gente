@@ -2,7 +2,8 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { ChatMarkdown } from "@rakazo/chat-ui/web";
 import type { Bot, BotTemplateListing, ConnectionCatalogItem } from "@rakazo/contracts";
 import { isBotTemplateChanged } from "@rakazo/contracts";
-import { botTemplateApps, formatCron } from "@rakazo/core";
+import type { WorkRoleId } from "@rakazo/core";
+import { botTemplateApps, formatCron, WORK_ROLES } from "@rakazo/core";
 import {
   Button,
   Dialog,
@@ -16,17 +17,32 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { LucideIcon } from "lucide-react";
 import {
+  BookOpenCheck,
   Bot as BotIcon,
+  BriefcaseBusiness,
+  CalendarCheck,
+  ChartLine,
   Check,
   ChevronDown,
   ChevronLeft,
   Clock,
+  FileText,
   GitPullRequest,
+  Handshake,
+  House,
   Inbox,
   LayoutTemplate,
+  NotebookPen,
+  Presentation,
+  Receipt,
+  Repeat,
   ScrollText,
+  ShoppingBag,
+  Star,
   Sun,
+  Tag,
   Telescope,
+  UserSearch,
   X,
 } from "lucide-react";
 import { useState } from "react";
@@ -42,6 +58,22 @@ const ICONS: Record<string, LucideIcon> = {
   "inbox-triage": Inbox,
   "pr-reviewer": GitPullRequest,
   "topic-watch": Telescope,
+  "review-replies": Star,
+  "booking-desk": CalendarCheck,
+  "store-support": ShoppingBag,
+  "sales-digest": ChartLine,
+  "listing-writer": Tag,
+  "proposal-writer": FileText,
+  "invoice-chaser": Receipt,
+  "deal-follow-up": Handshake,
+  "meeting-prep": Presentation,
+  "lead-responder": House,
+  "books-tidy": BookOpenCheck,
+  "content-repurposer": Repeat,
+  "client-report": ChartLine,
+  "candidate-outreach": UserSearch,
+  "job-hunt": BriefcaseBusiness,
+  "meeting-notes": NotebookPen,
 };
 
 function TemplateIcon({ id, large = false }: { id: string; large?: boolean }) {
@@ -80,6 +112,23 @@ export function BotTemplatesDialog({
   // Read afresh each time it opens: a template's bot may have been made or deleted since.
   const templates = useQuery({ ...queries.bots.templates.queryOptions(), staleTime: 0 });
   const [openId, setOpenId] = useState<string | null>(null);
+  // Gente: "What do you do?" narrows the gallery to the recipes for that work.
+  const [roleId, setRoleId] = useState<string | null>(null);
+  const role = WORK_ROLES.find((item) => item.id === roleId);
+  const roleLabels: Record<WorkRoleId, string> = {
+    "local-business": t`Local business`,
+    "online-store": t`Online store`,
+    freelancer: t`Freelancer`,
+    sales: t`Sales`,
+    "real-estate": t`Real estate`,
+    bookkeeper: t`Bookkeeping`,
+    consultant: t`Consultant or agency`,
+    creator: t`Creator`,
+    marketer: t`Marketing`,
+    recruiter: t`Recruiting`,
+    developer: t`Developer`,
+    "job-seeker": t`Looking for work`,
+  };
   const open = templates.data?.find((template) => template.id === openId);
 
   function content() {
@@ -106,36 +155,56 @@ export function BotTemplatesDialog({
           onChanged={() => void templates.refetch()}
         />
       );
+    const shown = role
+      ? templates.data.filter((template) =>
+          (role.recipes as readonly string[]).includes(template.id),
+        )
+      : templates.data;
     return (
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {templates.data.map((template) => {
-          const { name, summary, sample } = copy(template);
-          return (
-            <button
-              key={template.id}
-              type="button"
-              data-testid="bot-template-card"
-              onClick={() => setOpenId(template.id)}
-              className={`flex min-w-0 flex-col gap-3 rounded-2xl border border-border/70 p-4 text-start focus-visible:outline-none ${ROW_HOVER}`}
+      <div className="flex flex-col gap-4">
+        <div role="group" aria-label={t`What do you do?`} className="flex flex-wrap gap-2">
+          {WORK_ROLES.map((item) => (
+            <Button
+              key={item.id}
+              size="sm"
+              variant={item.id === roleId ? "default" : "outline"}
+              aria-pressed={item.id === roleId}
+              onClick={() => setRoleId(item.id === roleId ? null : item.id)}
             >
-              <span className="flex min-w-0 items-center gap-3">
-                <TemplateIcon id={template.id} />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-body-lg font-medium text-foreground">
-                    {name}
-                  </span>
-                  <span className="block truncate text-body-sm text-muted-foreground">
-                    {summary}
+              {roleLabels[item.id]}
+            </Button>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {shown.map((template) => {
+            const { name, summary, sample } = copy(template);
+            return (
+              <button
+                key={template.id}
+                type="button"
+                data-testid="bot-template-card"
+                onClick={() => setOpenId(template.id)}
+                className={`flex min-w-0 flex-col gap-3 rounded-2xl border border-border/70 p-4 text-start focus-visible:outline-none ${ROW_HOVER}`}
+              >
+                <span className="flex min-w-0 items-center gap-3">
+                  <TemplateIcon id={template.id} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-body-lg font-medium text-foreground">
+                      {name}
+                    </span>
+                    <span className="block truncate text-body-sm text-muted-foreground">
+                      {summary}
+                    </span>
                   </span>
                 </span>
-              </span>
-              {/* A glimpse of the example; the template's page shows all of it. */}
-              <span className="block h-40 overflow-hidden rounded-xl border border-border/60 bg-background px-3.5 py-2.5 text-body-sm mask-b-from-60%">
-                <ChatMarkdown>{sample}</ChatMarkdown>
-              </span>
-            </button>
-          );
-        })}
+                {/* A glimpse of the example; the template's page shows all of it. */}
+                <span className="block h-40 overflow-hidden rounded-xl border border-border/60 bg-background px-3.5 py-2.5 text-body-sm mask-b-from-60%">
+                  <ChatMarkdown>{sample}</ChatMarkdown>
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     );
   }

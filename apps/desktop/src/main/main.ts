@@ -33,7 +33,13 @@ import { installSessionPermissions } from "./auth/session-permissions.js";
 import { createUserDeviceAccess, deviceName } from "./auth/user-device.js";
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
-import { initAccount } from "./burrow/account.js";
+import {
+  accountState,
+  consumeFreeMessage,
+  initAccount,
+  signInToGente,
+  signOutOfGente,
+} from "./burrow/account.js";
 import { readComposioKey, readKeychainSecret, vendorKeysAllowed } from "./burrow/composio.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
@@ -131,7 +137,7 @@ import {
   StackStopMenuAvailability,
   stopStackLeftBehind,
 } from "./this-computer/stop-local-stack.js";
-import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
+import { plainStackEligible, postgresBin, WindowsStackController } from "./this-computer/windows-stack.js";
 import type { ElectronAutoUpdater } from "./updates/auto-update.js";
 import { DesktopUpdateController } from "./updates/auto-update.js";
 import { verifyDownloadedLinuxUpdate } from "./updates/linux-update-signature.js";
@@ -838,14 +844,30 @@ app.whenReady().then(async () => {
       telegramToken: () => readTelegramToken(),
     });
   };
-  // Gente: Windows runs the server as plain processes with its own Postgres; no Docker needed.
-  const windowsBundle = windowsStackEligible({ platform: process.platform })
-    ? await readServerBundle({
-        resourcesPath: process.resourcesPath,
-        packaged: app.isPackaged,
-        override: process.env.RAKAZO_SERVER_BUNDLE,
-      })
+  // Gente: Windows, Intel Macs and Macs without Apple container run the server as plain
+  // processes with the Postgres the app ships; no Docker, nothing downloaded or unpacked.
+  // Test switch: GENTE_STACK=native runs the plain-process stack on Apple silicon too;
+  // GENTE_SERVER_DIR may point at an unpacked server with Postgres (gente-embed-server.mjs).
+  const forcePlain = process.env.GENTE_STACK === "native";
+  const serverDirOverride = process.env.GENTE_SERVER_DIR?.trim();
+  const plainBundle = plainStackEligible({
+    platform: process.platform,
+    appleContainer: serverBundle !== null && !forcePlain,
+  })
+    ? forcePlain && serverDirOverride
+      ? { version: "local-server-dir", inPlace: path.resolve(serverDirOverride) }
+      : await readServerBundle({
+          resourcesPath: process.resourcesPath,
+          packaged: app.isPackaged,
+          override: process.env.RAKAZO_SERVER_BUNDLE,
+        })
     : null;
+  const windowsBundle =
+    plainBundle !== null &&
+    (process.platform === "win32" ||
+      (plainBundle.inPlace !== undefined && existsSync(postgresBin(plainBundle.inPlace, "pg_ctl"))))
+      ? plainBundle
+      : null;
   desktop.localStack =
     windowsBundle !== null
       ? new WindowsStackController({
@@ -1072,6 +1094,16 @@ app.whenReady().then(async () => {
   );
   handleIpc("desktop.passkeys.rpIds", () => passkeyRpIds);
   handleIpc("desktop.monitoring.enabled", () => reportsErrors);
+  handleIpc("desktop.gente.account", () => accountState());
+  handleIpc("desktop.gente.consumeMessage", (_event, messageId: unknown) => consumeFreeMessage(messageId));
+  handleIpc("desktop.gente.signIn", async () => {
+    await signInToGente();
+    return accountState();
+  });
+  handleIpc("desktop.gente.signOut", async () => {
+    await signOutOfGente();
+    return accountState();
+  });
   handleIpc("desktop.server.change", () => {
     showSetupWindow();
   });

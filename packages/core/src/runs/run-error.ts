@@ -382,6 +382,7 @@ export function normalizeRunError(
       : /\banthropic\b|anthropic_/i.test(signals)
         ? translate("Your Anthropic")
         : translate("Your model provider");
+  const localModel = !/\b(openrouter|openai|anthropic)\b|openrouter_|openai_|anthropic_/i.test(signals);
 
   let resetAt: number | undefined;
   let kind: RunErrorKind | undefined;
@@ -541,7 +542,11 @@ export function normalizeRunError(
       signals,
     )
   ) {
-    summary = translate("{provider} couldn't be reached. Check that it's running.", { provider });
+    // Gente (QA-023): its own model runs on this computer and self-repair restarts it, so say
+    // that calmly instead of naming a provider.
+    summary = localModel
+      ? translate("Getting your AI ready again…")
+      : translate("{provider} couldn't be reached. Check that it's running.", { provider });
   } else if (
     status === 408 ||
     status === 504 ||
@@ -549,7 +554,9 @@ export function normalizeRunError(
       signals,
     )
   ) {
-    summary = translate("{provider} took too long to respond. Try again.", { provider });
+    summary = localModel
+      ? translate("Getting your AI ready again…")
+      : translate("{provider} took too long to respond. Try again.", { provider });
   } else if (
     status === 400 &&
     payload.type === "invalid_request_error" &&

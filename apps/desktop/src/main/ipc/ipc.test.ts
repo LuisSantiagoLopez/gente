@@ -233,6 +233,9 @@ describe("handleIpc", () => {
   it("rejects only on the channels whose page has to be told nothing happened", () => {
     expect(names.filter((name) => ipcChannels[name].refused === REJECTS)).toEqual([
       "desktop.computer.requestAccess",
+      "desktop.gente.account",
+      "desktop.gente.signIn",
+      "desktop.gente.signOut",
       "desktop.mcpBrowser.clear",
       "desktop.oauth.open",
       "desktop.setup.brain.start",

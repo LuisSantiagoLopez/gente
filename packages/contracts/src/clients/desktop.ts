@@ -24,6 +24,18 @@ export interface DesktopUpdateState {
   checkedAt: string | null;
 }
 
+/** Gente: what the app shows about the person's account. Unknown values stay null. */
+export interface GenteAccountState {
+  signedIn: boolean;
+  /** Plan name from Gente Cloud, for example "Free" or "Pro"; null when signed out or offline. */
+  plan: string | null;
+  messagesUsed: number | null;
+  messagesLimit: number | null;
+  /** Hours of online work left this month; null when unknown. */
+  hoursLeft: number | null;
+  monthlyHours: number | null;
+}
+
 export interface RakazoDesktopUpdate {
   state: () => Promise<DesktopUpdateState>;
   check: () => Promise<DesktopUpdateState>;
@@ -136,6 +148,15 @@ export interface RakazoDesktop {
   server?: {
     /** Opens the desktop setup window to pick another Rakazo server. */
     change: () => Promise<void>;
+  };
+  /** Gente: the person's Gente account (Clerk sign-in) and plan from Gente Cloud. */
+  gente?: {
+    account: () => Promise<GenteAccountState>;
+    /** Opens Clerk's sign-in in the system browser and resolves when it finishes. */
+    signIn: () => Promise<GenteAccountState>;
+    signOut: () => Promise<GenteAccountState>;
+    /** Counts one message against the free plan; false means the free messages are used up. */
+    consumeMessage: (messageId: string) => Promise<boolean>;
   };
   /** Absent on older desktop releases, which have no Settings… menu item. */
   settings?: {

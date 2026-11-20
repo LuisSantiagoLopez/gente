@@ -27,6 +27,12 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
     revokeAccess: () => ipcRenderer.invoke("desktop.computer.revokeAccess"),
     onConfigure: subscribe("desktop.computer.configure"),
   },
+  gente: {
+    account: () => ipcRenderer.invoke("desktop.gente.account"),
+    signIn: () => ipcRenderer.invoke("desktop.gente.signIn"),
+    signOut: () => ipcRenderer.invoke("desktop.gente.signOut"),
+    consumeMessage: (messageId) => ipcRenderer.invoke("desktop.gente.consumeMessage", messageId),
+  },
   server: {
     change: () => ipcRenderer.invoke("desktop.server.change"),
   },

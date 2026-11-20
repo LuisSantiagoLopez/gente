@@ -141,10 +141,10 @@ describe("normalizeRunError", () => {
       "Your model provider can't run this model.",
     ],
     ["SAFETY margin exceeded", "The model provider returned an error."],
-    ["Request timed out", "Your model provider took too long to respond. Try again."],
+    ["Request timed out", "Getting your AI ready again…"],
     [
       '504: {"message":"Gateway error"}',
-      "Your model provider took too long to respond. Try again.",
+      "Getting your AI ready again…",
     ],
     [
       '403: {"message":"This model requires you to upgrade to a paid plan"}',
@@ -238,7 +238,7 @@ describe("normalizeRunError", () => {
     const overloaded = "Your model provider is overloaded right now. Try again in a moment.";
     const tooLong =
       "This conversation is too long for the model. Retrying won't help. Start a new chat or shorten your message.";
-    const tookTooLong = "Your model provider took too long to respond. Try again.";
+    const tookTooLong = "Getting your AI ready again…";
 
     it.each([
       [
@@ -298,7 +298,7 @@ describe("normalizeRunError", () => {
       "Connection refused",
     ])("says an unreachable provider %s should be checked", (details) => {
       expect(classify(details)).toEqual({
-        summary: "Your model provider couldn't be reached. Check that it's running.",
+        summary: "Getting your AI ready again…",
         details,
       });
     });
@@ -987,7 +987,7 @@ describe("the one action that fixes a failed run", () => {
     '429 {"status":429,"title":"Too Many Requests"}',
   ])("leaves a transient failure to its retry advice: %s", (details) => {
     const error = action(details);
-    expect(error.summary).toMatch(/Try again/);
+    expect(error.summary).toMatch(/Try again|ready again/);
     expect(error.recovery).toBeUndefined();
   });
 

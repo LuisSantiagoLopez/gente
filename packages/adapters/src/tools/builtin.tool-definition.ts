@@ -28,6 +28,12 @@ export const builtinAgentTools: ConnectorTool[] = [
 ];
 
 export const FIND_TOOL = "find_tool";
+/**
+ * What find_tool answers when nothing matched. Local models kept searching it for a connected
+ * app's actions (an inbox, a calendar), which it never lists, until the turn ran out.
+ */
+export const FIND_TOOL_MISS_HINT =
+  "No built-in tool matched. find_tool lists only built-in tools: for a connected app's data or actions, such as email or calendar, use that app's tools in your tool list instead. Otherwise pass names from this tool's list or other words.";
 export const USE_TOOL = "use_tool";
 
 /** The two tools that reach built-ins left out of the tool list; `nameIndex` lists those by area. */
