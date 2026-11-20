@@ -224,5 +224,6 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   const out = process.argv.indexOf("--json");
   if (out > 0 && process.argv[out + 1])
     await writeFile(process.argv[out + 1] as string, JSON.stringify(results, null, 2));
-  process.exit(results.every((r) => r.detected && r.healed !== false) ? 0 : 1);
+  // exitCode, not exit(): exiting while sockets close trips a libuv assertion on Windows.
+  process.exitCode = results.every((r) => r.detected && r.healed !== false) ? 0 : 1;
 }
