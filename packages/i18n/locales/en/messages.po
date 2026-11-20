@@ -12697,3 +12697,287 @@ msgstr "Zero data retention"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "ZIP or postal code"
 msgstr "ZIP or postal code"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Review replies"
+msgstr "Review replies"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts a reply to every new Google review"
+msgstr "Drafts a reply to every new Google review"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**3 new reviews this week**\n\n1. ★★★★★ Marta: \"Best haircut in years.\" Draft: \"Thank you, Marta! See you next time.\"\n2. ★★☆☆☆ Leo: \"Waited 40 minutes.\" Draft: \"Sorry for the wait, Leo. We've added a second chair on Saturdays.\"\n3. ★★★★☆ Ana. Draft ready.\n\nApprove to post, or edit any draft."
+msgstr "**3 new reviews this week**\n\n1. ★★★★★ Marta: \"Best haircut in years.\" Draft: \"Thank you, Marta! See you next time.\"\n2. ★★☆☆☆ Leo: \"Waited 40 minutes.\" Draft: \"Sorry for the wait, Leo. We've added a second chair on Saturdays.\"\n3. ★★★★☆ Ana. Draft ready.\n\nApprove to post, or edit any draft."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Booking desk"
+msgstr "Booking desk"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers booking and quote requests with your open times"
+msgstr "Answers booking and quote requests with your open times"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 booking requests**\n\n1. Jon wants a deep clean Thursday. Free: Thu 10:00 or 14:00. Draft ready.\n2. Sofia asks the price for a 3-bedroom. Quote from your price list: $180. Draft ready.\n\nGmail drafts saved. Nothing booked until a client picks a time."
+msgstr "**2 booking requests**\n\n1. Jon wants a deep clean Thursday. Free: Thu 10:00 or 14:00. Draft ready.\n2. Sofia asks the price for a 3-bedroom. Quote from your price list: $180. Draft ready.\n\nGmail drafts saved. Nothing booked until a client picks a time."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Store support"
+msgstr "Store support"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Drafts replies to customer emails using real order data"
+msgstr "Drafts replies to customer emails using real order data"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**4 customer emails**\n\n1. #1042 Where is my order? Shipped Monday, arriving Thursday. Draft ready.\n2. #1039 Wrong size. Exchange policy applies. Draft ready.\n3. #1051 Refund request, $64.00. Needs your OK.\n4. Wholesale question. Draft ready."
+msgstr "**4 customer emails**\n\n1. #1042 Where is my order? Shipped Monday, arriving Thursday. Draft ready.\n2. #1039 Wrong size. Exchange policy applies. Draft ready.\n3. #1051 Refund request, $64.00. Needs your OK.\n4. Wholesale question. Draft ready."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sales digest"
+msgstr "Sales digest"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Yesterday's sales, refunds and low stock in one message"
+msgstr "Yesterday's sales, refunds and low stock in one message"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tuesday: $2,340 from 31 orders** (up 12% on last Tuesday)\n\n- Best seller: Linen shirt, 9 sold\n- Refunds: 1, $48\n- Low stock: Linen shirt (4 left), Canvas tote (2 left)\n\nAdded to your Sales sheet, row 212."
+msgstr "**Tuesday: $2,340 from 31 orders** (up 12% on last Tuesday)\n\n- Best seller: Linen shirt, 9 sold\n- Refunds: 1, $48\n- Low stock: Linen shirt (4 left), Canvas tote (2 left)\n\nAdded to your Sales sheet, row 212."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Listing writer"
+msgstr "Listing writer"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns product notes into ready listings with titles and tags"
+msgstr "Turns product notes into ready listings with titles and tags"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Listing draft: Hand-thrown mug, speckled glaze**\n\nTitle: Speckled Ceramic Mug, 12 oz, Handmade Stoneware Coffee Cup\nTags: handmade mug, ceramic, stoneware, coffee lover gift, speckled\nDescription: 3 short paragraphs, care notes, size.\n\nSaved as a draft product in your store. Not published."
+msgstr "**Listing draft: Hand-thrown mug, speckled glaze**\n\nTitle: Speckled Ceramic Mug, 12 oz, Handmade Stoneware Coffee Cup\nTags: handmade mug, ceramic, stoneware, coffee lover gift, speckled\nDescription: 3 short paragraphs, care notes, size.\n\nSaved as a draft product in your store. Not published."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Proposal writer"
+msgstr "Proposal writer"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns a client inquiry into a proposal and a reply draft"
+msgstr "Turns a client inquiry into a proposal and a reply draft"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Proposal ready for Lumen Studio**\n\n- Scope: new website, 6 pages, 3 weeks\n- Price: $4,800 in two payments (from your rate card)\n- Doc: Proposal - Lumen Studio (Google Docs)\n\nReply draft saved in Gmail with the link. Not sent."
+msgstr "**Proposal ready for Lumen Studio**\n\n- Scope: new website, 6 pages, 3 weeks\n- Price: $4,800 in two payments (from your rate card)\n- Doc: Proposal - Lumen Studio (Google Docs)\n\nReply draft saved in Gmail with the link. Not sent."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Invoice chaser"
+msgstr "Invoice chaser"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds unpaid invoices and drafts polite reminders"
+msgstr "Finds unpaid invoices and drafts polite reminders"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**$6,250 overdue across 3 invoices**\n\n1. Acme, $3,000, 12 days late. Second reminder drafted.\n2. Lumen Studio, $2,400, 4 days late. Friendly nudge drafted.\n3. Ode Cafe, $850, 31 days late. Firm reminder drafted.\n\n3 Gmail drafts saved. Nothing sent."
+msgstr "**$6,250 overdue across 3 invoices**\n\n1. Acme, $3,000, 12 days late. Second reminder drafted.\n2. Lumen Studio, $2,400, 4 days late. Friendly nudge drafted.\n3. Ode Cafe, $850, 31 days late. Firm reminder drafted.\n\n3 Gmail drafts saved. Nothing sent."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Deal follow-up"
+msgstr "Deal follow-up"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds stalled deals and drafts the next email"
+msgstr "Finds stalled deals and drafts the next email"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 deals need a nudge**\n\n1. Northwind, $12k, no reply in 9 days. Follow-up drafted.\n2. Bluebird, $4k, demo done Tuesday. Recap drafted.\n3. Kite Labs, $30k, contract sent 6 days ago. Check-in drafted.\n\nNotes logged on each deal in your CRM."
+msgstr "**5 deals need a nudge**\n\n1. Northwind, $12k, no reply in 9 days. Follow-up drafted.\n2. Bluebird, $4k, demo done Tuesday. Recap drafted.\n3. Kite Labs, $30k, contract sent 6 days ago. Check-in drafted.\n\nNotes logged on each deal in your CRM."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting prep"
+msgstr "Meeting prep"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A one-page brief before every client or sales call"
+msgstr "A one-page brief before every client or sales call"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Tomorrow 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n\n- Deal: $30k, contract sent last week\n- Last email: asked about onboarding time\n- News: Kite Labs raised a Series A on Monday\n- Ask: who signs, and by when?"
+msgstr "**Tomorrow 10:00: Kite Labs (Dana Ruiz, VP Ops)**\n\n- Deal: $30k, contract sent last week\n- Last email: asked about onboarding time\n- News: Kite Labs raised a Series A on Monday\n- Ask: who signs, and by when?"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Lead responder"
+msgstr "Lead responder"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Answers new property leads in minutes and books showings"
+msgstr "Answers new property leads in minutes and books showings"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**2 new leads**\n\n1. Maya, 14 Oak St listing, pre-approved. Showing times offered: Sat 11:00 or Sun 15:00. Draft ready.\n2. Chris, 'looking in Eastside under $600k'. 3 matching listings from your sheet. Draft ready.\n\nBoth added to your Leads sheet."
+msgstr "**2 new leads**\n\n1. Maya, 14 Oak St listing, pre-approved. Showing times offered: Sat 11:00 or Sun 15:00. Draft ready.\n2. Chris, 'looking in Eastside under $600k'. 3 matching listings from your sheet. Draft ready.\n\nBoth added to your Leads sheet."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Books tidy-up"
+msgstr "Books tidy-up"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Sorts uncategorized transactions and lists missing receipts"
+msgstr "Sorts uncategorized transactions and lists missing receipts"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**28 transactions to sort, 24 suggested**\n\n- 18 software and ads, matched to past categories\n- 6 meals and travel\n- 4 unclear: listed below with questions\n\nMissing receipts: 3. Reminder drafted to you."
+msgstr "**28 transactions to sort, 24 suggested**\n\n- 18 software and ads, matched to past categories\n- 6 meals and travel\n- 4 unclear: listed below with questions\n\nMissing receipts: 3. Reminder drafted to you."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Content repurposer"
+msgstr "Content repurposer"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Turns your latest video into posts for every channel"
+msgstr "Turns your latest video into posts for every channel"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**From your video: '5 mistakes new runners make'**\n\n- X thread: 6 posts\n- LinkedIn post: 180 words\n- Instagram caption with 8 hashtags\n- 3 short clip ideas with timestamps\n\nAll saved to your Content calendar in Notion. Nothing posted."
+msgstr "**From your video: '5 mistakes new runners make'**\n\n- X thread: 6 posts\n- LinkedIn post: 180 words\n- Instagram caption with 8 hashtags\n- 3 short clip ideas with timestamps\n\nAll saved to your Content calendar in Notion. Nothing posted."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Client report"
+msgstr "Client report"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "A weekly marketing report per client, with a draft email"
+msgstr "A weekly marketing report per client, with a draft email"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery: week of 10 Nov**\n\n- Visits 4,210 (+8%), orders from search 61 (+14%)\n- Top page: Holiday cakes, 1,020 visits\n- Search: 'custom cakes near me' moved from 9th to 4th\n- Next: add a holiday FAQ page\n\nReport doc and email draft saved."
+msgstr "**Bluebird Bakery: week of 10 Nov**\n\n- Visits 4,210 (+8%), orders from search 61 (+14%)\n- Top page: Holiday cakes, 1,020 visits\n- Search: 'custom cakes near me' moved from 9th to 4th\n- Next: add a holiday FAQ page\n\nReport doc and email draft saved."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Candidate outreach"
+msgstr "Candidate outreach"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Personal outreach drafts and interview times for your shortlist"
+msgstr "Personal outreach drafts and interview times for your shortlist"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Senior designer role: 6 candidates**\n\n- 4 outreach drafts, each naming one thing from their portfolio\n- 2 replied yes: interview times offered (Tue 11:00, Wed 15:00)\n\nPipeline sheet updated. Nothing sent."
+msgstr "**Senior designer role: 6 candidates**\n\n- 4 outreach drafts, each naming one thing from their portfolio\n- 2 replied yes: interview times offered (Tue 11:00, Wed 15:00)\n\nPipeline sheet updated. Nothing sent."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Job hunt"
+msgstr "Job hunt"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Finds fitting jobs, tailors your CV, and tracks applications"
+msgstr "Finds fitting jobs, tailors your CV, and tracks applications"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**5 new jobs that fit**\n\n1. Product Designer, Lumen (remote, $120-140k). Cover letter drafted.\n2. UX Lead, Kite Labs (NYC). CV tailored: Kite Labs CV (Docs).\n3. Follow-up due: Northwind, applied 8 days ago. Draft ready.\n\nTracker sheet updated."
+msgstr "**5 new jobs that fit**\n\n1. Product Designer, Lumen (remote, $120-140k). Cover letter drafted.\n2. UX Lead, Kite Labs (NYC). CV tailored: Kite Labs CV (Docs).\n3. Follow-up due: Northwind, applied 8 days ago. Draft ready.\n\nTracker sheet updated."
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Meeting notes"
+msgstr "Meeting notes"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "Notes, decisions and follow-ups from every call, kept on your computer"
+msgstr "Notes, decisions and follow-ups from every call, kept on your computer"
+
+#: apps/mobile/lib/bots/bot-template-copy.ts
+#: apps/web/src/components/bot-templates/bot-template-copy.ts
+msgid "**Bluebird Bakery check-in, Thu 10:00**\n\n**Decisions**\n- Online ordering goes ahead on the store app\n\n**Action items**\n- You: send the setup quote by Friday\n- You: share the analytics report on Monday\n\n**Open**: delivery zones at launch or January?\n\nRecap email drafted. Next check-in Thu 10:00 waits for your OK."
+msgstr "**Bluebird Bakery check-in, Thu 10:00**\n\n**Decisions**\n- Online ordering goes ahead on the store app\n\n**Action items**\n- You: send the setup quote by Friday\n- You: share the analytics report on Monday\n\n**Open**: delivery zones at launch or January?\n\nRecap email drafted. Next check-in Thu 10:00 waits for your OK."
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "What do you do?"
+msgstr "What do you do?"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Local business"
+msgstr "Local business"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Online store"
+msgstr "Online store"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Freelancer"
+msgstr "Freelancer"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Sales"
+msgstr "Sales"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Real estate"
+msgstr "Real estate"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Bookkeeping"
+msgstr "Bookkeeping"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Consultant or agency"
+msgstr "Consultant or agency"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Creator"
+msgstr "Creator"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Recruiting"
+msgstr "Recruiting"
+
+#: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
+msgid "Looking for work"
+msgstr "Looking for work"
