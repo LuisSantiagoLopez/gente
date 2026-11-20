@@ -5892,6 +5892,11 @@ msgstr "請先取得同意，再錄製會議並與此空間共用文字紀錄。
 msgid "Getting ready"
 msgstr "正在準備"
 
+#. js-lingui-explicit-id
+#: packages/i18n/src/run-error.ts
+msgid "Getting your AI ready again…"
+msgstr "正在重新準備你的 AI…"
+
 #: apps/mobile/lib/routines/routine.ts
 #: apps/web/src/pages/routines/routine-editor/add-trigger-menu.tsx
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx

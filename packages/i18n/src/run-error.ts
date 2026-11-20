@@ -104,6 +104,12 @@ export const translateRunError: RunErrorTranslator = (message, values) => {
           "This server's tool result does not fit the model. Turn off Keep tool results whole for that server, or choose another model.",
         values,
       });
+    case "Getting your AI ready again…":
+      return i18n._({
+        id: "Getting your AI ready again…",
+        message: "Getting your AI ready again…",
+        values,
+      });
     case "{provider} took too long to respond. Try again.":
       return i18n._({
         id: "{provider} took too long to respond. Try again.",

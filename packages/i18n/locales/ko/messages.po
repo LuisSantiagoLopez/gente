@@ -5891,6 +5891,11 @@ msgstr "녹음하고 대화 기록을 이 스페이스와 공유하려면 동의
 msgid "Getting ready"
 msgstr "준비 중"
 
+#. js-lingui-explicit-id
+#: packages/i18n/src/run-error.ts
+msgid "Getting your AI ready again…"
+msgstr "AI를 다시 준비하는 중…"
+
 #: apps/mobile/lib/routines/routine.ts
 #: apps/web/src/pages/routines/routine-editor/add-trigger-menu.tsx
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx

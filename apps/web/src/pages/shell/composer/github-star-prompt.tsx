@@ -9,6 +9,7 @@ export const STAR_PROMPT_DISMISSED_KEY = "rakazo.githubStarPrompt.dismissed";
 const REPOSITORY_URL = "https://github.com/elie222/rakazo";
 const MESSAGES_BEFORE_ASKING = 5;
 const TOAST_ID = "github-star-prompt";
+const GENTE_NO_STAR_PROMPT = true;
 
 let shownThisSession = false;
 
@@ -20,6 +21,8 @@ function dismiss() {
 
 /** Counts a sent message and, after five, asks once for a GitHub star until dismissed. */
 export function recordMessageSent(): void {
+  // Gente (QA-024): no "star us on GitHub" prompt for people using the app.
+  if (GENTE_NO_STAR_PROMPT) return;
   if (shownThisSession) return;
   try {
     if (localStorage.getItem(STAR_PROMPT_DISMISSED_KEY) !== null) return;
