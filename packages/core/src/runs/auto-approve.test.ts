@@ -1,26 +1,74 @@
 import type { AutoApproveLimits } from "@rakazo/contracts";
 import { DEFAULT_AUTO_APPROVE_LIMITS } from "@rakazo/contracts";
 import { describe, expect, it } from "vitest";
-import { actionRecipients, autoApproveCovers, pageAmount } from "./auto-approve.js";
+import { actionRecipients, alwaysAskCategory, autoApproveCovers } from "./auto-approve.js";
 
 const limits: AutoApproveLimits = {
   enabled: true,
-  maxAmountMinor: 5_000,
+  perTaskMinor: 5_000,
+  perMonthMinor: 20_000,
   currency: "usd",
   contacts: ["maria@example.com"],
   apps: ["googlecalendar"],
 };
-const owner = { tainted: false, mandatory: false };
+const nothingSpent = { task: 0, month: 0 };
+const owner = { tainted: false, mandatory: false, spent: nothingSpent };
+const pay = (minor: number, currency = "usd") => ({
+  recipients: [],
+  connectorKinds: [],
+  payment: { minor, currency },
+});
+
+describe("alwaysAskCategory", () => {
+  const kind = (toolName: string, slugs: string[] = [], recipients: string[] = []) =>
+    alwaysAskCategory({ toolName, slugs, recipients, pays: false, deletesInBulk: false });
+
+  it("finds the four kinds in built-ins and connector actions", () => {
+    expect(kind("paid_request")).toBe("spend");
+    expect(kind("x", ["STRIPE_CREATE_CHARGE"])).toBe("spend");
+    expect(kind("send_email")).toBe("send");
+    expect(kind("x", ["GMAIL_SEND_EMAIL"])).toBe("send");
+    expect(kind("x", ["SLACK_POST_MESSAGE"])).toBe("send");
+    expect(kind("delete_email")).toBe("delete");
+    expect(kind("x", ["GMAIL_DELETE_MESSAGE"])).toBe("delete");
+    expect(kind("x", ["DOCUSIGN_SIGN_ENVELOPE"])).toBe("legal");
+    expect(
+      alwaysAskCategory({
+        toolName: "browser_act",
+        slugs: [],
+        recipients: [],
+        pays: true,
+        deletesInBulk: false,
+      }),
+    ).toBe("spend");
+    expect(
+      alwaysAskCategory({
+        toolName: "shell",
+        slugs: [],
+        recipients: [],
+        pays: false,
+        deletesInBulk: true,
+      }),
+    ).toBe("delete");
+  });
+
+  it("counts a connector write that invites people as a send", () => {
+    expect(kind("x", ["GOOGLECALENDAR_CREATE_EVENT"], ["ana@example.com"])).toBe("send");
+    expect(kind("x", ["GOOGLECALENDAR_CREATE_EVENT"])).toBeUndefined();
+  });
+
+  it("leaves reads and other work alone", () => {
+    expect(kind("x", ["GMAIL_FETCH_MESSAGE_BY_THREAD_ID"])).toBeUndefined();
+    expect(kind("x", ["REDDIT_GET_POST"])).toBeUndefined();
+    expect(kind("schedule_create")).toBeUndefined();
+    expect(kind("archive_bot")).toBeUndefined();
+    expect(kind("write_file")).toBeUndefined();
+  });
+});
 
 describe("autoApproveCovers", () => {
   it("passes nothing by default", () => {
-    expect(
-      autoApproveCovers(
-        DEFAULT_AUTO_APPROVE_LIMITS,
-        { recipients: [], connectorKinds: [], payment: { minor: 1, currency: "usd" } },
-        owner,
-      ),
-    ).toBe(false);
+    expect(autoApproveCovers(DEFAULT_AUTO_APPROVE_LIMITS, pay(1), owner)).toBe(false);
     expect(
       autoApproveCovers(
         undefined,
@@ -30,22 +78,28 @@ describe("autoApproveCovers", () => {
     ).toBe(false);
   });
 
-  it("passes a purchase up to the amount in the same currency only", () => {
-    const pay = (minor: number, currency = "usd") => ({
-      recipients: [],
-      connectorKinds: [],
-      payment: { minor, currency },
-    });
+  it("passes a spend only while this task and this month stay within the caps", () => {
     expect(autoApproveCovers(limits, pay(5_000), owner)).toBe(true);
     expect(autoApproveCovers(limits, pay(5_001), owner)).toBe(false);
+    expect(
+      autoApproveCovers(limits, pay(2_000), { ...owner, spent: { task: 3_500, month: 0 } }),
+    ).toBe(false);
+    expect(
+      autoApproveCovers(limits, pay(2_000), { ...owner, spent: { task: 0, month: 19_000 } }),
+    ).toBe(false);
     expect(autoApproveCovers(limits, pay(100, "eur"), owner)).toBe(false);
+  });
+
+  it("never passes a spend with an unknown amount, unknown spending or a missing cap", () => {
     expect(
       autoApproveCovers(limits, { recipients: [], connectorKinds: [], payment: "unknown" }, owner),
     ).toBe(false);
-    expect(autoApproveCovers({ ...limits, maxAmountMinor: null }, pay(1), owner)).toBe(false);
+    expect(autoApproveCovers(limits, pay(1), { tainted: false, mandatory: false })).toBe(false);
+    expect(autoApproveCovers({ ...limits, perMonthMinor: null }, pay(1), owner)).toBe(false);
+    expect(autoApproveCovers({ ...limits, perTaskMinor: null }, pay(1), owner)).toBe(false);
   });
 
-  it("never lets an allowed app skip the amount", () => {
+  it("never lets a trusted app skip the caps", () => {
     expect(
       autoApproveCovers(
         limits,
@@ -59,27 +113,16 @@ describe("autoApproveCovers", () => {
     ).toBe(false);
   });
 
-  it("passes sends only when every recipient is a listed contact", () => {
-    expect(
-      autoApproveCovers(
-        limits,
-        { recipients: ["Maria@Example.com"], connectorKinds: ["gmail"] },
-        owner,
-      ),
-    ).toBe(true);
-    expect(
-      autoApproveCovers(
-        limits,
-        { recipients: ["maria@example.com", "other@example.com"], connectorKinds: ["gmail"] },
-        owner,
-      ),
-    ).toBe(false);
-    expect(autoApproveCovers(limits, { recipients: [], connectorKinds: ["gmail"] }, owner)).toBe(
+  it("passes sends only when every recipient is a trusted contact", () => {
+    const send = (recipients: string[]) => ({ recipients, connectorKinds: ["gmail"] });
+    expect(autoApproveCovers(limits, send(["Maria@Example.com"]), owner)).toBe(true);
+    expect(autoApproveCovers(limits, send(["maria@example.com", "other@example.com"]), owner)).toBe(
       false,
     );
+    expect(autoApproveCovers(limits, send([]), owner)).toBe(false);
   });
 
-  it("passes any action in a listed app", () => {
+  it("passes any action in a trusted app, and only when every app is trusted", () => {
     expect(
       autoApproveCovers(
         limits,
@@ -98,8 +141,8 @@ describe("autoApproveCovers", () => {
 
   it("never covers a run outside content entered, or an action that always needs a person", () => {
     const send = { recipients: ["maria@example.com"], connectorKinds: [] };
-    expect(autoApproveCovers(limits, send, { tainted: true, mandatory: false })).toBe(false);
-    expect(autoApproveCovers(limits, send, { tainted: false, mandatory: true })).toBe(false);
+    expect(autoApproveCovers(limits, send, { ...owner, tainted: true })).toBe(false);
+    expect(autoApproveCovers(limits, send, { ...owner, mandatory: true })).toBe(false);
   });
 });
 
@@ -122,21 +165,5 @@ describe("actionRecipients", () => {
 
   it("keeps a recipient that is not an address so it never matches a contact", () => {
     expect(actionRecipients({ recipient_email: "Maria" })).toEqual(["Maria"]);
-  });
-});
-
-describe("pageAmount", () => {
-  it("reads common page amounts", () => {
-    expect(pageAmount("$165.00")).toEqual({ minor: 16_500, currency: "usd" });
-    expect(pageAmount("$1,234.50")).toEqual({ minor: 123_450, currency: "usd" });
-    expect(pageAmount("12,00 €")).toEqual({ minor: 1_200, currency: "eur" });
-    expect(pageAmount("EUR 1.299,99")).toEqual({ minor: 129_999, currency: "eur" });
-    expect(pageAmount("£7")).toEqual({ minor: 700, currency: "gbp" });
-  });
-
-  it("is unknown for anything else", () => {
-    expect(pageAmount("")).toBe("unknown");
-    expect(pageAmount("Free")).toBe("unknown");
-    expect(pageAmount("$")).toBe("unknown");
   });
 });

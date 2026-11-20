@@ -495,6 +495,28 @@ describe("planActionGate", () => {
     expect(gate("ask")).toBe("ask");
   });
 
+  it("asks a person for the four always-ask kinds in every mode, Never ask included", () => {
+    for (const kind of ["spend", "send", "delete", "legal"] as const) {
+      for (const mode of ["never", "auto", "ask"] as const) {
+        expect(gate(mode, { alwaysAsk: kind })).toBe("ask");
+        expect(gate(mode, { alwaysAsk: kind, consequential: false })).toBe("ask");
+      }
+      // Never ask still refuses one that someone else could have steered.
+      expect(gate("never", { alwaysAsk: kind, steerable: true })).toBe("deny");
+      expect(gate("never", { alwaysAsk: kind, resolved: blocked })).toBe("deny");
+    }
+  });
+
+  it("lets an Always allow rule pass a send, delete or terms action, never a spend", () => {
+    for (const mode of ["never", "auto", "ask"] as const) {
+      expect(gate(mode, { alwaysAsk: "send", resolved: allowed })).toBe("allow");
+      expect(gate(mode, { alwaysAsk: "delete", resolved: allowed })).toBe("allow");
+      expect(gate(mode, { alwaysAsk: "legal", resolved: allowed })).toBe("allow");
+      expect(gate(mode, { alwaysAsk: "spend", resolved: allowed })).toBe("ask");
+      expect(gate(mode, { alwaysAsk: "send", resolved: allowed, mandatory: true })).toBe("ask");
+    }
+  });
+
   it("asks in Auto when no approval model is set up", () => {
     expect(gate("auto", { checkerConfigured: false })).toBe("ask");
   });

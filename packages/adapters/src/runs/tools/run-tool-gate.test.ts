@@ -270,3 +270,90 @@ describe("gateToolCall: deleting files from the shell", () => {
     }
   });
 });
+
+function call(
+  name: string,
+  args: Record<string, unknown>,
+  options: { neverAsk?: boolean; purchase?: boolean } = {},
+) {
+  const executionId = JSON.stringify(["pi-tool", "main", `call-${name}`]);
+  const request = {
+    name,
+    args,
+    executionId,
+    connectorCall: { tool: name, args, executionId, route: undefined },
+    effectRequest: args,
+    replayEffectToolName: name,
+    heldForApproval: false,
+    settingsChange: false,
+    ignoresAllowRules: false,
+    catalogRemapped: false,
+    purchase: options.purchase
+      ? {
+          steps: [0],
+          site: "shop.example.test",
+          label: "Place order",
+          amount: "$165.00",
+          amountSource: "button",
+        }
+      : undefined,
+  } as unknown as ToolRequest;
+  const ctx = {
+    deps: { prisma: { attempt: { count: async () => 1 } } },
+    run: { id: "run-1", userId: "user-1", spaceId: "space-1", trigger: "user" },
+    runId: "run-1",
+    bot: { id: "bot-1", name: "Helper" },
+    thread: { id: "thread-1" },
+    context: { signal: new AbortController().signal },
+    source: { ownerStartedRun: true },
+    tools: { connector: new Map(), connectedPlugins: [] },
+    state: {
+      tainted: false,
+      effects: { consumedIds: new Set(), counts: new Map(), occurrences: [] },
+    },
+    trust: {
+      receivedOutsideMessage: async () => false,
+      loadApprovalRules: async () => [],
+      loadAutoReviewPreference: async () => ({
+        enabled: false,
+        skipApprovals: Boolean(options.neverAsk),
+      }),
+    },
+  };
+  return gateToolCall(ctx as never, request, undefined).then(
+    (outcome) => outcome,
+    (error: Error) => error.message,
+  );
+}
+
+describe("gateToolCall: Never ask cannot skip the four always-ask kinds", () => {
+  beforeEach(() => {
+    plans.length = 0;
+  });
+
+  const alwaysAsk: Array<[string, string, Record<string, unknown>, { purchase?: boolean }?]> = [
+    ["send", "send_email", { to: ["someone@example.com"], subject: "Hi", text: "Hello" }],
+    ["delete", "delete_email", { ids: ["e1"] }],
+    ["delete", "shell", { command: "rm -rf shared/" }],
+    ["delete", "forget_memory", { text: "favorite color" }],
+    ["spend", "browser_act", { actions: [{ kind: "click", ref: "e4" }] }, { purchase: true }],
+  ];
+
+  for (const [kind, name, args, extra] of alwaysAsk) {
+    it(`asks before ${name} (${kind}) even in Never ask`, async () => {
+      await call(name, args, { neverAsk: true, ...extra });
+      expect(plans).toEqual(["ask"]);
+    });
+  }
+
+  it("still runs everything else without asking in Never ask", async () => {
+    for (const [name, args] of [
+      ["shell", { command: "python3 app.py" }],
+      ["archive_bot", { bot_id: "bot-2", confirm_name: "bre" }],
+    ] as const) {
+      plans.length = 0;
+      await call(name, args, { neverAsk: true });
+      expect(plans).toEqual(["allow"]);
+    }
+  });
+});

@@ -15,15 +15,19 @@ export const ApprovalModeSchema = z.enum(["never", "auto", "ask"]);
 export type ApprovalMode = z.infer<typeof ApprovalModeSchema>;
 
 /**
- * Approvals the owner lets pass by themselves, within limits: a purchase up to an amount, a send
- * or invite only to listed contacts, or any action in a listed connected app (a purchase there
- * still has to fit the amount). Off unless the owner turns it on. It never covers a run that
- * outside content entered, or an action that always needs a person.
+ * Four kinds of action always ask a person, in every approval mode including Never ask:
+ * spending money, sending as the owner to other people, deleting the owner's data, and accepting
+ * legal terms. These limits are the only way one passes by itself: a spend that keeps this task's
+ * and this month's spending within the caps, a send or invite only to trusted contacts, or any
+ * action in a trusted app (a spend there still has to fit the caps). Off unless the owner turns it
+ * on, and never once outside content entered the run.
  */
 export const AutoApproveLimitsSchema = z.object({
   enabled: z.boolean(),
-  /** Largest purchase that passes, in the currency's minor unit (cents); null passes none. */
-  maxAmountMinor: z.number().int().min(0).max(1_000_000).nullable(),
+  /** Most one task (run) may spend without asking, in the currency's minor unit; null: none. */
+  perTaskMinor: z.number().int().min(0).max(1_000_000).nullable(),
+  /** Most a calendar month may spend without asking, in minor units; null: none. */
+  perMonthMinor: z.number().int().min(0).max(10_000_000).nullable(),
   currency: z.string().regex(/^[a-z]{3}$/),
   /** Email addresses a send or invite may go to without asking. */
   contacts: z.array(z.string().trim().toLowerCase().email().max(254)).max(50),
@@ -33,7 +37,8 @@ export const AutoApproveLimitsSchema = z.object({
 export type AutoApproveLimits = z.infer<typeof AutoApproveLimitsSchema>;
 export const DEFAULT_AUTO_APPROVE_LIMITS: AutoApproveLimits = {
   enabled: false,
-  maxAmountMinor: null,
+  perTaskMinor: null,
+  perMonthMinor: null,
   currency: "usd",
   contacts: [],
   apps: [],

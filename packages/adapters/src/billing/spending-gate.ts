@@ -18,25 +18,31 @@ export function spendingRefusalError(refusal: PaymentRefusal): string {
 type Run = { userId: string; spaceId: string; botId: string; threadId: string };
 
 /**
- * A pay click as a payment: the page's host and the larger of the amount the card showed and the
- * page's total, since a button can name less than the checkout charges. Null when unreadable.
+ * What a pay click spends: the larger of the amount the card showed and the page's total, since a
+ * button can name less than the checkout charges. Unknown when either is unreadable.
  */
-function pagePayment(run: Run, purchase: PurchaseApproval, operationKey: string): PaymentInput {
+export function pagePaymentAmount(
+  purchase: PurchaseApproval,
+): { minor: number; currency: string } | "unknown" {
   const amounts = purchase.site
     ? [purchase.amount, purchase.total ?? ""].filter(Boolean).map(parsePageAmount)
     : [];
   const read = amounts.length && amounts.every(Boolean) ? amounts.map((amount) => amount!) : [];
   const currency = read[0]?.currency;
-  const counted =
-    read.length && read.every((amount) => amount.currency === currency)
-      ? Math.max(...read.map((amount) => amount.amount))
-      : null;
+  return currency && read.every((amount) => amount.currency === currency)
+    ? { minor: Math.max(...read.map((amount) => amount.amount)), currency }
+    : "unknown";
+}
+
+/** A pay click as a payment on the page's host. Null amount when unreadable. */
+function pagePayment(run: Run, purchase: PurchaseApproval, operationKey: string): PaymentInput {
+  const paid = pagePaymentAmount(purchase);
   return {
     operationKey,
     ...run,
     site: purchase.site,
-    amount: counted,
-    currency: counted === null ? null : (currency ?? null),
+    amount: paid === "unknown" ? null : paid.minor,
+    currency: paid === "unknown" ? null : paid.currency,
   };
 }
 

@@ -99,6 +99,35 @@ function judge(
 }
 
 /** Whether a payment would be refused now. Nothing is recorded: `recordPayment` decides for good. */
+/**
+ * What this task (payments in its thread since the run began) and this calendar month, in the
+ * user's timezone, already spent in one currency, for the owner's auto-approve caps. Released
+ * payments never went through and do not count.
+ */
+export async function spentForAutoApprove(
+  prisma: Pick<SpendingClient, "payment" | "user">,
+  input: { userId: string; threadId: string; runStartedAt: Date; currency: string },
+  now = new Date(),
+): Promise<{ task: number; month: number }> {
+  const user = await prisma.user.findUnique({
+    where: { id: input.userId },
+    select: { timezone: true },
+  });
+  const monthStart = spendingPeriodStart("month", now, user?.timezone, now);
+  const where = { userId: input.userId, currency: input.currency, releasedAt: null };
+  const [task, month] = await Promise.all([
+    prisma.payment.aggregate({
+      _sum: { amount: true },
+      where: { ...where, threadId: input.threadId, createdAt: { gte: input.runStartedAt } },
+    }),
+    prisma.payment.aggregate({
+      _sum: { amount: true },
+      where: { ...where, createdAt: { gte: monthStart } },
+    }),
+  ]);
+  return { task: task._sum.amount ?? 0, month: month._sum.amount ?? 0 };
+}
+
 export async function checkPayment(
   prisma: Pick<SpendingClient, "spendingLimit" | "payment" | "user">,
   input: Pick<PaymentInput, "userId" | "amount" | "currency">,
