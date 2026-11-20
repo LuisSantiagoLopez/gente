@@ -587,3 +587,14 @@ describe("JOB_DRAIN_TIMEOUT_MS", () => {
     },
   );
 });
+
+describe("maintenance job concurrency", () => {
+  it("never runs more maintenance jobs at once than the pool has connections", async () => {
+    const { maintenanceConcurrency } = await import("./wakeup.js");
+    expect(maintenanceConcurrency(8)).toBe(8);
+    expect(maintenanceConcurrency(24)).toBe(24);
+    expect(maintenanceConcurrency(500)).toBe(100);
+    expect(maintenanceConcurrency(undefined)).toBe(10);
+    expect(maintenanceConcurrency(0)).toBe(1);
+  });
+});
