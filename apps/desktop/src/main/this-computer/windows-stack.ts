@@ -142,6 +142,8 @@ export interface WindowsStackDeps {
   portFree?: (port: number) => Promise<boolean>;
   allocatePort?: () => Promise<number>;
   healthTimeoutMs?: number;
+  /** win32 or darwin; defaults to this computer's. */
+  platform?: string;
   /** The archive tool; Windows 10 and 11 ship bsdtar as tar.exe, which reads zip files. */
   tar?: string;
   installServer?: (
@@ -181,7 +183,7 @@ export async function installWindowsServerBundle(
 }
 
 /** Postgres's own programs inside the bundle. */
-export function postgresBin(serverDir: string, program: string, platform = process.platform) {
+export function postgresBin(serverDir: string, program: string, platform: string = process.platform) {
   return path.join(serverDir, "postgres", "bin", platform === "win32" ? `${program}.exe` : program);
 }
 
@@ -209,6 +211,10 @@ export class WindowsStackController extends StackLifecycle {
   /** Set once the bundle is unpacked, so a stop can ask Postgres to shut down cleanly. */
   private serverDir: string | null = null;
   private postgresUp = false;
+
+  private get platform() {
+    return this.deps.platform ?? process.platform;
+  }
 
   constructor(private readonly deps: WindowsStackDeps) {
     super(deps.imageTag, deps.localWebUrl, deps.onState);
@@ -345,7 +351,7 @@ export class WindowsStackController extends StackLifecycle {
       await writeFile(pwfile, password, { mode: 0o600 });
       try {
         const init = await this.runTool(
-          postgresBin(server.dir, "initdb"),
+          postgresBin(server.dir, "initdb", this.platform),
           ["-D", pgdata, "-U", OWNER, "-E", "UTF8", "--locale=C", "-A", "scram-sha-256", `--pwfile=${pwfile}`],
           this.baseEnv(),
           signal,
@@ -360,7 +366,7 @@ export class WindowsStackController extends StackLifecycle {
     // administrator; a server a crashed launch left running is stopped first.
     await this.stopPostgres(server.dir);
     const started = await this.deps.run(
-      postgresBin(server.dir, "pg_ctl"),
+      postgresBin(server.dir, "pg_ctl", this.platform),
       [
         "start",
         "-D",
@@ -372,7 +378,7 @@ export class WindowsStackController extends StackLifecycle {
         "120",
         "-o",
         // On a Mac the socket goes in the data folder, never a shared /tmp another Postgres uses.
-        process.platform === "win32"
+        this.platform === "win32"
           ? `-p ${ports.postgres} -c listen_addresses=127.0.0.1`
           : `-p ${ports.postgres} -c listen_addresses=127.0.0.1 -k "${pgdata}"`,
       ],
@@ -589,7 +595,7 @@ export class WindowsStackController extends StackLifecycle {
     this.postgresUp = false;
     if (!this.deps.exists(path.join(this.dir("pgdata"), "postmaster.pid"))) return;
     await this.deps
-      .run(postgresBin(serverDir, "pg_ctl"), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
+      .run(postgresBin(serverDir, "pg_ctl", this.platform), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
         cwd: this.deps.stackDir,
         env: this.baseEnv(),
         timeoutMs: 30_000,

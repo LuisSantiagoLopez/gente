@@ -50,6 +50,7 @@ async function setup(options: { pgVersion?: boolean; e2b?: string } = {}) {
     imageTag: "v1.0.0",
     serverBundle: { version: "1" },
     nodeBinary: "C:\\Gente\\Gente.exe",
+    platform: "win32",
     env: { PATH: "C:\\Windows", SystemRoot: "C:\\Windows" },
     run: async (command, args, opts) => {
       calls.push({ command, args, env: opts.env as Record<string, string>, input: opts.input });

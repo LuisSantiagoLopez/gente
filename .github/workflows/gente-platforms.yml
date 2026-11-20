@@ -94,12 +94,20 @@ jobs:
       - name: Smoke test (memory check → setup → sign up → first reply; stand-in model on 11434)
         timeout-minutes: 45
         run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
-      - name: Collect logs
+      - name: Collect logs (stack, Postgres, main-process errors)
         if: always()
         run: |
-          for d in "$APPDATA/Gente" "$APPDATA/Burrow" "$HOME/Library/Application Support/Gente" "$HOME/Library/Application Support/Burrow"; do
-            [ -d "$d/stack/logs" ] && cp -r "$d/stack/logs" "$RUNNER_TEMP/e2e/stack-logs" || true
-            [ -d "$d/logs" ] && cp -r "$d/logs" "$RUNNER_TEMP/e2e/app-logs" || true
+          roaming="$HOME/Library/Application Support"
+          [ -n "$APPDATA" ] && roaming="$(cygpath -u "$APPDATA")"
+          for name in Gente Burrow; do
+            d="$roaming/$name"
+            [ -d "$d" ] || continue
+            echo "data folder: $d"; ls -la "$d" "$d/stack" 2>/dev/null || true
+            [ -d "$d/stack/logs" ] && cp -r "$d/stack/logs" "$RUNNER_TEMP/e2e/stack-logs-$name" || true
+            [ -d "$d/logs" ] && cp -r "$d/logs" "$RUNNER_TEMP/e2e/app-logs-$name" || true
+          done
+          for f in "$RUNNER_TEMP"/e2e/stack-logs-*/*.log "$RUNNER_TEMP"/e2e/app-logs-*/*.log; do
+            [ -f "$f" ] && { echo "== $f"; tail -40 "$f"; } || true
           done
       - name: Step times
         if: always()
