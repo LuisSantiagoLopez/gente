@@ -7,6 +7,7 @@ import {
   ActionApprovalRuleSchema,
   ActionAutoReviewSettingsSchema,
   ApprovalModeSchema,
+  AutoApproveLimitsSchema,
 } from "./approvals.js";
 import {
   CATALOG_SEARCH_QUERY_MAX_LENGTH,
@@ -308,6 +309,7 @@ export const integrationsRpc = {
           mode: ApprovalModeSchema.optional(),
           enabled: z.boolean().optional(),
           skipApprovals: z.boolean().optional(),
+          autoApprove: AutoApproveLimitsSchema.optional(),
         }),
       )
       .output(ActionAutoReviewSettingsSchema),

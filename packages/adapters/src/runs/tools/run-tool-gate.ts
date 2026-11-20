@@ -5,8 +5,10 @@ import type {
   ConnectorCall,
 } from "@rakazo/adapter-kit";
 import {
+  actionRecipients,
   applyJudgeDecision,
   approvalModeFromPreference,
+  autoApproveCovers,
   BACKGROUND_HELPER_TRIGGER,
   batchActions,
   connectorKindFromToolName,
@@ -18,6 +20,7 @@ import {
   humanizeToolName,
   outboundSiteGate,
   outsideRunToolRequiresApproval,
+  pageAmount,
   planActionGate,
   redactSecrets,
   repeatsDeniedAction,
@@ -334,7 +337,8 @@ export async function gateToolCall(
       : ignoresAllowRules && resolvedRules.source === "always_allow"
         ? { ...resolvedRules, source: "default" as const }
         : resolvedRules;
-  const mode = approvalModeFromPreference(await ctx.trust.loadAutoReviewPreference());
+  const preference = await ctx.trust.loadAutoReviewPreference();
+  const mode = approvalModeFromPreference(preference);
   const reviewable = mode === "auto" && !mandatoryInAnyRun;
   const injectedReview = reviewable ? deps.autoReview : undefined;
   const reviewSettings = !reviewable || injectedReview ? null : await ctx.trust.loadApprovalModel();
@@ -368,7 +372,7 @@ export async function gateToolCall(
             ),
           )
         : false));
-  const plan = USER_COMPUTER_TOOLS.has(name)
+  const plannedGate = USER_COMPUTER_TOOLS.has(name)
     ? await userComputerGate(ctx, approvalResolved.decision === "deny", name, args, mode)
     : planActionGate({
         resolved: approvalResolved,
@@ -384,6 +388,37 @@ export async function gateToolCall(
         newDestination: siteGate === "new",
         purchase: paying,
       });
+  // The owner's auto-approve limits pass an approval that fits them: a purchase up to an amount,
+  // a send only to listed contacts, or an action in a listed app. Never on the owner's own
+  // computer, for an unattended watch, or once outside content entered the run.
+  const autoApproved =
+    (plannedGate === "ask" || plannedGate === "judge") &&
+    preference.autoApprove?.enabled === true &&
+    !USER_COMPUTER_TOOLS.has(name) &&
+    siteGate !== "new" &&
+    !(await isRunTainted(ctx)) &&
+    autoApproveCovers(
+      preference.autoApprove,
+      {
+        recipients: actionRecipients(args),
+        connectorKinds: viaConnector
+          ? approvalToolNames.map((toolName) =>
+              connectorKindFromToolName(toolName, connectorProviders),
+            )
+          : [],
+        payment: paying ? (purchase ? pageAmount(purchase.amount) : "unknown") : undefined,
+      },
+      {
+        tainted: false,
+        mandatory:
+          unattendedWatch ||
+          toolRequiresExplicitApproval(name) ||
+          Boolean(cardUse) ||
+          Boolean(loginUse),
+      },
+    );
+  const plan = autoApproved ? "allow" : plannedGate;
+  if (autoApproved) await auditToolCall(ctx, name, "success", { reason: "auto_approved" });
   if (plan === "deny") {
     await auditToolCall(ctx, name, "denied", {
       reason: approvalResolved.decision === "deny" ? "rule" : "never_asks",

@@ -47,6 +47,7 @@ import {
   saveApprovalRule,
   saveAutoReviewPreference,
   selectVoicePreference,
+  storedAutoApproveLimits,
   voicePreferenceTarget,
   withTransactionRetry,
 } from "@rakazo/db";
@@ -376,9 +377,12 @@ export function accountRoutes(ctx: RouterContext) {
           saveAutoReviewPreference(
             tx,
             context.actor,
-            input.mode
-              ? approvalPreferenceFromMode(input.mode)
-              : { enabled: input.enabled, skipApprovals: input.skipApprovals },
+            {
+              ...(input.mode
+                ? approvalPreferenceFromMode(input.mode)
+                : { enabled: input.enabled, skipApprovals: input.skipApprovals }),
+              ...(input.autoApprove ? { autoApprove: input.autoApprove } : {}),
+            },
             { enabled: true, skipApprovals: false },
             input.scope,
           ),
@@ -701,7 +705,11 @@ async function loadAutoReviewSettings(deps: RouterDeps, actor: Actor, scope?: Se
     enabled: preference?.enabled ?? true,
     skipApprovals: preference?.skipApprovals ?? false,
   };
-  const settings = { ...stored, mode: approvalModeFromPreference(stored) };
+  const autoApprove = storedAutoApproveLimits(preference?.autoApprove, {
+    table: "auto_review_preferences",
+    id: `${actor.spaceId}:${actor.userId}`,
+  });
+  const settings = { ...stored, mode: approvalModeFromPreference(stored), autoApprove };
   const deploymentChecker = role.primarySource === "deployment" ? role.primary : null;
   const memberChoices = [
     ...(deploymentChecker || !role.primary ? [] : [role.primary]),

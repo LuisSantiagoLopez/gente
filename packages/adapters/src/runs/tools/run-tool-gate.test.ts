@@ -1,5 +1,6 @@
 import type * as Core from "@rakazo/core";
 import type * as Db from "@rakazo/db";
+import { recordAuditEvent } from "@rakazo/db";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { gateToolCall } from "./run-tool-gate.js";
 import type { ToolRequest } from "./run-tool-request.js";
@@ -123,5 +124,90 @@ describe("gateToolCall: a login that asks first", () => {
     expect(await gate({ rule: "deny" })).toEqual({
       result: { error: expect.stringContaining("is blocked in this space") },
     });
+  });
+});
+
+const limits = {
+  enabled: true,
+  maxAmountMinor: 2_000,
+  currency: "usd",
+  contacts: ["maria@example.com"],
+  apps: [],
+};
+
+function sendEmail(to: string[], options: { autoApprove?: typeof limits; tainted?: boolean }) {
+  const args = { to, subject: "Hi", text: "See you at 8" };
+  const executionId = JSON.stringify(["pi-tool", "main", "call-2"]);
+  const request = {
+    name: "send_email",
+    args,
+    executionId,
+    connectorCall: { tool: "send_email", args, executionId, route: undefined },
+    effectRequest: args,
+    replayEffectToolName: "send_email",
+    heldForApproval: false,
+    settingsChange: false,
+    ignoresAllowRules: false,
+    catalogRemapped: false,
+  } as unknown as ToolRequest;
+  const ctx = {
+    deps: { prisma: { attempt: { count: async () => 1 } } },
+    run: { id: "run-1", userId: "user-1", spaceId: "space-1", trigger: "user" },
+    runId: "run-1",
+    bot: { id: "bot-1", name: "Helper" },
+    thread: { id: "thread-1" },
+    context: { signal: new AbortController().signal },
+    source: { ownerStartedRun: true },
+    tools: { connector: new Map(), connectedPlugins: [] },
+    state: {
+      tainted: Boolean(options.tainted),
+      effects: { consumedIds: new Set(), counts: new Map(), occurrences: [] },
+    },
+    trust: {
+      receivedOutsideMessage: async () => false,
+      loadApprovalRules: async () => [],
+      loadAutoReviewPreference: async () => ({
+        enabled: false,
+        skipApprovals: false,
+        ...(options.autoApprove ? { autoApprove: options.autoApprove } : {}),
+      }),
+    },
+  };
+  return gateToolCall(ctx as never, request, undefined).then(
+    (outcome) => outcome,
+    (error: Error) => error.message,
+  );
+}
+
+const autoApprovedAudits = () =>
+  vi
+    .mocked(recordAuditEvent)
+    .mock.calls.filter(([event]) => event.metadata?.reason === "auto_approved").length;
+
+describe("gateToolCall: the owner's auto-approve limits", () => {
+  beforeEach(() => {
+    plans.length = 0;
+    vi.mocked(recordAuditEvent).mockClear();
+  });
+
+  it("asks for a send when the limits are off, as before", async () => {
+    await sendEmail(["maria@example.com"], {});
+    expect(plans).toEqual(["ask"]);
+    expect(autoApprovedAudits()).toBe(0);
+  });
+
+  it("passes a send to a listed contact by itself", async () => {
+    await sendEmail(["maria@example.com"], { autoApprove: limits });
+    expect(autoApprovedAudits()).toBe(1);
+  });
+
+  it("still asks for a send that reaches anyone not listed", async () => {
+    await sendEmail(["maria@example.com", "someone@example.com"], { autoApprove: limits });
+    expect(autoApprovedAudits()).toBe(0);
+  });
+
+  it("still asks once outside content entered the run", async () => {
+    await sendEmail(["maria@example.com"], { autoApprove: limits, tainted: true });
+    expect(autoApprovedAudits()).toBe(0);
   });
 });
