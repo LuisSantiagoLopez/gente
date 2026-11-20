@@ -105,6 +105,7 @@ export function createDb(
     ...DATABASE_KEEPALIVE,
   });
   keyPool.on("error", () => undefined);
+  installConnectRetry(keyPool);
   installDbContext(keyPool);
   installSaturationReport(keyPool, keyPool.options.application_name);
   const end = pool.end.bind(pool) as () => Promise<void>;
@@ -231,18 +232,42 @@ export async function retryOnTooManyConnections<T>(
   options: {
     attempts?: number;
     sleep?: (ms: number) => Promise<void>;
+    /** Gente: also retry other errors a fresh connection attempt can fix. */
+    retryable?: (error: unknown) => boolean;
   } = {},
 ): Promise<T> {
   const attempts = options.attempts ?? CONNECT_RETRY_ATTEMPTS;
+  const retryable = options.retryable ?? isTooManyDatabaseConnections;
   const sleep = options.sleep ?? ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
   for (let attempt = 0; ; attempt += 1) {
     try {
       return await operation();
     } catch (error) {
-      if (!isTooManyDatabaseConnections(error) || attempt >= attempts - 1) throw error;
+      if (!retryable(error) || attempt >= attempts - 1) throw error;
       await sleep(Math.min(5_000, 200 * 2 ** attempt));
     }
   }
+}
+
+/**
+ * Gente: a refused or reset connection while opening one is safe to retry (no query was sent).
+ * Postgres on Windows starts a process per connection; on a slow or emulated PC a burst of new
+ * connections can overflow its listen queue, which Windows answers with a refusal.
+ */
+export function isRefusedAtConnect(error: unknown): boolean {
+  const seen = new Set<unknown>();
+  let current: unknown = error;
+  while (current && typeof current === "object" && !seen.has(current)) {
+    seen.add(current);
+    const code = "code" in current ? current.code : undefined;
+    if (code === "ECONNREFUSED" || code === "ECONNRESET") return true;
+    current = current instanceof Error ? current.cause : undefined;
+  }
+  return false;
+}
+
+function retryableAtConnect(error: unknown): boolean {
+  return isTooManyDatabaseConnections(error) || isRefusedAtConnect(error);
 }
 
 function installConnectRetry(pool: Pool): void {
@@ -259,10 +284,10 @@ function installConnectRetry(pool: Pool): void {
   function connect(): Promise<PoolClient>;
   function connect(callback: ConnectCallback): void;
   function connect(callback?: ConnectCallback): Promise<PoolClient> | undefined {
-    if (!callback) return retryOnTooManyConnections(() => originalConnect());
+    if (!callback) return retryOnTooManyConnections(() => originalConnect(), { retryable: retryableAtConnect });
     const attempt = (n: number) => {
       originalConnect((err, client, done) => {
-        if (err && isTooManyDatabaseConnections(err) && n < CONNECT_RETRY_ATTEMPTS - 1) {
+        if (err && retryableAtConnect(err) && n < CONNECT_RETRY_ATTEMPTS - 1) {
           setTimeout(() => attempt(n + 1), Math.min(5_000, 200 * 2 ** n));
           return;
         }
