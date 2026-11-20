@@ -55,7 +55,7 @@ jobs:
         run: >-
           npx electron-builder --win nsis --${{ matrix.arch }} --publish never
           -c.win.verifyUpdateCodeSignature=false
-          '-c.nsis.artifactName=Your-AI-Setup-${version}${{ matrix.arch == 'x64' && '' || '-arm64' }}.${ext}'
+          '-c.nsis.artifactName=Your-AI-Setup-${version}${{ matrix.arch != 'x64' && '-arm64' || '' }}.${ext}'
       - name: Mac disk image
         if: matrix.kind == 'mac'
         working-directory: apps/desktop
