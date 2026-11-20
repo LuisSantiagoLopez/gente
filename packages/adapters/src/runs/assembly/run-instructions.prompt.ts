@@ -262,6 +262,36 @@ function secretGuidance(disabled?: ReadonlySet<string>): string[] {
   return clauses;
 }
 
+/** Gente: the tool scout line; it names only the tools this run offers. */
+function toolScoutClause(disabled: Parameters<typeof builtinOffered>[0]): string | undefined {
+  if (!builtinOffered(disabled, "connect_app") || !builtinOffered(disabled, "ask_user"))
+    return undefined;
+  const signUp = [
+    builtinOffered(disabled, "request_takeover")
+      ? "the user types passwords and codes through request_takeover"
+      : undefined,
+    builtinOffered(disabled, "request_purchase")
+      ? "payment goes through request_purchase"
+      : undefined,
+    builtinOffered(disabled, "request_secret")
+      ? "an API key is saved with request_secret"
+      : undefined,
+    builtinOffered(disabled, "schedule_create")
+      ? "a trial gets a schedule_create reminder 2 days before it charges"
+      : undefined,
+  ].filter(Boolean);
+  return [
+    "When you lack an ability a task needs, find one instead of giving up: first an app connect_app knows, then an official API or tool on the web.",
+    "Offer the best in one ask_user question: what it is for, the free plan or trial length and price after it.",
+    signUp.length
+      ? `Only after a yes, sign up in the browser; ${
+          signUp.length > 1 ? `${signUp.slice(0, -1).join(", ")}, and ${signUp.at(-1)}` : signUp[0]
+        }.`
+      : "Only after a yes, sign up in the browser.",
+    "Then finish the original task.",
+  ].join(" ");
+}
+
 function scratchpadClause(disabled?: ReadonlySet<string>): string | undefined {
   const pads = ["scratchpad_add", "scratchpad_update", "scratchpad_complete"].filter((name) =>
     builtinOffered(disabled, name),
@@ -346,9 +376,7 @@ function toolUsageLine(parts: {
       ? "Use connect_app when an app needs connecting or the user asks to connect one, then wait for them."
       : undefined,
     // Gente: the tool scout. Terms and money stay with the always-ask approvals.
-    builtinOffered(disabled, "connect_app") && builtinOffered(disabled, "ask_user")
-      ? "When you lack an ability a task needs, find one instead of giving up: first an app connect_app knows, then an official API or tool on the web. Offer the best in one ask_user question: what it is for, the free plan or trial length and price after it. Only after a yes, sign up in the browser; the user types passwords and codes through request_takeover, payment goes through request_purchase, an API key is saved with request_secret, and a trial gets a schedule_create reminder 2 days before it charges. Then finish the original task."
-      : undefined,
+    toolScoutClause(disabled),
     builtinOffered(disabled, "remember") ? "Use remember for durable facts." : undefined,
     scratchpadClause(disabled),
     parts.followUpsOffered ? FOLLOW_UP_INSTRUCTION : undefined,

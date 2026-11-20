@@ -55,6 +55,7 @@ jobs:
           packages/adapters/src/runs/turn/tool-loop.test.ts
           packages/adapters/src/runs/executor/executor-readonly-approval.test.ts
           packages/adapters/src/runs/executor/executor-loop-guard.test.ts
+          packages/adapters/src/runs/executor/executor.test.ts
           packages/adapters/src/tools/builtin-tool-bridge.test.ts
   mac-package:
     runs-on: macos-15
