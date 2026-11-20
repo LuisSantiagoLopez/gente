@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRunRequest } from "@rakazo/adapter-kit";
 import type { MessageBlock } from "@rakazo/contracts";
 import { disabledBuiltinToolSet, modelRoleConnectionId } from "@rakazo/contracts";
@@ -280,9 +281,10 @@ export async function prepareRunComputer(
       computerUse.screenRelease = { computer, context, keepWarm: false };
       recordComputerDisk(deps, storedComputer.id, computer, context);
       scheduleComputerSleep(deps.jobs, storedComputer.id);
-      // Earlier attachments wait for the computer's first use; every start copies them
-      // again, so they need no checkpoint, and each copy logs and skips its own failure.
-      if (artifacts) {
+      // Gente (BENCH-005): a task opens only its own attachments. Earlier turns' files are no
+      // longer copied onto every new computer (a bench task opened the previous task's CSV);
+      // they still arrive when history tools surface them (earlierFiles).
+      if (artifacts && process.env.BURROW_FAST_CHAT !== "on") {
         await materializeRecentThreadFiles({ ...deps, artifacts }, history, historyMessages, {
           ...recentFilesInput,
           computer: async () => computer,
@@ -292,6 +294,11 @@ export async function prepareRunComputer(
     },
     () => runAbortController?.abort(),
   );
+  // Gente (BENCH-005): a turn that brings files, or plainly asks for computer work, starts its
+  // computer now, in parallel with the model's first turn, instead of after it.
+  if (process.env.BURROW_FAST_CHAT === "on" && turnLikelyNeedsComputer(turnBlocks ?? [], currentTurnMessage)) {
+    void runComputer.get().catch(() => undefined);
+  }
   const computerKind =
     (await deps.sandbox.provisionKind?.(storedComputer.homeKey)) ?? storedComputer.kind;
   const workspaceCheckpoint = createRunWorkspaceCheckpoint(
@@ -955,3 +962,16 @@ export async function loadModelFallbacks(
 }
 
 export type ModelFallbacks = Awaited<ReturnType<typeof loadModelFallbacks>>;
+
+const COMPUTER_WORDS =
+  /\b(build|run|install|deploy|website|web site|app|script|spreadsheet|csv|excel|xlsx|pdf|docx|slides|deck|chart|graph|video|convert|resize|compress|scrape|download|zip|unzip|repo|github|terminal|browser|open (the|this|my))\b/i;
+
+/** Files in this turn, or words that mean computer work. */
+export function turnLikelyNeedsComputer(
+  blocks: readonly { kind?: string }[],
+  message: { blocks?: unknown } | null | undefined,
+): boolean {
+  if (blocks.some((block) => block.kind === "file")) return true;
+  const text = JSON.stringify(message?.blocks ?? "");
+  return COMPUTER_WORDS.test(text);
+}
