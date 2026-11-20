@@ -284,6 +284,8 @@ export interface DockerImportTarget {
 export interface NativeStackDeps {
   /** The Telegram bot token the person pasted (OS keychain); replies go out with it. */
   telegramToken?: () => Promise<string | undefined>;
+  /** Gente: where the server searches through Gente Cloud (the desktop app's loopback broker). */
+  searchBroker?: () => { url: string; token: string } | null;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -666,6 +668,7 @@ export class NativeStackController extends StackLifecycle {
       ...(telegramToken
         ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
         : {}),
+      ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
     });
     // Gente: chats are encrypted at rest with a key sealed in the system keychain. Content saved
     // before this release is encrypted once, here, before the server starts; until that pass
@@ -1188,4 +1191,8 @@ export function quoteIdent(name: string): string {
 }
 export function quoteLiteral(value: string): string {
   return `'${value.replaceAll("'", "''")}'`;
+}
+
+function searchBrokerEnv(broker: { url: string; token: string } | null): Record<string, string> {
+  return broker ? { GENTE_SEARCH_URL: broker.url, GENTE_SEARCH_TOKEN: broker.token } : {};
 }

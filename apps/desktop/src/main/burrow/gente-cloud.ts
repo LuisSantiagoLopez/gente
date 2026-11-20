@@ -162,8 +162,9 @@ export function createGenteCloud(options: GenteCloudOptions) {
       }
     },
 
+    /** Search with page text included, so nothing else has to be fetched. */
     search: async (query: string, numResults = 5) =>
-      (await call<unknown>("POST", "/v1/proxy/search", { query, numResults })).data,
+      (await call<unknown>("POST", "/v1/proxy/search", { query, numResults, includeText: true })).data,
 
     /** Where the Composio MCP client points instead of connect.composio.dev with a vendor key. */
     composioMcpUrl: () => `${base}/v1/proxy/composio/mcp`,

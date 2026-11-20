@@ -33,7 +33,10 @@ import { installSessionPermissions } from "./auth/session-permissions.js";
 import { createUserDeviceAccess, deviceName } from "./auth/user-device.js";
 import { moveToFastDefault, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
+import { startSearchBroker } from "./burrow/search-broker.js";
 import {
+  accountCloud,
+  isSignedIn,
   accountState,
   consumeFreeMessage,
   initAccount,
@@ -760,6 +763,13 @@ app.whenReady().then(async () => {
       }
     : undefined;
   initAccount({ sealer, rebuildMenu: () => installApplicationMenu() });
+  // Gente: the server's searches go through Gente Cloud when the person is signed in.
+  let searchBroker: { url: string; token: string } | null = null;
+  void startSearchBroker(accountCloud, isSignedIn)
+    .then((broker) => {
+      searchBroker = broker;
+    })
+    .catch(() => undefined);
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
@@ -841,6 +851,7 @@ app.whenReady().then(async () => {
       composioKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
       cloudComputerKey: () =>
         devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
+      searchBroker: () => searchBroker,
       telegramToken: () => readTelegramToken(),
     });
   };
@@ -889,7 +900,8 @@ app.whenReady().then(async () => {
           composioKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
           cloudComputerKey: () =>
             devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
-          telegramToken: () => readTelegramToken(),
+          searchBroker: () => searchBroker,
+      telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null
         ? await nativeStack(serverBundle)
