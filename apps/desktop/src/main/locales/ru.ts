@@ -268,4 +268,9 @@ export const RU_MESSAGES: Record<string, string> = {
     "Ваш ИИ живёт на вашем компьютере. Ваши чаты никогда его не покидают.",
   "Sign In to Gente…": "Войти в Gente…",
   "Sign Out of Gente": "Выйти из Gente",
+  // Computer use pill
+  "Gente is using your computer": "Gente использует ваш компьютер",
+  "Press {key} to stop": "Нажмите {key}, чтобы остановить",
+  Stop: "Остановить",
+  Stopped: "Остановлено",
 };

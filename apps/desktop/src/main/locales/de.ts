@@ -272,4 +272,9 @@ export const DE_MESSAGES: Record<string, string> = {
     "Deine KI lebt auf deinem Computer. Deine Chats verlassen ihn nie.",
   "Sign In to Gente…": "Bei Gente anmelden…",
   "Sign Out of Gente": "Von Gente abmelden",
+  // Computer use pill
+  "Gente is using your computer": "Gente nutzt deinen Computer",
+  "Press {key} to stop": "Drücke {key} zum Stoppen",
+  Stop: "Stopp",
+  Stopped: "Gestoppt",
 };

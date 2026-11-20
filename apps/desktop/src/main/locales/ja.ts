@@ -232,8 +232,10 @@ export const JA_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "代わりにサーバに接続",
   "Downloading the workspace…": "ワークスペースをダウンロードしています…",
   "Downloads once, then works offline.": "一度ダウンロードすれば、オフラインで使えます。",
-  "Gente couldn't finish getting ready. Press Try again.": "Genteの準備を完了できませんでした。「もう一度試す」を押してください。",
-  "Gente is getting things ready. This takes a moment.": "Genteが準備しています。少しお待ちください。",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Genteの準備を完了できませんでした。「もう一度試す」を押してください。",
+  "Gente is getting things ready. This takes a moment.":
+    "Genteが準備しています。少しお待ちください。",
   "Get started": "はじめる",
   "Getting Gente ready, about a minute left": "Genteを準備中、残り約1分",
   "Getting Gente ready, about {n} min left": "Genteを準備中、残り約{n}分",
@@ -241,13 +243,15 @@ export const JA_MESSAGES: Record<string, string> = {
   "Model choices": "モデルの選択肢",
   "Model download": "モデルのダウンロード",
   "No ads. Ever.": "広告はありません。これからもずっと。",
-  "No usage limits. Message as much as you want.": "利用制限はありません。好きなだけメッセージを送れます。",
+  "No usage limits. Message as much as you want.":
+    "利用制限はありません。好きなだけメッセージを送れます。",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "あなたのデータを読む人も、学習に使う人も、売る人もいません。私たちも、ほかの誰も。",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
     "このMacでは、ワークスペースのためにDocker Desktop(無料アプリ)が必要です。インストールして一度開いてください。",
   "Run on this Mac instead": "代わりにこのMacで動かす",
-  "Runs privately in the background on this Mac.": "このMacのバックグラウンドで、プライベートに動きます。",
+  "Runs privately in the background on this Mac.":
+    "このMacのバックグラウンドで、プライベートに動きます。",
   "Something went wrong.": "問題が発生しました。",
   "Starting the workspace…": "ワークスペースを起動しています…",
   "Switched to {name} for your computer ({from} could not run here).":
@@ -267,4 +271,9 @@ export const JA_MESSAGES: Record<string, string> = {
     "あなたのAIはあなたのコンピュータの中にあります。チャットが外に出ることはありません。",
   "Sign In to Gente…": "Gente にサインイン…",
   "Sign Out of Gente": "Gente からサインアウト",
+  // Computer use pill
+  "Gente is using your computer": "Gente がコンピューターを使用中",
+  "Press {key} to stop": "{key} で停止",
+  Stop: "停止",
+  Stopped: "停止しました",
 };

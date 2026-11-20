@@ -284,4 +284,9 @@ export const ES_MESSAGES: Record<string, string> = {
     "Tu IA vive en tu computadora. Tus chats nunca salen de ella.",
   "Sign In to Gente…": "Iniciar sesión en Gente…",
   "Sign Out of Gente": "Cerrar sesión de Gente",
+  // Computer use pill
+  "Gente is using your computer": "Gente está usando tu computadora",
+  "Press {key} to stop": "Presiona {key} para detener",
+  Stop: "Detener",
+  Stopped: "Detenido",
 };

@@ -269,4 +269,9 @@ export const FR_MESSAGES: Record<string, string> = {
     "Votre IA vit sur votre ordinateur. Vos discussions ne le quittent jamais.",
   "Sign In to Gente…": "Se connecter à Gente…",
   "Sign Out of Gente": "Se déconnecter de Gente",
+  // Computer use pill
+  "Gente is using your computer": "Gente utilise ton ordinateur",
+  "Press {key} to stop": "Appuie sur {key} pour arrêter",
+  Stop: "Arrêter",
+  Stopped: "Arrêté",
 };

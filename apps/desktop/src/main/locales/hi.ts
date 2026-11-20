@@ -234,8 +234,7 @@ export const HI_MESSAGES: Record<string, string> = {
   "Model choices": "मॉडल के विकल्प",
   "Model download": "मॉडल डाउनलोड",
   "No ads. Ever.": "कोई विज्ञापन नहीं। कभी नहीं।",
-  "No usage limits. Message as much as you want.":
-    "इस्तेमाल की कोई सीमा नहीं। जितना चाहें उतना लिखें।",
+  "No usage limits. Message as much as you want.": "इस्तेमाल की कोई सीमा नहीं। जितना चाहें उतना लिखें।",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "कोई भी आपका डेटा नहीं पढ़ता, उस पर ट्रेनिंग नहीं करता, और उसे नहीं बेचता। न हम, न कोई और।",
   "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
@@ -261,4 +260,9 @@ export const HI_MESSAGES: Record<string, string> = {
     "आपका AI आपके कंप्यूटर पर रहता है। आपकी चैट कभी बाहर नहीं जातीं।",
   "Sign In to Gente…": "Gente में साइन इन करें…",
   "Sign Out of Gente": "Gente से साइन आउट करें",
+  // Computer use pill
+  "Gente is using your computer": "Gente आपका कंप्यूटर इस्तेमाल कर रहा है",
+  "Press {key} to stop": "रोकने के लिए {key} दबाएँ",
+  Stop: "रोकें",
+  Stopped: "रोका गया",
 };

@@ -259,4 +259,9 @@ export const HE_MESSAGES: Record<string, string> = {
     "הבינה המלאכותית שלך חיה במחשב שלך. הצ׳אטים שלך אף פעם לא יוצאים ממנו.",
   "Sign In to Gente…": "התחברות ל־Gente…",
   "Sign Out of Gente": "התנתקות מ־Gente",
+  // Computer use pill
+  "Gente is using your computer": "Gente משתמש במחשב שלך",
+  "Press {key} to stop": "לחץ {key} כדי לעצור",
+  Stop: "עצור",
+  Stopped: "נעצר",
 };
