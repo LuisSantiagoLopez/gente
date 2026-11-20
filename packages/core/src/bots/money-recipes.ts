@@ -58,7 +58,7 @@ export const MONEY_RECIPES: readonly BotTemplate[] = [
         description:
           "Draft replies to new customer reviews on the user's business profile. Use when asked about reviews or reputation.",
         body: [
-          "1. Read reviews from the last 7 days (or since the last run) that have no reply yet.",
+          "1. Read reviews from the last 7 days (or since the last run). A review that already has a reply is done: skip it and leave it out of the report.",
           "2. Draft a reply for each: 1 to 3 sentences, in the review's language, in the user's voice from memory.",
           "3. Report: a bold count line, then one numbered line per review (stars, name, the gist, the draft).",
           "4. When the user approves a reply, post it, then confirm in one line.",
