@@ -2,6 +2,8 @@
 /** The creation intro's hidden prompt. It names only the tools this bot still has. */
 export function botIntroPrompt(input: {
   userName: string;
+  /** The person's app language (for example "es" or "pt-BR"), when known. */
+  locale?: string | null;
   spaceName: string | null;
   disabledBuiltinTools: readonly string[];
 }): string {
@@ -13,7 +15,12 @@ export function botIntroPrompt(input: {
   const byName = firstName ? ` as ${firstName}` : "";
   const options =
     "two to four short options that fit your name, anything your description or instructions already say, and what you know about them, never a stock list";
+  // Gente (QA-015): greet in the person's own language, and keep to it.
+  const language = languageName(input.locale);
   return [
+    language
+      ? `Write everything in ${language}, including the question and every option.`
+      : "Write in the language the person uses; until they write, use the language their name suggests, and switch as soon as they write.",
     [
       "You were just created.",
       input.userName ? `${input.userName} made you.` : undefined,
@@ -41,4 +48,15 @@ export const HANG_UP_PROMPT =
 
 export function mcpConnectedPrompt(name: string): string {
   return `The user just connected the MCP server ${JSON.stringify(name)} from its approval card, so its tools are available now. Carry on with what they asked for. If nothing is left to do, confirm in one short sentence.`;
+}
+
+/** "es-MX" → "Spanish", in English, for the model's instructions. */
+function languageName(locale: string | null | undefined): string | null {
+  if (!locale) return null;
+  try {
+    const name = new Intl.DisplayNames(["en"], { type: "language" }).of(locale);
+    return name && name.toLowerCase() !== locale.toLowerCase() ? name : null;
+  } catch {
+    return null;
+  }
 }
