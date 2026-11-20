@@ -1,6 +1,7 @@
 import type { Model, MutableModels, Provider, ProviderStreams } from "@earendil-works/pi-ai";
 import { createProvider } from "@earendil-works/pi-ai";
 import { openAICompletionsApi } from "@earendil-works/pi-ai/api/openai-completions.lazy";
+import { bestEffort } from "@rakazo/logging";
 import type { Dispatcher } from "undici";
 import { Agent, EnvHttpProxyAgent } from "undici";
 import { pacerTokensPerMinute } from "../../../models/endpoints/token-pacer.js";
@@ -106,7 +107,7 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
   return async (input, init) => {
     // Gente: a question that plainly needs the web becomes one model call with fresh sources.
     if (process.env.BURROW_FAST_CHAT === "on" && typeof init?.body === "string") {
-      const plan = await planWebAnswer(init.body).catch(() => null);
+      const plan = await bestEffort("plan a one-call web answer", planWebAnswer(init.body));
       if (plan?.kind === "cached") return cachedAnswerResponse(plan.answer);
       if (plan?.kind === "ask") {
         const response = await transport(input, {

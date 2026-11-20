@@ -39,8 +39,12 @@ export async function startScreen(sandbox: ScreenDesktop): Promise<void> {
   const run = sandbox.commands.run.bind(sandbox.commands);
   sandbox.commands.run = (command: string, opts: RunOpts = {}) =>
     run(command, { ...opts, envs: { DISPLAY, ...opts.envs } });
-  const probe = await run(`xdpyinfo -display ${DISPLAY}`, { envs: { DISPLAY } }).catch(() => null);
-  if (probe?.exitCode !== 0) await sandbox._start(DISPLAY, { resolution: [1024, 768] });
+  // The probe exits non-zero (and the SDK rejects) when there is no screen yet: then start one.
+  const screenUp = await run(`xdpyinfo -display ${DISPLAY}`, { envs: { DISPLAY } }).then(
+    (probe) => probe.exitCode === 0,
+    () => false,
+  );
+  if (!screenUp) await sandbox._start(DISPLAY, { resolution: [1024, 768] });
 }
 
 /** Wraps an envd-only connection: lifecycle belongs to Gente Cloud, so setTimeout does nothing. */

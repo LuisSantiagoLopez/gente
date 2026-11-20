@@ -9,7 +9,13 @@ import type { GenteSupportBridge } from "../support/bridge.js";
  * the window that sent the call and on nothing else. `computerPill` is the small "Gente is using
  * your computer" window, whose page may only ask to stop and say where the pointer is.
  */
-export type IpcWindow = "app" | "appOrReplaced" | "setup" | "support" | "computerPill";
+export type IpcWindow =
+  | "app"
+  | "appOrReplaced"
+  | "setup"
+  | "support"
+  | "computerPill"
+  | "telegram";
 
 type BridgeMethod = (...args: never[]) => unknown;
 
@@ -91,6 +97,15 @@ const supportPage = <Method extends BridgeMethod>(
   refused,
 });
 
+/** The bridge Gente's "Connect Telegram" window is written against. */
+export interface GenteTelegramBridge {
+  connect(token: string): Promise<{ ok: true; username: string } | { ok: false; message: string }>;
+}
+/** Gente's "Connect Telegram" window: only its own page may call. */
+const telegramPage = <Method extends BridgeMethod>(
+  refused: Refused<Method>,
+): IpcChannel<Method> => ({ from: "telegram", refused });
+
 type Desktop = { [Key in keyof RakazoDesktop]-?: NonNullable<RakazoDesktop[Key]> };
 
 /**
@@ -153,6 +168,7 @@ export const ipcChannels = {
   "desktop.setup.stack.state": setupPage<RakazoSetup["stack"]["state"]>(REJECTS),
   "desktop.setup.state": setupPage<RakazoSetup["state"]>(REJECTS),
   "desktop.setup.test": setupPage<RakazoSetup["test"]>(SETUP_NOT_ACTIVE),
+  "gente.telegram.connect": telegramPage<GenteTelegramBridge["connect"]>(REJECTS),
   "gente.support.state": supportPage<GenteSupportBridge["state"]>(REJECTS),
   "gente.support.check": supportPage<GenteSupportBridge["check"]>(REJECTS),
   "gente.support.ask": supportPage<GenteSupportBridge["ask"]>(REJECTS),

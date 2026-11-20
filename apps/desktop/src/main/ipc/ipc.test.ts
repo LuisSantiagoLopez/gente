@@ -262,6 +262,7 @@ describe("handleIpc", () => {
       "desktop.setup.stack.start",
       "desktop.setup.stack.state",
       "desktop.setup.state",
+      "gente.telegram.connect",
       "gente.support.state",
       "gente.support.check",
       "gente.support.ask",

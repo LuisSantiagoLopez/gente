@@ -1,8 +1,9 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import path from "node:path";
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow } from "electron";
 import { desktop } from "../desktop-state.js";
+import { handleIpc } from "../ipc/ipc.js";
 import { readStackToken } from "../this-computer/local-stack.js";
 import {
   localApiPort,
@@ -14,7 +15,6 @@ import {
   telegramSecret,
 } from "./telegram.js";
 
-let window: BrowserWindow | null = null;
 let poller: TelegramPoller | null = null;
 
 /** Runs the long-poll hand-off while the workspace is up and a token is saved. */
@@ -33,7 +33,7 @@ export async function syncTelegramPoller(stackDir: string, ready: boolean) {
 }
 
 export function registerTelegram(stackDir: string) {
-  ipcMain.handle("gente.telegram.connect", async (_event, raw: unknown) => {
+  handleIpc("gente.telegram.connect", async (_event, raw: unknown) => {
     const token = typeof raw === "string" ? raw.trim() : "";
     if (!looksLikeBotToken(token))
       return { ok: false, message: "That doesn't look like a BotFather token. It has a number, a colon, then letters." };
@@ -52,11 +52,12 @@ export function registerTelegram(stackDir: string) {
 }
 
 export function openTelegramWindow() {
-  if (window && !window.isDestroyed()) {
-    window.focus();
+  const open = desktop.telegramWindow;
+  if (open && !open.isDestroyed()) {
+    open.focus();
     return;
   }
-  window = new BrowserWindow({
+  const window = new BrowserWindow({
     width: 520,
     height: 420,
     title: "Connect Telegram",
@@ -69,7 +70,8 @@ export function openTelegramWindow() {
   });
   window.setMenuBarVisibility(false);
   void window.loadFile(path.join(import.meta.dirname, "telegram.html"));
+  desktop.telegramWindow = window;
   window.on("closed", () => {
-    window = null;
+    if (desktop.telegramWindow === window) desktop.telegramWindow = null;
   });
 }

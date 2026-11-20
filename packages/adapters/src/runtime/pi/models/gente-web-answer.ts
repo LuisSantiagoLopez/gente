@@ -11,6 +11,7 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { bestEffort } from "@rakazo/logging";
 import { KeylessHttpWebProvider } from "../../../providers/web/keyless-http/keyless-http-web.js";
 import { smallTalkBody, userWords } from "./burrow-fast-chat.js";
 
@@ -41,7 +42,12 @@ export function needsWeb(messages: readonly ChatMessage[]): boolean {
   return words.length >= 6 && words.length <= 400 && WEB_WORDS.test(words);
 }
 
-const normalize = (q: string) => q.toLowerCase().replace(/[^\p{L}\p{N} ]+/gu, " ").replace(/\s+/g, " ").trim();
+const normalize = (q: string) =>
+  q
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N} ]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 function cacheDir() {
   const dir = path.join(process.env.DATA_DIR ?? "/tmp", "gente-web-cache");
@@ -50,7 +56,10 @@ function cacheDir() {
 }
 function cacheGet<T>(kind: string, key: string, maxAgeMs: number): T | null {
   try {
-    const file = path.join(cacheDir(), `${kind}-${createHash("sha256").update(key).digest("hex").slice(0, 32)}.json`);
+    const file = path.join(
+      cacheDir(),
+      `${kind}-${createHash("sha256").update(key).digest("hex").slice(0, 32)}.json`,
+    );
     const saved = JSON.parse(readFileSync(file, "utf8")) as { at: number; value: T };
     return Date.now() - saved.at < maxAgeMs ? saved.value : null;
   } catch {
@@ -59,7 +68,10 @@ function cacheGet<T>(kind: string, key: string, maxAgeMs: number): T | null {
 }
 function cachePut(kind: string, key: string, value: unknown) {
   try {
-    const file = path.join(cacheDir(), `${kind}-${createHash("sha256").update(key).digest("hex").slice(0, 32)}.json`);
+    const file = path.join(
+      cacheDir(),
+      `${kind}-${createHash("sha256").update(key).digest("hex").slice(0, 32)}.json`,
+    );
     writeFileSync(file, JSON.stringify({ at: Date.now(), value }), { mode: 0o600 });
   } catch {
     // A cache that can't be written is only slower.
@@ -68,12 +80,21 @@ function cachePut(kind: string, key: string, value: unknown) {
 
 /** The sentences of a page that share the most words with the question, in page order. */
 export function keyPassages(text: string, question: string, budget: number): string {
-  const terms = new Set(normalize(question).split(" ").filter((w) => w.length > 3));
-  const sentences = text.replace(/\s+/g, " ").split(/(?<=[.!?])\s+/).filter((s) => s.length > 30);
+  const terms = new Set(
+    normalize(question)
+      .split(" ")
+      .filter((w) => w.length > 3),
+  );
+  const sentences = text
+    .replace(/\s+/g, " ")
+    .split(/(?<=[.!?])\s+/)
+    .filter((s) => s.length > 30);
   const scored = sentences.map((s, i) => ({
     i,
     s,
-    score: normalize(s).split(" ").filter((w) => terms.has(w)).length,
+    score: normalize(s)
+      .split(" ")
+      .filter((w) => terms.has(w)).length,
   }));
   const picked: typeof scored = [];
   let used = 0;
@@ -82,7 +103,10 @@ export function keyPassages(text: string, question: string, budget: number): str
     picked.push(item);
     used += item.s.length;
   }
-  return picked.sort((a, b) => a.i - b.i).map((p) => p.s).join(" ");
+  return picked
+    .sort((a, b) => a.i - b.i)
+    .map((p) => p.s)
+    .join(" ");
 }
 
 export interface WebAnswerDeps {
@@ -96,30 +120,55 @@ function cloudSearchFromEnv(): WebAnswerDeps["cloudSearch"] {
   const token = process.env.GENTE_SEARCH_TOKEN;
   if (!url || !token) return undefined;
   return async (query) => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
-      body: JSON.stringify({ query }),
-      signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
-    }).catch(() => null);
+    const res = await bestEffort(
+      "cloud web search",
+      fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+        body: JSON.stringify({ query }),
+        signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
+      }),
+    );
     if (!res?.ok) return null;
-    const data = (await res.json().catch(() => null)) as {
+    const data = ((await bestEffort("read cloud web search results", res.json())) ?? null) as {
       results?: { title?: string | null; url: string; text?: string | null }[];
     } | null;
-    return (data?.results ?? []).map((r) => ({ title: r.title ?? r.url, url: r.url, text: r.text ?? "" }));
+    return (data?.results ?? []).map((r) => ({
+      title: r.title ?? r.url,
+      url: r.url,
+      text: r.text ?? "",
+    }));
   };
 }
 
 /** Search, then read the top pages in parallel. Cached for a day. */
-export async function gatherSources(question: string, deps: WebAnswerDeps = {}): Promise<WebSource[]> {
+export async function gatherSources(
+  question: string,
+  deps: WebAnswerDeps = {},
+): Promise<WebSource[]> {
   const key = normalize(question);
   const cached = cacheGet<WebSource[]>("search", key, DAY_MS);
   if (cached) return cached;
-  const web = deps.web ?? new KeylessHttpWebProvider({ fetchTimeoutMs: PAGE_TIMEOUT_MS, searchTimeoutMs: SEARCH_TIMEOUT_MS });
-  const context = { signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS + PAGE_TIMEOUT_MS + 1_000) } as never;
-  let hits = (await (deps.cloudSearch ?? cloudSearchFromEnv())?.(question).catch(() => null)) ?? null;
+  const web =
+    deps.web ??
+    new KeylessHttpWebProvider({
+      fetchTimeoutMs: PAGE_TIMEOUT_MS,
+      searchTimeoutMs: SEARCH_TIMEOUT_MS,
+    });
+  const context = {
+    signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS + PAGE_TIMEOUT_MS + 1_000),
+  } as never;
+  let hits =
+    (await bestEffort(
+      "cloud web search",
+      (deps.cloudSearch ?? cloudSearchFromEnv())?.(question),
+    )) ?? null;
   if (!hits || hits.length === 0) {
-    const found = await web.search({ query: question, maxResults: 5 }, context).catch(() => []);
+    const found =
+      (await bestEffort(
+        "keyless web search",
+        web.search({ query: question, maxResults: 5 }, context),
+      )) ?? [];
     hits = found.map((h) => ({ title: h.title, url: h.url, text: h.snippet ?? "" }));
   }
   const top = hits.slice(0, MAX_SOURCES);
@@ -140,7 +189,11 @@ export async function gatherSources(question: string, deps: WebAnswerDeps = {}):
           text = fetched;
         }
       }
-      return { title: hit.title, url: hit.url, text: keyPassages(text, question, perPage) || hit.text.slice(0, perPage) };
+      return {
+        title: hit.title,
+        url: hit.url,
+        text: keyPassages(text, question, perPage) || hit.text.slice(0, perPage),
+      };
     }),
   );
   const useful = sources.filter((s) => s.text.length > 0);
@@ -169,7 +222,10 @@ export type WebAnswerPlan =
  * Decides whether this model request becomes a one-call web answer, and builds it. Null keeps the
  * request as it was (not a web question, a tool follow-up, or nothing found).
  */
-export async function planWebAnswer(rawBody: string, deps: WebAnswerDeps = {}): Promise<WebAnswerPlan | null> {
+export async function planWebAnswer(
+  rawBody: string,
+  deps: WebAnswerDeps = {},
+): Promise<WebAnswerPlan | null> {
   let parsed: { messages?: ChatMessage[]; tools?: unknown[]; [key: string]: unknown };
   try {
     parsed = JSON.parse(rawBody);
@@ -187,9 +243,7 @@ export async function planWebAnswer(rawBody: string, deps: WebAnswerDeps = {}): 
   }
   const sources = await gatherSources(question, deps);
   if (sources.length === 0) return null;
-  const block = sources
-    .map((s, i) => `[${i + 1}] ${s.title} (${s.url})\n${s.text}`)
-    .join("\n\n");
+  const block = sources.map((s, i) => `[${i + 1}] ${s.title} (${s.url})\n${s.text}`).join("\n\n");
   const last = messages.at(-1)!;
   const content = `${typeof last.content === "string" ? last.content : userWords(last.content)}\n\n<web_results>\nFresh web results for this message. Answer from them in 2 or 3 short sentences, cite them like [1], and say plainly if they don't answer it. Don't call tools.\n\n${block}\n</web_results>`;
   // The same slim, cached prompt as small talk (identity, memory, recent text turns, no tools),
