@@ -942,7 +942,7 @@ msgstr "每週彙整你關注主題的最新變化"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "About"
-msgstr ""
+msgstr "關於"
 
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "About {kb} KB of memory no longer reaches the bot."
@@ -1147,7 +1147,7 @@ msgstr "再新增一個 {name}"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Add Context7 docs"
-msgstr ""
+msgstr "新增 Context7 文件"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -1924,7 +1924,7 @@ msgstr "基底網址"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI."
-msgstr ""
+msgstr "基於 Elie Steinbock 的 Rakazo（Apache-2.0）。Swift 由 UkisAI 開發。"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
@@ -3108,7 +3108,7 @@ msgstr "與 {0} 的連線仍在等待。可以關閉此視窗稍後再看。"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Connections"
-msgstr ""
+msgstr "連線"
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -6147,7 +6147,7 @@ msgstr "你會如何使用 Gente？"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
-msgstr ""
+msgstr "你會如何使用 Gente？"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -7932,7 +7932,7 @@ msgstr "無法正常工作"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
-msgstr ""
+msgstr "在你連結應用程式之前，任何內容都不會離開你的電腦。已連結應用程式的資料會經過 Composio 的雲端，一次一個應用程式，且只限你選擇的應用程式。"
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -7945,11 +7945,11 @@ msgstr "尚未儲存任何內容。"
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. Check that you sent the code to the right chat, exactly as shown. The code works for 10 minutes."
-msgstr ""
+msgstr "還沒有收到。請確認你是否依照顯示的內容原樣將代碼傳到正確的聊天。代碼 10 分鐘內有效。"
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
-msgstr ""
+msgstr "還沒有收到。WhatsApp 需要一個 Meta 商業應用程式和一個 Meta 能連到的地址，而且 Meta 尚未在所有國家允許通用 AI 助理。Telegram 可以立即使用：在 Gente 選單中選擇「連結 Telegram」。"
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
@@ -8428,7 +8428,7 @@ msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Gente 會補上 /v1�
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
-msgstr ""
+msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Gente 會補上 /v1。"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -8760,12 +8760,12 @@ msgstr "引用所選內容"
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
 msgid "Rakazo"
-msgstr ""
+msgstr "Gente"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 msgid "Rakazo credits"
-msgstr ""
+msgstr "Gente 額度"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
@@ -8792,7 +8792,7 @@ msgstr "朗讀回覆"
 
 #: apps/web/src/pages/shell/chat/transcript.tsx
 msgid "Reading…"
-msgstr ""
+msgstr "正在讀取…"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
@@ -10253,7 +10253,7 @@ msgstr "登入 Gente"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
-msgstr ""
+msgstr "登入 Gente"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -10285,7 +10285,7 @@ msgstr "註冊"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign up for Rakazo"
-msgstr ""
+msgstr "註冊 Gente"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -10504,7 +10504,7 @@ msgstr "分類新郵件並草擬回覆"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Sounds"
-msgstr ""
+msgstr "音效"
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/lib/bots/identity-display.ts
@@ -10620,7 +10620,7 @@ msgstr "開始錄製"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Start using Rakazo"
-msgstr ""
+msgstr "開始使用 Gente"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -10766,7 +10766,7 @@ msgstr "使用自己的 AI 訂閱"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Subscription"
-msgstr ""
+msgstr "訂閱"
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -10961,7 +10961,7 @@ msgstr "這不是 Grok Bot 的匯出內容。請貼上該 Bot 的完整回覆。
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL did not look like a Rakazo server"
-msgstr ""
+msgstr "這個地址看起來不像 Gente 伺服器"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11099,7 +11099,7 @@ msgstr "文字紀錄將從 Gente 中移除。"
 
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
-msgstr ""
+msgstr "文字紀錄將從 Gente 中移除。"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11231,7 +11231,7 @@ msgstr "這臺電腦"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
 msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr ""
+msgstr "這台電腦在雲端（E2B）執行，不在你的 Mac 或 PC 上。你可以即時觀看，並接手控制自行登入。"
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -11442,7 +11442,7 @@ msgstr "此訂閱登入在 Gente 中尚不可用。請使用部署憑證或選�
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr ""
+msgstr "此訂閱登入在 Gente 中尚不可用。請使用部署憑證或選擇其他供應商。"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -11721,7 +11721,7 @@ msgstr "開啟"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Turn on Composio apps"
-msgstr ""
+msgstr "開啟 Composio 應用程式"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -12041,7 +12041,7 @@ msgstr "輸入密碼時，請使用受保護的輸入。"
 
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Use Rakazo credits"
-msgstr ""
+msgstr "使用 Gente 額度"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12292,7 +12292,7 @@ msgstr "歡迎使用 Gente"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 msgid "Welcome to Rakazo"
-msgstr ""
+msgstr "歡迎使用 Gente"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -12308,7 +12308,7 @@ msgstr "你最希望 Gente 幫你做什麼？"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
-msgstr ""
+msgstr "你最希望 Gente 幫你做什麼？"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

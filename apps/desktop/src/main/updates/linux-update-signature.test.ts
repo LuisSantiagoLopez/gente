@@ -43,7 +43,7 @@ describe("linuxUpdateSignatureMessage", () => {
   it("is the versioned three-line format the release workflow signs", () => {
     expect(
       linuxUpdateSignatureMessage("1.2.3", "Gente-1.2.3.AppImage", "ab12").toString("utf8"),
-    ).toBe("rakazo-linux-update-v1\n1.2.3\nRakazo-1.2.3.AppImage\nab12\n");
+    ).toBe("rakazo-linux-update-v1\n1.2.3\nGente-1.2.3.AppImage\nab12\n");
   });
 
   it("hashes the whole file with SHA-512", async () => {
@@ -106,7 +106,7 @@ describe("fetchLinuxUpdateSignature", () => {
       "signature\n",
     );
     expect(fetchUrl).toHaveBeenCalledWith(
-      "https://github.com/elie222/rakazo/releases/download/v1.2.3/Rakazo-1.2.3.AppImage.sig",
+      "https://github.com/LuisSantiagoLopez/gente/releases/download/v1.2.3/Gente-1.2.3.AppImage.sig",
       expect.any(AbortSignal),
     );
   });

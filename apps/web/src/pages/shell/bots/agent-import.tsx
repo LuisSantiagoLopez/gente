@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { Bot } from "@rakazo/contracts";
 import { BOT_COLOR_LIST, BOT_DESCRIPTION_MAX_LENGTH } from "@rakazo/contracts";
@@ -40,7 +41,8 @@ function OriginCard({
       <span
         aria-hidden
         style={{
-          backgroundImage: `linear-gradient(135deg, color-mix(in oklab, ${color} 65%, white), ${color})`,
+          // Gente: flat colors, no gradients.
+          backgroundColor: color,
         }}
         className="grid size-9 shrink-0 place-items-center rounded-lg text-body font-semibold text-white"
       >

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { useLingui } from "@lingui/react/macro";
 import {
   Brain,
@@ -40,7 +41,10 @@ export function useSettingsNavItems(available: {
     // Ordered by how many people need each page: the essentials, then optional features, then
     // the account's usage and admin pages.
     { id: "general", label: t`General`, icon: Settings },
-    { id: "models", label: t`Models`, icon: Cpu, description: t`Which LLMs your bots use.` },
+    // Gente (QA-019): one model ships, so model management is for Labs (advanced) users only.
+    ...(available.labs
+      ? [{ id: "models" as const, label: t`Models`, icon: Cpu, description: t`Which LLMs your bots use.` }]
+      : []),
     {
       id: "confirmations",
       label: t`Approvals`,

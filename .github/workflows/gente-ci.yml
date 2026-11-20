@@ -17,7 +17,7 @@ concurrency:
 jobs:
   unit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -26,12 +26,12 @@ jobs:
       - run: npm i -g pnpm@12.18.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
-      - name: Desktop (Gente setup, brain, keyring, Telegram, windows, wording)
+      - name: Desktop (every main-process test, including the 14 language catalogs)
         working-directory: apps/desktop
-        run: npx vitest run src/main/burrow src/main/windows src/main/this-computer/windows-stack.test.ts src/main/this-computer/in-place-server.test.ts
-      - name: Web (window chrome, sidebar)
+        run: npx vitest run src/main
+      - name: Web (every unit test, including the 14 language catalogs)
         working-directory: apps/web
-        run: npx vitest run src/lib/platform src/pages/shell/sidebar/use-sidebar-resize.test.tsx
+        run: npx vitest run --root ../.. apps/web/src apps/web/server
       - name: Server and adapters (help pages, web tools, greeting, fast chat)
         run: >
           npx vitest run

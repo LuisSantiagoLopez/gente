@@ -1,9 +1,13 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { randomBytes } from "node:crypto";
 import { rm } from "node:fs/promises";
 import path from "node:path";
 import { startHostComputerServer } from "@rakazo/adapters/host-computer-server";
 import type { HostScreen } from "@rakazo/adapters/host-screen";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
+
+/** Loopback only. */
+export const HOST_COMPUTER_HOST = "127.0.0.1";
 
 /** App-private credentials and consent, never sent to a renderer or a connected remote server. */
 export async function prepareHostComputer(userDataDir: string, screen?: HostScreen) {
@@ -21,7 +25,9 @@ export async function prepareHostComputer(userDataDir: string, screen?: HostScre
     /* Invalid local configuration is replaced. */
   }
   let server: Awaited<ReturnType<typeof startHostComputerServer>>;
-  const options = { root: path.join(userDataDir, "computers"), token, screen };
+  // Gente (QA-003): only this computer may reach the server that runs commands here. Gente has no
+  // Docker containers that would need it on another address.
+  const options = { root: path.join(userDataDir, "computers"), token, screen, hostname: HOST_COMPUTER_HOST };
   try {
     server = await startHostComputerServer({ ...options, port });
   } catch (error) {

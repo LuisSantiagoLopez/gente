@@ -1,6 +1,9 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans } from "@lingui/react/macro";
 import { BOT_COLOR_LIST } from "@rakazo/contracts";
 import { Button } from "@rakazo/ui-web";
+import { i18n } from "../../lib/locale/i18n";
+import { normalizeUiLocale } from "../../lib/locale/ui-locale";
 import { rpc } from "../../lib/query/rpc";
 
 const FIRST_BOT_NAME = "Chief";
@@ -25,6 +28,8 @@ async function createOrReuseFirstBot(): Promise<{ id: string }> {
   const existing = await rpc.bots.list();
   const reuse = findFirstBot(existing);
   if (reuse) return reuse;
+  // Gente (QA-015): save the app language first, so the first bot greets the person in it.
+  await rpc.preferences.update({ locale: normalizeUiLocale(i18n.locale) }).catch(() => undefined);
   try {
     const created = await rpc.bots.create({
       name: FIRST_BOT_NAME,

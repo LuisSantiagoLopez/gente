@@ -79,13 +79,9 @@ export const KO_MESSAGES: Record<string, string> = {
   "Sign-in callback rejected. Return to Gente to retry.":
     "로그인 응답이 거부되었습니다. Gente로 돌아가 다시 시도하세요.",
   "You can close this tab and return to Gente.": "이 탭을 닫고 Gente로 돌아가세요.",
-  "Set up Gente": "Gente 설정",
   "Quit Gente": "Gente 종료",
   "Welcome to Gente": "Gente에 오신 것을 환영합니다",
-  "Choose where Gente runs.": "Gente를 실행할 위치를 선택하세요.",
   Instance: "인스턴스",
-  "This computer": "이 컴퓨터",
-  "Existing instance": "기존 인스턴스",
   "Technical details": "기술 세부 정보",
   "Setup progress": "설정 진행 상황",
   "Server address": "서버 주소",
@@ -93,12 +89,8 @@ export const KO_MESSAGES: Record<string, string> = {
   "Name: value": "이름: 값",
   "Check connection": "연결 확인",
   Continue: "계속",
-  Retry: "다시 시도",
   "Getting ready…": "준비 중…",
-  "Downloading Gente…": "Gente 다운로드 중…",
-  "Starting Gente…": "Gente 시작 중…",
   "Almost ready…": "거의 완료…",
-  "Gente is ready.": "Gente가 준비되었습니다.",
   "{size} downloaded": "{size} 다운로드됨",
   "Connecting…": "연결 중…",
   "Checking…": "확인 중…",
@@ -106,9 +98,6 @@ export const KO_MESSAGES: Record<string, string> = {
   "Enter a server address first.": "먼저 서버 주소를 입력하세요.",
   "Could not save that address.": "해당 주소를 저장할 수 없습니다.",
   "Could not save that address. Try again.": "해당 주소를 저장할 수 없습니다. 다시 시도하세요.",
-  "Could not follow the local stack. Try again.":
-    "로컬 스택 상태를 확인할 수 없습니다. 다시 시도하세요.",
-  "Could not start the local stack. Try again.": "로컬 스택을 시작할 수 없습니다. 다시 시도하세요.",
   "Could not run the connection check. Try again.": "연결을 확인할 수 없습니다. 다시 시도하세요.",
   "Setup bridge unavailable.": "설정 브리지를 사용할 수 없습니다.",
   "Setup could not start. Quit Gente and try again.":
@@ -122,7 +111,6 @@ export const KO_MESSAGES: Record<string, string> = {
     "해당 주소는 다른 곳으로 리디렉션됩니다. 최종 Gente 서버 주소를 입력하세요.",
   "That address did not respond like a Gente server.":
     "해당 주소가 Gente 서버처럼 응답하지 않았습니다.",
-  "The server answered with HTTP {status}.": "서버가 HTTP {status}(으)로 응답했습니다.",
   "Timed out reaching that address.": "해당 주소에 연결하는 중 시간이 초과되었습니다.",
   "Nothing is listening at that address yet.": "해당 주소에서 아직 수신 대기 중인 것이 없습니다.",
   "That host could not be found.": "해당 호스트를 찾을 수 없습니다.",
@@ -207,16 +195,10 @@ export const KO_MESSAGES: Record<string, string> = {
     "봇과 데이터가 함께 옮겨집니다. Docker는 삭제되지 않고 중지됩니다.",
   Move: "옮기기",
   "Keep Docker": "Docker 유지",
-  "Nothing to install.": "설치할 것이 없습니다.",
-  "Your data stays on this computer.": "데이터가 이 컴퓨터에 보관됩니다.",
-  "Connect to a server you or your team already run.":
-    "나 또는 팀이 이미 운영 중인 서버에 연결합니다.",
   "Gente needs Docker Desktop to run on this computer.":
     "이 컴퓨터에서 Gente를 실행하려면 Docker Desktop이 필요합니다.",
   "Gente needs Docker to run on this computer.":
     "이 컴퓨터에서 Gente를 실행하려면 Docker가 필요합니다.",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop은 Gente를 백그라운드에서 실행하는 무료 앱입니다. 설치하고 한 번 여세요.",
   "Install Docker Engine and start it.": "Docker Engine을 설치하고 시작하세요.",
   "Download Docker Desktop": "Docker Desktop 다운로드",
   "Install Docker": "Docker 설치",
@@ -235,4 +217,47 @@ export const KO_MESSAGES: Record<string, string> = {
   "Restart Gente": "Gente 재시동",
   "Not Now": "나중에",
   "Restart Gente to finish setup": "Gente를 재시동하여 설정 완료",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Elie Steinbock의 Rakazo(Apache-2.0)를 기반으로 합니다. Swift 제작: UkisAI.",
+  "Bots, chats, files, routines": "봇, 채팅, 파일, 루틴",
+  "Checking this Mac…": "이 Mac을 확인하는 중…",
+  "Choose a different model": "다른 모델 선택",
+  "Connect Telegram…": "Telegram 연결…",
+  "Connect to a server instead": "대신 서버에 연결",
+  "Downloading the workspace…": "워크스페이스를 내려받는 중…",
+  "Downloads once, then works offline.": "한 번만 내려받으면 오프라인에서도 작동합니다.",
+  "Gente couldn't finish getting ready. Press Try again.": "Gente가 준비를 마치지 못했습니다. 다시 시도를 누르세요.",
+  "Gente is getting things ready. This takes a moment.": "Gente가 준비하고 있습니다. 잠시만 기다려 주세요.",
+  "Get started": "시작하기",
+  "Getting Gente ready, about a minute left": "Gente 준비 중, 약 1분 남음",
+  "Getting Gente ready, about {n} min left": "Gente 준비 중, 약 {n}분 남음",
+  "Getting Gente ready…": "Gente 준비 중…",
+  "Model choices": "모델 선택",
+  "Model download": "모델 다운로드",
+  "No ads. Ever.": "광고 없음. 앞으로도 영원히.",
+  "No usage limits. Message as much as you want.": "사용 한도 없음. 원하는 만큼 메시지를 보내세요.",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "누구도 내 데이터를 읽거나, 학습에 쓰거나, 팔지 않습니다. 우리도, 그 누구도.",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "이 Mac에서 Gente의 워크스페이스를 쓰려면 Docker Desktop(무료 앱)이 필요합니다. 설치한 뒤 한 번 열어 주세요.",
+  "Run on this Mac instead": "대신 이 Mac에서 실행",
+  "Runs privately in the background on this Mac.": "이 Mac의 백그라운드에서 비공개로 실행됩니다.",
+  "Something went wrong.": "문제가 발생했습니다.",
+  "Starting the workspace…": "워크스페이스를 시작하는 중…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "이 컴퓨터에 맞게 {name}(으)로 바꿨습니다({from}은(는) 여기서 실행할 수 없었습니다).",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "그 주소는 Gente 서버처럼 응답하지 않았습니다. 주소를 확인하고 다시 시도하세요.",
+  "The AI of the people.": "모두의 AI.",
+  "The first start can take a minute.": "처음 시작할 때는 1분 정도 걸릴 수 있습니다.",
+  "Try again": "다시 시도",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Gente가 온라인에서 일할 때(검색, 브라우징, 앱) 그 작업에 필요한 것만 밖으로 나갑니다.",
+  Workspace: "워크스페이스",
+  "Workspace ready.": "워크스페이스 준비 완료.",
+  "Your AI": "나의 AI",
+  "Your AI is ready.": "AI가 준비되었습니다.",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "AI는 내 컴퓨터 안에 있습니다. 채팅은 절대 밖으로 나가지 않습니다.",
 };

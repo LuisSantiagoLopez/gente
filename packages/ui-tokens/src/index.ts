@@ -251,7 +251,8 @@ export const webLightOverrides = {
   chatUser: "#1C1710",
   muted: "#F4ECDD",
   mutedForeground: "#1C1710AD",
-  faintForeground: "#1C17108F",
+  // QA-012: at least 4.5:1 on the sidebar, cards and a selected row.
+  faintForeground: "#1C1710A0",
   accent: "#1C17100F",
   accentForeground: "#1C1710",
   destructive: "#C32A1F",

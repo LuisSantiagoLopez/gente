@@ -101,20 +101,30 @@ try {
   await look(page, "chat");
   step('Chat is open; typing "hey"');
   await box.click();
+  // A reply is a new message from the bot after "hey", with real text in it.
+  const theirs = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('[data-gente-msg="theirs"]')].map((m) => m.innerText.trim()),
+    );
+  // Let the bot finish its own hello first, so that message isn't taken for the reply.
+  for (let i = 0; i < 1800; i++) {
+    const busy = await page.evaluate(() => document.querySelector("[data-gente-working-composer]") !== null).catch(() => true);
+    if (!busy && (await theirs()).length > 0) break;
+    await page.waitForTimeout(100);
+  }
+  const before = (await theirs()).length;
   await page.keyboard.type("hey");
   const sent = Date.now();
   await page.keyboard.press("Enter");
-  await page.getByText(/^(?!hey$).{3,}/).last().waitFor({ timeout: 300_000 });
-  // The reply is the newest text after "hey".
-  for (let i = 0; i < 600; i++) {
-    const text = await page.innerText("main").catch(() => "");
-    const after = text.slice(text.lastIndexOf("hey") + 3).replace(/Reading…|Working…/g, "").trim();
-    if (after.length > 2) {
-      step(`Reply arrived after ${((Date.now() - sent) / 1000).toFixed(1)}s: ${after.slice(0, 80)}`);
-      break;
-    }
-    await page.waitForTimeout(100);
+  let reply = "";
+  while (!reply && Date.now() - sent < 300_000) {
+    const now = await theirs().catch(() => []);
+    const fresh = now.slice(before).find((t) => t.replace(/Reading…|Working…/g, "").trim().length > 1);
+    if (fresh) reply = fresh;
+    else await page.waitForTimeout(100);
   }
+  if (!reply) throw new Error("No reply to \"hey\" within 5 minutes");
+  step(`Reply arrived after ${((Date.now() - sent) / 1000).toFixed(1)}s: ${reply.slice(0, 80)}`);
   await look(page, "reply");
   step(`PASS: from open to first reply using only what was on screen; clicks besides sign-up: ${clicks}`);
 } finally {

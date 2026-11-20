@@ -1,6 +1,6 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { NavLink } from "@rakazo/contracts";
-import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "@rakazo/contracts";
 import {
   AppMarkStack,
   Button,
@@ -23,7 +23,6 @@ import {
   Plus,
   ScrollText,
   Settings,
-  Smartphone,
   SquareKanban,
   UserPlus,
   UserRound,
@@ -243,17 +242,7 @@ export function SidebarFooter({
               </Button>
             ))}
             <div className="my-1 border-t border-border" />
-            <a
-              className={`${buttonVariants({ variant: "ghost", size: "lg" })} w-full justify-start gap-2.5 font-normal`}
-              href={
-                /Android/i.test(navigator.userAgent) ? ANDROID_APP_STORE_URL : IOS_APP_STORE_URL
-              }
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Smartphone className="text-muted-foreground" strokeWidth={1.75} />
-              <Trans>Get the mobile app</Trans>
-            </a>
+            {/* Gente (QA-018): no mobile app yet, so no mobile link. */}
             {onInvite ? (
               <Button
                 variant="ghost"
@@ -267,7 +256,7 @@ export function SidebarFooter({
             ) : null}
             <a
               className={`${buttonVariants({ variant: "ghost", size: "lg" })} w-full justify-start gap-2.5 font-normal`}
-              href="https://github.com/elie222/rakazo/blob/main/docs/self-host.md"
+              href="https://github.com/LuisSantiagoLopez/gente/blob/main/docs/help/getting-started.md"
               target="_blank"
               rel="noreferrer"
             >

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { ORPCError } from "@orpc/server";
 import {
   archiveBot,
@@ -293,7 +294,10 @@ export async function enqueueBotIntroRun(deps: RouterDeps, actor: Actor, bot: Bo
   if (deps.env.agentRuntime === "scripted") return;
   if ((await modelSetup(deps, actor)).needsModel) return;
   const [user, space] = await Promise.all([
-    deps.prisma.user.findUnique({ where: { id: actor.userId }, select: { name: true } }),
+    deps.prisma.user.findUnique({
+      where: { id: actor.userId },
+      select: { name: true, locale: true },
+    }),
     deps.prisma.space.findUnique({
       where: { id: actor.spaceId },
       select: { name: true, isDefault: true },
@@ -301,6 +305,7 @@ export async function enqueueBotIntroRun(deps: RouterDeps, actor: Actor, bot: Bo
   ]);
   const prompt = botIntroPrompt({
     userName: displayName(user?.name, ""),
+    locale: user?.locale ?? null,
     spaceName: space && !space.isDefault ? space.name.trim() || null : null,
     disabledBuiltinTools: bot.disabledBuiltinTools ?? [],
   });

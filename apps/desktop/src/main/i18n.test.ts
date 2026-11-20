@@ -29,6 +29,7 @@ const UNTRANSLATED = new Set([
   "OrbStack",
   "Docker Engine",
   "https://rakazo.example.com",
+  "https://gente.example.com",
 ]);
 
 /** Literal `t("…")` ids; the formatter keeps every string double-quoted. */

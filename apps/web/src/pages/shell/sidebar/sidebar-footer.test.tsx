@@ -144,7 +144,6 @@ it("opens integrations and keeps the existing account actions and links", async 
     "Skills",
     "Artifacts",
     "Board",
-    "Get the mobile app",
     "Docs",
     "Log out",
   ]);
@@ -159,13 +158,13 @@ it("omits Board when unavailable", async () => {
   );
 });
 
-it("offers Google Play on Android", async () => {
-  vi.spyOn(navigator, "userAgent", "get").mockReturnValue("Android");
+it("links Docs to Gente's help and offers no mobile app (QA-018)", async () => {
   await render();
-  const mobile = [...document.querySelectorAll("a")].find(
-    (link) => link.textContent === "Get the mobile app",
-  )!;
-  expect(mobile.href).toBe("https://play.google.com/store/apps/details?id=com.rakazo.app");
+  const links = [...document.querySelectorAll("a")];
+  expect(links.find((link) => link.textContent === "Get the mobile app")).toBeUndefined();
+  expect(links.find((link) => link.textContent === "Docs")?.href).toBe(
+    "https://github.com/LuisSantiagoLopez/gente/blob/main/docs/help/getting-started.md",
+  );
 });
 
 it("falls back when app artwork fails and accepts replacement artwork", async () => {

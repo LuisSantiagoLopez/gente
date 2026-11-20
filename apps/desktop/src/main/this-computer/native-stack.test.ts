@@ -726,6 +726,8 @@ describe("NativeStackController", () => {
     });
     expect((await controller.start()).phase).toBe("ready");
     expect(order).toEqual([
+      // QA-002: the owner's password always follows this data folder, keeping the data.
+      "psql ALTER ROLE \"rakazo\" WITH PASSWORD 'cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd';",
       "psql DROP DATABASE IF EXISTS rakazo WITH (FORCE);\nCREATE DATABASE rakazo;",
       `import ${CLI} ${DATABASE_CONTAINER} rakazo rakazo`,
       "migrate",
