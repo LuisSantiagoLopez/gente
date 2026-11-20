@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { BACKGROUND_HELPER_TRIGGER } from "@rakazo/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
@@ -33,6 +34,22 @@ vi.mock("./run-tool-gate.js", async (importOriginal) => ({
   }),
 }));
 
+const computerFailure = vi.hoisted(() => ({ error: undefined as unknown }));
+vi.mock("./run-tools-computer.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./run-tools-computer.js")>();
+  return {
+    ...actual,
+    computerTools: {
+      ...actual.computerTools,
+      // Fails the way a shell call does when getting the computer throws.
+      shell: async () => {
+        throw computerFailure.error;
+      },
+    },
+  };
+});
+
+import { computerNotReached } from "../assembly/run-computer.js";
 import { gateToolCall } from "./run-tool-gate.js";
 import { applyTool, isToolError } from "./run-tools.js";
 
@@ -333,5 +350,53 @@ describe("daily check-in dispatch restriction", () => {
     expect(
       (ctx.state as { toolRefusals?: Map<string, unknown> }).toolRefusals?.get("call-1"),
     ).toEqual({ code: "daily_check_in_tool_not_allowed" });
+  });
+});
+
+describe("a computer call that never reached the computer", () => {
+  function claimed() {
+    const updateMany = vi.fn(async () => ({ count: 1 }));
+    const ctx = dispatchContext(false);
+    (ctx.deps.prisma as Record<string, unknown>).externalEffect = { updateMany };
+    vi.mocked(gateToolCall).mockImplementationOnce(async (_ctx, request) => ({
+      call: {
+        name: request.name,
+        args: request.args,
+        executionId: "call-1",
+        observer: undefined,
+        connectorCall: { tool: request.name, args: request.args, executionId: "call-1" },
+        effectKey: "effect-shell",
+        applied: { effect: { id: "effect-shell" } },
+        nextApprovedTool: undefined,
+        bypassApproval: false,
+        claimedEffect: true,
+        claimedFrom: "intended",
+        persistEffectResult: async () => true,
+        finish: async (result: unknown) => result,
+        claimOrReturn: async () => undefined,
+      } as never,
+    }));
+    return { ctx, updateMany };
+  }
+
+  it("hands its claim back, so the retried turn runs it instead of calling it uncertain", async () => {
+    const { ctx, updateMany } = claimed();
+    computerFailure.error = computerNotReached(new Error("Computer is busy"));
+    await expect(applyTool(ctx as never, "shell", { command: "ls" }, "call-1")).rejects.toBe(
+      computerFailure.error,
+    );
+    expect(updateMany).toHaveBeenCalledWith({
+      where: { id: "effect-shell", status: "executing" },
+      data: { status: "intended" },
+    });
+  });
+
+  it("keeps the claim of a call that failed after reaching the computer", async () => {
+    const { ctx, updateMany } = claimed();
+    computerFailure.error = new Error("connection reset while the command ran");
+    await expect(applyTool(ctx as never, "shell", { command: "ls" }, "call-1")).rejects.toThrow(
+      "connection reset",
+    );
+    expect(updateMany).not.toHaveBeenCalled();
   });
 });

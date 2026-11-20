@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type {
   AdapterContext,
   AgentToolExecutionObserver,
@@ -125,6 +126,8 @@ export interface ToolCall {
   readonly spend: PurchaseApproval | undefined;
   /** This call moved its effect to executing. request_secret can hand the claim back. */
   claimedEffect: boolean;
+  /** The status the claim moved the effect from, to hand it back to. */
+  claimedFrom?: "approved" | "intended";
   /** Store the result on the effect; false when it could not be stored. */
   readonly persistEffectResult: (result: unknown) => Promise<boolean>;
   /** Store the result and return it, or an uncertain-effect result when storing failed. */
@@ -783,6 +786,7 @@ function createToolCall(
     claimOrReturn: async (from) => {
       if (await claimEffect(deps, ctx.runId, applied!.effect.id, from)) {
         call.claimedEffect = true;
+        call.claimedFrom = from;
         return undefined;
       }
       const current = await deps.prisma.externalEffect.findUnique({

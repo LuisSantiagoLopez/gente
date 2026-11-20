@@ -82,7 +82,7 @@ import { refreshTakeoverContinuePlan } from "../turn/takeover-resume.js";
 import { historyReplaysOutsideContent } from "../turn/tool-step-calls.js";
 import type { ThreadHistory, TurnContext } from "./run-assembly-history.js";
 import type { ConnectedRun, RunRecords, SavedTurn } from "./run-assembly-records.js";
-import { lazyRunComputer } from "./run-computer.js";
+import { computerNotReached, lazyRunComputer } from "./run-computer.js";
 import {
   BOT_DIRECTORY_LIMIT,
   COMPUTER_USE_INSTRUCTION,
@@ -333,12 +333,18 @@ export async function prepareRunComputer(
         "computer.id": storedComputer.id,
       },
       async () => {
-        if (await taskBudget?.exceeded()) {
-          getLogger().warn("computer.task_limit_reached", { "limit.ms": taskBudget?.limitMs });
-          scheduleComputerSleep(deps.jobs, storedComputer.id, new Date());
-          runComputer.fail(new SandboxTaskLimitError(taskBudget?.limitMs ?? 0));
+        let computer: Awaited<ReturnType<typeof runComputer.get>>;
+        try {
+          if (await taskBudget?.exceeded()) {
+            getLogger().warn("computer.task_limit_reached", { "limit.ms": taskBudget?.limitMs });
+            scheduleComputerSleep(deps.jobs, storedComputer.id, new Date());
+            runComputer.fail(new SandboxTaskLimitError(taskBudget?.limitMs ?? 0));
+          }
+          computer = await runComputer.get();
+        } catch (error) {
+          // Gente: nothing was sent to the computer, so the asking tool call may run on retry.
+          throw computerNotReached(error);
         }
-        const computer = await runComputer.get();
         copyingTurnFiles = copyingTurnFiles
           .catch(() => undefined)
           .then(async () => {

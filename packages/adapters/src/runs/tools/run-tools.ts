@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentToolExecutionObserver } from "@rakazo/adapter-kit";
 import { BACKGROUND_HELPER_TRIGGER, toolResultTaintsRun } from "@rakazo/core";
 import {
@@ -13,6 +14,7 @@ import {
 import { IMAGE_RETURNING_COMPUTER_TOOLS } from "../../models/model-vision.js";
 import { MODEL_CANNOT_SEE_MESSAGE } from "../../models/model-vision.prompt.js";
 import { strategicInitiativeToolAllowed } from "../../routines/strategic-initiative.js";
+import { isComputerNotReached } from "../assembly/run-computer.js";
 import type { RunContext } from "../assembly/run-context.js";
 import { markReadOutsideContent } from "../assembly/run-context.js";
 import { noteComputerTaskStep } from "../lifecycle/run-progress.js";
@@ -292,6 +294,18 @@ async function dispatchTool(
   const runHandler = async () => {
     try {
       return await toolHandler(gate.call.name)(ctx, gate.call);
+    } catch (error) {
+      // Gente (modified from Rakazo): a call that never reached the computer (busy with another
+      // run's start, or not started) did nothing, so its effect goes back to waiting and the
+      // retried turn runs it instead of reporting an unknown outcome.
+      if (isComputerNotReached(error) && gate.call.claimedEffect && gate.call.applied) {
+        const released = await ctx.deps.prisma.externalEffect.updateMany({
+          where: { id: gate.call.applied.effect.id, status: "executing" },
+          data: { status: gate.call.claimedFrom ?? "intended" },
+        });
+        if (released.count === 1) gate.call.claimedEffect = false;
+      }
+      throw error;
     } finally {
       // Editing its own profile returns only what this run wrote; a child's profile is another
       // bot's.

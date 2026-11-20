@@ -7,6 +7,21 @@ import type { ComputerRef } from "@rakazo/adapter-kit";
  * Remote computers bill while they run, so a run that never touches its computer must not
  * create or resume one. A failed start is kept: every later use rethrows it as a setup failure.
  */
+const notReached = new WeakSet<object>();
+
+/**
+ * Marks an error raised while getting the run's computer, before any command was sent to it: the
+ * tool call that asked never reached the computer, so a retry may run it.
+ */
+export function computerNotReached<T>(error: T): T {
+  if (typeof error === "object" && error !== null) notReached.add(error);
+  return error;
+}
+
+export function isComputerNotReached(error: unknown): boolean {
+  return typeof error === "object" && error !== null && notReached.has(error);
+}
+
 export function lazyRunComputer(start: () => Promise<ComputerRef>, onFailure?: () => void) {
   let started: Promise<ComputerRef> | undefined;
   let ready: ComputerRef | undefined;
