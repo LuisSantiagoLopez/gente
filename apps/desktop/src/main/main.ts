@@ -809,15 +809,21 @@ app.whenReady().then(async () => {
   };
   // Gente: Windows, Intel Macs and Macs without Apple container run the server as plain
   // processes with the Postgres the app ships; no Docker, nothing downloaded or unpacked.
+  // Test switch: GENTE_STACK=native runs the plain-process stack on Apple silicon too;
+  // GENTE_SERVER_DIR may point at an unpacked server with Postgres (gente-embed-server.mjs).
+  const forcePlain = process.env.GENTE_STACK === "native";
+  const serverDirOverride = process.env.GENTE_SERVER_DIR?.trim();
   const plainBundle = plainStackEligible({
     platform: process.platform,
-    appleContainer: serverBundle !== null,
+    appleContainer: serverBundle !== null && !forcePlain,
   })
-    ? await readServerBundle({
-        resourcesPath: process.resourcesPath,
-        packaged: app.isPackaged,
-        override: process.env.RAKAZO_SERVER_BUNDLE,
-      })
+    ? forcePlain && serverDirOverride
+      ? { version: "local-server-dir", inPlace: path.resolve(serverDirOverride) }
+      : await readServerBundle({
+          resourcesPath: process.resourcesPath,
+          packaged: app.isPackaged,
+          override: process.env.RAKAZO_SERVER_BUNDLE,
+        })
     : null;
   const windowsBundle =
     plainBundle !== null &&
