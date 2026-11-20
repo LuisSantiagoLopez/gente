@@ -6133,6 +6133,14 @@ msgstr "실패했습니다."
 msgid "Failure handling"
 msgstr "실패했을 때 처리"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "빠름"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "빠른 모드는 빠르게 답하기 위해 메시지를 저희 서버로 보냅니다. 저장하거나 학습에 쓰지 않습니다."
+
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 msgid "Feedback"
 msgstr "피드백"
@@ -9367,6 +9375,7 @@ msgid "Privacy policy"
 msgstr "개인정보 처리방침"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "Bot 전용"
@@ -9378,6 +9387,14 @@ msgstr "개인 컴퓨터"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "자체 봇과 그룹이 있는 비공개 워크스페이스."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "비공개: AI가 이 컴퓨터에서 실행됩니다. 빠른 모드는 유료 요금제에 포함됩니다."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "비공개: AI가 이 컴퓨터에서 실행됩니다. 더 느리지만 아무것도 밖으로 나가지 않습니다."
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -13251,6 +13268,10 @@ msgstr "언제 사용할지"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "Bot을 어디에서 실행할까요?"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "AI 실행 위치"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

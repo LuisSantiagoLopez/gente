@@ -6133,6 +6133,14 @@ msgstr "נכשל."
 msgid "Failure handling"
 msgstr "טיפול בכשלים"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "מהיר"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "מצב מהיר שולח את ההודעות שלך לשרתים שלנו כדי לענות מהר. אנחנו לא שומרים אותן ולא מאמנים עליהן."
+
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 msgid "Feedback"
 msgstr "משוב"
@@ -9367,6 +9375,7 @@ msgid "Privacy policy"
 msgstr "מדיניות הפרטיות"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "פרטי"
@@ -9378,6 +9387,14 @@ msgstr "מחשב פרטי"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "סביבת עבודה פרטית עם בוטים וקבוצות משלה."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "פרטי: ה־AI פועל במחשב הזה. מצב מהיר מגיע עם תוכנית בתשלום."
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "פרטי: ה־AI פועל במחשב הזה. איטי יותר, ושום דבר לא יוצא ממנו."
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -13251,6 +13268,10 @@ msgstr "מתי להשתמש"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "איפה הבוטים ירוצו?"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "איפה ה־AI פועל"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

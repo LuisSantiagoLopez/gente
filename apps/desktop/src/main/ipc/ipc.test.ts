@@ -248,6 +248,8 @@ describe("handleIpc", () => {
     expect(names.filter((name) => ipcChannels[name].refused === REJECTS)).toEqual([
       "desktop.computer.requestAccess",
       "desktop.gente.account",
+      "desktop.gente.aiMode",
+      "desktop.gente.setAiMode",
       "desktop.gente.signIn",
       "desktop.gente.signOut",
       "desktop.mcpBrowser.clear",

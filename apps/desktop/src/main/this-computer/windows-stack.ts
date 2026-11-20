@@ -119,6 +119,8 @@ export interface WindowsStackDeps {
   telegramToken?: () => Promise<string | undefined>;
   /** Gente: where the server searches through Gente Cloud (the desktop app's loopback broker). */
   searchBroker?: () => { url: string; token: string } | null;
+  /** Gente: the loopback model router (Fast or Private), used as the model server's address. */
+  modelRouter?: () => string | null;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -459,6 +461,7 @@ export class WindowsStackController extends StackLifecycle {
         ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
+      ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
     });
     await encryptExistingContent({
       run: this.deps.run,
@@ -625,4 +628,8 @@ const defaultSpawn: SpawnProcess = (command, args, options) =>
 
 function searchBrokerEnv(broker: { url: string; token: string } | null): Record<string, string> {
   return broker ? { GENTE_SEARCH_URL: broker.url, GENTE_SEARCH_TOKEN: broker.token } : {};
+}
+
+function modelRouterEnv(base: string | null): Record<string, string> {
+  return base ? { RAKAZO_LOCAL_MODELS_URL: `${base}/v1` } : {};
 }

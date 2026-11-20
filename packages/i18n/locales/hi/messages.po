@@ -6133,6 +6133,14 @@ msgstr "विफल।"
 msgid "Failure handling"
 msgstr "विफलता प्रबंधन"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "तेज़"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "तेज़ मोड जल्दी जवाब देने के लिए आपके संदेश हमारे सर्वर पर भेजता है। हम उन्हें न सहेजते हैं, न उन पर ट्रेनिंग करते हैं।"
+
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 msgid "Feedback"
 msgstr "फ़ीडबैक"
@@ -9367,6 +9375,7 @@ msgid "Privacy policy"
 msgstr "गोपनीयता नीति"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "निजी"
@@ -9378,6 +9387,14 @@ msgstr "निजी कंप्यूटर"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "अपने बॉट्स और समूहों वाला निजी वर्कस्पेस।"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "निजी: AI इसी कंप्यूटर पर चलता है। तेज़ मोड पेड प्लान के साथ आता है।"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "निजी: AI इसी कंप्यूटर पर चलता है। धीमा, और कुछ भी बाहर नहीं जाता।"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -13251,6 +13268,10 @@ msgstr "कब उपयोग करें"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "बॉट कहां चलने चाहिए?"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "AI कहाँ चलता है"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."

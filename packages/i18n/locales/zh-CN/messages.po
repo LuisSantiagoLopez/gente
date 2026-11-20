@@ -6133,6 +6133,14 @@ msgstr "失败。"
 msgid "Failure handling"
 msgstr "失败处理"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast"
+msgstr "快速"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
+msgstr "快速模式会把你的消息发送到我们的服务器以便快速回答。我们不存储，也不用它们训练。"
+
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 msgid "Feedback"
 msgstr "反馈"
@@ -9367,6 +9375,7 @@ msgid "Privacy policy"
 msgstr "隐私政策"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "私有"
@@ -9378,6 +9387,14 @@ msgstr "私有电脑"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "独立的空间，有自己的 Bot 和群组。"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
+msgstr "私密：AI 在这台电脑上运行。快速模式随付费方案提供。"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
+msgstr "私密：AI 在这台电脑上运行。较慢，但什么都不会离开它。"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -13251,6 +13268,10 @@ msgstr "何时使用"
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
 msgstr "Bot 应在哪里运行？"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Where the AI runs"
+msgstr "AI 在哪里运行"
 
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."
