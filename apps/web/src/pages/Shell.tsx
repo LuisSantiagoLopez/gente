@@ -52,6 +52,7 @@ import { computersAreUnavailable } from "../lib/computers/computer-sandbox";
 import { composerModelPickerPreference } from "../lib/models/composer-model-picker-preference";
 import type { ArtifactTarget } from "../lib/pages/artifact-open";
 import { PagesProvider, usePagesForChat } from "../lib/pages/pages";
+import { useGenteLink } from "../lib/gente/use-gente-link";
 import { desktopBridge } from "../lib/platform/desktop";
 import { hasOpenDialog } from "../lib/platform/has-open-dialog";
 import { markAfterPaint, markOnce } from "../lib/platform/performance";
@@ -598,6 +599,8 @@ function SpaceShell() {
     [sidebarSpaces, snoozeNow],
   );
   useDesktopBadge(userId ? unreadChatCount : 0);
+  // Gente: the paired phone's chats, tasks, approvals and handoff go through this window.
+  useGenteLink(rpc, navigate, Boolean(userId));
   const openSpaceChat = useOpenSpaceChat({
     bootstrapSpaceId: bootstrapMe?.spaceId,
     userId,

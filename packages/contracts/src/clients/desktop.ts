@@ -24,6 +24,9 @@ export interface DesktopUpdateState {
   checkedAt: string | null;
 }
 
+/** Gente Link v1: one message inside the sealed envelope, by `type`. */
+export type GenteLinkMessage = { type: string; [field: string]: unknown };
+
 /** Gente: the phone pairing state shown in Settings → Devices. */
 export interface GenteLinkState {
   status: "off" | "waiting" | "paired" | "signed_out";
@@ -192,6 +195,10 @@ export interface RakazoDesktop {
     linkState: () => Promise<GenteLinkState>;
     linkStart: () => Promise<GenteLinkState>;
     linkUnpair: () => Promise<GenteLinkState>;
+    /** Messages from the paired phone for the app window (taken once). */
+    linkTake?: () => Promise<GenteLinkMessage[]>;
+    /** Sends a message to the paired phone; false when none is paired or it isn't allowed. */
+    linkSend?: (message: GenteLinkMessage) => Promise<boolean>;
   };
   /** Absent on older desktop releases, which have no Settings… menu item. */
   settings?: {
