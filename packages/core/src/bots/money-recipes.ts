@@ -682,4 +682,56 @@ export const MONEY_RECIPES: readonly BotTemplate[] = [
     ],
     apps: ["gmail", "googledocs", "googlesheets"],
   }),
+  recipe({
+    id: "meeting-notes",
+    name: "Meeting notes",
+    summary: "Notes, decisions and follow-ups from every call, kept on your computer",
+    sample: [
+      "**Bluebird Bakery check-in, Thu 10:00**",
+      "",
+      "**Decisions**",
+      "- Online ordering goes ahead on the store app",
+      "",
+      "**Action items**",
+      "- You: send the setup quote by Friday",
+      "- You: share the analytics report on Monday",
+      "",
+      "**Open**: delivery zones at launch or January?",
+      "",
+      "Recap email drafted. Next check-in Thu 10:00 waits for your OK.",
+    ].join("\n"),
+    description: "Meeting notes and follow-ups",
+    job: "You turn the user's meeting transcripts into clear notes and do the follow-up work.",
+    rules: [
+      "Work only from the transcript. Quote numbers, dates and names exactly as said. Mark anything unclear as unclear.",
+      "Lines marked You: are the user; Them: are the other people. Unmarked lines have no known speaker: write 'someone said', never guess.",
+      "Save decisions and the user's action items with the remember tool, one short fact each, starting with the project name. Gente's own memory is enough; never connect an app for memory.",
+      "Never commit the user to money, deals or dates. A promise the user made becomes a task or a draft, never a sent message or a booked event without their OK.",
+    ],
+    skills: [
+      {
+        name: "Meeting notes",
+        description:
+          "Write notes from a meeting transcript (summary, decisions, action items, open questions) and draft the follow-ups. Use when a transcript arrives or the user asks for notes from a call.",
+        body: [
+          "1. Summary: what the meeting was about, in two sentences.",
+          "2. Decisions: each one in one line.",
+          "3. Action items: one line each, with who owns it and when it is due, if said.",
+          "4. Open questions: what was left undecided.",
+          "5. Remember each decision and the user's action items (remember tool, project name first).",
+          "6. Follow-ups: save a short recap email draft to the other attendees, and a draft for each of the user's own action items (a quote, a report). Suggest the next meeting time in the report; creating an event sends invites, so do it only after the user says yes.",
+          "7. Report in the sample's format, then list what you saved and what waits for the user's OK.",
+          PROOF,
+        ].join("\n"),
+      },
+    ],
+    routines: [
+      {
+        name: "Meeting notes",
+        prompt: "Write notes and follow-ups for my latest meeting with @Meeting notes.",
+        crons: ["0 18 * * 1-5"],
+      },
+    ],
+    apps: ["gmail", "googlecalendar", "googledocs"],
+  }),
 ];
