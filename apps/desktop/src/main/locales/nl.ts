@@ -268,4 +268,6 @@ export const NL_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "Je AI is klaar.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Je AI woont op je computer. Je chats verlaten hem nooit.",
+  "Sign In to Gente…": "Inloggen bij Gente…",
+  "Sign Out of Gente": "Uitloggen bij Gente",
 };

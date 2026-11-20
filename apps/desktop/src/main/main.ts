@@ -61,6 +61,7 @@ import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
 import { startWatchdogs } from "./burrow/watchdogs.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
+import { initAccount } from "./burrow/account.js";
 import { readComposioKey, readKeychainSecret, vendorKeysAllowed } from "./burrow/composio.js";
 import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
@@ -738,6 +739,7 @@ app.whenReady().then(async () => {
         unseal: (sealed: Buffer) => safeStorage.decryptString(sealed),
       }
     : undefined;
+  initAccount({ sealer, rebuildMenu: () => installApplicationMenu() });
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;

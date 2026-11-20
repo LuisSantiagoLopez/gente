@@ -278,4 +278,6 @@ export const PL_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "Twoje AI jest gotowe.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Twoje AI mieszka na Twoim komputerze. Twoje czaty nigdy go nie opuszczają.",
+  "Sign In to Gente…": "Zaloguj się do Gente…",
+  "Sign Out of Gente": "Wyloguj się z Gente",
 };

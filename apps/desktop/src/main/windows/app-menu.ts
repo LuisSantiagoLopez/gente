@@ -1,4 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+import { isSignedIn, signInToGente, signOutOfGente } from "../burrow/account.js";
 import { openTelegramWindow } from "../burrow/telegram-window.js";
 import type { DesktopMenuCommand, DesktopUpdateState } from "@rakazo/contracts";
 import { app, dialog, Menu } from "electron";
@@ -133,6 +134,10 @@ export function applicationMenuInstaller({
       visible: updaterSupport(updaterEnvironment).supported,
       click: () => void checkForUpdatesFromMenu(),
     };
+    // Gente: the account opens Clerk's sign-in in the browser; local chat works without it.
+    const account: Electron.MenuItemConstructorOptions = isSignedIn()
+      ? { label: t("Sign Out of Gente"), click: () => void signOutOfGente() }
+      : { label: t("Sign In to Gente…"), click: () => void signInToGente() };
     const connectTelegram: Electron.MenuItemConstructorOptions = {
       label: t("Connect Telegram…"),
       click: () => openTelegramWindow(),
@@ -258,6 +263,7 @@ export function applicationMenuInstaller({
                 { type: "separator" },
                 computerAccess,
                 revokeComputerAccess,
+                account,
                 connectTelegram,
                 changeServer,
                 { type: "separator" },
@@ -301,6 +307,7 @@ export function applicationMenuInstaller({
                 openSettings,
                 computerAccess,
                 revokeComputerAccess,
+                account,
                 connectTelegram,
                 changeServer,
                 { type: "separator" },

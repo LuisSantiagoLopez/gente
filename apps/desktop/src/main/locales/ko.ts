@@ -260,4 +260,6 @@ export const KO_MESSAGES: Record<string, string> = {
   "Your AI is ready.": "AI가 준비되었습니다.",
   "Your AI lives on your computer. Your chats never leave it.":
     "AI는 내 컴퓨터 안에 있습니다. 채팅은 절대 밖으로 나가지 않습니다.",
+  "Sign In to Gente…": "Gente에 로그인…",
+  "Sign Out of Gente": "Gente에서 로그아웃",
 };
