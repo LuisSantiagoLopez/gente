@@ -123,6 +123,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `docs/RAKAZO_README.md`
 - `docs/RAKAZO_README.th-TH.md`
 - `docs/RAKAZO_README.zh-CN.md`
+- `packages/adapter-kit/src/sandbox-errors.ts`
 - `packages/adapters/src/bots/agent-import-settings.test.ts`
 - `packages/adapters/src/computers/host/user-device-gateway.test.ts`
 - `packages/adapters/src/computers/host/user-device-gateway.ts`
@@ -174,12 +175,16 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/providers/memory/honcho/honcho-memory.ts`
 - `packages/adapters/src/providers/memory/mnemoverse/mnemoverse-memory-provider.test.ts`
 - `packages/adapters/src/runs/assembly/approval-continuation.prompt.ts`
+- `packages/adapters/src/runs/assembly/run-assembly-capabilities.ts`
+- `packages/adapters/src/runs/assembly/run-computer.ts`
 - `packages/adapters/src/runs/assembly/run-instructions.prompt.ts`
 - `packages/adapters/src/runs/executor/executor-readonly-approval.test.ts`
 - `packages/adapters/src/runs/executor/executor-team-chat-sender.test.ts`
 - `packages/adapters/src/runs/executor/executor.test.ts`
 - `packages/adapters/src/runs/lifecycle/run-effects.test.ts`
+- `packages/adapters/src/runs/lifecycle/run-fail.ts`
 - `packages/adapters/src/runs/tools/run-tools-user-computer.ts`
+- `packages/adapters/src/runs/turn/run-turn.ts`
 - `packages/adapters/src/runtime/context/history-compaction.prompt.ts`
 - `packages/adapters/src/runtime/context/history-compaction.test.ts`
 - `packages/adapters/src/runtime/context/runtime-context.test.ts`
@@ -187,6 +192,8 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/runtime/pi/models/pi-models.test.ts`
 - `packages/adapters/src/runtime/pi/models/pi-models.ts`
 - `packages/adapters/src/runtime/pi/pi-runtime-error.test.ts`
+- `packages/adapters/src/runtime/pi/pi-runtime.ts`
+- `packages/adapters/src/runtime/pi/stream/pi-runtime-yield.test.ts`
 - `packages/adapters/src/runtime/runtime.prompt.ts`
 - `packages/adapters/src/runtime/scripted-runtime.ts`
 - `packages/adapters/src/tools/builtin-conversation.tool-definition.ts`
@@ -198,6 +205,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/contracts/src/clients/server-headers.test.ts`
 - `packages/contracts/src/models/model-backups.test.ts`
 - `packages/contracts/src/models/model-backups.ts`
+- `packages/contracts/src/runs/runs.ts`
 - `packages/core/src/deployment/self-update.test.ts`
 - `packages/core/src/integrations/mcp-app.test.ts`
 - `packages/core/src/node/desktop-runtime.test.ts`
@@ -230,8 +238,10 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `README.md`
 - `apps/desktop/src/main/burrow/brain-ipc.ts`
 - `apps/desktop/src/main/burrow/brain.ts`
-- `brand/burrow-mark.png`
-- `brand/burrow-mark.svg`
 - `apps/desktop/src/main/burrow/entitlement.ts`
 - `apps/web/src/lib/burrow/entitlement.ts`
+- `brand/burrow-mark.png`
+- `brand/burrow-mark.svg`
 - `brand/burrow-mark.svg`, `brand/burrow-mark.png`
+- `packages/adapters/src/computers/computer-task-limit.test.ts`
+- `packages/adapters/src/computers/computer-task-limit.ts`

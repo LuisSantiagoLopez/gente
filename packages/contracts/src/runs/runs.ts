@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import * as z from "zod";
 import { Id, IsoDate, RunStatus } from "../ids.js";
 
@@ -6,6 +7,10 @@ export const COMPUTER_RATE_LIMIT_ERROR = "Too many computer requests. Try again 
 
 /** The organization spent this period's computer allowance; computers start again at renewal. */
 export const COMPUTER_ALLOWANCE_USED_ERROR = "No computer hours left.";
+
+/** One task kept a billed computer past its time limit; the computer was stopped to save cost. */
+export const COMPUTER_TASK_LIMIT_ERROR =
+  "This task reached its computer time limit, so its computer was stopped.";
 
 /** The deployment's computer provider account cannot start computers, such as when it is unpaid. */
 export const COMPUTER_PROVIDER_UNAVAILABLE_ERROR =

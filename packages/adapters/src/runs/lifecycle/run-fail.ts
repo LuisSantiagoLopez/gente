@@ -1,9 +1,11 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   ModelAccountError,
   ModelOutputError,
   SandboxAllowanceUsedError,
   SandboxProviderAccountError,
   SandboxRateLimitError,
+  SandboxTaskLimitError,
   TransientModelError,
 } from "@rakazo/adapter-kit";
 import {
@@ -105,6 +107,7 @@ export async function failRun(
     if (
       !(computerError instanceof SandboxRateLimitError) &&
       !(computerError instanceof SandboxAllowanceUsedError) &&
+      !(computerError instanceof SandboxTaskLimitError) &&
       !(computerError instanceof SandboxProviderAccountError)
     )
       throw computerError;
@@ -151,7 +154,8 @@ export async function failRun(
     error instanceof ModelAccountError ||
     error instanceof ModelOutputError ||
     error instanceof SandboxRateLimitError ||
-    error instanceof SandboxAllowanceUsedError
+    error instanceof SandboxAllowanceUsedError ||
+    error instanceof SandboxTaskLimitError
   ) {
     // Provider outages that outlasted retries, provider accounts, plans and model
     // choices the user fixes, unusable model output, the computer provider's own rate limit

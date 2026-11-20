@@ -1,5 +1,6 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRunRequest } from "@rakazo/adapter-kit";
+import { SandboxTaskLimitError } from "@rakazo/adapter-kit";
 import type { MessageBlock } from "@rakazo/contracts";
 import { disabledBuiltinToolSet, modelRoleConnectionId } from "@rakazo/contracts";
 import {
@@ -25,6 +26,7 @@ import {
   waitForRunComputerLease,
 } from "../../computers/computer-lifecycle.js";
 import { resolveComputerRunModel } from "../../computers/computer-model-settings.js";
+import { taskComputerBudget } from "../../computers/computer-task-limit.js";
 import { checkpointRunComputerWorkspace } from "../../computers/computer-workspace.js";
 import { sandboxKindCapabilities } from "../../computers/sandbox/sandbox-kind-capabilities.js";
 import { teamWorkspaceInstruction } from "../../computers/screens/computer-support.prompt.js";
@@ -309,6 +311,11 @@ export async function prepareRunComputer(
     { id: storedComputer.id, kind: computerKind },
     context.signal,
   );
+  // A computer that bills while running stops serving a task that has used its time limit.
+  const taskBudget =
+    deps.sandbox.billsWhileRunning?.({ kind: computerKind }) === true
+      ? taskComputerBudget(deps.prisma, { runId, attemptId: hold.attempt.id })
+      : undefined;
   const pendingTurnFiles: MessageBlock[][] = [turnBlocks ?? []];
   let copyingTurnFiles = Promise.resolve();
   // Serialize copies before each tool, including attachments received while a boot is in flight.
@@ -326,6 +333,11 @@ export async function prepareRunComputer(
         "computer.id": storedComputer.id,
       },
       async () => {
+        if (await taskBudget?.exceeded()) {
+          getLogger().warn("computer.task_limit_reached", { "limit.ms": taskBudget?.limitMs });
+          scheduleComputerSleep(deps.jobs, storedComputer.id, new Date());
+          runComputer.fail(new SandboxTaskLimitError(taskBudget?.limitMs ?? 0));
+        }
         const computer = await runComputer.get();
         copyingTurnFiles = copyingTurnFiles
           .catch(() => undefined)

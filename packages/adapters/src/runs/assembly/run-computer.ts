@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { ComputerRef } from "@rakazo/adapter-kit";
 
 /**
@@ -33,6 +34,17 @@ export function lazyRunComputer(start: () => Promise<ComputerRef>, onFailure?: (
     },
     throwIfFailed(): void {
       if (failed) throw failure;
+    },
+    /** Ends the computer for this run: later uses reject with `error`, and the run is aborted. */
+    fail(error: unknown): never {
+      if (!failed) {
+        failed = true;
+        failure = error;
+        started = Promise.reject(error);
+        started.catch(() => undefined);
+        onFailure?.();
+      }
+      throw failure;
     },
   };
 }
