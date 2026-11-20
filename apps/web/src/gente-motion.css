@@ -188,3 +188,10 @@
     opacity: 0.55;
   }
 }
+
+/* Rows and panels in the brains and projects screens rise in with the same lift as messages. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-gente-rise] {
+    animation: gente-msg-in 320ms var(--gente-ease-out) both;
+  }
+}

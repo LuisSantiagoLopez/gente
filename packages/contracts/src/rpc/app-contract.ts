@@ -11,6 +11,7 @@ import { botsRpc } from "../bots/bots-rpc.js";
 import { serverRpc } from "../clients/server-rpc.js";
 import { computersRpc } from "../computers/computers-rpc.js";
 import { integrationsRpc } from "../integrations/integrations-rpc.js";
+import { knowledgeRpc } from "../knowledge/knowledge-rpc.js";
 import { meetingCalendarRpc } from "../meetings/calendar.js";
 import { meetingsRpc } from "../meetings/meetings.js";
 import { modelsRpc } from "../models/models-rpc.js";
@@ -38,6 +39,7 @@ export const appContract = {
   ...skillLearningRpc,
   ...integrationsRpc,
   ...runsRpc,
+  ...knowledgeRpc,
 };
 
 export type AppContract = typeof appContract;

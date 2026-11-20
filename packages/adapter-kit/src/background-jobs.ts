@@ -119,6 +119,15 @@ const payloadSchemas = {
   }),
   "purchase.poll": z.object({ purchaseId: z.string().min(1) }),
   "media.poll": z.object({ jobId: z.string().min(1) }),
+  "brain.distill": z
+    .object({
+      spaceId: z.string().min(1),
+      userId: z.string().min(1),
+      runId: z.string().min(1).optional(),
+      projectId: z.string().min(1).optional(),
+      feedback: z.string().min(1).max(1000).optional(),
+    })
+    .refine((payload) => Boolean(payload.runId || payload.projectId), "runId or projectId"),
   "push.receipt": z.object({
     userId: z.string().min(1),
     ticketId: z.string().min(1),
@@ -487,6 +496,25 @@ export function purchasePollJob(purchaseId: string, availableAt?: Date): Backgro
     payload: { purchaseId },
     replaceKey: `purchase.poll:${purchaseId}`,
     ...(availableAt ? { availableAt } : {}),
+  };
+}
+
+/** How often a distillation is tried: the model may be busy, but it never needs many tries. */
+export const BRAIN_DISTILL_MAX_ATTEMPTS = 3;
+
+/**
+ * Distil a finished research run, or one round of a project's feedback, into topic brains. The
+ * key is the run or the feedback round, so a replayed completion queues it once.
+ */
+export function brainDistillJob(
+  payload: BackgroundJobPayloads["brain.distill"],
+  key: string,
+): BackgroundJob {
+  return {
+    name: "brain.distill",
+    payload,
+    replaceKey: `brain.distill:${key}`,
+    maxAttempts: BRAIN_DISTILL_MAX_ATTEMPTS,
   };
 }
 

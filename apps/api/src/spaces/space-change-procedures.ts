@@ -20,6 +20,12 @@ const SPACE_CHANGE_PROCEDURES: Record<string, readonly SpaceChangeKind[]> = {
   // Activity leaves out archived bots.
   "bots.restore": ["runs", "routines"],
   "bots.remove": ["runs", "routines"],
+  "brains.update": ["knowledge"],
+  "brains.remove": ["knowledge"],
+  "projects.create": ["knowledge"],
+  "projects.update": ["knowledge"],
+  "projects.feedback": ["knowledge"],
+  "projects.remove": ["knowledge"],
 };
 
 export function spaceChangesFor(path: readonly string[]): readonly SpaceChangeKind[] {

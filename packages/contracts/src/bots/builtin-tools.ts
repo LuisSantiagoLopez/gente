@@ -81,6 +81,7 @@ export const BUILTIN_TOOL_NAMES = [
   "scratchpad_update",
   "scratchpad_complete",
   "scratchpad_remove",
+  "project_update",
   "board_tickets",
   "ticket_get",
   "ticket_create",

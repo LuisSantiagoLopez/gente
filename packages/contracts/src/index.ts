@@ -56,6 +56,7 @@ export * from "./integrations/plugins.js";
 export * from "./integrations/tool-question.js";
 export * from "./integrations/vault-import.js";
 export * from "./integrations/vault-items.js";
+export * from "./knowledge/knowledge.js";
 export * from "./labs.js";
 export * from "./meetings/calendar.js";
 export * from "./meetings/meetings.js";

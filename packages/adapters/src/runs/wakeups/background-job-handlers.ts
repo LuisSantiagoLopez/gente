@@ -43,6 +43,7 @@ import {
 } from "../../computers/screens/computer-control.js";
 import { retryConnectionCleanup } from "../../integrations/connection-cleanup.js";
 import type { ConnectorRegistry } from "../../integrations/connector-registry.js";
+import { distillIntoBrains } from "../../knowledge/brain-distillation.js";
 import { pollMediaVideo } from "../../media/media-video-poll.js";
 import {
   abandonRetainedConversation,
@@ -305,6 +306,23 @@ export function createBackgroundJobHandlers(deps: {
     "media.poll": asOwner(mediaJob, async (payload) => {
       await pollMediaVideo(deps, payload);
     }),
+    // The payload names the owner it was queued for, as connection cleanup's does.
+    "brain.distill": asOwner(
+      async (payload: BackgroundJobPayloads["brain.distill"]) => payload,
+      async (payload) => {
+        await distillIntoBrains(
+          {
+            prisma: deps.prisma,
+            runtime: deps.runtime,
+            events: deps.events,
+            deploymentModelKey: deps.deploymentModelKey,
+            deploymentModelConfigured: deps.deploymentModelConfigured,
+            ...(deps.executor.resolveModel ? { resolveModel: deps.executor.resolveModel } : {}),
+          },
+          payload,
+        );
+      },
+    ),
     // A receipt belongs to a device's push token, not to a Space.
     "push.receipt": async (payload) => {
       await runAsSystem("check a push receipt", () => deps.notifications?.checkReceipt(payload));

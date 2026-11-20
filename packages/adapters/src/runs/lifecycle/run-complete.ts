@@ -11,8 +11,9 @@ import {
   redactSecrets,
   withoutLastToolStepNotes,
 } from "@rakazo/core";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
 import { resolveBotWorkspacePath } from "../../computers/screens/computer-support.js";
+import { recordRunKnowledge } from "../../knowledge/knowledge-run-hooks.js";
 import {
   answeredSteeringMessageIds,
   retainsConversationTurn,
@@ -201,6 +202,18 @@ export async function completeRun(ctx: RunContext) {
   }
   await enqueueConversationRetention(ctx, answeredMessageIds);
   await enqueueHistoryCompaction(ctx);
+  // Last and never fatal, like compaction: projects and brains learn from the finished run.
+  await bestEffort(
+    "record a finished run in projects and brains",
+    recordRunKnowledge(deps, {
+      spaceId: run.spaceId,
+      userId: run.userId,
+      runId,
+      threadId: thread.id,
+      researched: ctx.state.tainted || ctx.trust.searchResultUrls.size > 0,
+      summary: text,
+    }),
+  );
 }
 
 /** A scripted runtime's turns carry the files and memory it writes. */

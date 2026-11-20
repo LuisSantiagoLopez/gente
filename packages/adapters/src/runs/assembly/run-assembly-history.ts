@@ -1,6 +1,7 @@
 import { botMessageAllowsSilence, userTurnMessageForRun } from "@rakazo/core";
 import { isPartialReplyClientNonce, storedMessageBlocks } from "@rakazo/db";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
+import { loadKnowledgeContext } from "../../knowledge/knowledge-context.js";
 import { loadAgentMemoryContext } from "../../memory/memory-context.js";
 import { PARTIAL_REPLY_NOTE } from "../../messaging/automated-messages.prompt.js";
 import { recallEarlierInChat } from "../../runtime/context/earlier-in-chat.js";
@@ -244,6 +245,7 @@ export async function loadTurnContext(
     ticketContext,
     recalled,
     earlier,
+    knowledge,
   ] = await Promise.all([
     discoveredPromise,
     loadCurrentTurnImages(deps, turnBlocks, context),
@@ -262,6 +264,17 @@ export async function loadTurnContext(
         }),
     recallPromise,
     earlierPromise,
+    // Brains and the chat's project are the owner's own notes, never shown to someone else.
+    nonOwnerChatRun
+      ? Promise.resolve(undefined)
+      : bestEffort(
+          "load brains and projects for a turn",
+          loadKnowledgeContext(
+            deps.prisma,
+            { spaceId: run.spaceId, userId: run.userId },
+            { prompt: task.prompt, threadId: thread.id },
+          ),
+        ),
   ]);
   const semanticMemoryEnabled = Boolean(semanticMemory) && !nonOwnerChatRun;
   let recalledMemory = "";
@@ -303,6 +316,8 @@ export async function loadTurnContext(
     semanticMemoryEnabled,
     recalledMemory,
     earlierInChat: formatEarlierInChat(earlier),
+    brainContext: knowledge?.brains ?? "",
+    projectContext: knowledge?.projects ?? "",
   };
 }
 
