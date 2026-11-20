@@ -111,6 +111,8 @@ export const ipcChannels = {
   "desktop.gente.linkStart": appPage<NonNullable<Desktop["gente"]>["linkStart"]>(REJECTS),
   "desktop.gente.linkState": appPage<NonNullable<Desktop["gente"]>["linkState"]>(REJECTS),
   "desktop.gente.linkUnpair": appPage<NonNullable<Desktop["gente"]>["linkUnpair"]>(REJECTS),
+  "desktop.gente.linkTake": appPage<NonNullable<NonNullable<Desktop["gente"]>["linkTake"]>>([]),
+  "desktop.gente.linkSend": appPage<NonNullable<NonNullable<Desktop["gente"]>["linkSend"]>>(false),
   "desktop.gente.consumeMessage": appPage<NonNullable<Desktop["gente"]>["consumeMessage"]>(true),
   "desktop.gente.privateOffer": appPage<NonNullable<Desktop["gente"]>["privateOffer"]>(null),
   "desktop.gente.setAiMode": appPage<NonNullable<Desktop["gente"]>["setAiMode"]>(REJECTS),

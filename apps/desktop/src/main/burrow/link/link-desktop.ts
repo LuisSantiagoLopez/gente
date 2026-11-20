@@ -4,7 +4,7 @@
 // Wires Gente Link into the desktop app: the QR image, this computer's own model for Private
 // answers, and the person's sign-in for the relay.
 import os from "node:os";
-import type { GenteLinkState } from "@rakazo/contracts";
+import type { GenteLinkMessage, GenteLinkState } from "@rakazo/contracts";
 import { app } from "electron";
 import QRCode from "qrcode";
 import { OLLAMA_URL, readSavedBrain } from "../brain.js";
@@ -54,6 +54,8 @@ export function createDesktopLink(input: {
   stackDir: string;
 }) {
   if (!input.sealer) return null;
+  // Messages from the phone wait here until the app window takes them (it polls while open).
+  const inbox: GenteLinkMessage[] = [];
   const service = createLinkService({
     cloudUrl: input.cloudUrl,
     token: input.token,
@@ -61,6 +63,10 @@ export function createDesktopLink(input: {
     userDataDir: app.getPath("userData"),
     deviceName: os.hostname().replace(/\.local$/, "") || "Gente",
     localAnswer: (messages) => localAnswer(input.stackDir, messages),
+    onAppMessage: (message) => {
+      inbox.push(message);
+      if (inbox.length > 200) inbox.shift();
+    },
   });
   void service.restore();
   const view = async (): Promise<GenteLinkState> => {
@@ -83,5 +89,28 @@ export function createDesktopLink(input: {
       await service.unpair();
       return view();
     },
+    take: async () => inbox.splice(0),
+    send: (message: unknown) => sendFromApp(service, message),
   };
+}
+
+/** What the app window may send to the phone. */
+const FROM_APP = new Set([
+  "sync.chat",
+  "sync.memory",
+  "task.status",
+  "approval.request",
+  "handoff",
+]);
+const SHORT_LIVED = new Set(["task.status", "approval.request"]);
+
+export async function sendFromApp(
+  service: { send(message: Record<string, unknown>, ttl?: number): Promise<boolean> },
+  message: unknown,
+): Promise<boolean> {
+  if (!message || typeof message !== "object") return false;
+  const type = (message as { type?: unknown }).type;
+  if (typeof type !== "string" || !FROM_APP.has(type)) return false;
+  if (JSON.stringify(message).length > 200_000) return false;
+  return service.send(message as Record<string, unknown>, SHORT_LIVED.has(type) ? 600 : undefined);
 }

@@ -38,6 +38,8 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
     linkState: () => ipcRenderer.invoke("desktop.gente.linkState"),
     linkStart: () => ipcRenderer.invoke("desktop.gente.linkStart"),
     linkUnpair: () => ipcRenderer.invoke("desktop.gente.linkUnpair"),
+    linkTake: () => ipcRenderer.invoke("desktop.gente.linkTake"),
+    linkSend: (message) => ipcRenderer.invoke("desktop.gente.linkSend", message),
     setPrivateWaitlist: (join) => ipcRenderer.invoke("desktop.gente.setPrivateWaitlist", join),
   },
   server: {

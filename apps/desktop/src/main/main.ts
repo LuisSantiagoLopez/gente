@@ -1188,6 +1188,8 @@ app.whenReady().then(async () => {
   handleIpc("desktop.gente.linkState", () => (link ? link.state() : linkOff()));
   handleIpc("desktop.gente.linkStart", () => (link ? link.start() : linkOff()));
   handleIpc("desktop.gente.linkUnpair", () => (link ? link.unpair() : linkOff()));
+  handleIpc("desktop.gente.linkTake", async () => (link ? link.take() : []));
+  handleIpc("desktop.gente.linkSend", async (_event, message: unknown) => (link ? link.send(message) : false));
   handleIpc("desktop.gente.setPrivateWaitlist", (_event, join: unknown) =>
     privateOffer(join === true ? "join" : "leave"),
   );

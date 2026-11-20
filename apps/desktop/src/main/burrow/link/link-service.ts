@@ -39,7 +39,18 @@ export interface LinkDeps {
   localAnswer: (messages: unknown[]) => AsyncIterable<string>;
   fetch?: typeof fetch;
   onChange?: (state: LinkState) => void;
+  /** Messages for the app window to act on: chats, memory, phone tasks, approvals, handoff. */
+  onAppMessage?: (message: { type: string; [field: string]: unknown }) => void;
 }
+
+/** What the phone may ask of the app window; anything else is dropped. */
+const APP_MESSAGES = new Set([
+  "task.start",
+  "approval.decision",
+  "handoff",
+  "sync.chat",
+  "sync.memory",
+]);
 
 export function createLinkService(deps: LinkDeps) {
   const doFetch = deps.fetch ?? fetch;
@@ -94,6 +105,8 @@ export function createLinkService(deps: LinkDeps) {
         if (saved) saved.phoneName = String(message.phoneName ?? "Phone").slice(0, 80);
         await send({ type: "hello_ack" });
         changed();
+        // The app window answers with recent chats and memory.
+        deps.onAppMessage?.({ type: "hello" });
         break;
       case "private.infer": {
         const reqId = String(message.reqId ?? "");
@@ -110,7 +123,7 @@ export function createLinkService(deps: LinkDeps) {
         await forget(false);
         break;
       default:
-        // sync.chat, task.start, approvals and handoff come in the next step.
+        if (APP_MESSAGES.has(message.type)) deps.onAppMessage?.(message);
         break;
     }
   }
@@ -197,6 +210,12 @@ export function createLinkService(deps: LinkDeps) {
       return state();
     },
     unpair: () => forget(true).then(state),
+    /** Sends a message from the app window to the paired phone; false when no phone is paired. */
+    async send(message: Record<string, unknown>, ttl?: number) {
+      if (!saved || !keys) return false;
+      await send(message, ttl);
+      return true;
+    },
     poll,
   };
 }
