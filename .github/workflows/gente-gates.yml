@@ -57,12 +57,21 @@ jobs:
             chaos-${{ matrix.os }}.json
             chaos-catalog-${{ matrix.os }}.json
 
-  smoke-windows:
-    uses: ./.github/workflows/gente-windows.yml
-
-  smoke-mac:
-    runs-on: macos-15
+  smoke:
+    # The packaged-app smoke test, built the same way as gente-platforms.yml (server and Postgres
+    # inside the app): install, setup, sign up, first reply against a stand-in model server.
+    name: smoke (${{ matrix.label }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-2025, label: windows-x64, arch: x64, kind: win }
+          - { os: macos-15, label: macos-arm64, arch: arm64, kind: mac }
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -73,28 +82,48 @@ jobs:
       - run: pnpm db:generate
       - run: pnpm --filter @rakazo/web build
         env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
-      - name: Server bundle
+      - name: Server bundle inside the app (with embedded Postgres)
         run: |
-          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.1.0"
-          mkdir -p apps/desktop/build && cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle"
+          node scripts/gente-embed-server.mjs "$RUNNER_TEMP/bundle"
         env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
       - run: pnpm --filter @rakazo/desktop build
-      - name: Packaged app (unsigned folder build)
+      - name: Windows installer
+        if: matrix.kind == 'win'
         working-directory: apps/desktop
-        run: npx electron-builder --mac dir --arm64 --publish never -c.mac.identity=null
-      - name: Stand-in model server on 11434
-        run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
-      - name: First run, as a person sees it
-        run: node apps/desktop/e2e/gente-first-run-visible.mjs apps/desktop/out/mac-arm64/Gente.app/Contents/MacOS/Gente "$RUNNER_TEMP/first-run"
+        run: npx electron-builder --win nsis --${{ matrix.arch }} --publish never -c.win.verifyUpdateCodeSignature=false
+      - name: Mac disk image (unsigned until certificates exist)
+        if: matrix.kind == 'mac'
+        working-directory: apps/desktop
+        env: { CSC_IDENTITY_AUTO_DISCOVERY: "false" }
+        run: npx electron-builder --mac dmg --${{ matrix.arch }} --publish never -c.mac.identity=null -c.mac.notarize=false
+      - name: Install
+        run: |
+          mkdir -p "$RUNNER_TEMP/e2e"
+          if [ "${{ matrix.kind }}" = win ]; then
+            exe=$(ls apps/desktop/out/*.exe | head -1)
+            powershell -NoProfile -Command "Start-Process -Wait -FilePath '$(cygpath -w "$exe")' -ArgumentList '/S'"
+            app="$LOCALAPPDATA/Programs/Gente/Gente.exe"
+          else
+            dmg=$(ls apps/desktop/out/*.dmg | head -1)
+            mnt=$(hdiutil attach -nobrowse -readonly "$dmg" | tail -1 | cut -f3-)
+            cp -R "$mnt/Gente.app" /Applications/
+            hdiutil detach "$mnt" -quiet || true
+            app=/Applications/Gente.app/Contents/MacOS/Gente
+          fi
+          echo "APP=$app" >> "$GITHUB_ENV"
+      - name: Smoke test (setup → sign up → first reply; stand-in model on 11434)
+        timeout-minutes: 45
+        run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: gente-mac-smoke
-          path: ${{ runner.temp }}/first-run
+          name: smoke-${{ matrix.label }}
+          path: ${{ runner.temp }}/e2e
 
   merge-self-heal:
     # Runs only when every gate above passed. Fix PRs from the pipeline carry the "self-heal" label.
-    needs: [full-tests, chaos, smoke-windows, smoke-mac]
+    needs: [full-tests, chaos, smoke]
     if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'self-heal')
     runs-on: ubuntu-24.04
     steps:
