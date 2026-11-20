@@ -22,6 +22,27 @@ export function genteCloudBrokerUrl(env: NodeJS.ProcessEnv = process.env): strin
   return env.GENTE_COMPUTER_BROKER_URL?.trim() || null;
 }
 
+const DISPLAY = ":0";
+
+type RunOpts = { envs?: Record<string, string>; [option: string]: unknown };
+type ScreenDesktop = {
+  commands: { run(command: string, opts?: RunOpts): Promise<{ exitCode: number }> };
+  _start(display: string, opts: { resolution: [number, number] }): Promise<void>;
+};
+
+/**
+ * The screen of a computer made by Gente Cloud. `Sandbox.create` would set DISPLAY for every
+ * command and start the screen (Xvfb and the desktop); attaching to a computer made elsewhere does
+ * neither, so mouse moves, clicks and screenshots fail with "Can't open display". Do both here.
+ */
+export async function startScreen(sandbox: ScreenDesktop): Promise<void> {
+  const run = sandbox.commands.run.bind(sandbox.commands);
+  sandbox.commands.run = (command: string, opts: RunOpts = {}) =>
+    run(command, { ...opts, envs: { DISPLAY, ...opts.envs } });
+  const probe = await run(`xdpyinfo -display ${DISPLAY}`, { envs: { DISPLAY } }).catch(() => null);
+  if (probe?.exitCode !== 0) await sandbox._start(DISPLAY, { resolution: [1024, 768] });
+}
+
 /** Wraps an envd-only connection: lifecycle belongs to Gente Cloud, so setTimeout does nothing. */
 async function attach(session: BrokerSession): Promise<RemoteDesktop> {
   const { Sandbox } = await import("@e2b/desktop");
@@ -32,6 +53,7 @@ async function attach(session: BrokerSession): Promise<RemoteDesktop> {
     envdAccessToken: session.connection.envdAccessToken,
     envdVersion: session.connection.envdVersion ?? "0.4.0",
   });
+  await startScreen(sandbox as unknown as ScreenDesktop);
   return Object.assign(sandbox, {
     // Gente Cloud holds the lease and heartbeats it; the computer's own timer stays untouched.
     setTimeout: async () => undefined,
