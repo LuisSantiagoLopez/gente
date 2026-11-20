@@ -19,6 +19,8 @@ export const exclude = [
   "packages/core/src/{models/model-providers,messaging/messaging-providers,integrations/featured-connectors,integrations/plugin-catalog}.ts",
   // Gente's work apps and the apps its money recipes connect, picked by name like the catalog above.
   "packages/core/src/{integrations/work-apps,bots/money-recipes}.ts",
+  // App logos: brand marks and sites for common apps, looked up by the app's name.
+  "apps/web/src/lib/integrations/{app-logo-icons.ts,app-logo.tsx}",
   "packages/core/src/agent-import/**",
   // Composition roots wire vendors up and read their configuration, which AGENTS.md allows.
   "apps/api/src/{app,env,index}.ts",

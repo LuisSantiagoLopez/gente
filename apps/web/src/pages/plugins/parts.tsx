@@ -8,14 +8,22 @@ import type {
 import { mcpServerConnection } from "@rakazo/contracts";
 import { catalogItemKey } from "@rakazo/core";
 import { Button, SectionHeading } from "@rakazo/ui-web";
-import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { Check, ChevronLeft, CircleAlert, TriangleAlert } from "lucide-react";
 import type { ReactElement, ReactNode } from "react";
 import { ROW_BUTTON, ROW_HOVER, ROW_SHELL } from "../../components/integrations/plugin-marketplace";
+import { AppLogo } from "../../lib/integrations/app-logo";
 import type { PluginConnections } from "./use-plugin-connections";
 
-export function ConnectorIcon({ name, logo }: { name: string; logo?: string | null }) {
-  return <LogoTile name={name} logo={logo} size={36} />;
+export function ConnectorIcon({
+  name,
+  logo,
+  slug,
+}: {
+  name: string;
+  logo?: string | null;
+  slug?: string | null;
+}) {
+  return <AppLogo name={name} logo={logo} slug={slug} size={36} />;
 }
 
 function connectionLabel(state: McpServerConnection): ReactElement {
@@ -113,7 +121,7 @@ export function CatalogTile({
   const connected = connections.itemConnected(item);
   const openable = connected || pluginForApp.has(catalogItemKey(item));
   const tileTestId = tileTestIdOption !== false && connected;
-  const icon = <ConnectorIcon name={label} logo={logo} />;
+  const icon = <ConnectorIcon name={label} logo={logo} slug={item.slug} />;
   const title = (
     <div className="min-w-0 flex-1 text-start">
       <div className="truncate text-body-lg font-medium text-foreground">{label}</div>
