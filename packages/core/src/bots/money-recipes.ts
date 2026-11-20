@@ -148,7 +148,7 @@ export const MONEY_RECIPES: readonly BotTemplate[] = [
         body: [
           "1. Find customer emails from the last day that have no reply.",
           "2. For each, find the order by number or the customer's email in the store.",
-          "3. Save a draft reply: friendly, specific, under 120 words, with the order facts.",
+          "3. Save a draft reply in the customer's thread (subject Re: theirs): friendly, specific, under 120 words, with the order facts. For refunds, the draft says the refund is on its way; it waits as a draft until the user approves the refund. Never mention approvals to the customer.",
           "4. Report: a bold count line, then one line per email (order, topic, Draft ready or Needs your OK).",
           PROOF,
         ].join("\n"),
@@ -190,8 +190,8 @@ export const MONEY_RECIPES: readonly BotTemplate[] = [
           "Report yesterday's sales, refunds and low-stock items and log them to a sheet. Use when asked how sales went.",
         body: [
           "1. Get yesterday's orders and refunds from the store (or charges and refunds from payments if there is no store).",
-          "2. Work out revenue, order count, refunds, and the best-selling item.",
-          "3. List items with 5 or fewer in stock.",
+          "2. Work out revenue (orders minus refunds), order count, refunds, and the best-selling item with the shell tool (a short python3 script over the numbers), never in your head.",
+          "3. In the same script, list only items with 5 or fewer in stock.",
           "4. Append the row to the sales sheet.",
           "5. Report in under 8 lines, as in the sample.",
           PROOF,
