@@ -122,6 +122,11 @@ async function main() {
   });
   const { pool } = created;
   let { prisma } = created;
+  // Gente (temporary diagnostic): the same pool, without Prisma.
+  await pool
+    .query("select 1")
+    .then(() => logger.info("worker pool check", { ok: true }))
+    .catch((e: unknown) => logger.error("worker pool check", { detail: inspect(e, { depth: 6, showHidden: true }).slice(0, 3000) }));
   const rowSecurity = rowSecurityWarning(await describeRowSecurity(prisma));
   if (rowSecurity) logger.warn(rowSecurity);
   const timeZone = await bestEffort("database time zone check", timeZoneWarning(prisma));
