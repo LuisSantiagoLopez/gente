@@ -38,7 +38,7 @@ describe("cloud computers through Gente Cloud", () => {
     const broke = await startComputerBroker(() => ({ startSession: async () => { throw out; } }) as never);
     const res = await fetch(`${broke.url}/sessions`, { method: "POST", body: "{}" });
     expect(res.status).toBe(402);
-    expect((await res.json()).error).toBe("out_of_credit");
+    expect(((await res.json()) as { error: string }).error).toBe("out_of_credit");
     await broke.closeAll();
   });
 });

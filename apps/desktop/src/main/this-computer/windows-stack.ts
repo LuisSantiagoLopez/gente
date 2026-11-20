@@ -125,6 +125,8 @@ export interface WindowsStackDeps {
   composioProxy?: () => string | null;
   /** Gente: the loopback broker for Gente Cloud computers; null unless the plan has hours. */
   computerBroker?: () => string | null;
+  /** Gente: images and video through Gente Cloud (the relay's /media address). */
+  mediaRelay?: () => string | null;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -472,6 +474,9 @@ export class WindowsStackController extends StackLifecycle {
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
       ...(this.deps.composioProxy?.() ? { GENTE_COMPOSIO_PROXY_URL: this.deps.composioProxy()! } : {}),
+      ...(this.deps.mediaRelay?.()
+        ? { MEDIA_GENERATION_PROVIDER: "gente-cloud", GENTE_MEDIA_URL: this.deps.mediaRelay()! }
+        : {}),
     });
     await encryptExistingContent({
       run: this.deps.run,

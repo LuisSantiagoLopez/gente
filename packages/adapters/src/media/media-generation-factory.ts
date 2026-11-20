@@ -1,8 +1,10 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { MediaGenerationProvider } from "@rakazo/adapter-kit";
 import {
   FakeMediaGenerationProvider,
   FalMediaGenerationProvider,
 } from "./media-generation-provider.js";
+import { GenteCloudMediaProvider } from "./gente-cloud-media.js";
 
 export function createMediaGenerationProvider(
   env: NodeJS.ProcessEnv = process.env,
@@ -10,6 +12,12 @@ export function createMediaGenerationProvider(
   const kind = env.MEDIA_GENERATION_PROVIDER?.trim().toLowerCase();
   if (!kind || kind === "disabled") return undefined;
   if (kind === "fake") return new FakeMediaGenerationProvider();
+  // Gente: Gente Cloud through the desktop app's relay; files are saved on this computer.
+  if (kind === "gente-cloud") {
+    const base = env.GENTE_MEDIA_URL?.trim();
+    if (!base) return undefined;
+    return new GenteCloudMediaProvider(base);
+  }
   if (kind !== "fal") throw new Error("Unknown media generation provider");
   const apiKey = env.MEDIA_GENERATION_API_KEY?.trim();
   const imageModel = env.MEDIA_GENERATION_IMAGE_MODEL?.trim();

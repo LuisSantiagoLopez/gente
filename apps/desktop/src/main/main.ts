@@ -796,13 +796,16 @@ app.whenReady().then(async () => {
     .catch(() => undefined);
   // Gente: connected apps (Composio) through Gente Cloud, with the person's own sign-in.
   let composioProxy: string | null = null;
+  let mediaRelay: string | null = null;
   void startComposioRelay({
     cloudUrl: `${GENTE_CLOUD_URL}/v1/proxy/composio/mcp`,
+    mediaUrl: `${GENTE_CLOUD_URL}/v1/proxy/media`,
     token: accountToken,
     devKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
   })
     .then((relay) => {
       composioProxy = relay.url;
+      mediaRelay = relay.mediaUrl;
     })
     .catch(() => undefined);
   // Gente: bots' cloud computers through Gente Cloud sessions (billed only while one runs).
@@ -905,6 +908,7 @@ app.whenReady().then(async () => {
       modelRouter: () => modelRouterBase,
       composioProxy: () => composioProxy,
       computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
+      mediaRelay: () => (isPaidPlan() ? mediaRelay : null),
       telegramToken: () => readTelegramToken(),
     });
   };
@@ -957,6 +961,7 @@ app.whenReady().then(async () => {
       modelRouter: () => modelRouterBase,
       composioProxy: () => composioProxy,
       computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
+      mediaRelay: () => (isPaidPlan() ? mediaRelay : null),
       telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null
