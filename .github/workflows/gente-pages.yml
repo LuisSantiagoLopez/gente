@@ -5,7 +5,6 @@ name: gente-pages
 on:
   push:
     branches: [canary]
-    paths: ["docs/gente/help/**", "scripts/gente-help-site.ts", "apps/desktop/src/main/support/markdown.ts"]
   workflow_run:
     workflows: [gente-self-heal]
     types: [completed]
