@@ -213,7 +213,8 @@ export async function completeRun(ctx: RunContext) {
       userId: run.userId,
       runId,
       threadId: thread.id,
-      researched: ctx.state.tainted || ctx.trust.searchResultUrls.size > 0,
+      // Test doubles of a run may leave out the trust record; a missing set means no search ran.
+      researched: ctx.state.tainted || (ctx.trust.searchResultUrls?.size ?? 0) > 0,
       summary: text,
     }),
   );
