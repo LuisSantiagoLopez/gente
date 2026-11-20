@@ -672,9 +672,6 @@ importers:
       react-router-dom:
         specifier: 7.18.5
         version: 7.18.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      simple-icons:
-        specifier: 16.36.0
-        version: 16.36.0
       tailwindcss:
         specifier: 4.3.5
         version: 4.3.5
@@ -706,6 +703,9 @@ importers:
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
+      simple-icons:
+        specifier: 16.36.0
+        version: 16.36.0
       typescript:
         specifier: 7.0.2
         version: 7.0.2
