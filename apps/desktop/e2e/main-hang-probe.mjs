@@ -17,7 +17,7 @@ for (const s of [child.stdout, child.stderr]) s.on("data", (d) => output.push(St
 await new Promise((r) => setTimeout(r, Number(waitArg ?? 45) * 1000));
 console.log("--- app output\n" + output.join("").slice(-6000));
 // A startup error shows as a modal box: capture the screen, and check the main bundle's packages.
-const shots = process.env.PROBE_OUT ?? ".";
+const shots = process.env.PROBE_OUT ?? (await import("node:os")).tmpdir();
 try {
   if (process.platform === "darwin") execFileSync("/usr/sbin/screencapture", ["-x", `${shots}/probe-screen.png`]);
   if (process.platform === "win32")
