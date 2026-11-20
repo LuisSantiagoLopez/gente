@@ -91,6 +91,17 @@ jobs:
             osascript -e 'tell application "System Events" to get value of every static text of every window of (every process whose name is "Gente")' || true
           fi
         env: { PROBE_OUT: "${{ runner.temp }}/e2e" }
+      - name: Free port 11434 for the stand-in model (stop any Ollama the runner or a launch started)
+        run: |
+          if [ "${{ matrix.kind }}" = win ]; then
+            tasklist | grep -i ollama || true
+            taskkill //F //IM ollama.exe //T 2>/dev/null || true
+            taskkill //F //IM "ollama app.exe" //T 2>/dev/null || true
+          else
+            pgrep -fl -i ollama || true
+            pkill -9 -i ollama || true
+          fi
+          sleep 2
       - name: Smoke test (memory check → setup → sign up → first reply; stand-in model on 11434)
         timeout-minutes: 45
         run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
