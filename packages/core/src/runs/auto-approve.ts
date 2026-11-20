@@ -10,13 +10,18 @@ const SEND_BUILTINS = new Set(["send_email"]);
 const DELETE_BUILTINS = new Set(["delete_email", "forget_memory"]);
 
 const VERBS = {
-  spend: "buy|charge|checkout|pay|payment|purchase|order|subscribe|transfer|donate|tip",
+  spend:
+    "buy|charge|checkout|pay|payment|purchase|order|subscribe|unsubscribe|transfer|donate|tip|refund|payout|withdraw|upgrade|downgrade|renew",
   send: "send|reply|forward|post|publish|share|invite|tweet|retweet|comment|dm|broadcast",
   delete: "delete|remove|trash|destroy|purge|erase|wipe|empty|clear|drop",
   legal: "accept|agree|sign|consent|esign",
 } as const;
 const word = (verbs: string) => new RegExp(`(^|[_-])(${verbs})([_-]|$)`, "i");
 const CONNECTOR_SPEND = word(VERBS.spend);
+/** A change to anything that moves money counts as spending, whatever the verb (CANCEL_SUBSCRIPTION). */
+const MONEY_NOUN = word(
+  "charges?|payments?|payouts?|refunds?|transfers?|subscriptions?|invoices?|billing|plans?|balances?",
+);
 const CONNECTOR_SEND = word(VERBS.send);
 const CONNECTOR_DELETE = word(VERBS.delete);
 const CONNECTOR_LEGAL = word(VERBS.legal);
@@ -54,7 +59,7 @@ export function alwaysAskCategory(action: {
   if (
     action.pays ||
     SPEND_BUILTINS.has(toolName) ||
-    slugs.some((slug) => CONNECTOR_SPEND.test(slug))
+    slugs.some((slug) => CONNECTOR_SPEND.test(slug) || MONEY_NOUN.test(slug))
   )
     return "spend";
   if (slugs.some((slug) => CONNECTOR_LEGAL.test(slug))) return "legal";

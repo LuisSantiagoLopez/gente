@@ -45,6 +45,18 @@ jobs:
           packages/adapters/src/storage/thread-artifacts.store.test.ts
           packages/core/src/primitives/user-error.test.ts
           apps/api/src/bots/hidden-turns.prompt.test.ts
+      # Approvals: the four always-ask kinds (spend, send as the owner, delete, legal terms) ask in
+      # every mode including Never ask; auto-approve limits; loop guard; find_tool hints.
+      - name: Approvals and tool guardrails
+        run: >
+          npx vitest run
+          packages/core/src/runs
+          packages/adapters/src/runs/tools
+          packages/adapters/src/runs/turn/tool-loop.test.ts
+          packages/adapters/src/runs/executor/executor-readonly-approval.test.ts
+          packages/adapters/src/runs/executor/executor-loop-guard.test.ts
+          packages/adapters/src/runs/executor/executor.test.ts
+          packages/adapters/src/tools/builtin-tool-bridge.test.ts
   mac-package:
     runs-on: macos-15
     timeout-minutes: 90
