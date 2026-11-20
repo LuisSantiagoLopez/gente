@@ -6,7 +6,7 @@
 // from the folder the app runs from (for example "gente" versus "Gente"), Node loads a package
 // twice and checks such as `pool instanceof pg.Pool` fail (Prisma then dialed localhost:5432).
 // Before the server runs, every junction is pointed at exactly the app's own spelling.
-import { existsSync, lstatSync, mkdirSync, readFileSync, readlinkSync, rmSync, symlinkSync } from "node:fs";
+import { existsSync, lstatSync, mkdirSync, readFileSync, readlinkSync, rmdirSync, symlinkSync, unlinkSync } from "node:fs";
 import path from "node:path";
 
 export const SERVER_LINKS_FILE = "gente-links.json";
@@ -18,7 +18,7 @@ function stripLongPrefix(value: string): string {
 }
 
 /** Returns how many links it created; 0 when there is no list or every link is in place. */
-export function ensureServerLinks(serverDir: string): number {
+export function ensureServerLinks(serverDir: string, onMismatch?: (line: string) => void): number {
   const list = path.join(serverDir, SERVER_LINKS_FILE);
   if (!existsSync(list)) return 0;
   const links = JSON.parse(readFileSync(list, "utf8")) as [string, string][];
@@ -31,8 +31,15 @@ export function ensureServerLinks(serverDir: string): number {
       throw new Error(`Server link outside the server: ${linkRel} -> ${targetRel}`);
     const current = lstatSync(link, { throwIfNoEntry: false });
     if (current?.isSymbolicLink()) {
-      if (stripLongPrefix(readlinkSync(link)) === target) continue;
-      rmSync(link, { force: true });
+      const now = stripLongPrefix(readlinkSync(link));
+      if (now === target) continue;
+      if (created === 0) onMismatch?.(`${link}: ${now} -> ${target}`);
+      // A junction is removed like an empty folder; its target is untouched.
+      try {
+        rmdirSync(link);
+      } catch {
+        unlinkSync(link);
+      }
     } else if (current) {
       continue; // A real folder already: leave it.
     }
