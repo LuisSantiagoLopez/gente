@@ -1243,8 +1243,6 @@ app.whenReady().then(async () => {
     userDataDir: app.getPath("userData"),
     stackDir: stackDir(app.getPath("userData")),
     router: () => modelRouter,
-    // The AI always runs on this computer.
-    mode: () => "private" as const,
   });
   registerSetupIpc({
     userDataDir,

@@ -17,17 +17,12 @@
   "model-server-down": {
     "everyMs": 1000,
     "budgetMs": 8000,
-    "ladder": ["answer-from-cloud", "start-model-server"]
+    "ladder": ["start-model-server"]
   },
   "slow-replies": {
     "everyMs": 2000,
     "budgetMs": 6000,
-    "ladder": ["answer-from-cloud"]
-  },
-  "cloud-model-unavailable": {
-    "everyMs": 1000,
-    "budgetMs": 3000,
-    "ladder": ["answer-on-this-computer"]
+    "ladder": ["wait-for-model"]
   },
   "bundle-module-missing": {
     "everyMs": 30000,
@@ -47,7 +42,7 @@
   "relay-down": {
     "everyMs": 2000,
     "budgetMs": 8000,
-    "ladder": ["restart-relay"]
+    "ladder": ["retry-request", "restart-relay"]
   },
   "disk-full": {
     "everyMs": 5000,
@@ -62,7 +57,7 @@
   "model-corrupt": {
     "everyMs": 15000,
     "budgetMs": 30000,
-    "ladder": ["answer-from-cloud", "redownload-model"]
+    "ladder": ["redownload-model"]
   },
   "apps-not-configured": {
     "everyMs": 2000,

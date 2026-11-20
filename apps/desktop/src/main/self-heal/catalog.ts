@@ -23,25 +23,22 @@ export interface HealEnv {
   freeDiskBytes(): Promise<number | null>;
   /** Known failure lines seen in the service logs since the last read. */
   logSignals(): Promise<ReadonlySet<LogSignal>>;
-  /** Gente Cloud's model as this computer sees it; "unused" in private mode. */
-  cloudModel(): Promise<"warm" | "cold" | "stub" | "down" | "unused">;
   /** The person's Gente sign-in. */
   signIn(): Promise<"ok" | "expired" | "signed-out">;
   /** The loopback relay to Gente Cloud (connected apps); null when it is not used. */
   relayUp(): Promise<boolean | null>;
-  route(): "cloud" | "local";
   /** Bots' computers run on this computer (not the online one). */
   computerIsLocal(): Promise<boolean>;
   // Repairs.
   retryOllama(): Promise<void>;
+  /** Tries the failed request once more after a short pause (Android's first step too). */
+  retryRequest(): Promise<void>;
   startOllama(): Promise<void>;
   restartService(name: "postgres" | "api" | "worker" | "web" | "relay"): Promise<void>;
   resetStack(): Promise<void>;
   redownloadModel(): Promise<void>;
   clearCaches(): Promise<void>;
   refreshSignIn(): Promise<void>;
-  /** Sends replies to Gente Cloud or this computer until the other side is healthy again. */
-  preferRoute(where: "cloud" | "local" | "auto"): void;
   useLocalComputer(): Promise<void>;
   /** Lets Gente Cloud's operators know (balance, template); the person needs to do nothing. */
   notifyCloud(failureId: string): Promise<void>;
@@ -196,26 +193,11 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     detect: async (env) => ({ broken: !(await env.ollamaUp()) }),
     ladder: [
       {
-        kind: "fallback",
-        id: "answer-from-cloud",
-        did: c(
-          "answered from Gente Cloud while it came back",
-          "respondí desde Gente Cloud mientras volvía",
-          "respondi pelo Gente Cloud enquanto ele voltava",
-        ),
-        // Only in fast mode: private mode never sends a reply to the cloud.
-        run: async (env) => {
-          if ((await env.cloudModel()) === "warm") env.preferRoute("cloud");
-          await env.startOllama();
-        },
-        verifyWithinMs: 6_000,
-      },
-      {
         kind: "restart",
         id: "start-model-server",
         did: c("started the model again", "volví a iniciar el modelo", "iniciei o modelo de novo"),
         run: (env) => env.startOllama(),
-        verifyWithinMs: 20_000,
+        verifyWithinMs: 6_000,
       },
     ],
     what: c("the model stopped", "el modelo se detuvo", "o modelo parou"),
@@ -234,25 +216,20 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     budgetMs: 6_000,
     detect: async (env) => {
       const ms = env.localLatencyMs();
-      // Only while replies are coming from this computer; a cloud route is the repair.
-      return {
-        broken: env.route() === "local" && ms !== null && ms > SLOW_REPLY_MS,
-        detail: `${ms} ms`,
-      };
+      return { broken: ms !== null && ms > SLOW_REPLY_MS, detail: `${ms} ms` };
     },
     ladder: [
       {
-        kind: "fallback",
-        id: "answer-from-cloud",
+        kind: "retry",
+        id: "wait-for-model",
         did: c(
-          "answered from Gente Cloud",
-          "respondí desde Gente Cloud",
-          "respondi pelo Gente Cloud",
+          "waited for the model to be free",
+          "esperé a que el modelo estuviera libre",
+          "esperei o modelo ficar livre",
         ),
-        run: async (env) => {
-          if ((await env.cloudModel()) === "warm") env.preferRoute("cloud");
-        },
-        verifyWithinMs: 1_000,
+        // Everything runs on this computer: a busy model just needs time. Nothing is sent anywhere.
+        run: async () => {},
+        verifyWithinMs: 0,
       },
     ],
     what: c(
@@ -260,43 +237,11 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "las respuestas iban lentas porque el modelo estaba ocupado",
       "as respostas estavam lentas porque o modelo estava ocupado",
     ),
-    // Private mode has no faster option; Gente stays quiet and the reply just takes longer.
-    calm: null,
-  },
-  {
-    id: "cloud-model-unavailable",
-    component: "cloud",
-    critical: true,
-    everyMs: 1_000,
-    confirm: 1,
-    budgetMs: 3_000,
-    detect: async (env) => {
-      const cloud = await env.cloudModel();
-      return {
-        broken:
-          env.route() === "cloud" && (cloud === "cold" || cloud === "stub" || cloud === "down"),
-        detail: cloud,
-      };
-    },
-    ladder: [
-      {
-        kind: "fallback",
-        id: "answer-on-this-computer",
-        did: c(
-          "answered on this computer instead",
-          "respondí en esta computadora",
-          "respondi neste computador",
-        ),
-        run: async (env) => env.preferRoute("local"),
-        verifyWithinMs: 1_000,
-      },
-    ],
-    what: c(
-      "Gente Cloud was warming up",
-      "Gente Cloud se estaba encendiendo",
-      "o Gente Cloud estava ligando",
+    calm: c(
+      "Your computer is busy, so answers are slower right now.",
+      "Tu computadora está ocupada, así que las respuestas van más lentas ahora.",
+      "Seu computador está ocupado, então as respostas estão mais lentas agora.",
     ),
-    calm: null,
   },
   {
     id: "bundle-module-missing",
@@ -399,6 +344,13 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     budgetMs: 8_000,
     detect: async (env) => ({ broken: (await env.relayUp()) === false }),
     ladder: [
+      {
+        kind: "retry",
+        id: "retry-request",
+        did: c("tried again", "lo intenté otra vez", "tentei de novo"),
+        run: (env) => env.retryRequest(),
+        verifyWithinMs: 1_000,
+      },
       {
         kind: "restart",
         id: "restart-relay",
@@ -509,19 +461,6 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       return { broken: state === "corrupt" || state === "missing", detail: state };
     },
     ladder: [
-      {
-        kind: "fallback",
-        id: "answer-from-cloud",
-        did: c(
-          "answered from Gente Cloud",
-          "respondí desde Gente Cloud",
-          "respondi pelo Gente Cloud",
-        ),
-        run: async (env) => {
-          if ((await env.cloudModel()) === "warm") env.preferRoute("cloud");
-        },
-        verifyWithinMs: 0,
-      },
       {
         kind: "redownload",
         id: "redownload-model",

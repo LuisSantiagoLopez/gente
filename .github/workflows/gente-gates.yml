@@ -117,6 +117,9 @@ jobs:
       - name: Smoke test (setup → sign up → first reply; stand-in model on 11434)
         timeout-minutes: 45
         run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
+      - name: Self-healing in the real app (kill the database, API and worker; time the recovery)
+        timeout-minutes: 30
+        run: node apps/desktop/e2e/gente-heal-live.mjs "$APP" "$RUNNER_TEMP/e2e"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
