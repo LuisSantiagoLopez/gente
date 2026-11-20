@@ -365,7 +365,7 @@
     } catch {
       // Only report a follow the person still sees; leaving "new" already handed the form back.
       if (selectedMode() === "new") {
-        setStatus(t("Could not follow the local stack. Try again."), "error");
+        setStatus(t("Gente couldn't finish getting ready. Press Try again."), "error");
         setBusy(false);
       }
     } finally {
@@ -385,7 +385,7 @@
       if (started !== null && started.phase !== "idle") renderStack(started);
     } catch {
       if (generation === requestGeneration) {
-        setStatus(t("Could not start the local stack. Try again."), "error");
+        setStatus(t("Gente couldn't finish getting ready. Press Try again."), "error");
         setBusy(false);
       }
       return;
@@ -433,8 +433,10 @@
       for (const input of brainModelList.querySelectorAll("input")) input.checked = input.value === state.model.tag;
     }
     const { phase, model } = state;
-    brainSize.textContent = `${model.name} · ${model.sizeGB} GB`;
-    brainModels.hidden = busyBrain || !["checking", "failed", "ollama-missing", "ready"].includes(phase);
+    brainSize.textContent = `${model.sizeGB} GB`;
+    // One model ships, so there is nothing to choose; the picker only shows if more ever do.
+    brainModels.hidden =
+      (state.models?.length ?? 0) < 2 || busyBrain || !["checking", "failed", "ollama-missing", "ready"].includes(phase);
     stepBrain.dataset.state =
       phase === "ready"
         ? "done"
@@ -458,25 +460,28 @@
           : `${model.note} ${t("Downloads once, then works offline.")}`;
         break;
       case "ollama-missing":
-        brainStatus.textContent = t("Gente runs Swift with Ollama, a free app. Get started installs it for you.");
-        break;
       case "installing-ollama":
-        brainStatus.textContent = t("Installing Ollama…");
-        break;
       case "starting-ollama":
-        brainStatus.textContent = t("Starting Ollama…");
+        brainStatus.textContent = t("Getting Gente ready…");
         break;
-      case "pulling":
-        brainStatus.textContent = t("Downloading {name}…", { name: model.name });
+      case "pulling": {
+        const left = minutesLeft(state);
+        brainStatus.textContent =
+          left === null
+            ? t("Getting Gente ready…")
+            : left <= 1
+              ? t("Getting Gente ready, about a minute left")
+              : t("Getting Gente ready, about {n} min left", { n: left });
         if (state.totalBytes > 0)
           detail = `${formatBytes(state.completedBytes)} of ${formatBytes(state.totalBytes)} · ${percent.toFixed(0)}%`;
         break;
+      }
       case "loading":
-        brainStatus.textContent = t("Waking up {name}…", { name: model.name });
-        detail = t("The first load can take a minute.");
+        brainStatus.textContent = t("Almost ready…");
+        detail = t("The first start can take a minute.");
         break;
       case "ready":
-        brainStatus.textContent = t("{name} is ready on this Mac.", { name: model.name });
+        brainStatus.textContent = t("Your AI is ready.");
         brainStatus.setAttribute("data-tone", "ok");
         break;
       case "failed":
@@ -497,6 +502,21 @@
       brainWaiter = null;
       resolve(state);
     }
+  }
+
+  // Real time left, from the download speed over the last 30 seconds. Unknown until there is
+  // enough data, so the screen never shows a guess.
+  const samples = [];
+  function minutesLeft(state) {
+    if (!(state.totalBytes > 0)) return null;
+    const now = Date.now();
+    samples.push([now, state.completedBytes]);
+    while (samples.length > 2 && now - samples[0][0] > 30_000) samples.shift();
+    const [t0, b0] = samples[0];
+    if (now - t0 < 5_000 || state.completedBytes <= b0) return null;
+    const rate = (state.completedBytes - b0) / (now - t0);
+    // The model download is most of the wait; about a minute more covers waking it up.
+    return Math.max(1, Math.ceil((state.totalBytes - state.completedBytes) / rate / 60_000) + 1);
   }
 
   let busyBrain = false;
@@ -524,7 +544,7 @@
       busyBrain = false;
       lockChoice(false);
       setBusy(false);
-      setStatus(t("Could not start the model setup. Try again."), "error");
+      setStatus(t("Gente couldn't finish getting ready. Press Try again."), "error");
       return;
     }
     const result = await settled;
@@ -712,6 +732,9 @@
         if (!TERMINAL_PHASES.has(stack.phase)) void followStack();
       } else if (selectedMode() === "existing") {
         serverUrl.focus();
+      } else if (state.saved === null && !state.error) {
+        // A first run starts by itself: no button between opening Gente and sign-up.
+        void runBrainThenStack();
       } else {
         continueButton.focus();
       }

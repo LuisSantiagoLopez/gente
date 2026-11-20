@@ -10,7 +10,7 @@ import type { DesktopLocalStackState } from "@rakazo/contracts";
 
 export const RETRY_DELAYS_MS = [2_000, 6_000, 15_000] as const;
 export const CALM_FAILURE =
-  "Gente couldn't finish starting. Your chats are safe. Press Try again, or restart your computer if it keeps happening.";
+  "Gente couldn't finish starting. Press Try again, or restart your computer if it keeps happening.";
 export const CALM_OFFLINE =
   "Gente needs the internet for this one-time step. It will carry on as soon as you're back online.";
 

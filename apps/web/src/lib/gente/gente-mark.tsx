@@ -1,12 +1,10 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { useEffect, useState } from "react";
+import { handMarkDots } from "./hand-drawn";
 
-/** Eight dots in a ring: people gathered. One marigold dot is you. */
-const DOTS = Array.from({ length: 8 }, (_, i) => {
-  const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
-  return { x: 12 + Math.cos(angle) * 8, y: 12 + Math.sin(angle) * 8, accent: i === 0 };
-});
+/** Eight hand-drawn dots in a ring: people gathered. One marigold dot is you. */
+const DOTS = handMarkDots(24);
 
 /** The Gente mark. It breathes while idle and hops once when a reply lands. */
 export function GenteMark({ size = 22 }: { size?: number }) {
@@ -28,13 +26,7 @@ export function GenteMark({ size = 22 }: { size?: number }) {
       aria-label="Gente"
     >
       {DOTS.map((dot) => (
-        <circle
-          key={`${dot.x}-${dot.y}`}
-          cx={dot.x}
-          cy={dot.y}
-          r={dot.accent ? 2.6 : 2.1}
-          fill={dot.accent ? "var(--primary)" : "currentColor"}
-        />
+        <path key={dot.d} d={dot.d} fill={dot.accent ? "var(--primary)" : "currentColor"} />
       ))}
     </svg>
   );

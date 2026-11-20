@@ -71,13 +71,16 @@ export function SidebarHeader({
   );
   return (
     <div
-      className={`app-drag flex items-center ${mini ? `flex-col gap-1 px-0 pb-3 ${hasWindowChrome ? "pt-4" : "pt-2"}` : "justify-between px-3 pb-3 pt-[14px]"}`}
+      // Gente: the macOS window buttons sit in a reserved inset at the top left. In the rail the
+      // first button starts below them; in the full sidebar the inset starts at the window edge
+      // so the row still fits at the narrowest width. Modified from Rakazo.
+      className={`app-drag @container flex items-center ${mini ? `flex-col gap-1 px-0 pb-3 ${hasWindowChrome ? "pt-[24px]" : "pt-2"}` : `justify-between pb-3 pe-3 pt-[14px] ${hasWindowChrome ? "ps-0" : "ps-3"}`}`}
     >
       <div className={`flex items-center ${mini ? "flex-col gap-2" : "gap-2"}`}>
         {hasWindowChrome ? <WindowChrome /> : null}
         {toggle}
         {mini ? null : (
-          <span className="text-foreground/80">
+          <span className="hidden text-foreground/80 @[290px]:inline">
             <GenteMark />
           </span>
         )}

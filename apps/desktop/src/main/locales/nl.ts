@@ -80,13 +80,9 @@ export const NL_MESSAGES: Record<string, string> = {
     "Het inlogantwoord is geweigerd. Ga terug naar Gente om het opnieuw te proberen.",
   "You can close this tab and return to Gente.":
     "Je kunt dit tabblad sluiten en teruggaan naar Gente.",
-  "Set up Gente": "Gente instellen",
   "Quit Gente": "Stop Gente",
   "Welcome to Gente": "Welkom bij Gente",
-  "Choose where Gente runs.": "Kies waar Gente draait.",
   Instance: "Instantie",
-  "This computer": "Deze computer",
-  "Existing instance": "Bestaande instantie",
   "Technical details": "Technische details",
   "Setup progress": "Voortgang van de installatie",
   "Server address": "Serveradres",
@@ -94,12 +90,8 @@ export const NL_MESSAGES: Record<string, string> = {
   "Name: value": "Naam: waarde",
   "Check connection": "Verbinding controleren",
   Continue: "Doorgaan",
-  Retry: "Opnieuw proberen",
   "Getting ready…": "Voorbereiden…",
-  "Downloading Gente…": "Gente downloaden…",
-  "Starting Gente…": "Gente starten…",
   "Almost ready…": "Bijna klaar…",
-  "Gente is ready.": "Gente is klaar.",
   "{size} downloaded": "{size} gedownload",
   "Connecting…": "Verbinden…",
   "Checking…": "Controleren…",
@@ -108,10 +100,6 @@ export const NL_MESSAGES: Record<string, string> = {
   "Could not save that address.": "Dat adres kon niet worden bewaard.",
   "Could not save that address. Try again.":
     "Dat adres kon niet worden bewaard. Probeer het opnieuw.",
-  "Could not follow the local stack. Try again.":
-    "De lokale stack kon niet worden gevolgd. Probeer het opnieuw.",
-  "Could not start the local stack. Try again.":
-    "De lokale stack kon niet worden gestart. Probeer het opnieuw.",
   "Could not run the connection check. Try again.":
     "De verbindingscontrole kon niet worden uitgevoerd. Probeer het opnieuw.",
   "Setup bridge unavailable.": "De installatiebrug is niet beschikbaar.",
@@ -126,7 +114,6 @@ export const NL_MESSAGES: Record<string, string> = {
     "Dat adres verwijst door naar een andere plek. Voer het uiteindelijke adres van de Gente-server in.",
   "That address did not respond like a Gente server.":
     "Dat adres antwoordde niet als een Gente-server.",
-  "The server answered with HTTP {status}.": "De server antwoordde met HTTP {status}.",
   "Timed out reaching that address.": "Time-out bij het bereiken van dat adres.",
   "Nothing is listening at that address yet.": "Er luistert nog niets op dat adres.",
   "That host could not be found.": "Die host is niet gevonden.",
@@ -214,16 +201,10 @@ export const NL_MESSAGES: Record<string, string> = {
     "Je bots en gegevens gaan mee. Docker wordt gestopt, niet verwijderd.",
   Move: "Overzetten",
   "Keep Docker": "Docker houden",
-  "Nothing to install.": "Niets te installeren.",
-  "Your data stays on this computer.": "Je gegevens blijven op deze computer.",
-  "Connect to a server you or your team already run.":
-    "Maak verbinding met een server die jij of je team al draait.",
   "Gente needs Docker Desktop to run on this computer.":
     "Gente heeft Docker Desktop nodig om op deze computer te draaien.",
   "Gente needs Docker to run on this computer.":
     "Gente heeft Docker nodig om op deze computer te draaien.",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop is een gratis app die Gente op de achtergrond draait. Installeer en open het één keer.",
   "Install Docker Engine and start it.": "Installeer Docker Engine en start het.",
   "Download Docker Desktop": "Docker Desktop downloaden",
   "Install Docker": "Docker installeren",
@@ -242,4 +223,52 @@ export const NL_MESSAGES: Record<string, string> = {
   "Restart Gente": "Gente opnieuw starten",
   "Not Now": "Niet nu",
   "Restart Gente to finish setup": "Start Gente opnieuw om de configuratie te voltooien",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Gebaseerd op Rakazo van Elie Steinbock (Apache-2.0). Swift door UkisAI.",
+  "Bots, chats, files, routines": "Bots, chats, bestanden, routines",
+  "Checking this Mac…": "Deze Mac controleren…",
+  "Choose a different model": "Een ander model kiezen",
+  "Connect Telegram…": "Telegram koppelen…",
+  "Connect to a server instead": "Liever met een server verbinden",
+  "Downloading the workspace…": "Werkruimte downloaden…",
+  "Downloads once, then works offline.": "Wordt één keer gedownload en werkt daarna offline.",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente kon niet klaar worden gezet. Druk op Opnieuw proberen.",
+  "Gente is getting things ready. This takes a moment.": "Gente zet alles klaar. Dit duurt even.",
+  "Get started": "Aan de slag",
+  "Getting Gente ready, about a minute left": "Gente klaarzetten, nog ongeveer een minuut",
+  "Getting Gente ready, about {n} min left": "Gente klaarzetten, nog ongeveer {n} min",
+  "Getting Gente ready…": "Gente klaarzetten…",
+  "Model choices": "Modelkeuzes",
+  "Model download": "Model downloaden",
+  "No ads. Ever.": "Geen advertenties. Nooit.",
+  "No usage limits. Message as much as you want.":
+    "Geen gebruikslimieten. Stuur zoveel berichten als je wilt.",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "Niemand leest je gegevens, traint ermee of verkoopt ze. Wij niet, en niemand anders.",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "Op deze Mac heeft Gente Docker Desktop (een gratis app) nodig voor de werkruimte. Installeer het en open het één keer.",
+  "Run on this Mac instead": "Liever op deze Mac draaien",
+  "Runs privately in the background on this Mac.": "Draait privé op de achtergrond op deze Mac.",
+  "Something went wrong.": "Er ging iets mis.",
+  "Starting the workspace…": "Werkruimte starten…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "Overgestapt op {name} voor je computer ({from} kon hier niet draaien).",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "Dat adres antwoordde niet als een Gente-server. Controleer het en probeer het opnieuw.",
+  "The AI of the people.": "De AI van de mensen.",
+  "The first start can take a minute.": "De eerste keer starten kan een minuut duren.",
+  "Try again": "Opnieuw proberen",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Als Gente online voor je werkt (zoeken, browsen, apps), gaat alleen naar buiten wat die taak nodig heeft.",
+  Workspace: "Werkruimte",
+  "Workspace ready.": "Werkruimte klaar.",
+  "Your AI": "Jouw AI",
+  "Your AI is ready.": "Je AI is klaar.",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "Je AI woont op je computer. Je chats verlaten hem nooit.",
+  "Sign In to Gente…": "Inloggen bij Gente…",
+  "Sign Out of Gente": "Uitloggen bij Gente",
+  "Gente Support…": "Gente-hulp…",
 };

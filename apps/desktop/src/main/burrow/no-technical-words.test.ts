@@ -15,6 +15,8 @@ const TECHNICAL = [
   /WebSocket/i,
   /\bE(CONN\w*|NOENT|ADDRINUSE|TIMEDOUT|AI_AGAIN|NOTFOUND)\b/,
   /stack ?trace|Traceback|at Object\./i,
+  // Beginners don't know the tools under the hood.
+  /\bOllama\b/,
 ];
 const root = path.resolve(import.meta.dirname, "../../../../..");
 const desktopMain = path.join(root, "apps/desktop/src/main");

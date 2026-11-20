@@ -29,19 +29,38 @@ async function look(page, name) {
   return text;
 }
 
-const app = await electron.launch({ executablePath: exe, args: ["--lang=en-US"], timeout: 180_000 });
+// Beside a person's own Gente, a smoke run adds `--use-mock-keychain` so it never asks for, or
+// touches, their saved keys.
+const extra = (process.env.GENTE_E2E_ARGS ?? "").split(" ").filter(Boolean);
+// Gente keeps a hidden, pre-warmed window around; the one a person sees is the visible one.
+async function visibleWebWindow(app) {
+  for (const w of app.windows()) {
+    if (!w.url().startsWith("http")) continue;
+    if ((await w.evaluate(() => document.visibilityState).catch(() => "hidden")) === "visible") return w;
+  }
+  return null;
+}
+const app = await electron.launch({ executablePath: exe, args: ["--lang=en-US", ...extra], timeout: 180_000 });
 try {
   const first = await app.firstWindow();
-  await first.getByRole("button", { name: "Get started" }).waitFor({ timeout: 120_000 });
-  await look(first, "welcome");
-  step('Saw the welcome screen; pressing "Get started"');
-  await first.getByRole("button", { name: "Get started" }).click();
+  await first.waitForLoadState("domcontentloaded");
+  await first.waitForTimeout(3000);
+  const text0 = await look(first, "welcome");
+  // A first run starts by itself. Pressing anything here counts as a click a beginner had to make.
+  let clicks = 0;
+  if (/Getting Gente ready|Almost ready|Starting the workspace|Downloading the workspace/.test(text0)) {
+    step("Setup started by itself, no click");
+  } else {
+    clicks++;
+    step('Setup waited for a click; pressing "Get started" (counts as a click)');
+    await first.getByRole("button", { name: "Get started" }).click();
+  }
 
   // Wait, reading the screen, until Gente opens its main window.
   let page = null;
   let last = "";
   while (!page && Date.now() - t0 < 30 * 60_000) {
-    page = app.windows().find((w) => w.url().startsWith("http")) ?? null;
+    page = (await visibleWebWindow(app));
     if (page) break;
     const text = await look(first, "setup").catch(() => "");
     const status = text.split("\n").filter((l) => /…|ready|Downloading|Starting|Try again/.test(l)).join(" | ");
@@ -50,7 +69,8 @@ try {
       step(`Setup says: ${status.slice(0, 160)}`);
     }
     if (/Try again/.test(text) && !/Get started/.test(text)) {
-      step('Setup asked to "Try again"; pressing it once');
+      clicks++;
+      step('Setup asked to "Try again"; pressing it once (counts as a click)');
       await first.getByRole("button", { name: "Try again" }).click().catch(() => {});
     }
     await new Promise((r) => setTimeout(r, 3000));
@@ -66,27 +86,47 @@ try {
   step('Filled the sign-up form; pressing "Create account"');
   await page.getByRole("button", { name: /Create account/i }).click();
 
-  const box = page.getByRole("textbox", { name: /Message/i }).last();
-  await box.waitFor({ timeout: 180_000 });
+  // The chat box shows once the first bot is ready. Page handles can go stale while the window
+  // navigates after sign-up, so look again in every open window on each try.
+  const hasBox = (w) =>
+    w.evaluate(() => document.querySelector("textarea[placeholder^=Message]") !== null).catch(() => false);
+  let found = null;
+  for (let i = 0; i < 300 && !found; i++) {
+    for (const w of app.windows()) if (w.url().startsWith("http") && (await hasBox(w))) found = w;
+    if (!found) await new Promise((r) => setTimeout(r, 1000));
+  }
+  if (!found) throw new Error("The chat box never appeared");
+  page = found;
+  const box = page.locator("textarea[placeholder^=Message]").first();
   await look(page, "chat");
   step('Chat is open; typing "hey"');
   await box.click();
+  // A reply is a new message from the bot after "hey", with real text in it.
+  const theirs = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('[data-gente-msg="theirs"]')].map((m) => m.innerText.trim()),
+    );
+  // Let the bot finish its own hello first, so that message isn't taken for the reply.
+  for (let i = 0; i < 1800; i++) {
+    const busy = await page.evaluate(() => document.querySelector("[data-gente-working-composer]") !== null).catch(() => true);
+    if (!busy && (await theirs()).length > 0) break;
+    await page.waitForTimeout(100);
+  }
+  const before = (await theirs()).length;
   await page.keyboard.type("hey");
   const sent = Date.now();
   await page.keyboard.press("Enter");
-  await page.getByText(/^(?!hey$).{3,}/).last().waitFor({ timeout: 300_000 });
-  // The reply is the newest text after "hey".
-  for (let i = 0; i < 600; i++) {
-    const text = await page.innerText("main").catch(() => "");
-    const after = text.slice(text.lastIndexOf("hey") + 3).replace(/Reading…|Working…/g, "").trim();
-    if (after.length > 2) {
-      step(`Reply arrived after ${((Date.now() - sent) / 1000).toFixed(1)}s: ${after.slice(0, 80)}`);
-      break;
-    }
-    await page.waitForTimeout(100);
+  let reply = "";
+  while (!reply && Date.now() - sent < 300_000) {
+    const now = await theirs().catch(() => []);
+    const fresh = now.slice(before).find((t) => t.replace(/Reading…|Working…/g, "").trim().length > 1);
+    if (fresh) reply = fresh;
+    else await page.waitForTimeout(100);
   }
+  if (!reply) throw new Error("No reply to \"hey\" within 5 minutes");
+  step(`Reply arrived after ${((Date.now() - sent) / 1000).toFixed(1)}s: ${reply.slice(0, 80)}`);
   await look(page, "reply");
-  step("PASS: from welcome to first reply using only what was on screen");
+  step(`PASS: from open to first reply using only what was on screen; clicks besides sign-up: ${clicks}`);
 } finally {
   writeFileSync(path.join(out, "steps.txt"), `${steps.join("\n")}\n`);
   await app.close().catch(() => {});

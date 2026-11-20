@@ -248,7 +248,10 @@ export async function installVersion(
 
 export interface ServerManifest {
   version: string;
-  entrypoints: Record<"api" | "worker" | "web" | "migrate", string>;
+  entrypoints: Record<"api" | "worker" | "web" | "migrate", string> & {
+    /** Gente: the content-encryption CLI; missing from bundles built before it shipped. */
+    encrypt?: string;
+  };
 }
 
 /** Returns the unpacked `rakazo-server/` directory and its manifest. */

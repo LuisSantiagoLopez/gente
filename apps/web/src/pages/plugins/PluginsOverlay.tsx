@@ -400,8 +400,9 @@ export function PluginsOverlay({
             {/* Gente: the private-by-default promise, stated where it changes. */}
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
               <Trans>
-                Nothing leaves your computer until you connect an app. A connected app's data goes
-                through Composio's cloud, one app at a time, only for the apps you choose.
+                When Gente works online for you (searching, browsing, apps), only what that task
+                needs goes out. A connected app's data goes through Composio's cloud, only for the
+                apps you choose.
               </Trans>
             </p>
             <Button

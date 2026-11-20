@@ -82,11 +82,11 @@ describe("eval web", () => {
   it("serves this checkout's docs at the docs URLs the Rakazo skill links", async () => {
     const web = evalWeb();
     const page = await web.fetch(
-      { url: "https://rakazo.com/docs/account.md" },
+      { url: "https://raw.githubusercontent.com/LuisSantiagoLopez/gente/main/docs/help/account.md" },
       {} as AdapterContext,
     );
     expect(page.text).toContain("Settings → Billing");
-    const home = await web.fetch({ url: "https://rakazo.com/docs.md" }, {} as AdapterContext);
+    const home = await web.fetch({ url: "https://raw.githubusercontent.com/LuisSantiagoLopez/gente/main/docs/help/getting-started.md" }, {} as AdapterContext);
     expect(home.text).not.toBe(web.fetchResult.text);
     const other = await web.fetch({ url: "https://example.test/x" }, {} as AdapterContext);
     expect(other.text).toBe(web.fetchResult.text);

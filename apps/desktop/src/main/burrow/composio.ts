@@ -23,6 +23,20 @@ export function readKeychainSecret(
   });
 }
 
+/**
+ * Vendor keys never ship to users: user builds reach E2B, Browserbase, search and Composio only
+ * through Gente Cloud. A developer build (unpackaged), or a packaged build with
+ * GENTE_DEV_VENDOR_KEYS=1 or a `dev-vendor-keys` file in its data folder, may still read them.
+ */
+export function vendorKeysAllowed(input: {
+  packaged: boolean;
+  env?: NodeJS.ProcessEnv;
+  devFlagFile?: boolean;
+}): boolean {
+  if (!input.packaged) return true;
+  return (input.env ?? process.env).GENTE_DEV_VENDOR_KEYS === "1" || input.devFlagFile === true;
+}
+
 /** The Composio Connect consumer key; the server adds it for connect.composio.dev only. */
 export const readComposioKey = (platform = process.platform) =>
   readKeychainSecret("COMPOSIO_API_KEY", platform);

@@ -1,18 +1,9 @@
 /* Copyright 2026 DeskHead Inc. Gente's motion layer (new file in a fork of Rakazo, Apache-2.0).
    Only transform, opacity and filter animate, so the compositor does the work and long chats keep
    their frame rate. Everything here is off for people who ask the system for less motion. */
-@property --gente-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
 :root {
   --gente-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --gente-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --gente-glow-a: #f5a524;
-  --gente-glow-b: #ef6a3a;
-  --gente-glow-c: #f7d48a;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -61,62 +52,33 @@
     gap: 4px;
     margin-inline-start: 2px;
   }
+  /* The thinking doodle: three dots that look drawn with a marker, each a little lopsided. */
   .gente-dots > i {
-    width: 5px;
+    width: 5.5px;
     height: 5px;
-    border-radius: 50%;
+    border-radius: 55% 45% 50% 48% / 48% 55% 45% 52%;
     background: currentColor;
     animation: gente-dot 1.2s ease-in-out infinite;
   }
   .gente-dots > i:nth-child(2) {
+    width: 5px;
+    height: 5.5px;
+    border-radius: 45% 55% 52% 46% / 55% 45% 50% 48%;
+    rotate: 12deg;
     animation-delay: 0.15s;
   }
   .gente-dots > i:nth-child(3) {
+    border-radius: 50% 46% 55% 45% / 45% 52% 48% 55%;
+    rotate: -9deg;
     animation-delay: 0.3s;
   }
 
-  /* A warm glow travels around the composer while the assistant reads or thinks. */
+  /* Flat design: no glow. While the assistant works, the composer's edge turns marigold. */
   [data-gente-composer-bar] {
-    position: relative;
-    isolation: isolate;
+    transition: box-shadow 300ms ease;
   }
-  [data-gente-composer-bar]::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    padding: 2px;
-    background: conic-gradient(
-      from var(--gente-angle),
-      var(--gente-glow-a),
-      var(--gente-glow-b),
-      var(--gente-glow-c),
-      var(--gente-glow-a)
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 400ms ease;
-    pointer-events: none;
-    z-index: -1;
-  }
-  [data-gente-working-composer] [data-gente-composer-bar]::before {
-    opacity: 0.9;
-    animation: gente-glow-hue 3s linear infinite;
-  }
-  [data-gente-working-composer] [data-gente-composer-bar]::after {
-    content: "";
-    position: absolute;
-    inset: -10px;
-    border-radius: inherit;
-    background: radial-gradient(60% 80% at 50% 100%, color-mix(in srgb, var(--gente-glow-a) 28%, transparent), transparent 70%);
-    filter: blur(12px);
-    z-index: -2;
-    pointer-events: none;
-    animation: gente-breathe 2.4s ease-in-out infinite;
+  [data-gente-working-composer] [data-gente-composer-bar] {
+    box-shadow: 0 0 0 1.5px var(--primary);
   }
 
   /* The send button springs when pressed and pops once when a message goes out. */
@@ -135,17 +97,11 @@
     animation: gente-hop 620ms var(--gente-spring);
   }
 
-  /* Skeletons shimmer instead of sitting flat. */
+  /* Skeletons pulse softly in one flat color. */
   .gente-skeleton,
   [data-gente-skeleton] {
-    background: linear-gradient(
-      100deg,
-      color-mix(in srgb, var(--muted) 100%, transparent) 30%,
-      color-mix(in srgb, var(--foreground) 6%, var(--muted)) 50%,
-      color-mix(in srgb, var(--muted) 100%, transparent) 70%
-    );
-    background-size: 300% 100%;
-    animation: gente-shimmer 1.4s ease-in-out infinite;
+    background: var(--muted);
+    animation: gente-pulse 1.4s ease-in-out infinite;
   }
 
   /* Smooth jumps to the newest message. */
@@ -176,11 +132,6 @@
   40% {
     transform: translateY(-4px);
     opacity: 1;
-  }
-}
-@keyframes gente-glow-hue {
-  to {
-    --gente-angle: 360deg;
   }
 }
 @keyframes gente-breathe {
@@ -225,5 +176,15 @@
   }
   to {
     background-position: 0 0;
+  }
+}
+
+@keyframes gente-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
   }
 }

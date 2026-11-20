@@ -78,13 +78,9 @@ export const HI_MESSAGES: Record<string, string> = {
   "Sign-in callback rejected. Return to Gente to retry.":
     "साइन-इन का जवाब अस्वीकार कर दिया गया। फिर से कोशिश करने के लिए Gente पर लौटें।",
   "You can close this tab and return to Gente.": "आप यह टैब बंद करके Gente पर लौट सकते हैं।",
-  "Set up Gente": "Gente सेट अप करें",
   "Quit Gente": "Gente बंद करें",
   "Welcome to Gente": "Gente में आपका स्वागत है",
-  "Choose where Gente runs.": "चुनें कि Gente कहाँ चलेगा।",
   Instance: "इंस्टेंस",
-  "This computer": "यह कंप्यूटर",
-  "Existing instance": "मौजूदा इंस्टेंस",
   "Technical details": "तकनीकी जानकारी",
   "Setup progress": "सेटअप की प्रगति",
   "Server address": "सर्वर का पता",
@@ -92,12 +88,8 @@ export const HI_MESSAGES: Record<string, string> = {
   "Name: value": "नाम: मान",
   "Check connection": "कनेक्शन जाँचें",
   Continue: "जारी रखें",
-  Retry: "फिर से कोशिश करें",
   "Getting ready…": "तैयारी हो रही है…",
-  "Downloading Gente…": "Gente डाउनलोड हो रहा है…",
-  "Starting Gente…": "Gente शुरू हो रहा है…",
   "Almost ready…": "लगभग तैयार…",
-  "Gente is ready.": "Gente तैयार है।",
   "{size} downloaded": "{size} डाउनलोड हुआ",
   "Connecting…": "कनेक्ट हो रहा है…",
   "Checking…": "जाँच हो रही है…",
@@ -105,9 +97,6 @@ export const HI_MESSAGES: Record<string, string> = {
   "Enter a server address first.": "पहले सर्वर का पता डालें।",
   "Could not save that address.": "वह पता सेव नहीं हो सका।",
   "Could not save that address. Try again.": "वह पता सेव नहीं हो सका। फिर से कोशिश करें।",
-  "Could not follow the local stack. Try again.":
-    "लोकल स्टैक को फ़ॉलो नहीं किया जा सका। फिर से कोशिश करें।",
-  "Could not start the local stack. Try again.": "लोकल स्टैक शुरू नहीं हो सका। फिर से कोशिश करें।",
   "Could not run the connection check. Try again.": "कनेक्शन की जाँच नहीं हो सकी। फिर से कोशिश करें।",
   "Setup bridge unavailable.": "सेटअप ब्रिज उपलब्ध नहीं है।",
   "Setup could not start. Quit Gente and try again.":
@@ -120,7 +109,6 @@ export const HI_MESSAGES: Record<string, string> = {
   "That address redirects elsewhere. Enter the final Gente server address.":
     "वह पता कहीं और रीडायरेक्ट करता है। Gente सर्वर का अंतिम पता डालें।",
   "That address did not respond like a Gente server.": "उस पते ने Gente सर्वर की तरह जवाब नहीं दिया।",
-  "The server answered with HTTP {status}.": "सर्वर ने HTTP {status} के साथ जवाब दिया।",
   "Timed out reaching that address.": "उस पते तक पहुँचने में समय सीमा खत्म हो गई।",
   "Nothing is listening at that address yet.": "उस पते पर अभी कुछ भी सुन नहीं रहा है।",
   "That host could not be found.": "वह होस्ट नहीं मिला।",
@@ -204,15 +192,9 @@ export const HI_MESSAGES: Record<string, string> = {
     "आपके बॉट और डेटा साथ आ जाएँगे। Docker रोका जाएगा, हटाया नहीं जाएगा।",
   Move: "ले जाएँ",
   "Keep Docker": "Docker रखें",
-  "Nothing to install.": "कुछ भी इंस्टॉल नहीं करना।",
-  "Your data stays on this computer.": "आपका डेटा इसी कंप्यूटर पर रहता है।",
-  "Connect to a server you or your team already run.":
-    "उस सर्वर से कनेक्ट करें जिसे आप या आपकी टीम पहले से चलाते हैं।",
   "Gente needs Docker Desktop to run on this computer.":
     "इस कंप्यूटर पर चलने के लिए Gente को Docker Desktop चाहिए।",
   "Gente needs Docker to run on this computer.": "इस कंप्यूटर पर चलने के लिए Gente को Docker चाहिए।",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop एक मुफ़्त ऐप है जो Gente को बैकग्राउंड में चलाता है। इसे इंस्टॉल करें और एक बार खोलें।",
   "Install Docker Engine and start it.": "Docker Engine इंस्टॉल करके शुरू करें।",
   "Download Docker Desktop": "Docker Desktop डाउनलोड करें",
   "Install Docker": "Docker इंस्टॉल करें",
@@ -231,4 +213,53 @@ export const HI_MESSAGES: Record<string, string> = {
   "Restart Gente": "Gente रीस्टार्ट करें",
   "Not Now": "अभी नहीं",
   "Restart Gente to finish setup": "सेटअप पूरा करने के लिए Gente रीस्टार्ट करें",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Elie Steinbock के Rakazo (Apache-2.0) पर आधारित। Swift: UkisAI.",
+  "Bots, chats, files, routines": "बॉट, चैट, फ़ाइलें, रूटीन",
+  "Checking this Mac…": "इस Mac की जाँच हो रही है…",
+  "Choose a different model": "कोई दूसरा मॉडल चुनें",
+  "Connect Telegram…": "Telegram कनेक्ट करें…",
+  "Connect to a server instead": "इसके बजाय किसी सर्वर से कनेक्ट करें",
+  "Downloading the workspace…": "वर्कस्पेस डाउनलोड हो रहा है…",
+  "Downloads once, then works offline.": "एक बार डाउनलोड होता है, फिर बिना इंटरनेट के चलता है।",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente तैयारी पूरी नहीं कर पाया। फिर से कोशिश करें दबाएँ।",
+  "Gente is getting things ready. This takes a moment.":
+    "Gente सब कुछ तैयार कर रहा है। इसमें थोड़ा समय लगता है।",
+  "Get started": "शुरू करें",
+  "Getting Gente ready, about a minute left": "Gente तैयार हो रहा है, लगभग एक मिनट बाकी",
+  "Getting Gente ready, about {n} min left": "Gente तैयार हो रहा है, लगभग {n} मिनट बाकी",
+  "Getting Gente ready…": "Gente तैयार हो रहा है…",
+  "Model choices": "मॉडल के विकल्प",
+  "Model download": "मॉडल डाउनलोड",
+  "No ads. Ever.": "कोई विज्ञापन नहीं। कभी नहीं।",
+  "No usage limits. Message as much as you want.":
+    "इस्तेमाल की कोई सीमा नहीं। जितना चाहें उतना लिखें।",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "कोई भी आपका डेटा नहीं पढ़ता, उस पर ट्रेनिंग नहीं करता, और उसे नहीं बेचता। न हम, न कोई और।",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "इस Mac पर, Gente को अपने वर्कस्पेस के लिए Docker Desktop (एक मुफ़्त ऐप) चाहिए। इसे इंस्टॉल करें और एक बार खोलें।",
+  "Run on this Mac instead": "इसके बजाय इस Mac पर चलाएँ",
+  "Runs privately in the background on this Mac.": "इस Mac पर बैकग्राउंड में निजी रूप से चलता है।",
+  "Something went wrong.": "कुछ गड़बड़ हो गई।",
+  "Starting the workspace…": "वर्कस्पेस शुरू हो रहा है…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "आपके कंप्यूटर के लिए {name} पर बदल दिया गया ({from} यहाँ नहीं चल सका)।",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "उस पते ने Gente सर्वर की तरह जवाब नहीं दिया। इसे जाँचें, फिर से कोशिश करें।",
+  "The AI of the people.": "लोगों का AI.",
+  "The first start can take a minute.": "पहली बार शुरू होने में एक मिनट लग सकता है।",
+  "Try again": "फिर से कोशिश करें",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "जब Gente आपके लिए ऑनलाइन काम करता है (खोज, ब्राउज़िंग, ऐप), तो सिर्फ़ उतना ही बाहर जाता है जितना उस काम के लिए ज़रूरी है।",
+  Workspace: "वर्कस्पेस",
+  "Workspace ready.": "वर्कस्पेस तैयार है।",
+  "Your AI": "आपका AI",
+  "Your AI is ready.": "आपका AI तैयार है।",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "आपका AI आपके कंप्यूटर पर रहता है। आपकी चैट कभी बाहर नहीं जातीं।",
+  "Sign In to Gente…": "Gente में साइन इन करें…",
+  "Sign Out of Gente": "Gente से साइन आउट करें",
+  "Gente Support…": "Gente सहायता…",
 };

@@ -6,8 +6,9 @@ describe("hidden turn prompts", () => {
     expect(
       botIntroPrompt({ userName: "Ada", spaceName: "Ops", disabledBuiltinTools: [] }),
     ).toMatchInlineSnapshot(`
-      "You were just created. Ada made you. Their team space is called "Ops".
-      Call ask_user right away, with no text before it. Its question greets them by first name in a few words and asks what they want you for, with two to four short options that fit your name, anything your description or instructions already say, and what you know about them, never a stock list. They can also type their own answer.
+      "Write in the language the person uses; until they write, use the language their name suggests, and switch as soon as they write.
+      You were just created. Ada made you. Their team space is called "Ops".
+      Call ask_user right away, with no text before it. Its question greets them as Ada in a few words and asks what they want you for, with two to four short options that fit your name, anything your description or instructions already say, and what you know about them, never a stock list. They can also type their own answer.
       If your profile already makes that clear, say in one line what you will do instead of asking.
       Once you know what you are for, use update_bot to set what is already clear: a one-line description of what you do, your instructions on how you do it, and a short name if yours is still a placeholder like "New Bot". Leave anything vague unset to fill in later as the work becomes clearer, and otherwise keep your name and look.
       Then get started, asking one follow-up only if you cannot start without it."
@@ -19,17 +20,26 @@ describe("hidden turn prompts", () => {
         disabledBuiltinTools: ["ask_user", "update_bot"],
       }),
     ).toMatchInlineSnapshot(`
-      "You were just created.
+      "Write in the language the person uses; until they write, use the language their name suggests, and switch as soon as they write.
+      You were just created.
       Greet them in a few words and ask in one sentence what they want you for, suggesting two to four short options that fit your name, anything your description or instructions already say, and what you know about them, never a stock list.
       If your profile already makes that clear, say in one line what you will do instead of asking.
       Then get started, asking one follow-up only if you cannot start without it."
     `);
   });
 
+  it("greets in the person's app language when it is known (QA-015)", () => {
+    const es = botIntroPrompt({ userName: "José Núñez", locale: "es-MX", spaceName: null, disabledBuiltinTools: [] });
+    expect(es.split("\n")[0]).toBe("Write everything in Mexican Spanish, including the question and every option.");
+    expect(es).toContain("greets them as José");
+    const pt = botIntroPrompt({ userName: "José", locale: "pt-BR", spaceName: null, disabledBuiltinTools: [] });
+    expect(pt.split("\n")[0]).toBe("Write everything in Brazilian Portuguese, including the question and every option.");
+  });
+
   it("does not ask for a first name it does not have", () => {
     const withName = botIntroPrompt({ userName: "Ada", spaceName: null, disabledBuiltinTools: [] });
     const noName = botIntroPrompt({ userName: "", spaceName: null, disabledBuiltinTools: [] });
-    expect(withName).toContain("greets them by first name");
+    expect(withName).toContain("greets them as Ada");
     expect(noName).toContain("Its question greets them in a few words");
     expect(noName).not.toContain("first name");
   });

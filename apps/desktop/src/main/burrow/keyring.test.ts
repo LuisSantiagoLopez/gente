@@ -18,8 +18,10 @@ describe("Gente keyring", () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "gente-keyring-"));
     const key = "a".repeat(64);
     await writeFile(path.join(dir, ".env"), `POSTGRES_PASSWORD=pw\nENCRYPTION_KEY=${key}\nBETTER_AUTH_SECRET=s3cret\nGENTE_COMPOSIO_KEY=ck_test_123\n`);
-    expect(await sealStackSecrets(dir, sealer)).toEqual(["ENCRYPTION_KEY", "BETTER_AUTH_SECRET", "GENTE_COMPOSIO_KEY"]);
+    expect(await sealStackSecrets(dir, sealer)).toEqual(["ENCRYPTION_KEY", "BETTER_AUTH_SECRET", "GENTE_COMPOSIO_KEY", "POSTGRES_PASSWORD"]);
+
     const text = await readFile(path.join(dir, ".env"), "utf8");
+    expect(text).toContain("POSTGRES_PASSWORD=keychain:POSTGRES_PASSWORD");
     expect(text).not.toContain(key);
     expect(text).not.toContain("s3cret");
     expect(text).not.toContain("ck_test_123");

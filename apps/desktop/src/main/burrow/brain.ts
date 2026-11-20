@@ -251,10 +251,40 @@ export async function prewarmSwift(stackDirectory: string): Promise<boolean> {
       signal: AbortSignal.timeout(5 * 60_000),
     });
     await res.text();
+    // QA-022: then the long task prompt (system prompt plus about 23 tool schemas, ~10k tokens),
+    // so the first real question after launch also finds its prefix cached. It runs after the
+    // small-talk warm-up, in the background, and never delays a reply.
+    if (res.ok) void warmTaskPrefix(stackDirectory, model);
     return res.ok;
   } catch {
     // No chat yet, or the model server is busy: the first reply reads the prompt instead.
     return false;
+  }
+}
+
+async function warmTaskPrefix(stackDirectory: string, model: string): Promise<void> {
+  try {
+    const prefix = JSON.parse(
+      await readFile(path.join(stackDirectory, "data", "burrow-warm.json"), "utf8"),
+    ) as { messages?: unknown[] };
+    if (!Array.isArray(prefix.messages) || prefix.messages.length === 0) return;
+    const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        ...prefix,
+        stream_options: undefined,
+        model,
+        stream: false,
+        max_completion_tokens: 1,
+        max_tokens: 1,
+        reasoning_effort: "none",
+      }),
+      signal: AbortSignal.timeout(10 * 60_000),
+    });
+    await res.text();
+  } catch {
+    // Best effort only.
   }
 }
 
@@ -391,8 +421,10 @@ export class Brain {
       return;
     }
     if (!(await ollamaRunning())) {
+      // Beginners never see an extra step: the model runner installs itself silently, and an
+      // existing install is reused. `installOllama: false` only exists for tests.
       if (!ollamaInstalled()) {
-        if (!options.installOllama) {
+        if (options.installOllama === false) {
           this.set({ phase: "ollama-missing" });
           return;
         }
@@ -657,15 +689,15 @@ async function downloadTo(url: string, file: string, onBytes: (done: number, tot
 /** Calm words for the few things a person may need to do; details go to logs/setup.log. */
 export const CALM = {
   offline:
-    "Gente needs the internet to download Swift. It will pick up where it left off. Press Try again when you're back online.",
-  install: "Gente couldn't set up Ollama just now. Press Try again in a moment.",
-  ollama: "Ollama is taking a moment to start. Press Try again.",
+    "Gente needs the internet to finish getting ready. It will pick up where it left off. Press Try again when you're back online.",
+  install: "Gente couldn't finish getting ready just now. Press Try again in a moment.",
+  ollama: "Gente is taking a moment to start. Press Try again.",
   memory:
-    "This computer is short on free memory for Swift right now. Close a few apps, then press Try again.",
+    "This computer is short on free memory right now. Close a few apps, then press Try again.",
   smallComputer:
     "Gente needs a computer with at least 16 GB of memory. This one has less, so Gente can't run its model here.",
   space: (gb: number) =>
-    `Swift needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
+    `Gente needs about ${gb} GB of free disk space. Free up some space, then press Try again.`,
 } as const;
 /** 16 GB machines report a little less than 16 GiB; allow for that. */
 export const MIN_MEMORY_BYTES = 15 * 1024 ** 3;

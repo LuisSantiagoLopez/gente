@@ -12,6 +12,7 @@ import { connect } from "node:net";
 import path from "node:path";
 import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
+import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { telegramSecret } from "../burrow/telegram.js";
@@ -56,7 +57,9 @@ import {
 const ACTIVE_PHASES = new Set<DesktopLocalStackPhase>(["starting", "waiting-healthy", "ready"]);
 export const NATIVE_PORTS_FILE = ".native-ports";
 /** The database VM, its network and its volume; computers are `rakazo-<uuid>` with a bot label. */
-export const DATABASE_CONTAINER = "rakazo-postgres";
+// Gente: smoke tests of a packaged build run beside a person's real Gente, so they name their
+// own database machine. Never set outside tests.
+export const DATABASE_CONTAINER = process.env.GENTE_TEST_DB_CONTAINER?.trim() || "rakazo-postgres";
 /** The image and digest Compose runs, so both stacks run the same database. */
 export const POSTGRES_IMAGE =
   "postgres:16@sha256:e17e86066e5ef83e0952a9347f5c792b7ece00972e2aa787a6986f471b3dd3d5";
@@ -574,6 +577,18 @@ export class NativeStackController extends StackLifecycle {
         throw new StartFailure(servicesFailed(), [...postgres.tail, error.message]);
       });
     const endpoint = await this.waitForDatabasePort(runtime.cli, databasePort, signal);
+    // Gente (QA-002): the database machine and its volume outlive Gente's data folder. When a new
+    // folder brings a new password, the old volume still holds the old one and every login fails.
+    // Set the owner's password from this folder over the machine's own socket (no password
+    // needed there). The data stays exactly as it was.
+    await this.psql(
+      runtime.cli,
+      "postgres",
+      `ALTER ROLE ${quoteIdent(user)} WITH PASSWORD ${quoteLiteral(password)};\n`,
+      signal,
+    ).catch((error: Error) => {
+      throw new StartFailure(servicesFailed(), [error.message]);
+    });
 
     const at = (login: string, secret: string) =>
       `postgres://${encodeURIComponent(login)}:${encodeURIComponent(secret)}@${endpoint.host}:${endpoint.port}/${encodeURIComponent(database)}`;
@@ -652,7 +667,19 @@ export class NativeStackController extends StackLifecycle {
         ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
         : {}),
     });
-    const entry = (name: keyof ServerManifest["entrypoints"]) =>
+    // Gente: chats are encrypted at rest with a key sealed in the system keychain. Content saved
+    // before this release is encrypted once, here, before the server starts; until that pass
+    // finishes it is retried on every start, and reads work either way.
+    await encryptExistingContent({
+      run: this.deps.run,
+      nodeBinary: this.deps.nodeBinary,
+      server,
+      env: appEnv,
+      marker: this.dir("data", CONTENT_ENCRYPTED_MARKER),
+      signal,
+      onLine: (line) => this.push({ type: "output", line }),
+    });
+    const entry = (name: "api" | "worker" | "web" | "migrate") =>
       path.join(server.dir, server.manifest.entrypoints[name]);
     const node = (name: string, args: string[], env: Record<string, string>) =>
       this.service({
@@ -1124,14 +1151,38 @@ export class NativeStackController extends StackLifecycle {
         ? this.deps.hostComputer.url.replace("//host.docker.internal:", "//127.0.0.1:")
         : "",
       SANDBOX_HOST_TOKEN: this.deps.hostComputer?.token ?? "",
-      // As on Docker: content stays on this computer, under its own disk encryption.
-      CONTENT_ENCRYPTION: "off",
+      // Gente: chats, memory and files are encrypted at rest; the master key comes from
+      // ENCRYPTION_KEY, which is sealed by the system keychain.
+      CONTENT_ENCRYPTION: "on",
       // Only this computer can reach the stack, so its own model and tool servers are fair game.
       MCP_ALLOW_PRIVATE_ENDPOINT: "true",
       BETTER_AUTH_URL: this.currentWebUrl,
       WEB_ORIGIN: this.currentWebUrl,
       API_URL: this.currentWebUrl,
       ...fixed,
+      // Gente's promise: no analytics, error reports or tracing leave this computer. Pinned last
+      // so no `.env` line can turn them on.
+      ...NO_TELEMETRY,
     };
   }
+}
+
+/** Every telemetry switch the server reads, held off. */
+export const NO_TELEMETRY: Record<string, string> = {
+  ANALYTICS_PROVIDER: "none",
+  SENTRY_DSN: "",
+  SENTRY_BROWSER_DSN: "",
+  AXIOM_TOKEN: "",
+  AXIOM_DATASET: "",
+  OTEL_EXPORTER_OTLP_ENDPOINT: "",
+  OTEL_CAPTURE_CONTENT: "false",
+  CRISP_WEBSITE_ID: "",
+};
+
+/** SQL identifier and literal quoting for the one statement Gente runs over the socket. */
+export function quoteIdent(name: string): string {
+  return `"${name.replaceAll('"', '""')}"`;
+}
+export function quoteLiteral(value: string): string {
+  return `'${value.replaceAll("'", "''")}'`;
 }

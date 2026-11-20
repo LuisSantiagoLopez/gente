@@ -37,6 +37,8 @@ const ENTRYPOINTS = {
   worker: ["apps/worker/src/index.ts", "apps/worker/dist/index.js"],
   web: ["apps/web/server/standalone-server.ts", "apps/web/dist-server/index.js"],
   migrate: ["apps/api/src/cli/migrate-database.ts", "apps/api/dist/cli/migrate-database.js"],
+  // Gente: encrypts chats saved before encryption at rest was on.
+  encrypt: ["apps/api/src/cli/content-encryption.ts", "apps/api/dist/cli/content-encryption.js"],
 };
 // Their production dependencies are what the bundled code may load at runtime, for example the
 // page runtime build, mermaid, and the Prisma CLI that applies migrations.

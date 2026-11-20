@@ -80,13 +80,9 @@ export const JA_MESSAGES: Record<string, string> = {
   "Sign-in callback rejected. Return to Gente to retry.":
     "サインインの応答が拒否されました。Genteに戻ってもう一度お試しください。",
   "You can close this tab and return to Gente.": "このタブを閉じてGenteに戻ってください。",
-  "Set up Gente": "Genteを設定",
   "Quit Gente": "Genteを終了",
   "Welcome to Gente": "Genteへようこそ",
-  "Choose where Gente runs.": "Genteを動かす場所を選んでください。",
   Instance: "インスタンス",
-  "This computer": "このコンピュータ",
-  "Existing instance": "既存のインスタンス",
   "Technical details": "技術的な詳細",
   "Setup progress": "設定の進行状況",
   "Server address": "サーバのアドレス",
@@ -94,12 +90,8 @@ export const JA_MESSAGES: Record<string, string> = {
   "Name: value": "名前: 値",
   "Check connection": "接続を確認",
   Continue: "続ける",
-  Retry: "再試行",
   "Getting ready…": "準備しています…",
-  "Downloading Gente…": "Genteをダウンロードしています…",
-  "Starting Gente…": "Genteを起動しています…",
   "Almost ready…": "まもなく完了…",
-  "Gente is ready.": "Genteの準備ができました。",
   "{size} downloaded": "{size}ダウンロード済み",
   "Connecting…": "接続しています…",
   "Checking…": "確認しています…",
@@ -108,10 +100,6 @@ export const JA_MESSAGES: Record<string, string> = {
   "Could not save that address.": "そのアドレスを保存できませんでした。",
   "Could not save that address. Try again.":
     "そのアドレスを保存できませんでした。もう一度お試しください。",
-  "Could not follow the local stack. Try again.":
-    "ローカルスタックの状態を追跡できませんでした。もう一度お試しください。",
-  "Could not start the local stack. Try again.":
-    "ローカルスタックを起動できませんでした。もう一度お試しください。",
   "Could not run the connection check. Try again.":
     "接続を確認できませんでした。もう一度お試しください。",
   "Setup bridge unavailable.": "設定用のブリッジを利用できません。",
@@ -127,7 +115,6 @@ export const JA_MESSAGES: Record<string, string> = {
     "そのアドレスは別の場所にリダイレクトされます。最終的なGenteサーバのアドレスを入力してください。",
   "That address did not respond like a Gente server.":
     "そのアドレスはGenteサーバとして応答しませんでした。",
-  "The server answered with HTTP {status}.": "サーバがHTTP {status}で応答しました。",
   "Timed out reaching that address.": "そのアドレスへの接続がタイムアウトしました。",
   "Nothing is listening at that address yet.": "そのアドレスではまだ何も待ち受けていません。",
   "That host could not be found.": "そのホストが見つかりませんでした。",
@@ -213,16 +200,10 @@ export const JA_MESSAGES: Record<string, string> = {
     "ボットとデータは引き継がれます。Dockerは停止されますが、削除はされません。",
   Move: "移行",
   "Keep Docker": "Dockerを使い続ける",
-  "Nothing to install.": "インストール不要です。",
-  "Your data stays on this computer.": "データはこのコンピュータに保存されます。",
-  "Connect to a server you or your team already run.":
-    "あなたやチームがすでに運用しているサーバーに接続します。",
   "Gente needs Docker Desktop to run on this computer.":
     "このコンピュータでGenteを動かすにはDocker Desktopが必要です。",
   "Gente needs Docker to run on this computer.":
     "このコンピュータでGenteを動かすにはDockerが必要です。",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktopは、Genteをバックグラウンドで動かす無料のアプリです。インストールして一度開いてください。",
   "Install Docker Engine and start it.": "Docker Engineをインストールして起動してください。",
   "Download Docker Desktop": "Docker Desktopをダウンロード",
   "Install Docker": "Dockerをインストール",
@@ -241,4 +222,50 @@ export const JA_MESSAGES: Record<string, string> = {
   "Restart Gente": "Genteを再起動",
   "Not Now": "今はしない",
   "Restart Gente to finish setup": "Genteを再起動して設定を完了",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Elie SteinbockによるRakazo(Apache-2.0)をもとにしています。SwiftはUkisAIによるものです。",
+  "Bots, chats, files, routines": "ボット、チャット、ファイル、ルーティン",
+  "Checking this Mac…": "このMacを確認しています…",
+  "Choose a different model": "別のモデルを選ぶ",
+  "Connect Telegram…": "Telegramに接続…",
+  "Connect to a server instead": "代わりにサーバに接続",
+  "Downloading the workspace…": "ワークスペースをダウンロードしています…",
+  "Downloads once, then works offline.": "一度ダウンロードすれば、オフラインで使えます。",
+  "Gente couldn't finish getting ready. Press Try again.": "Genteの準備を完了できませんでした。「もう一度試す」を押してください。",
+  "Gente is getting things ready. This takes a moment.": "Genteが準備しています。少しお待ちください。",
+  "Get started": "はじめる",
+  "Getting Gente ready, about a minute left": "Genteを準備中、残り約1分",
+  "Getting Gente ready, about {n} min left": "Genteを準備中、残り約{n}分",
+  "Getting Gente ready…": "Genteを準備しています…",
+  "Model choices": "モデルの選択肢",
+  "Model download": "モデルのダウンロード",
+  "No ads. Ever.": "広告はありません。これからもずっと。",
+  "No usage limits. Message as much as you want.": "利用制限はありません。好きなだけメッセージを送れます。",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "あなたのデータを読む人も、学習に使う人も、売る人もいません。私たちも、ほかの誰も。",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "このMacでは、ワークスペースのためにDocker Desktop(無料アプリ)が必要です。インストールして一度開いてください。",
+  "Run on this Mac instead": "代わりにこのMacで動かす",
+  "Runs privately in the background on this Mac.": "このMacのバックグラウンドで、プライベートに動きます。",
+  "Something went wrong.": "問題が発生しました。",
+  "Starting the workspace…": "ワークスペースを起動しています…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "お使いのコンピュータ向けに{name}に切り替えました({from}はここでは動かせませんでした)。",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "そのアドレスはGenteサーバとして応答しませんでした。確認して、もう一度お試しください。",
+  "The AI of the people.": "みんなのAI。",
+  "The first start can take a minute.": "初回の起動には1分ほどかかることがあります。",
+  "Try again": "もう一度試す",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Genteがあなたの代わりにオンラインで作業するとき(検索、ブラウズ、アプリ)、送られるのはその作業に必要なものだけです。",
+  Workspace: "ワークスペース",
+  "Workspace ready.": "ワークスペースの準備ができました。",
+  "Your AI": "あなたのAI",
+  "Your AI is ready.": "あなたのAIの準備ができました。",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "あなたのAIはあなたのコンピュータの中にあります。チャットが外に出ることはありません。",
+  "Sign In to Gente…": "Gente にサインイン…",
+  "Sign Out of Gente": "Gente からサインアウト",
+  "Gente Support…": "Gente サポート…",
 };

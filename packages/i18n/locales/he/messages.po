@@ -941,7 +941,7 @@ msgstr "סיכום שבועי של מה שהשתנה בנושאים שבמעקב
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "About"
-msgstr ""
+msgstr "אודות"
 
 #: apps/web/src/pages/space/KnowledgeSection.tsx
 msgid "About {kb} KB of memory no longer reaches the bot."
@@ -1146,7 +1146,7 @@ msgstr "הוספת {name} נוסף"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Add Context7 docs"
-msgstr ""
+msgstr "הוספת התיעוד של Context7"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -1923,7 +1923,7 @@ msgstr "Base URL"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI."
-msgstr ""
+msgstr "מבוסס על Rakazo מאת Elie Steinbock (Apache-2.0). Swift מאת UkisAI."
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/web/src/components/vault/VaultItemEditor.tsx
@@ -3107,7 +3107,7 @@ msgstr "החיבור ל-{0} עדיין ממתין. אפשר לסגור את הח
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Connections"
-msgstr ""
+msgstr "חיבורים"
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -6146,7 +6146,7 @@ msgstr "איך Gente ישמש אותך?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
-msgstr ""
+msgstr "איך Gente ישמש אותך?"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -7931,7 +7931,7 @@ msgstr "לא עובד"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
-msgstr ""
+msgstr "שום דבר לא יוצא מהמחשב שלך עד שמחברים אפליקציה. הנתונים של אפליקציה מחוברת עוברים דרך הענן של Composio, אפליקציה אחת בכל פעם, רק עבור האפליקציות שבחרת."
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -7944,11 +7944,11 @@ msgstr "עדיין לא נשמר כלום."
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. Check that you sent the code to the right chat, exactly as shown. The code works for 10 minutes."
-msgstr ""
+msgstr "עדיין כלום. כדאי לבדוק שהקוד נשלח לצ'אט הנכון, בדיוק כפי שהוא מוצג. הקוד תקף ל-10 דקות."
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
-msgstr ""
+msgstr "עדיין כלום. WhatsApp צריך אפליקציה עסקית של Meta וכתובת ש-Meta יכולה להגיע אליה, ו-Meta עדיין לא מאפשרת עוזרי AI כלליים בכל המדינות. Telegram עובד מיד: בתפריט של Gente, בוחרים חיבור Telegram."
 
 #: apps/mobile/app/(settings)/general.tsx
 msgid "Notification settings"
@@ -8427,7 +8427,7 @@ msgstr "יש להדביק את הכתובת התואמת ל-OpenAI מהשרת. G
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
-msgstr ""
+msgstr "יש להדביק את הכתובת התואמת ל-OpenAI מהשרת. Gente מוסיף /v1 במידת הצורך."
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -8759,12 +8759,12 @@ msgstr "ציטוט הבחירה"
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
 msgid "Rakazo"
-msgstr ""
+msgstr "Gente"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 msgid "Rakazo credits"
-msgstr ""
+msgstr "קרדיטים של Gente"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
@@ -8791,7 +8791,7 @@ msgstr "הקראת תשובות בקול"
 
 #: apps/web/src/pages/shell/chat/transcript.tsx
 msgid "Reading…"
-msgstr ""
+msgstr "קורא…"
 
 #: apps/web/src/pages/shell/bots/import-status.ts
 msgid "Ready"
@@ -10252,7 +10252,7 @@ msgstr "התחברות ל-Gente"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
-msgstr ""
+msgstr "התחברות ל-Gente"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -10284,7 +10284,7 @@ msgstr "הרשמה"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign up for Rakazo"
-msgstr ""
+msgstr "הרשמה ל-Gente"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -10503,7 +10503,7 @@ msgstr "ממיין אימיילים חדשים ומנסח טיוטות לתשו�
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Sounds"
-msgstr ""
+msgstr "צלילים"
 
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/lib/bots/identity-display.ts
@@ -10619,7 +10619,7 @@ msgstr "התחלת הקלטה"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Start using Rakazo"
-msgstr ""
+msgstr "מתחילים להשתמש ב-Gente"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -10765,7 +10765,7 @@ msgstr "הרשמה למנוי עם ה-AI שלך"
 
 #: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Subscription"
-msgstr ""
+msgstr "מנוי"
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -10960,7 +10960,7 @@ msgstr "זה לא ייצוא של בוט Grok. יש להדביק את כל הת�
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL did not look like a Rakazo server"
-msgstr ""
+msgstr "הכתובת הזו לא נראית כמו שרת של Gente"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11098,7 +11098,7 @@ msgstr "התמליל יוסר מ-Gente."
 
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
-msgstr ""
+msgstr "התמליל יוסר מ-Gente."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11230,7 +11230,7 @@ msgstr "המחשב הזה"
 
 #: apps/web/src/pages/shell/computers/computer-panel.tsx
 msgid "This computer runs in the cloud (E2B), not on your Mac or PC. Watch it live, and take control to sign in yourself."
-msgstr ""
+msgstr "המחשב הזה פועל בענן (E2B), לא ב-Mac או ב-PC שלך. אפשר לצפות בו בשידור חי ולקחת שליטה כדי להתחבר בעצמך."
 
 #: apps/mobile/app/(settings)/computers.tsx
 msgid "This computer will stop running bots for your account"
@@ -11441,7 +11441,7 @@ msgstr "התחברות עם המנוי הזה עדיין לא זמינה ב-Gent
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr ""
+msgstr "התחברות עם המנוי הזה עדיין לא זמינה ב-Gente. אפשר להשתמש בפרטי גישה של ההתקנה או לבחור ספק אחר."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -11720,7 +11720,7 @@ msgstr "הפעלה"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Turn on Composio apps"
-msgstr ""
+msgstr "הפעלת אפליקציות Composio"
 
 #: apps/mobile/components/vault/vault-item-editor.tsx
 #: apps/mobile/components/vault/vault-item-sheet.tsx
@@ -12040,7 +12040,7 @@ msgstr "לסיסמאות יש להשתמש בקלט מוגן."
 
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Use Rakazo credits"
-msgstr ""
+msgstr "שימוש בקרדיטים של Gente"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12291,7 +12291,7 @@ msgstr "ברוכים הבאים ל-Gente"
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 msgid "Welcome to Rakazo"
-msgstr ""
+msgstr "ברוכים הבאים ל-Gente"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -12307,7 +12307,7 @@ msgstr "במה הכי חשוב לך ש-Gente יעזור?"
 
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
-msgstr ""
+msgstr "במה הכי חשוב לך ש-Gente יעזור?"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"

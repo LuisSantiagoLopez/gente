@@ -1,0 +1,68 @@
+# Gente's merge gate. Every pull request to main must pass both jobs:
+#  1. unit: the Gente test suites (setup, brain, window chrome, privacy wording, help links, ...).
+#  2. mac-package: builds the server and the macOS app, and the afterPack step boots the server
+#     from inside the packaged .app (fails on any missing module).
+name: gente-ci
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gente-ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - name: Desktop (every main-process test, including the 14 language catalogs)
+        working-directory: apps/desktop
+        run: npx vitest run src/main
+      - name: Web (every unit test, including the 14 language catalogs)
+        working-directory: apps/web
+        run: npx vitest run --root ../.. apps/web/src apps/web/server
+      - name: Server and adapters (help pages, web tools, greeting, fast chat)
+        run: >
+          npx vitest run
+          packages/adapters/src/tools/builtin-skills.test.ts
+          packages/adapters/src/web
+          packages/adapters/src/providers/web
+          packages/adapters/src/runtime/pi/models
+          packages/adapters/src/mcp
+          packages/core/src/primitives/user-error.test.ts
+          apps/api/src/bots/hidden-turns.prompt.test.ts
+  mac-package:
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - run: npm i -g pnpm@12.18.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @rakazo/web build
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1", RAKAZO_DESKTOP_RELEASE: "1" }
+      - name: Server bundle, unpacked where the app build picks it up
+        run: |
+          node scripts/build-server-bundle.mjs "$RUNNER_TEMP/bundle" "https://github.com/${GITHUB_REPOSITORY}/releases/download/v0.2.0"
+          mkdir -p apps/desktop/build/server-dir
+          cp "$RUNNER_TEMP/bundle/server-bundle.json" apps/desktop/build/
+          tar -xJf "$RUNNER_TEMP"/bundle/rakazo-server-darwin-arm64-*.tar.xz -C apps/desktop/build/server-dir
+        env: { RAKAZO_ALLOW_DEV_SECRETS: "1" }
+      - run: pnpm --filter @rakazo/desktop build
+      - name: Package the app; afterPack boots the server from inside it
+        working-directory: apps/desktop
+        run: npx electron-builder --mac dir --arm64 --publish never -c.mac.identity=null

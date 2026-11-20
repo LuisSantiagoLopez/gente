@@ -102,7 +102,7 @@ it("clears the macOS traffic lights beside Open navigation on a narrow desktop w
   );
   const spacer = container.querySelector<HTMLElement>('[aria-hidden="true"].app-drag');
   expect(spacer?.className).toContain("md:hidden");
-  expect(spacer?.style.width).toBe("72px");
+  expect(spacer?.style.width).toBe("80px");
 
   delete window.rakazoDesktop;
   renderHeader();

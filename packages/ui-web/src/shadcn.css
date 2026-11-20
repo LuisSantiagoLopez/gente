@@ -1,3 +1,4 @@
+/* Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0). */
 @theme inline {
   @keyframes accordion-down {
     from {
@@ -631,20 +632,20 @@
 }
 
 @utility text-shimmer {
-  background-image: linear-gradient(
-    90deg,
-    oklch(from var(--color-muted-foreground) l c h / 0.6) 35%,
-    var(--color-foreground) 50%,
-    oklch(from var(--color-muted-foreground) l c h / 0.6) 65%
-  );
-  background-size: 200% 100%;
-  background-clip: text;
-  color: transparent;
-  animation: text-shimmer 1.5s linear infinite;
+  /* Gente: flat color, a soft fade in and out instead of a gradient sweep. */
+  animation: text-pulse 1.6s ease-in-out infinite;
 
   @media (prefers-reduced-motion: reduce) {
-    background-image: none;
-    color: inherit;
     animation: none;
+  }
+}
+
+@keyframes text-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
