@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { KeyObject } from "node:crypto";
 import { createHash, createPublicKey, verify } from "node:crypto";
 import { createReadStream } from "node:fs";
@@ -10,7 +11,7 @@ MCowBQYDK2VwAyEAklTbtzcfz7ZoFLioFRxwpa97Zs/N4/8oZNblx2Dfi/4=
 -----END PUBLIC KEY-----
 `;
 
-const RELEASES = "https://github.com/elie222/rakazo/releases/download";
+const RELEASES = "https://github.com/LuisSantiagoLopez/gente/releases/download";
 const MAX_SIGNATURE_BYTES = 1_024;
 const UPDATE_FILE = /^[A-Za-z0-9][A-Za-z0-9._-]*\.AppImage$/;
 const VERSION = /^\d+\.\d+\.\d+$/;

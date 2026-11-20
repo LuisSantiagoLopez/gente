@@ -42,7 +42,7 @@ describe("passkeyEntitlements", () => {
     const plist = passkeyEntitlements(base, "ABCDE12345", pkg.build.appId);
     expect(plist.startsWith(base.slice(0, base.lastIndexOf("</dict>")).trimEnd())).toBe(true);
     expect(plist).toContain(
-      "<key>com.apple.application-identifier</key>\n    <string>ABCDE12345.dev.rakazo.desktop</string>",
+      "<key>com.apple.application-identifier</key>\n    <string>ABCDE12345.com.gente.app</string>",
     );
     expect(plist).toContain(
       `<key>com.apple.developer.associated-domains</key>\n    <array>\n      <string>webcredentials:${PASSKEY_RP_ID}</string>\n    </array>\n  </dict>\n</plist>`,
@@ -93,9 +93,9 @@ describe("self-hosted passkey domain", () => {
 
   it("associates the build with RAKAZO_PASSKEY_RP_ID", async () => {
     const passkeys = await load(" Gente.Example.org ");
-    expect(passkeys.PASSKEY_RP_ID).toBe("rakazo.example.org");
+    expect(passkeys.PASSKEY_RP_ID).toBe("gente.example.org");
     expect(passkeys.passkeyEntitlements(base, "ABCDE12345", pkg.build.appId)).toContain(
-      "<string>webcredentials:rakazo.example.org</string>",
+      "<string>webcredentials:gente.example.org</string>",
     );
   });
 

@@ -12,6 +12,7 @@ import { connect } from "node:net";
 import path from "node:path";
 import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
+import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { telegramSecret } from "../burrow/telegram.js";
@@ -654,7 +655,19 @@ export class NativeStackController extends StackLifecycle {
         ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
         : {}),
     });
-    const entry = (name: keyof ServerManifest["entrypoints"]) =>
+    // Gente: chats are encrypted at rest with a key sealed in the system keychain. Content saved
+    // before this release is encrypted once, here, before the server starts; until that pass
+    // finishes it is retried on every start, and reads work either way.
+    await encryptExistingContent({
+      run: this.deps.run,
+      nodeBinary: this.deps.nodeBinary,
+      server,
+      env: appEnv,
+      marker: this.dir("data", CONTENT_ENCRYPTED_MARKER),
+      signal,
+      onLine: (line) => this.push({ type: "output", line }),
+    });
+    const entry = (name: "api" | "worker" | "web" | "migrate") =>
       path.join(server.dir, server.manifest.entrypoints[name]);
     const node = (name: string, args: string[], env: Record<string, string>) =>
       this.service({
@@ -1126,8 +1139,9 @@ export class NativeStackController extends StackLifecycle {
         ? this.deps.hostComputer.url.replace("//host.docker.internal:", "//127.0.0.1:")
         : "",
       SANDBOX_HOST_TOKEN: this.deps.hostComputer?.token ?? "",
-      // As on Docker: content stays on this computer, under its own disk encryption.
-      CONTENT_ENCRYPTION: "off",
+      // Gente: chats, memory and files are encrypted at rest; the master key comes from
+      // ENCRYPTION_KEY, which is sealed by the system keychain.
+      CONTENT_ENCRYPTION: "on",
       // Only this computer can reach the stack, so its own model and tool servers are fair game.
       MCP_ALLOW_PRIVATE_ENDPOINT: "true",
       BETTER_AUTH_URL: this.currentWebUrl,

@@ -89,13 +89,9 @@ export const PL_MESSAGES: Record<string, string> = {
   "You can close this tab and return to Gente.": "Możesz zamknąć tę kartę i wrócić do Gente.",
 
   // Setup window
-  "Set up Gente": "Skonfiguruj Gente",
   "Quit Gente": "Zakończ Gente",
   "Welcome to Gente": "Witaj w Gente",
-  "Choose where Gente runs.": "Wybierz, gdzie działa Gente.",
   Instance: "Instancja",
-  "This computer": "Ten komputer",
-  "Existing instance": "Istniejąca instancja",
   "Technical details": "Szczegóły techniczne",
   "Setup progress": "Postęp konfiguracji",
   "Server address": "Adres serwera",
@@ -103,12 +99,8 @@ export const PL_MESSAGES: Record<string, string> = {
   "Name: value": "Nazwa: wartość",
   "Check connection": "Sprawdź połączenie",
   Continue: "Kontynuuj",
-  Retry: "Spróbuj ponownie",
   "Getting ready…": "Przygotowywanie…",
-  "Downloading Gente…": "Pobieranie Gente…",
-  "Starting Gente…": "Uruchamianie Gente…",
   "Almost ready…": "Prawie gotowe…",
-  "Gente is ready.": "Gente jest gotowe.",
   "{size} downloaded": "Pobrano {size}",
   "Connecting…": "Łączenie…",
   "Checking…": "Sprawdzanie…",
@@ -116,10 +108,6 @@ export const PL_MESSAGES: Record<string, string> = {
   "Enter a server address first.": "Najpierw wpisz adres serwera.",
   "Could not save that address.": "Nie udało się zapisać tego adresu.",
   "Could not save that address. Try again.": "Nie udało się zapisać tego adresu. Spróbuj ponownie.",
-  "Could not follow the local stack. Try again.":
-    "Nie udało się śledzić stanu lokalnych usług. Spróbuj ponownie.",
-  "Could not start the local stack. Try again.":
-    "Nie udało się uruchomić lokalnych usług. Spróbuj ponownie.",
   "Could not run the connection check. Try again.":
     "Nie udało się sprawdzić połączenia. Spróbuj ponownie.",
   "Setup bridge unavailable.": "Moduł konfiguracji jest niedostępny.",
@@ -136,7 +124,6 @@ export const PL_MESSAGES: Record<string, string> = {
     "Ten adres przekierowuje w inne miejsce. Wpisz docelowy adres serwera Gente.",
   "That address did not respond like a Gente server.":
     "Ten adres nie odpowiedział jak serwer Gente.",
-  "The server answered with HTTP {status}.": "Serwer odpowiedział kodem HTTP {status}.",
   "Timed out reaching that address.": "Przekroczono czas oczekiwania na połączenie z tym adresem.",
   "Nothing is listening at that address yet.": "Pod tym adresem nie działa jeszcze żadna usługa.",
   "That host could not be found.": "Nie znaleziono tego hosta.",
@@ -224,16 +211,10 @@ export const PL_MESSAGES: Record<string, string> = {
     "Twoje boty i dane zostaną przeniesione. Docker zostanie zatrzymany, nie usunięty.",
   Move: "Przenieś",
   "Keep Docker": "Zostań przy Dockerze",
-  "Nothing to install.": "Nic do instalowania.",
-  "Your data stays on this computer.": "Twoje dane zostają na tym komputerze.",
-  "Connect to a server you or your team already run.":
-    "Połącz się z serwerem, który Ty lub Twój zespół już prowadzicie.",
   "Gente needs Docker Desktop to run on this computer.":
     "Gente potrzebuje Docker Desktop, aby działać na tym komputerze.",
   "Gente needs Docker to run on this computer.":
     "Gente potrzebuje Dockera, aby działać na tym komputerze.",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop to darmowa aplikacja, która uruchamia Gente w tle. Zainstaluj ją i otwórz raz.",
   "Install Docker Engine and start it.": "Zainstaluj Docker Engine i uruchom go.",
   "Download Docker Desktop": "Pobierz Docker Desktop",
   "Install Docker": "Zainstaluj Dockera",
@@ -252,4 +233,49 @@ export const PL_MESSAGES: Record<string, string> = {
   "Restart Gente": "Uruchom Gente ponownie",
   "Not Now": "Nie teraz",
   "Restart Gente to finish setup": "Uruchom Gente ponownie, aby ukończyć konfigurację",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Na podstawie Rakazo autorstwa Elie Steinbock (Apache-2.0). Swift od UkisAI.",
+  "Bots, chats, files, routines": "Boty, czaty, pliki, rutyny",
+  "Checking this Mac…": "Sprawdzanie tego Maca…",
+  "Choose a different model": "Wybierz inny model",
+  "Connect Telegram…": "Połącz Telegram…",
+  "Connect to a server instead": "Połącz się z serwerem",
+  "Downloading the workspace…": "Pobieranie obszaru roboczego…",
+  "Downloads once, then works offline.": "Pobiera się raz, potem działa offline.",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente nie udało się dokończyć przygotowań. Naciśnij Spróbuj ponownie.",
+  "Gente is getting things ready. This takes a moment.":
+    "Gente wszystko przygotowuje. To chwilę potrwa.",
+  "Get started": "Zaczynamy",
+  "Getting Gente ready, about a minute left": "Przygotowywanie Gente, została około minuta",
+  "Getting Gente ready, about {n} min left": "Przygotowywanie Gente, zostało około {n} min",
+  "Getting Gente ready…": "Przygotowywanie Gente…",
+  "Model choices": "Wybór modelu",
+  "Model download": "Pobieranie modelu",
+  "No ads. Ever.": "Bez reklam. Nigdy.",
+  "No usage limits. Message as much as you want.": "Bez limitów. Pisz, ile chcesz.",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "Nikt nie czyta Twoich danych, nie trenuje na nich i ich nie sprzedaje. Ani my, ani nikt inny.",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "Na tym Macu Gente potrzebuje Docker Desktop (darmowej aplikacji) do obszaru roboczego. Zainstaluj ją i otwórz raz.",
+  "Run on this Mac instead": "Uruchom na tym Macu",
+  "Runs privately in the background on this Mac.": "Działa prywatnie w tle na tym Macu.",
+  "Something went wrong.": "Coś poszło nie tak.",
+  "Starting the workspace…": "Uruchamianie obszaru roboczego…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "Przełączono na {name} dla Twojego komputera ({from} nie mógł tu działać).",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "Ten adres nie odpowiedział jak serwer Gente. Sprawdź go i spróbuj ponownie.",
+  "The AI of the people.": "AI ludzi.",
+  "The first start can take a minute.": "Pierwsze uruchomienie może potrwać minutę.",
+  "Try again": "Spróbuj ponownie",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Gdy Gente pracuje dla Ciebie online (wyszukiwanie, przeglądanie, aplikacje), wysyła tylko to, czego potrzebuje dane zadanie.",
+  Workspace: "Obszar roboczy",
+  "Workspace ready.": "Obszar roboczy gotowy.",
+  "Your AI": "Twoje AI",
+  "Your AI is ready.": "Twoje AI jest gotowe.",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "Twoje AI mieszka na Twoim komputerze. Twoje czaty nigdy go nie opuszczają.",
 };

@@ -481,7 +481,7 @@
         detail = t("The first start can take a minute.");
         break;
       case "ready":
-        brainStatus.textContent = t("{name} is ready on this Mac.", { name: model.name });
+        brainStatus.textContent = t("Your AI is ready.");
         brainStatus.setAttribute("data-tone", "ok");
         break;
       case "failed":

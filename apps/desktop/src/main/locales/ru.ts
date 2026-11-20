@@ -80,13 +80,9 @@ export const RU_MESSAGES: Record<string, string> = {
   "Sign-in callback rejected. Return to Gente to retry.":
     "Ответ на вход отклонён. Вернитесь в Gente, чтобы повторить попытку.",
   "You can close this tab and return to Gente.": "Можно закрыть эту вкладку и вернуться в Gente.",
-  "Set up Gente": "Настройка Gente",
   "Quit Gente": "Завершить Gente",
   "Welcome to Gente": "Добро пожаловать в Gente",
-  "Choose where Gente runs.": "Выберите, где будет работать Gente.",
   Instance: "Экземпляр",
-  "This computer": "Этот компьютер",
-  "Existing instance": "Существующий экземпляр",
   "Technical details": "Технические подробности",
   "Setup progress": "Ход настройки",
   "Server address": "Адрес сервера",
@@ -94,12 +90,8 @@ export const RU_MESSAGES: Record<string, string> = {
   "Name: value": "Имя: значение",
   "Check connection": "Проверить подключение",
   Continue: "Продолжить",
-  Retry: "Повторить",
   "Getting ready…": "Подготовка…",
-  "Downloading Gente…": "Загрузка Gente…",
-  "Starting Gente…": "Запуск Gente…",
   "Almost ready…": "Почти готово…",
-  "Gente is ready.": "Gente готов.",
   "{size} downloaded": "Загружено {size}",
   "Connecting…": "Подключение…",
   "Checking…": "Проверка…",
@@ -107,10 +99,6 @@ export const RU_MESSAGES: Record<string, string> = {
   "Enter a server address first.": "Сначала введите адрес сервера.",
   "Could not save that address.": "Не удалось сохранить этот адрес.",
   "Could not save that address. Try again.": "Не удалось сохранить этот адрес. Повторите попытку.",
-  "Could not follow the local stack. Try again.":
-    "Не удалось отслеживать локальный стек. Повторите попытку.",
-  "Could not start the local stack. Try again.":
-    "Не удалось запустить локальный стек. Повторите попытку.",
   "Could not run the connection check. Try again.":
     "Не удалось проверить подключение. Повторите попытку.",
   "Setup bridge unavailable.": "Мост настройки недоступен.",
@@ -126,7 +114,6 @@ export const RU_MESSAGES: Record<string, string> = {
     "Этот адрес перенаправляет в другое место. Введите конечный адрес сервера Gente.",
   "That address did not respond like a Gente server.":
     "Этот адрес ответил не так, как сервер Gente.",
-  "The server answered with HTTP {status}.": "Сервер ответил с кодом HTTP {status}.",
   "Timed out reaching that address.": "Истекло время ожидания ответа по этому адресу.",
   "Nothing is listening at that address yet.": "По этому адресу пока ничего не отвечает.",
   "That host could not be found.": "Не удалось найти этот хост.",
@@ -212,16 +199,10 @@ export const RU_MESSAGES: Record<string, string> = {
     "Ваши боты и данные будут перенесены. Docker будет остановлен, но не удалён.",
   Move: "Перенести",
   "Keep Docker": "Оставить Docker",
-  "Nothing to install.": "Ничего не нужно устанавливать.",
-  "Your data stays on this computer.": "Ваши данные остаются на этом компьютере.",
-  "Connect to a server you or your team already run.":
-    "Подключитесь к серверу, который уже работает у вас или вашей команды.",
   "Gente needs Docker Desktop to run on this computer.":
     "Чтобы Gente работал на этом компьютере, нужен Docker Desktop.",
   "Gente needs Docker to run on this computer.":
     "Чтобы Gente работал на этом компьютере, нужен Docker.",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop — бесплатное приложение, которое запускает Gente в фоне. Установите и один раз откройте его.",
   "Install Docker Engine and start it.": "Установите Docker Engine и запустите его.",
   "Download Docker Desktop": "Скачать Docker Desktop",
   "Install Docker": "Установить Docker",
@@ -240,4 +221,49 @@ export const RU_MESSAGES: Record<string, string> = {
   "Restart Gente": "Перезапустить Gente",
   "Not Now": "Не сейчас",
   "Restart Gente to finish setup": "Перезапустите Gente, чтобы завершить настройку",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Основано на Rakazo от Elie Steinbock (Apache-2.0). Swift от UkisAI.",
+  "Bots, chats, files, routines": "Боты, чаты, файлы, рутины",
+  "Checking this Mac…": "Проверяем этот Mac…",
+  "Choose a different model": "Выбрать другую модель",
+  "Connect Telegram…": "Подключить Telegram…",
+  "Connect to a server instead": "Подключиться к серверу",
+  "Downloading the workspace…": "Скачиваем рабочее пространство…",
+  "Downloads once, then works offline.": "Скачивается один раз, потом работает без интернета.",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente не удалось закончить подготовку. Нажмите «Повторить попытку».",
+  "Gente is getting things ready. This takes a moment.":
+    "Gente всё готовит. Это займёт немного времени.",
+  "Get started": "Начать",
+  "Getting Gente ready, about a minute left": "Готовим Gente, осталась примерно минута",
+  "Getting Gente ready, about {n} min left": "Готовим Gente, осталось примерно {n} мин",
+  "Getting Gente ready…": "Готовим Gente…",
+  "Model choices": "Выбор модели",
+  "Model download": "Загрузка модели",
+  "No ads. Ever.": "Без рекламы. Никогда.",
+  "No usage limits. Message as much as you want.": "Без ограничений. Пишите сколько хотите.",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "Никто не читает ваши данные, не обучает на них ИИ и не продаёт их. Ни мы, ни кто-либо ещё.",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "На этом Mac для рабочего пространства Gente нужен Docker Desktop (бесплатное приложение). Установите его и откройте один раз.",
+  "Run on this Mac instead": "Запустить на этом Mac",
+  "Runs privately in the background on this Mac.": "Работает приватно в фоне на этом Mac.",
+  "Something went wrong.": "Что-то пошло не так.",
+  "Starting the workspace…": "Запускаем рабочее пространство…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "Для вашего компьютера выбрана модель {name} ({from} не может здесь работать).",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "По этому адресу ответил не сервер Gente. Проверьте адрес и попробуйте ещё раз.",
+  "The AI of the people.": "ИИ для людей.",
+  "The first start can take a minute.": "Первый запуск может занять минуту.",
+  "Try again": "Повторить попытку",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Когда Gente работает для вас в интернете (поиск, сайты, приложения), наружу уходит только то, что нужно для задачи.",
+  Workspace: "Рабочее пространство",
+  "Workspace ready.": "Рабочее пространство готово.",
+  "Your AI": "Ваш ИИ",
+  "Your AI is ready.": "Ваш ИИ готов.",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "Ваш ИИ живёт на вашем компьютере. Ваши чаты никогда его не покидают.",
 };

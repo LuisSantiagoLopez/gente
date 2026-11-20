@@ -79,13 +79,9 @@ export const TR_MESSAGES: Record<string, string> = {
   "Sign-in callback rejected. Return to Gente to retry.":
     "Oturum açma yanıtı reddedildi. Yeniden denemek için Gente’ya dönün.",
   "You can close this tab and return to Gente.": "Bu sekmeyi kapatıp Gente’ya dönebilirsiniz.",
-  "Set up Gente": "Gente’yu Kur",
   "Quit Gente": "Gente’dan Çık",
   "Welcome to Gente": "Gente’ya hoş geldiniz",
-  "Choose where Gente runs.": "Gente'nun nerede çalışacağını seçin.",
   Instance: "Örnek",
-  "This computer": "Bu bilgisayar",
-  "Existing instance": "Mevcut örnek",
   "Technical details": "Teknik ayrıntılar",
   "Setup progress": "Kurulum ilerlemesi",
   "Server address": "Sunucu adresi",
@@ -93,12 +89,8 @@ export const TR_MESSAGES: Record<string, string> = {
   "Name: value": "Ad: değer",
   "Check connection": "Bağlantıyı denetle",
   Continue: "Devam",
-  Retry: "Yeniden dene",
   "Getting ready…": "Hazırlanıyor…",
-  "Downloading Gente…": "Gente indiriliyor…",
-  "Starting Gente…": "Gente başlatılıyor…",
   "Almost ready…": "Neredeyse hazır…",
-  "Gente is ready.": "Gente hazır.",
   "{size} downloaded": "{size} indirildi",
   "Connecting…": "Bağlanıyor…",
   "Checking…": "Denetleniyor…",
@@ -106,8 +98,6 @@ export const TR_MESSAGES: Record<string, string> = {
   "Enter a server address first.": "Önce bir sunucu adresi girin.",
   "Could not save that address.": "Bu adres kaydedilemedi.",
   "Could not save that address. Try again.": "Bu adres kaydedilemedi. Yeniden deneyin.",
-  "Could not follow the local stack. Try again.": "Yerel yığın izlenemedi. Yeniden deneyin.",
-  "Could not start the local stack. Try again.": "Yerel yığın başlatılamadı. Yeniden deneyin.",
   "Could not run the connection check. Try again.":
     "Bağlantı denetimi çalıştırılamadı. Yeniden deneyin.",
   "Setup bridge unavailable.": "Kurulum köprüsü kullanılamıyor.",
@@ -122,7 +112,6 @@ export const TR_MESSAGES: Record<string, string> = {
     "Bu adres başka bir yere yönlendiriyor. Gente sunucusunun son adresini girin.",
   "That address did not respond like a Gente server.":
     "Bu adres bir Gente sunucusu gibi yanıt vermedi.",
-  "The server answered with HTTP {status}.": "Sunucu HTTP {status} ile yanıt verdi.",
   "Timed out reaching that address.": "Bu adrese ulaşırken zaman aşımı oluştu.",
   "Nothing is listening at that address yet.": "Bu adreste henüz dinleyen bir şey yok.",
   "That host could not be found.": "Bu ana bilgisayar bulunamadı.",
@@ -206,16 +195,10 @@ export const TR_MESSAGES: Record<string, string> = {
     "Botlarınız ve verileriniz taşınır. Docker durdurulur, kaldırılmaz.",
   Move: "Taşı",
   "Keep Docker": "Docker'ı koru",
-  "Nothing to install.": "Yüklenecek bir şey yok.",
-  "Your data stays on this computer.": "Verileriniz bu bilgisayarda kalır.",
-  "Connect to a server you or your team already run.":
-    "Sizin veya ekibinizin zaten çalıştırdığı bir sunucuya bağlanın.",
   "Gente needs Docker Desktop to run on this computer.":
     "Gente'nun bu bilgisayarda çalışması için Docker Desktop gerekir.",
   "Gente needs Docker to run on this computer.":
     "Gente'nun bu bilgisayarda çalışması için Docker gerekir.",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop, Gente'yu arka planda çalıştıran ücretsiz bir uygulamadır. Yükleyip bir kez açın.",
   "Install Docker Engine and start it.": "Docker Engine'i yükleyip başlatın.",
   "Download Docker Desktop": "Docker Desktop'ı indir",
   "Install Docker": "Docker'ı yükle",
@@ -234,4 +217,50 @@ export const TR_MESSAGES: Record<string, string> = {
   "Restart Gente": "Gente’yu yeniden başlat",
   "Not Now": "Şimdi değil",
   "Restart Gente to finish setup": "Kurulumu tamamlamak için Gente’yu yeniden başlatın",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "Elie Steinbock’un Rakazo projesine (Apache-2.0) dayanır. Swift: UkisAI.",
+  "Bots, chats, files, routines": "Botlar, sohbetler, dosyalar, rutinler",
+  "Checking this Mac…": "Bu Mac kontrol ediliyor…",
+  "Choose a different model": "Başka bir model seç",
+  "Connect Telegram…": "Telegram’ı bağla…",
+  "Connect to a server instead": "Bunun yerine bir sunucuya bağlan",
+  "Downloading the workspace…": "Çalışma alanı indiriliyor…",
+  "Downloads once, then works offline.": "Bir kez iner, sonra çevrimdışı çalışır.",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente hazırlanmayı bitiremedi. Tekrar dene’ye bas.",
+  "Gente is getting things ready. This takes a moment.":
+    "Gente her şeyi hazırlıyor. Bu biraz sürer.",
+  "Get started": "Başla",
+  "Getting Gente ready, about a minute left": "Gente hazırlanıyor, yaklaşık bir dakika kaldı",
+  "Getting Gente ready, about {n} min left": "Gente hazırlanıyor, yaklaşık {n} dk kaldı",
+  "Getting Gente ready…": "Gente hazırlanıyor…",
+  "Model choices": "Model seçenekleri",
+  "Model download": "Model indirme",
+  "No ads. Ever.": "Reklam yok. Asla.",
+  "No usage limits. Message as much as you want.":
+    "Kullanım sınırı yok. İstediğin kadar mesaj yaz.",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "Kimse verilerini okumaz, onlarla model eğitmez ya da satmaz. Ne biz ne de başkası.",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "Bu Mac’te Gente’nin çalışma alanı için Docker Desktop (ücretsiz bir uygulama) gerekir. Yükle ve bir kez aç.",
+  "Run on this Mac instead": "Bunun yerine bu Mac’te çalıştır",
+  "Runs privately in the background on this Mac.": "Bu Mac’te arka planda, gizli şekilde çalışır.",
+  "Something went wrong.": "Bir şeyler ters gitti.",
+  "Starting the workspace…": "Çalışma alanı başlatılıyor…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "Bilgisayarın için {name} modeline geçildi ({from} burada çalışamadı).",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "Bu adres bir Gente sunucusu gibi yanıt vermedi. Kontrol et ve tekrar dene.",
+  "The AI of the people.": "Halkın yapay zekâsı.",
+  "The first start can take a minute.": "İlk açılış bir dakika sürebilir.",
+  "Try again": "Tekrar dene",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Gente senin için çevrimiçi çalıştığında (arama, gezinme, uygulamalar) sadece o işin gerektirdiği şey dışarı gider.",
+  Workspace: "Çalışma alanı",
+  "Workspace ready.": "Çalışma alanı hazır.",
+  "Your AI": "Yapay zekân",
+  "Your AI is ready.": "Yapay zekân hazır.",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "Yapay zekân senin bilgisayarında yaşar. Sohbetlerin oradan hiç çıkmaz.",
 };

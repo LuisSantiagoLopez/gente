@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import {
   LOGO_BODY_PATH,
   LOGO_LEFT_HAND_PATH,
@@ -6,6 +7,9 @@ import {
   logoAvatarPaint,
 } from "@rakazo/core";
 import { memo } from "react";
+
+/** Gente draws every avatar flat; the lit version stays for reference. */
+const FLAT = true;
 
 /** Fully vector body. The photographic grain is intentionally simplified. */
 export const LogoAvatarBody = memo(function LogoAvatarBody({
@@ -18,6 +22,16 @@ export const LogoAvatarBody = memo(function LogoAvatarBody({
   originalOrange: boolean;
 }) {
   const paint = logoAvatarPaint(color, originalOrange);
+  // Gente: flat colors. The body and hands are one solid color each (hands a shade darker), with no lighting.
+  if (FLAT) {
+    return (
+      <g className="logo-avatar-art">
+        <path d={LOGO_BODY_PATH} fill={paint.base} />
+        <path d={LOGO_LEFT_HAND_PATH} fill={paint.edge} />
+        <path d={LOGO_RIGHT_HAND_PATH} fill={paint.edge} />
+      </g>
+    );
+  }
   return (
     <g className="logo-avatar-art">
       <defs>

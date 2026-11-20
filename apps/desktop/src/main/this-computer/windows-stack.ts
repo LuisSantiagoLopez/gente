@@ -13,6 +13,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { DesktopLocalStackPhase } from "@rakazo/contracts";
 import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
+import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { telegramSecret } from "../burrow/telegram.js";
@@ -429,7 +430,16 @@ export class WindowsStackController extends StackLifecycle {
         ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
         : {}),
     });
-    const entry = (name: keyof ServerManifest["entrypoints"]) =>
+    await encryptExistingContent({
+      run: this.deps.run,
+      nodeBinary: this.deps.nodeBinary,
+      server,
+      env: appEnv,
+      marker: this.dir("data", CONTENT_ENCRYPTED_MARKER),
+      signal,
+      onLine: (line) => this.push({ type: "output", line }),
+    });
+    const entry = (name: "api" | "worker" | "web" | "migrate") =>
       path.join(server.dir, server.manifest.entrypoints[name]);
     const node = (name: string, args: string[], env: Record<string, string>) =>
       this.service({ name, command: this.deps.nodeBinary, args, cwd: server.dir, env, stopSignal: "SIGTERM" });
@@ -520,7 +530,8 @@ export class WindowsStackController extends StackLifecycle {
         ? this.deps.hostComputer.url.replace("//host.docker.internal:", "//127.0.0.1:")
         : "",
       SANDBOX_HOST_TOKEN: this.deps.hostComputer?.token ?? "",
-      CONTENT_ENCRYPTION: "off",
+      // Gente: chats, memory and files are encrypted at rest; ENCRYPTION_KEY is sealed by DPAPI.
+      CONTENT_ENCRYPTION: "on",
       MCP_ALLOW_PRIVATE_ENDPOINT: "true",
       BETTER_AUTH_URL: this.currentWebUrl,
       WEB_ORIGIN: this.currentWebUrl,

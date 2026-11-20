@@ -77,13 +77,9 @@ export const HE_MESSAGES: Record<string, string> = {
   "Sign-in callback rejected. Return to Gente to retry.":
     "תגובת ההתחברות נדחתה. יש לחזור ל-Gente כדי לנסות שוב.",
   "You can close this tab and return to Gente.": "אפשר לסגור את הכרטיסייה הזו ולחזור ל-Gente.",
-  "Set up Gente": "הגדרת Gente",
   "Quit Gente": "יציאה מ-Gente",
   "Welcome to Gente": "ברוכים הבאים ל-Gente",
-  "Choose where Gente runs.": "בחרו איפה Gente יפעל.",
   Instance: "מופע",
-  "This computer": "המחשב הזה",
-  "Existing instance": "מופע קיים",
   "Technical details": "פרטים טכניים",
   "Setup progress": "התקדמות ההגדרה",
   "Server address": "כתובת השרת",
@@ -91,12 +87,8 @@ export const HE_MESSAGES: Record<string, string> = {
   "Name: value": "שם: ערך",
   "Check connection": "בדיקת חיבור",
   Continue: "המשך",
-  Retry: "ניסיון חוזר",
   "Getting ready…": "מתכוננים…",
-  "Downloading Gente…": "מוריד את Gente…",
-  "Starting Gente…": "מפעיל את Gente…",
   "Almost ready…": "כמעט מוכן…",
-  "Gente is ready.": "Gente מוכן.",
   "{size} downloaded": "הורדו {size}",
   "Connecting…": "מתחבר…",
   "Checking…": "בודק…",
@@ -104,10 +96,6 @@ export const HE_MESSAGES: Record<string, string> = {
   "Enter a server address first.": "יש להזין קודם כתובת שרת.",
   "Could not save that address.": "לא ניתן היה לשמור את הכתובת הזו.",
   "Could not save that address. Try again.": "לא ניתן היה לשמור את הכתובת הזו. כדאי לנסות שוב.",
-  "Could not follow the local stack. Try again.":
-    "לא ניתן היה לעקוב אחרי ה-Stack המקומי. כדאי לנסות שוב.",
-  "Could not start the local stack. Try again.":
-    "לא ניתן היה להפעיל את ה-Stack המקומי. כדאי לנסות שוב.",
   "Could not run the connection check. Try again.": "לא ניתן היה לבדוק את החיבור. כדאי לנסות שוב.",
   "Setup bridge unavailable.": "גשר ההגדרה לא זמין.",
   "Setup could not start. Quit Gente and try again.":
@@ -120,7 +108,6 @@ export const HE_MESSAGES: Record<string, string> = {
   "That address redirects elsewhere. Enter the final Gente server address.":
     "הכתובת הזו מפנה למקום אחר. יש להזין את הכתובת הסופית של שרת Gente.",
   "That address did not respond like a Gente server.": "הכתובת הזו לא הגיבה כמו שרת Gente.",
-  "The server answered with HTTP {status}.": "השרת הגיב עם HTTP {status}.",
   "Timed out reaching that address.": "תם הזמן לחיבור לכתובת הזו.",
   "Nothing is listening at that address yet.": "עדיין אין שום דבר שמאזין בכתובת הזו.",
   "That host could not be found.": "המארח הזה לא נמצא.",
@@ -205,15 +192,9 @@ export const HE_MESSAGES: Record<string, string> = {
     "הבוטים והנתונים שלכם יועברו. Docker ייעצר, לא יוסר.",
   Move: "העברה",
   "Keep Docker": "להשאיר את Docker",
-  "Nothing to install.": "אין מה להתקין.",
-  "Your data stays on this computer.": "הנתונים שלכם נשארים במחשב הזה.",
-  "Connect to a server you or your team already run.":
-    "התחברות לשרת שאתם או הצוות שלכם כבר מפעילים.",
   "Gente needs Docker Desktop to run on this computer.":
     "Gente צריך את Docker Desktop כדי לפעול במחשב הזה.",
   "Gente needs Docker to run on this computer.": "Gente צריך את Docker כדי לפעול במחשב הזה.",
-  "Docker Desktop is a free app that runs Gente in the background. Install it and open it once.":
-    "Docker Desktop היא אפליקציה חינמית שמפעילה את Gente ברקע. מתקינים ופותחים אותה פעם אחת.",
   "Install Docker Engine and start it.": "מתקינים את Docker Engine ומפעילים אותו.",
   "Download Docker Desktop": "הורדת Docker Desktop",
   "Install Docker": "התקנת Docker",
@@ -232,4 +213,48 @@ export const HE_MESSAGES: Record<string, string> = {
   "Restart Gente": "הפעלה מחדש של Gente",
   "Not Now": "לא עכשיו",
   "Restart Gente to finish setup": "הפעילו מחדש את Gente כדי להשלים את ההגדרה",
+  // Setup
+  "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
+    "מבוסס על Rakazo מאת Elie Steinbock (Apache-2.0). Swift מאת UkisAI.",
+  "Bots, chats, files, routines": "בוטים, צ׳אטים, קבצים, שגרות",
+  "Checking this Mac…": "בודקים את ה-Mac הזה…",
+  "Choose a different model": "בחירת מודל אחר",
+  "Connect Telegram…": "חיבור Telegram…",
+  "Connect to a server instead": "התחברות לשרת במקום זאת",
+  "Downloading the workspace…": "מורידים את סביבת העבודה…",
+  "Downloads once, then works offline.": "יורד פעם אחת, ואז עובד גם בלי אינטרנט.",
+  "Gente couldn't finish getting ready. Press Try again.":
+    "Gente לא הצליחה לסיים את ההכנות. יש ללחוץ על לנסות שוב.",
+  "Gente is getting things ready. This takes a moment.": "Gente מכינה הכול. זה לוקח רגע.",
+  "Get started": "בואו נתחיל",
+  "Getting Gente ready, about a minute left": "מכינים את Gente, נשארה בערך דקה",
+  "Getting Gente ready, about {n} min left": "מכינים את Gente, נשארו בערך {n} דק׳",
+  "Getting Gente ready…": "מכינים את Gente…",
+  "Model choices": "בחירת מודל",
+  "Model download": "הורדת המודל",
+  "No ads. Ever.": "בלי פרסומות. אף פעם.",
+  "No usage limits. Message as much as you want.": "בלי הגבלות שימוש. אפשר לכתוב כמה שרוצים.",
+  "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
+    "אף אחד לא קורא את הנתונים שלך, לא מאמן עליהם ולא מוכר אותם. לא אנחנו ולא אף אחד אחר.",
+  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "ב-Mac הזה, Gente צריכה את Docker Desktop (אפליקציה חינמית) בשביל סביבת העבודה. יש להתקין אותה ולפתוח אותה פעם אחת.",
+  "Run on this Mac instead": "הפעלה על ה-Mac הזה במקום זאת",
+  "Runs privately in the background on this Mac.": "פועלת באופן פרטי ברקע על ה-Mac הזה.",
+  "Something went wrong.": "משהו השתבש.",
+  "Starting the workspace…": "מפעילים את סביבת העבודה…",
+  "Switched to {name} for your computer ({from} could not run here).":
+    "עברנו ל-{name} בשביל המחשב שלך ({from} לא יכול לפעול כאן).",
+  "That address didn't answer like a Gente server. Check it, then try again.":
+    "הכתובת הזו לא ענתה כמו שרת Gente. כדאי לבדוק אותה ולנסות שוב.",
+  "The AI of the people.": "הבינה המלאכותית של האנשים.",
+  "The first start can take a minute.": "ההפעלה הראשונה יכולה לקחת דקה.",
+  "Try again": "לנסות שוב",
+  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "כש-Gente עובדת בשבילך באינטרנט (חיפוש, גלישה, אפליקציות), יוצא רק מה שהמשימה צריכה.",
+  Workspace: "סביבת עבודה",
+  "Workspace ready.": "סביבת העבודה מוכנה.",
+  "Your AI": "הבינה המלאכותית שלך",
+  "Your AI is ready.": "הבינה המלאכותית שלך מוכנה.",
+  "Your AI lives on your computer. Your chats never leave it.":
+    "הבינה המלאכותית שלך חיה במחשב שלך. הצ׳אטים שלך אף פעם לא יוצאים ממנו.",
 };
