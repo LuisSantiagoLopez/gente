@@ -181,19 +181,35 @@ const commands: Record<string, () => Promise<number>> = {
     if (!process.env.SELF_HEAL_AGENT) {
       // No repair agent key yet: record the group as an issue and stop (blocked on owner).
       const url = await blockedIssue(cluster, "No failing test yet: writing one needs the agent.");
-      await writeFile(
-        `repair-${cluster.signature}.json`,
-        JSON.stringify(
+      const now = new Date().toISOString();
+      const record: RunRecord = {
+        signature: cluster.signature,
+        code: cluster.code,
+        title: "Blocked on owner: the repair agent has no key yet",
+        runners: cluster.runners,
+        reports: cluster.reports,
+        versions: cluster.versions,
+        agent: "none (blocked-on-owner)",
+        steps: [
           {
-            ok: false,
-            step: "reproduce",
-            reason: "blocked-on-owner: no repair agent key",
-            issue: url,
+            name: "detect",
+            status: "done",
+            at: now,
+            detail: `${cluster.reports} reports on ${cluster.platforms.join(" + ")}, versions ${cluster.versions.join(", ")}`,
           },
-          null,
-          2,
-        ),
-      );
+          {
+            name: "reproduce",
+            status: "skipped",
+            at: now,
+            detail: `blocked-on-owner: needs the repair agent key. Issue: ${url}`,
+          },
+        ],
+        gates: [],
+        rollout: [],
+        outcome: "stopped",
+        candidateVersion: "",
+      };
+      await writeFile(`repair-${cluster.signature}.json`, JSON.stringify(record, null, 2));
       console.log(`blocked-on-owner: ${url}`);
       return 0;
     }
