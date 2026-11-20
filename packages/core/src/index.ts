@@ -79,6 +79,7 @@ export * from "./proactive/proactive.prompt.js";
 export * from "./proactive/proactive-digest.js";
 export * from "./proactive/proactive-engine.js";
 export * from "./proactive/proactive-policy.js";
+export * from "./integrations/work-apps.js";
 export * from "./locale/device-timezone.js";
 export * from "./locale/text-direction.js";
 export * from "./locale/translate.js";

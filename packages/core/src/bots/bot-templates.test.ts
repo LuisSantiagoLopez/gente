@@ -2,6 +2,7 @@ import { BotTemplateSchema } from "@rakazo/contracts";
 import { describe, expect, it } from "vitest";
 import { looksLikeCredential } from "../agent-import/index.js";
 import { matchFeaturedConnectorId } from "../integrations/featured-connectors.js";
+import { isWorkApp } from "../integrations/work-apps.js";
 import { presetFromCron } from "../routines/schedule.js";
 import { extractRoutineSkillMentions } from "../skills/agent-skill.js";
 import { BOT_TEMPLATES, findBotTemplate } from "./bot-templates.js";
@@ -50,7 +51,9 @@ describe("bot templates", () => {
   it("name apps the connection catalog knows", () => {
     // Featured apps match by alias; the code host is matched by its own slug.
     for (const app of BOT_TEMPLATES.flatMap((template) => template.apps)) {
-      expect(app === "github" || matchFeaturedConnectorId(app) !== null).toBe(true);
+      expect(app === "github" || matchFeaturedConnectorId(app) !== null || isWorkApp(app)).toBe(
+        true,
+      );
     }
   });
 });
