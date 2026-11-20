@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRunRequest } from "@rakazo/adapter-kit";
 import { modelRoleConnectionId } from "@rakazo/contracts";
 import { BACKGROUND_HELPER_TRIGGER, redactSecrets } from "@rakazo/core";
@@ -20,7 +21,12 @@ import {
 } from "../assembly/run-replies.prompt.js";
 import type { RunExecutorServices, RunHold } from "../lifecycle/run-attempt.js";
 import { completeRun } from "../lifecycle/run-complete.js";
-import { failRun, handoffEndedTurn, requeueRunAfterDatabaseOutage } from "../lifecycle/run-fail.js";
+import {
+  failRun,
+  handoffEndedTurn,
+  requeueRunAfterDatabaseOutage,
+  requeueRunAfterModelOutage,
+} from "../lifecycle/run-fail.js";
 import { followUpsOffered, offeredFleetTools } from "../tools/run-tool-selection.js";
 import { applyTool } from "../tools/run-tools.js";
 import { consumeRunEvents } from "./run-turn.js";
@@ -84,6 +90,8 @@ export async function runModelTurn(
       await requeueRunAfterDatabaseOutage(ctx);
       return;
     }
+    // Gente (modified from Rakazo): a model server outage pauses a long turn instead of failing it.
+    if (await requeueRunAfterModelOutage(ctx, caughtError)) return;
     await failRun(ctx, caughtError, {
       ownCredential: resolved.ownCredential,
       active: activeModel,

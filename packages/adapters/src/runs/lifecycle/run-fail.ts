@@ -18,7 +18,7 @@ import {
   userRunError,
 } from "@rakazo/core";
 import { isDatabaseUnavailable, retryWhileDatabaseUnavailable } from "@rakazo/db";
-import { getLogger } from "@rakazo/logging";
+import { bestEffort, getLogger } from "@rakazo/logging";
 import { sanitizedError } from "@rakazo/logging/monitoring";
 import { returnBotMessageOutcome } from "../../messaging/bot-messages.js";
 import {
@@ -34,6 +34,7 @@ import { scheduleRoutineRetry } from "../assembly/run-routines.js";
 import {
   computerRetryDelay,
   enqueueSteeringContinuation,
+  providerOutageRetryDelay,
   requeueInterruptedRun,
 } from "./run-lifecycle.js";
 import { notifyRun, runSendsFinishNotification } from "./run-notifications.js";
@@ -84,6 +85,42 @@ export async function requeueRunAfterDatabaseOutage(ctx: RunContext): Promise<vo
   } catch (error) {
     if (!isDatabaseUnavailable(error)) throw error;
   }
+}
+
+/**
+ * Gente: how many times a turn that has saved progress waits out a model server that cannot be
+ * reached before it fails. With the provider-outage backoff that is about 45 minutes, long enough
+ * for a local model server to restart or a laptop to get its network back.
+ */
+export const MODEL_OUTAGE_REQUEUES = 12;
+
+/**
+ * Gente (modified from Rakazo): a long turn that saved its steps should not be lost because the
+ * model server was briefly unreachable. Hand the run back like a stopping worker, so it resumes
+ * after its last saved step once the backoff passes. Returns false when the turn should fail.
+ */
+export async function requeueRunAfterModelOutage(
+  ctx: RunContext,
+  error: unknown,
+): Promise<boolean> {
+  if (!(error instanceof TransientModelError) || !ctx.state.effects.storedTurnCheckpoint)
+    return false;
+  const { deps, runId, workerId, fence } = ctx;
+  const attempts = await deps.prisma.attempt.count({ where: { runId } });
+  if (attempts > MODEL_OUTAGE_REQUEUES) return false;
+  await bestEffort("run.model_outage_checkpoint", ctx.computer.checkpoint.flush());
+  const wakeAt = new Date(Date.now() + providerOutageRetryDelay(attempts - 1));
+  const handedBack = await requeueInterruptedRun(deps, runId, workerId, fence, wakeAt);
+  if (handedBack) {
+    ctx.state.lease.handedBack = true;
+    getLogger().warn("run.model_outage_requeued", {
+      "run.id": runId,
+      "run.attempts": attempts,
+      "run.wake_at": wakeAt.toISOString(),
+      reason: error.message,
+    });
+  }
+  return handedBack;
 }
 
 /** The turn failed: keep the reply streamed so far, record the error, and retry or notify. */

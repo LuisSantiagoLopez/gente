@@ -194,6 +194,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/runs/tools/run-tools-user-computer.ts`
 - `packages/adapters/src/runs/tools/run-tools.test.ts`
 - `packages/adapters/src/runs/tools/run-tools.ts`
+- `packages/adapters/src/runs/turn/run-model-turn.ts`
 - `packages/adapters/src/runs/turn/run-turn.ts`
 - `packages/adapters/src/runs/wakeups/job-reconciler.ts`
 - `packages/adapters/src/runtime/context/history-compaction.prompt.ts`
@@ -259,3 +260,4 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `packages/adapters/src/computers/computer-task-limit.ts`
 - `packages/adapters/src/computers/orphan-computers.test.ts`
 - `packages/adapters/src/computers/orphan-computers.ts`
+- `packages/adapters/src/runs/lifecycle/run-model-outage.test.ts`
