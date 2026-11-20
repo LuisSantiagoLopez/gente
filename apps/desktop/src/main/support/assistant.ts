@@ -188,7 +188,11 @@ export async function prewarmSupport(
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         model: alias,
-        messages: [{ role: "system", content: supportRules(FIX_IDS) }],
+        // A user turn is needed for the server to read the system message at all.
+        messages: [
+          { role: "system", content: supportRules(FIX_IDS) },
+          { role: "user", content: "hi" },
+        ],
         stream: false,
         max_tokens: 1,
         reasoning_effort: "none",

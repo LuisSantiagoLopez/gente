@@ -332,7 +332,8 @@ describe("support assistant", () => {
       ),
     );
     expect(sent.model).toBe("swift-1.5-27b");
-    expect(sent.messages[0].content).toContain("The model server stopped");
+    expect(sent.messages.at(-1).content).toContain("The model server stopped");
+    expect(sent.messages[0].content).not.toContain("The model server stopped");
   });
 
   it("still answers from the help, with a fix, when the model server is down", async () => {
