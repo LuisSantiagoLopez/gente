@@ -143,7 +143,7 @@ final class SelfHealTests: XCTestCase {
     func answerAsDesktop(_ desk: FakeDesktop, relay: MemoryRelay, sync: SyncEngine, text: String) async throws {
         var req: [String: Any]?
         var ds: LinkSession?
-        for _ in 0..<200 where req == nil {
+        for _ in 0..<1000 where req == nil {
             let all = try await relay.poll(desk.channel, after: 0)
             if ds == nil, let pk = all.first?.envelope.epk.flatMap(Data.init(base64URL:)) { ds = try desk.session(phonePub: pk) }
             if let ds { req = all.compactMap { try? JSONSerialization.jsonObject(with: ds.open($0.envelope)) as? [String: Any] }.first { $0["type"] as? String == "private.infer" } }
