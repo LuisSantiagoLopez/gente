@@ -22,6 +22,7 @@ import type { HostComputerRequest } from "../../computers/host/host-computer-pro
 import type { UserDeviceGateway } from "../../computers/host/user-device-protocol.js";
 import { FakeWebProvider } from "../../providers/web/fake/fake-web.js";
 import { MAX_SHARED_MEMORY_CHARS } from "../../tools/builtin.tool-definition.js";
+import { GENTE_DOCS_BASE } from "../../tools/builtin-skills.prompt.js";
 import type * as FleetToolsModule from "../../tools/fleet-tools.js";
 import {
   CATALOG_EXECUTE,
@@ -3336,13 +3337,17 @@ describe("outbound destinations", () => {
     f.setCalls([
       {
         name: "web_fetch",
-        args: { url: "https://rakazo.com/docs/routines.md" },
+        args: { url: `${GENTE_DOCS_BASE}/routines.md` },
         executionId: "call-1",
       },
-      { name: "web_fetch", args: { url: "https://rakazo.com/?q=secret" }, executionId: "call-2" },
+      {
+        name: "web_fetch",
+        args: { url: "https://raw.githubusercontent.com/?q=secret" },
+        executionId: "call-2",
+      },
     ]);
     await f.run();
-    expect(f.fetchedUrls).toEqual(["https://rakazo.com/docs/routines.md"]);
+    expect(f.fetchedUrls).toEqual([`${GENTE_DOCS_BASE}/routines.md`]);
     expect(isApprovalPausedResult(f.results[1])).toBe(true);
   });
 
