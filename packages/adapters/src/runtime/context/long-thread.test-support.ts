@@ -81,7 +81,7 @@ export function createLongThread(summarize: LongThreadSummarizer) {
     user: { findMany: async () => [] },
     bot: {
       findUnique: async () => ({ userId: thread.userId }),
-      findMany: async () => [{ id: thread.botId, name: "Gente" }],
+      findMany: async () => [{ id: thread.botId, name: "Your AI" }],
     },
     deploymentSettings: { findUnique: async () => null },
     message: {

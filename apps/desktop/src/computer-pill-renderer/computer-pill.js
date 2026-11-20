@@ -5,7 +5,7 @@ const title = document.getElementById("title");
 const hint = document.getElementById("hint");
 const stop = document.getElementById("stop");
 const words = {
-  title: params.get("title") || "Gente is using your computer",
+  title: params.get("title") || "Your AI is using your computer",
   hint: params.get("hint") || "",
   stop: params.get("stop") || "Stop",
   stopped: params.get("stopped") || "Stopped",

@@ -2251,6 +2251,76 @@ describe("Pi connector tool dispatch", () => {
     expect(events.at(-1)).toEqual({ type: "done" });
   });
 
+  it("does not show a second question card after the person answered one in this turn", async () => {
+    const askTool = {
+      name: "ask_user",
+      description: "Ask a short multiple-choice question",
+      inputSchema: {
+        type: "object",
+        properties: {
+          question: { type: "string" },
+          options: { type: "array", items: { type: "string" } },
+        },
+        required: ["question", "options"],
+      },
+    };
+    const checkpoint = serializeTurnCheckpoint({
+      version: 1,
+      provider: "test",
+      model: "dispatch-test-model",
+      systemPrompt: "You are a test bot.",
+      pendingToolCallId: "call-1",
+      executionMode: "sequential",
+      messages: [
+        { role: "user", content: "hola", timestamp: new Date(0) },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "toolCall",
+              id: "call-1",
+              name: "ask_user",
+              arguments: {
+                question: "¿Qué quieres que haga?",
+                options: ["Redactar textos", "Lo que tú me digas"],
+              },
+            },
+            {
+              type: "toolCall",
+              id: "call-2",
+              name: "ask_user",
+              arguments: {
+                question: "¿Qué quieres que haga?",
+                options: ["Redactar textos", "Lo que tú me digas"],
+              },
+            },
+          ],
+          stopReason: "toolUse",
+        },
+      ] as never,
+    });
+    const runtime = new PiAgentRuntime();
+    const events: Array<{ type: string }> = [];
+    for await (const event of runtime.run(
+      {
+        botId: "b",
+        threadId: "t",
+        runId: "resume-after-ask",
+        prompt: "resume the turn",
+        instructions: "",
+        history: [],
+        tools: [askTool],
+        model: { provider: "test", id: "dispatch-test-model" },
+        turnCheckpoint: checkpoint,
+        resumeToolResult: { content: [{ type: "text", text: "Lo que tú me digas" }] },
+      },
+      { signal: new AbortController().signal },
+    ))
+      events.push(event as { type: string });
+
+    expect(events.filter((event) => event.type === "ask")).toHaveLength(0);
+  });
+
   it("delegates through the executor without a background flag or a nested agent", async () => {
     fakeAgentState.mode = "background-subagent";
     const executeTool = vi.fn(async () => ({ ok: true, name: "scout" }));

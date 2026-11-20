@@ -158,7 +158,7 @@ it("omits Board when unavailable", async () => {
   );
 });
 
-it("links Docs to Gente's help and offers no mobile app (QA-018)", async () => {
+it("links Docs to Your AI's help and offers no mobile app (QA-018)", async () => {
   await render();
   const links = [...document.querySelectorAll("a")];
   expect(links.find((link) => link.textContent === "Get the mobile app")).toBeUndefined();

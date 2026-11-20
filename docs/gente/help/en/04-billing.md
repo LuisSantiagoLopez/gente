@@ -1,6 +1,6 @@
 # Plans and billing
 
-Gente runs its AI on your computer, so you don't pay per question. You pay for the plan you choose.
+Your AI runs its AI on your computer, so you don't pay per question. You pay for the plan you choose.
 
 ## Plans
 
@@ -8,7 +8,7 @@ Gente runs its AI on your computer, so you don't pay per question. You pay for t
 
 ## Hours of online work
 
-Most of what Gente does runs on your computer. **Online work** is the part that runs on a computer in the cloud, like a full browser that books a ride for you.
+Most of what Your AI does runs on your computer. **Online work** is the part that runs on a computer in the cloud, like a full browser that books a ride for you.
 
 - Your plan includes a number of hours each month. Time counts only while a cloud computer works on your task.
 - **Included hours that you don't use expire at the end of each month.** They don't carry over.
@@ -20,7 +20,7 @@ Your chats stay on your computer either way.
 
 - You can **cancel anytime**.
 - When you cancel, your plan **stays active until the end of the period you already paid for**. Then it stops renewing.
-- To change or cancel, open **Help → Gente Support** and ask.
+- To change or cancel, open **Help → Your AI Support** and ask.
 
 Your chats and bots stay on your computer whatever plan you have.
 
@@ -32,4 +32,4 @@ Your chats and bots stay on your computer whatever plan you have.
 
 ## Purchases a bot makes
 
-Things a bot buys for you are not part of your plan. You approve each one yourself in Link, and Link charges the card you chose there. Gente never stores your card.
+Things a bot buys for you are not part of your plan. You approve each one yourself in Link, and Link charges the card you chose there. Your AI never stores your card.

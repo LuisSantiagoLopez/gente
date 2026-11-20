@@ -1,4 +1,4 @@
-# Gente "it learns you": in-app proof
+# Your AI "it learns you": in-app proof
 
 Captured on 19 Nov 2026 from this branch running on a Mac: the real web UI, API and worker, a
 throwaway Homebrew Postgres in /tmp, and Ollama `swift-1.5-27b` at num_ctx 32768. Every item

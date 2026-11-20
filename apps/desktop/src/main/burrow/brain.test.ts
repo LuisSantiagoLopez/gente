@@ -13,14 +13,17 @@ type Stub = {
   calls: { path: string; body: Record<string, unknown> }[];
 };
 
-const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
+const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M";
 const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
 const SMALL = "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M";
 
 let stub: Stub | null = null;
 
-async function setup(options: { failLoad?: string[]; installed?: string[] } = {}) {
+async function setup(
+  options: { failLoad?: string[]; installed?: string[]; memoryGB?: number } = {},
+) {
   stub = createOllamaStub(options) as Stub;
+  if (options.memoryGB) vi.stubEnv("GENTE_E2E_MEMORY_GB", String(options.memoryGB));
   await new Promise<void>((resolve) => stub?.server.listen(0, "127.0.0.1", resolve));
   const port = (stub.server.address() as AddressInfo).port;
   vi.stubEnv("BURROW_OLLAMA_URL", `http://127.0.0.1:${port}`);
@@ -41,44 +44,96 @@ afterEach(async () => {
 const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
-describe("Gente brain (one model: Swift 1.5 27B IQ2_XXS)", () => {
-  const MODEL = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
+describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS below)", () => {
+  const MODEL = BEST;
 
-  it("downloads and loads the one model, named swift-1.5-27b with a 32K context", async () => {
-    const { brain, dir, states, calls } = await setup();
+  it("downloads and loads the Q4_K_M 27B on a 32 GB computer, named swift-1.5-27b with a 32K context", async () => {
+    const { brain, dir, states, calls } = await setup({ memoryGB: 32 });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
-    expect(brain.current().model.tag).toBe(MODEL);
-    expect(pulled(calls)).toEqual([MODEL]);
+    expect(brain.current().model.tag).toBe(BEST);
+    expect(pulled(calls)).toEqual([BEST]);
     const create = calls.find((c) => c.path === "/api/create");
-    expect(create?.body).toMatchObject({ model: "swift-1.5-27b", from: MODEL, parameters: { num_ctx: 32768 } });
+    expect(create?.body).toMatchObject({
+      model: "swift-1.5-27b",
+      from: BEST,
+      parameters: { num_ctx: 32768 },
+    });
     expect(states.some((s) => s.phase === "pulling" && s.totalBytes === 1000)).toBe(true);
     const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
-    expect(saved).toMatchObject({ model: MODEL, alias: "swift-1.5-27b" });
+    expect(saved).toMatchObject({ model: BEST, alias: "swift-1.5-27b" });
     expect(saved.chatAlias).toBeUndefined();
   });
 
-  it("never falls back to another model: a load that fails shows one calm sentence", async () => {
-    const { brain, calls } = await setup({ failLoad: [MODEL] });
+  it("uses the compact IQ2_XXS build on a 16 GB computer", async () => {
+    const { brain, calls } = await setup({ memoryGB: 16 });
+    await brain.start();
+    expect(brain.current().phase).toBe("ready");
+    expect(pulled(calls)).toEqual([COMPACT]);
+  });
+
+  it("moves the alias up to Q4_K_M on a 32 GB computer where it pointed at IQ2_XXS", async () => {
+    const { brain, calls } = await setup({
+      memoryGB: 32,
+      installed: [BEST, COMPACT, `swift-1.5-27b=${COMPACT}`],
+    });
+    await brain.start();
+    expect(brain.current().phase).toBe("ready");
+    expect(calls.find((c) => c.path === "/api/create")?.body).toMatchObject({
+      model: "swift-1.5-27b",
+      from: BEST,
+    });
+  });
+
+  it("never moves the alias back down to IQ2_XXS on launch", async () => {
+    const { brain, calls } = await setup({
+      memoryGB: 16,
+      installed: [BEST, COMPACT, `swift-1.5-27b=${BEST}`],
+    });
+    await brain.start();
+    expect(brain.current().phase).toBe("ready");
+    expect(calls.filter((c) => c.path === "/api/create")).toEqual([]);
+    expect(pulled(calls)).toEqual([]);
+  });
+
+  it("falls back to the compact build only when Q4_K_M can't load here", async () => {
+    const { brain, calls } = await setup({ memoryGB: 32, failLoad: [BEST] });
+    await brain.start();
+    expect(brain.current().phase).toBe("ready");
+    expect(brain.current().model.tag).toBe(COMPACT);
+    expect(calls.filter((c) => c.path === "/api/create").at(-1)?.body).toMatchObject({
+      from: COMPACT,
+    });
+  });
+
+  it("shows one calm sentence when no build can load", async () => {
+    const { brain } = await setup({ memoryGB: 32, failLoad: [BEST, COMPACT] });
     await brain.start();
     expect(brain.current().phase).toBe("failed");
-    expect(pulled(calls)).toEqual([MODEL]);
     expect(brain.current().message).toContain("short on free memory");
     expect(brain.current().message).not.toMatch(/HTTP|GiB|error/i);
   });
 
   it("does not download again when the model is already there", async () => {
-    const { brain, calls } = await setup({ installed: [MODEL] });
+    const { brain, calls } = await setup({ memoryGB: 32, installed: [MODEL] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(pulled(calls)).toEqual([]);
   });
 
   it("moves an older two-model setup to the one model on launch", async () => {
-    const { brainModule, dir } = await setup({ installed: [MODEL] });
+    const { brainModule, dir } = await setup({ memoryGB: 32, installed: [MODEL] });
     const file = path.join(dir, "burrow-model.json");
     const { writeFile } = await import("node:fs/promises");
-    await writeFile(file, JSON.stringify({ model: MODEL, alias: "swift-1.5-27b-iq2xxs", installed: [], chatAlias: "swift-1.5-ornith-9b" }));
+    await writeFile(
+      file,
+      JSON.stringify({
+        model: MODEL,
+        alias: "swift-1.5-27b-iq2xxs",
+        installed: [],
+        chatAlias: "swift-1.5-ornith-9b",
+      }),
+    );
     expect(await brainModule.moveToFastDefault(dir)).toBe(true);
     const saved = JSON.parse(await readFile(file, "utf8"));
     expect(saved).toMatchObject({ alias: "swift-1.5-27b" });
@@ -87,7 +142,12 @@ describe("Gente brain (one model: Swift 1.5 27B IQ2_XXS)", () => {
 
   it("makes the saved Swift every bot's default model", async () => {
     const { brainModule } = await setup();
-    const env = brainModule.swiftServerEnv({ model: MODEL, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"], vision: [] });
+    const env = brainModule.swiftServerEnv({
+      model: MODEL,
+      alias: "swift-1.5-27b",
+      installed: ["swift-1.5-27b"],
+      vision: [],
+    });
     expect(env).toMatchObject({
       PI_DEFAULT_PROVIDER: "local",
       PI_DEFAULT_MODEL: "swift-1.5-27b",
@@ -122,7 +182,7 @@ describe("Burrow brain, network trouble", () => {
   });
 });
 
-describe("Gente memory check", () => {
+describe("Your AI memory check", () => {
   it("tells an 8 GB computer, in one friendly sentence, before downloading anything", async () => {
     const os = await import("node:os");
     const spy = vi.spyOn(os.default, "totalmem").mockReturnValue(8 * 1024 ** 3);

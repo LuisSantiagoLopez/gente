@@ -7,7 +7,7 @@ const time = "\n\n<current_time>\nCurrent date and time: Thursday.\n</current_ti
 const body = (messages: unknown[], effort = "medium") =>
   JSON.stringify({ model: "swift-1.5-27b", reasoning_effort: effort, messages });
 
-describe("Gente fast chat", () => {
+describe("Your AI fast chat", () => {
   it("drops tagged context when reading the person's words", () => {
     expect(userWords(`hey${time}`)).toBe("hey");
   });
@@ -32,8 +32,8 @@ describe("Gente fast chat", () => {
   });
 });
 
-describe("Gente small talk", () => {
-  const system = "You run on Gente.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
+describe("Your AI small talk", () => {
+  const system = "You run on Your AI.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
   const messages = [
     { role: "system", content: system },
     { role: "user", content: "earlier" },
@@ -60,7 +60,7 @@ describe("Gente small talk", () => {
   });
 });
 
-describe("Gente small-talk window", () => {
+describe("Your AI small-talk window", () => {
   it("moves in steps so consecutive turns share their start", () => {
     const turns = (n: number) => [
       { role: "system", content: "s" },
@@ -75,7 +75,7 @@ describe("Gente small-talk window", () => {
   });
 });
 
-describe("Gente quick-reply model", () => {
+describe("Your AI quick-reply model", () => {
   it("sends small talk to BURROW_CHAT_MODEL and keeps everything else on the main model", async () => {
     process.env.BURROW_CHAT_MODEL = "swift-1.5-ornith-9b";
     try {
@@ -91,7 +91,7 @@ describe("Gente quick-reply model", () => {
 
 // Gente routing: coding turns and plain questions after a tool-using turn.
 
-describe("Gente routing", () => {
+describe("Your AI routing", () => {
   const tools = ["shell", "read_file", "write_file", "schedule_create", "request_secret", "web_search"].map((name) => ({
     type: "function",
     function: { name },
@@ -138,5 +138,66 @@ describe("tool call pairs (QA-025)", () => {
     ]);
     const trailing = repairToolPairs([{ role: "assistant", content: "", tool_calls: [{ id: "x" }] }]);
     expect(trailing.at(-1)).toMatchObject({ role: "tool", tool_call_id: "x" });
+  });
+});
+
+describe("the reply follows the conversation's language", () => {
+  const spanishChat = [
+    { role: "system", content: "You are g." },
+    { role: "user", content: "hola" },
+    {
+      role: "assistant",
+      content: "",
+      tool_calls: [{ id: "ask-1", function: { name: "ask_user" } }],
+    },
+    { role: "tool", tool_call_id: "ask-1", content: "Lo que tú me digas" },
+    { role: "assistant", content: "Perfecto." },
+    { role: "user", content: "hey" },
+  ];
+
+  it("reads Spanish from typed messages and card answers, even when the newest word is 'hey'", async () => {
+    const { conversationLanguage } = await import("./burrow-fast-chat.js");
+    expect(conversationLanguage(spanishChat)).toBe("Spanish");
+    expect(
+      conversationLanguage([
+        { role: "user", content: "oi, você pode me ajudar? não sei como fazer isso" },
+      ]),
+    ).toBe("Portuguese");
+    expect(
+      conversationLanguage([{ role: "user", content: "hey, what can you do for me today?" }]),
+    ).toBeNull();
+  });
+
+  it("tells the small-talk path to answer 'hey' in Spanish in a Spanish chat", () => {
+    const sent = JSON.parse(quickChatBody(body(spanishChat))!.body);
+    const last = sent.messages.at(-1);
+    expect(last.role).toBe("user");
+    expect(last.content).toContain("<reply_language>Reply in Spanish");
+    expect(last.content.startsWith("hey")).toBe(true);
+  });
+
+  it("adds the note to the person's message on a tool follow-up too, and nothing in an English chat", () => {
+    const followUp = [
+      ...spanishChat.slice(0, 2),
+      { role: "user", content: "busca el clima de hoy en Madrid, por favor" },
+      {
+        role: "assistant",
+        content: "",
+        tool_calls: [{ id: "w", function: { name: "web_search" } }],
+      },
+      { role: "tool", tool_call_id: "w", content: "sunny 21C" },
+    ];
+    const sent = JSON.parse(quickChatBody(body(followUp))!.body);
+    const person = sent.messages.filter((m: { role: string }) => m.role === "user").at(-1);
+    expect(person.content).toContain("<reply_language>Reply in Spanish");
+    const english = JSON.parse(
+      quickChatBody(
+        body([
+          { role: "system", content: "x" },
+          { role: "user", content: "hey, how are you today?" },
+        ]),
+      )!.body,
+    );
+    expect(JSON.stringify(english)).not.toContain("reply_language");
   });
 });

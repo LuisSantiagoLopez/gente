@@ -32,7 +32,7 @@ describe("meeting media bridge", () => {
     const { emulator, app, session, turn } = fixture();
     const page = await app.request(MEETING_MEDIA_PATH);
     expect(page.headers.get("referrer-policy")).toBe("no-referrer");
-    expect(await page.text()).toContain('alt="Gente"');
+    expect(await page.text()).toContain('alt="Your AI"');
     expect(await (await session()).json()).toEqual({ botName: "Atlas", voice: true });
 
     const response = await turn();

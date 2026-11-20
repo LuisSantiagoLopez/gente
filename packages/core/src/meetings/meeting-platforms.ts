@@ -12,5 +12,5 @@ export const meetingPlatformNames: Record<MeetingPlatform, string> = {
  */
 export function meetingBotName(ownerName: string | null | undefined): string {
   const first = ownerName?.trim().split(/\s+/)[0]?.slice(0, 60);
-  return first ? `${first}'s Gente (AI assistant)` : "Gente (AI assistant)";
+  return first ? `${first}'s Your AI (AI assistant)` : "Your AI (AI assistant)";
 }

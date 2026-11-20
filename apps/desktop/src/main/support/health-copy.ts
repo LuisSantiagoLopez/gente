@@ -10,32 +10,32 @@ type Copy = Record<"es" | "pt", string>;
 
 const COPY: Record<string, Copy> = {
   OLLAMA_DOWN: {
-    es: "El servidor del modelo de Gente se detuvo. Reiniciarlo casi siempre lo arregla.",
-    pt: "O servidor do modelo do Gente parou. Reiniciar quase sempre resolve.",
+    es: "El servidor del modelo de Your AI se detuvo. Reiniciarlo casi siempre lo arregla.",
+    pt: "O servidor do modelo do Your AI parou. Reiniciar quase sempre resolve.",
   },
   MODEL_MISSING: {
-    es: "Falta el modelo de Gente. Descargarlo otra vez lo arregla.",
-    pt: "O modelo do Gente está faltando. Baixar de novo resolve.",
+    es: "Falta el modelo de Your AI. Descargarlo otra vez lo arregla.",
+    pt: "O modelo do Your AI está faltando. Baixar de novo resolve.",
   },
   MODEL_CORRUPT: {
-    es: "La descarga del modelo de Gente está dañada. Descargarlo otra vez lo arregla.",
-    pt: "O download do modelo do Gente está danificado. Baixar de novo resolve.",
+    es: "La descarga del modelo de Your AI está dañada. Descargarlo otra vez lo arregla.",
+    pt: "O download do modelo do Your AI está danificado. Baixar de novo resolve.",
   },
   DISK_LOW: {
-    es: "Tu disco está casi lleno ({gb} GB libres). Libera unos GB para que Gente siga funcionando.",
-    pt: "Seu disco está quase cheio ({gb} GB livres). Libere alguns GB para o Gente continuar funcionando.",
+    es: "Tu disco está casi lleno ({gb} GB libres). Libera unos GB para que Your AI siga funcionando.",
+    pt: "Seu disco está quase cheio ({gb} GB livres). Libere alguns GB para o Your AI continuar funcionando.",
   },
   PORT_IN_USE: {
-    es: "Otra app usa la dirección que Gente necesita. Reiniciar los servicios de Gente elige una libre.",
-    pt: "Outro app está usando o endereço que o Gente precisa. Reiniciar os serviços do Gente escolhe um livre.",
+    es: "Otra app usa la dirección que Your AI necesita. Reiniciar los servicios de Your AI elige una libre.",
+    pt: "Outro app está usando o endereço que o Your AI precisa. Reiniciar os serviços do Your AI escolhe um livre.",
   },
   BUNDLE_MODULE_MISSING: {
-    es: "Falta una parte de la app de Gente. Una actualización lo repara; reinstalar también funciona.",
-    pt: "Falta uma parte do app do Gente. Uma atualização conserta; reinstalar também funciona.",
+    es: "Falta una parte de la app de Your AI. Una actualización lo repara; reinstalar también funciona.",
+    pt: "Falta uma parte do app do Your AI. Uma atualização conserta; reinstalar também funciona.",
   },
   WORKSPACE_DOWN: {
-    es: "El espacio de trabajo de Gente se detuvo. Reiniciar sus servicios casi siempre lo arregla.",
-    pt: "O espaço de trabalho do Gente parou. Reiniciar os serviços quase sempre resolve.",
+    es: "El espacio de trabajo de Your AI se detuvo. Reiniciar sus servicios casi siempre lo arregla.",
+    pt: "O espaço de trabalho do Your AI parou. Reiniciar os serviços quase sempre resolve.",
   },
   TELEGRAM_UNLINKED: {
     es: "Telegram ya no acepta el vínculo de tu bot. Vincúlalo otra vez en unos segundos.",
@@ -51,12 +51,12 @@ const COPY: Record<string, Copy> = {
     pt: "Há espaço livre suficiente no disco.",
   },
   "ports:ok": {
-    es: "Las direcciones de Gente están libres.",
-    pt: "Os endereços do Gente estão livres.",
+    es: "Las direcciones de Your AI están libres.",
+    pt: "Os endereços do Your AI estão livres.",
   },
   "app-files:ok": {
-    es: "Los archivos de Gente están completos.",
-    pt: "Os arquivos do Gente estão completos.",
+    es: "Los archivos de Your AI están completos.",
+    pt: "Os arquivos do Your AI estão completos.",
   },
   "workspace:ok": {
     es: "Tu espacio de trabajo está funcionando.",

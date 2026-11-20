@@ -131,7 +131,7 @@ dbTests("model connection email", () => {
 
     const [message, ...extra] = sentTo(id);
     expect(extra).toHaveLength(0);
-    expect(message!.subject).toBe("Connect a model to start using Gente");
+    expect(message!.subject).toBe("Connect a model to start using Your AI");
     expect(message!.text).toContain(`${WEB_ORIGIN}/sign-in?next=%2Fonboarding%2Fmodel`);
     expect(message!.text).toContain("ChatGPT or Claude subscription, or paste an API key");
     expect(message!.headers).toEqual({
@@ -285,7 +285,7 @@ dbTests("model connection email", () => {
     await send(importJob);
     const [message, ...extra] = sentTo(id);
     expect(extra).toHaveLength(0);
-    expect(message!.subject).toBe("Bring your old assistant to Gente");
+    expect(message!.subject).toBe("Bring your old assistant to Your AI");
     expect(message!.text).toContain(`${WEB_ORIGIN}/sign-in?next=%2Fapp%3Fimport`);
   });
 

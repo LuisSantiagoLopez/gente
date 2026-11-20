@@ -4,7 +4,7 @@ export const NL_MESSAGES: Record<string, string> = {
   "Check for Updates…": "Zoek naar updates…",
   "Computer Access…": "Computertoegang…",
   "Revoke Local Computer Access": "Toegang tot lokale computer intrekken",
-  "Change Gente Server…": "Gente-server wijzigen…",
+  "Change Your AI Server…": "Gente-server wijzigen…",
   "Hide {name}": "Verberg {name}",
   "Hide Others": "Verberg andere",
   "Show All": "Toon alles",
@@ -39,13 +39,13 @@ export const NL_MESSAGES: Record<string, string> = {
   "Checking for Updates…": "Zoeken naar updates…",
   "Downloading Update…": "Update downloaden…",
   "Restart to Update…": "Herstart om bij te werken…",
-  "Downloading Gente {version}…": "Gente {version} downloaden…",
-  "Gente {version} is ready to install.": "Gente {version} is klaar om te installeren.",
+  "Downloading Your AI {version}…": "Your AI {version} downloaden…",
+  "Your AI {version} is ready to install.": "Your AI {version} is klaar om te installeren.",
   Restart: "Herstart",
   Later: "Later",
   "Could not install the update.": "De update kon niet worden geïnstalleerd.",
   "Could not check for updates.": "Er kon niet worden gezocht naar updates.",
-  "Gente is up to date.": "Gente is up-to-date.",
+  "Your AI is up to date.": "Your AI is up-to-date.",
   "Version {version}": "Versie {version}",
   "Automatic updates are turned off for this install.":
     "Automatische updates zijn uitgeschakeld voor deze installatie.",
@@ -53,11 +53,11 @@ export const NL_MESSAGES: Record<string, string> = {
     "Automatische updates werken alleen in een geïnstalleerde versie.",
   "No desktop releases are published for this build yet.":
     "Er zijn nog geen desktopversies gepubliceerd voor deze build.",
-  "Move Gente to Applications to install updates.":
-    "Verplaats Gente naar Apps om updates te installeren.",
+  "Move Your AI to Applications to install updates.":
+    "Verplaats Your AI naar Apps om updates te installeren.",
   "Free up disk space to install updates.": "Maak schijfruimte vrij om updates te installeren.",
-  "This update could not be verified. Reinstall Gente from a trusted download.":
-    "Deze update kon niet worden geverifieerd. Installeer Gente opnieuw vanaf een vertrouwde download.",
+  "This update could not be verified. Reinstall Your AI from a trusted download.":
+    "Deze update kon niet worden geverifieerd. Installeer Your AI opnieuw vanaf een vertrouwde download.",
   "The update could not be completed. Try again later.":
     "De update kon niet worden voltooid. Probeer het later opnieuw.",
   "Could not reach the update server.": "De updateserver is niet bereikbaar.",
@@ -76,12 +76,12 @@ export const NL_MESSAGES: Record<string, string> = {
     "Er loopt al een inlogpoging. Annuleer die en probeer het opnieuw.",
   "Could not open browser sign-in. Close other sign-in attempts and retry.":
     "Inloggen via de browser kon niet worden geopend. Sluit andere inlogpogingen en probeer het opnieuw.",
-  "Sign-in callback rejected. Return to Gente to retry.":
-    "Het inlogantwoord is geweigerd. Ga terug naar Gente om het opnieuw te proberen.",
-  "You can close this tab and return to Gente.":
-    "Je kunt dit tabblad sluiten en teruggaan naar Gente.",
-  "Quit Gente": "Stop Gente",
-  "Welcome to Gente": "Welkom bij Gente",
+  "Sign-in callback rejected. Return to Your AI to retry.":
+    "Het inlogantwoord is geweigerd. Ga terug naar Your AI om het opnieuw te proberen.",
+  "You can close this tab and return to Your AI.":
+    "Je kunt dit tabblad sluiten en teruggaan naar Your AI.",
+  "Quit Your AI": "Stop Your AI",
+  "Welcome to Your AI": "Welkom bij Your AI",
   Instance: "Instantie",
   "Technical details": "Technische details",
   "Setup progress": "Voortgang van de installatie",
@@ -95,7 +95,7 @@ export const NL_MESSAGES: Record<string, string> = {
   "{size} downloaded": "{size} gedownload",
   "Connecting…": "Verbinden…",
   "Checking…": "Controleren…",
-  "Gente answered at {url}.": "Gente antwoordde op {url}.",
+  "Your AI answered at {url}.": "Your AI antwoordde op {url}.",
   "Enter a server address first.": "Voer eerst een serveradres in.",
   "Could not save that address.": "Dat adres kon niet worden bewaard.",
   "Could not save that address. Try again.":
@@ -103,16 +103,16 @@ export const NL_MESSAGES: Record<string, string> = {
   "Could not run the connection check. Try again.":
     "De verbindingscontrole kon niet worden uitgevoerd. Probeer het opnieuw.",
   "Setup bridge unavailable.": "De installatiebrug is niet beschikbaar.",
-  "Setup could not start. Quit Gente and try again.":
-    "De installatie kon niet starten. Stop Gente en probeer het opnieuw.",
+  "Setup could not start. Quit Your AI and try again.":
+    "De installatie kon niet starten. Stop Your AI en probeer het opnieuw.",
   "Enter a server address.": "Voer een serveradres in.",
   "Enter a valid http:// or https:// address.": "Voer een geldig http://- of https://-adres in.",
   "Enter a valid server address. Public servers require HTTPS; a new local instance must use localhost.":
     "Voer een geldig serveradres in. Openbare servers vereisen HTTPS; een nieuwe lokale instantie moet localhost gebruiken.",
   "Invalid custom headers": "Ongeldige aangepaste headers",
-  "That address redirects elsewhere. Enter the final Gente server address.":
+  "That address redirects elsewhere. Enter the final Your AI server address.":
     "Dat adres verwijst door naar een andere plek. Voer het uiteindelijke adres van de Gente-server in.",
-  "That address did not respond like a Gente server.":
+  "That address did not respond like a Your AI server.":
     "Dat adres antwoordde niet als een Gente-server.",
   "Timed out reaching that address.": "Time-out bij het bereiken van dat adres.",
   "Nothing is listening at that address yet.": "Er luistert nog niets op dat adres.",
@@ -138,7 +138,7 @@ export const NL_MESSAGES: Record<string, string> = {
     "De installatie kon niet worden bewaard. De vorige instantie is hersteld.",
   "Connected, but could not save setup for the next launch. Try Continue again.":
     "Verbonden, maar de installatie kon niet worden bewaard voor de volgende start. Klik nogmaals op Doorgaan.",
-  "The app-managed Gente services are not ready. Retry setup.":
+  "The app-managed Your AI services are not ready. Retry setup.":
     "De Gente-services die de app beheert, zijn niet klaar. Start de installatie opnieuw.",
   "Docker is installed, but Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin.":
     "Docker is geïnstalleerd, maar Docker Compose ontbreekt. Installeer Docker Desktop of de docker-compose-plugin.",
@@ -160,9 +160,9 @@ export const NL_MESSAGES: Record<string, string> = {
     "Docker reageert niet meer. Start Docker en probeer het opnieuw.",
   "Docker Compose is missing. Install Docker Desktop or the docker-compose-plugin, then retry.":
     "Docker Compose ontbreekt. Installeer Docker Desktop of de docker-compose-plugin en probeer het opnieuw.",
-  "Downloading Gente images failed. Check the output below, then retry.":
+  "Downloading Your AI images failed. Check the output below, then retry.":
     "Het downloaden van de Gente-images is mislukt. Bekijk de uitvoer hieronder en probeer het opnieuw.",
-  "Gente services did not start. Check the output below, then retry.":
+  "Your AI services did not start. Check the output below, then retry.":
     "De Gente-services zijn niet gestart. Bekijk de uitvoer hieronder en probeer het opnieuw.",
   "The stack started but the web app did not answer. Retry, and check the output below.":
     "De stack is gestart, maar de web-app reageerde niet. Probeer het opnieuw en bekijk de uitvoer hieronder.",
@@ -188,23 +188,23 @@ export const NL_MESSAGES: Record<string, string> = {
   "Chat Details": "Chatdetails",
   Help: "Help",
   "Keyboard Shortcuts": "Sneltoetsen",
-  "Downloading Gente failed. Check the internet connection, then retry.":
-    "Gente downloaden is mislukt. Controleer de internetverbinding en probeer het opnieuw.",
+  "Downloading Your AI failed. Check the internet connection, then retry.":
+    "Your AI downloaden is mislukt. Controleer de internetverbinding en probeer het opnieuw.",
   "Could not move your data from Docker. Check the output below, then retry.":
     "Je gegevens konden niet uit Docker worden overgezet. Bekijk de uitvoer hieronder en probeer het opnieuw.",
   "The computer runtime already running is too old. Update or quit it, then retry.":
     "De computerruntime die al draait is te oud. Werk hem bij of sluit hem af en probeer het opnieuw.",
-  "Your Gente data is in a different computer runtime. Quit the one running, then retry.":
+  "Your Your AI data is in a different computer runtime. Quit the one running, then retry.":
     "Je Gente-gegevens staan in een andere computerruntime. Sluit de runtime die draait af en probeer het opnieuw.",
-  "Run Gente without Docker?": "Gente zonder Docker gebruiken?",
+  "Run Your AI without Docker?": "Your AI zonder Docker gebruiken?",
   "Your bots and data move over. Docker is stopped, not removed.":
     "Je bots en gegevens gaan mee. Docker wordt gestopt, niet verwijderd.",
   Move: "Overzetten",
   "Keep Docker": "Docker houden",
-  "Gente needs Docker Desktop to run on this computer.":
-    "Gente heeft Docker Desktop nodig om op deze computer te draaien.",
-  "Gente needs Docker to run on this computer.":
-    "Gente heeft Docker nodig om op deze computer te draaien.",
+  "Your AI needs Docker Desktop to run on this computer.":
+    "Your AI heeft Docker Desktop nodig om op deze computer te draaien.",
+  "Your AI needs Docker to run on this computer.":
+    "Your AI heeft Docker nodig om op deze computer te draaien.",
   "Install Docker Engine and start it.": "Installeer Docker Engine en start het.",
   "Download Docker Desktop": "Docker Desktop downloaden",
   "Install Docker": "Docker installeren",
@@ -213,16 +213,16 @@ export const NL_MESSAGES: Record<string, string> = {
   "Starting {app}…": "{app} wordt gestart…",
   "Docker is installed but not running. Start the Docker service to continue.":
     "Docker is geïnstalleerd maar draait niet. Start de Docker-service om door te gaan.",
-  "Gente stopped unexpectedly.": "Gente is onverwacht gestopt.",
+  "Your AI stopped unexpectedly.": "Your AI is onverwacht gestopt.",
   Reload: "Opnieuw laden",
   "Mac app control": "Mac-appbediening",
   "Set up Mac app control": "Mac-appbediening instellen",
-  "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.":
-    "Opdrachten werken al. Geef Gente toestemming voor Toegankelijkheid en Schermopname in Systeeminstellingen om apps te gebruiken en start Gente daarna opnieuw.",
+  "Commands already work. To use apps, allow Accessibility and Screen Recording for Your AI in System Settings, then restart Your AI.":
+    "Opdrachten werken al. Geef Your AI toestemming voor Toegankelijkheid en Schermopname in Systeeminstellingen om apps te gebruiken en start Your AI daarna opnieuw.",
   "Open System Settings": "Systeeminstellingen openen",
-  "Restart Gente": "Gente opnieuw starten",
+  "Restart Your AI": "Your AI opnieuw starten",
   "Not Now": "Niet nu",
-  "Restart Gente to finish setup": "Start Gente opnieuw om de configuratie te voltooien",
+  "Restart Your AI to finish setup": "Start Your AI opnieuw om de configuratie te voltooien",
   // Setup
   "Based on Rakazo by Elie Steinbock (Apache-2.0). Swift by UkisAI.":
     "Gebaseerd op Rakazo van Elie Steinbock (Apache-2.0). Swift door UkisAI.",
@@ -233,44 +233,43 @@ export const NL_MESSAGES: Record<string, string> = {
   "Connect to a server instead": "Liever met een server verbinden",
   "Downloading the workspace…": "Werkruimte downloaden…",
   "Downloads once, then works offline.": "Wordt één keer gedownload en werkt daarna offline.",
-  "Gente couldn't finish getting ready. Press Try again.":
-    "Gente kon niet klaar worden gezet. Druk op Opnieuw proberen.",
-  "Gente is getting things ready. This takes a moment.": "Gente zet alles klaar. Dit duurt even.",
+  "Your AI couldn't finish getting ready. Press Try again.":
+    "Your AI kon niet klaar worden gezet. Druk op Opnieuw proberen.",
+  "Your AI is getting things ready. This takes a moment.": "Your AI zet alles klaar. Dit duurt even.",
   "Get started": "Aan de slag",
-  "Getting Gente ready, about a minute left": "Gente klaarzetten, nog ongeveer een minuut",
-  "Getting Gente ready, about {n} min left": "Gente klaarzetten, nog ongeveer {n} min",
-  "Getting Gente ready…": "Gente klaarzetten…",
+  "Getting Your AI ready, about a minute left": "Your AI klaarzetten, nog ongeveer een minuut",
+  "Getting Your AI ready, about {n} min left": "Your AI klaarzetten, nog ongeveer {n} min",
+  "Getting Your AI ready…": "Your AI klaarzetten…",
   "Model choices": "Modelkeuzes",
   "Model download": "Model downloaden",
   "No ads. Ever.": "Geen advertenties. Nooit.",
   "Nobody reads your data, trains on it, or sells it. Not us, not anyone.":
     "Niemand leest je gegevens, traint ermee of verkoopt ze. Wij niet, en niemand anders.",
-  "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
-    "Op deze Mac heeft Gente Docker Desktop (een gratis app) nodig voor de werkruimte. Installeer het en open het één keer.",
+  "On this Mac, Your AI needs Docker Desktop (a free app) for its workspace. Install it and open it once.":
+    "Op deze Mac heeft Your AI Docker Desktop (een gratis app) nodig voor de werkruimte. Installeer het en open het één keer.",
   "Run on this Mac instead": "Liever op deze Mac draaien",
   "Runs privately in the background on this Mac.": "Draait privé op de achtergrond op deze Mac.",
   "Something went wrong.": "Er ging iets mis.",
   "Starting the workspace…": "Werkruimte starten…",
   "Switched to {name} for your computer ({from} could not run here).":
     "Overgestapt op {name} voor je computer ({from} kon hier niet draaien).",
-  "That address didn't answer like a Gente server. Check it, then try again.":
+  "That address didn't answer like a Your AI server. Check it, then try again.":
     "Dat adres antwoordde niet als een Gente-server. Controleer het en probeer het opnieuw.",
   "The AI of the people.": "De AI van de mensen.",
   "The first start can take a minute.": "De eerste keer starten kan een minuut duren.",
   "Try again": "Opnieuw proberen",
-  "When Gente works online for you (searching, browsing, apps), only what that task needs goes out.":
-    "Als Gente online voor je werkt (zoeken, browsen, apps), gaat alleen naar buiten wat die taak nodig heeft.",
+  "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out.":
+    "Als Your AI online voor je werkt (zoeken, browsen, apps), gaat alleen naar buiten wat die taak nodig heeft.",
   Workspace: "Werkruimte",
   "Workspace ready.": "Werkruimte klaar.",
-  "Your AI": "Jouw AI",
   "Your AI is ready.": "Je AI is klaar.",
   "Your AI lives on your computer. Your chats never leave it.":
     "Je AI woont op je computer. Je chats verlaten hem nooit.",
-  "Sign In to Gente…": "Inloggen bij Gente…",
-  "Sign Out of Gente": "Uitloggen bij Gente",
-  "Gente Support…": "Gente-hulp…",
+  "Sign In to Your AI…": "Inloggen bij Your AI…",
+  "Sign Out of Your AI": "Uitloggen bij Your AI",
+  "Your AI Support…": "Gente-hulp…",
   // Computer use pill
-  "Gente is using your computer": "Gente gebruikt je computer",
+  "Your AI is using your computer": "Your AI gebruikt je computer",
   "Press {key} to stop": "Druk op {key} om te stoppen",
   Stop: "Stoppen",
   Stopped: "Gestopt",

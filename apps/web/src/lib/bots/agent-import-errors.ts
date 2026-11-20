@@ -51,6 +51,6 @@ export function grokBotErrorText(code: GrokBotExportErrorCode): string {
     case "too_large":
       return t`This export is too large to import.`;
     case "newer_version":
-      return t`This export is newer than Gente can read. Update Gente and try again.`;
+      return t`This export is newer than Your AI can read. Update Your AI and try again.`;
   }
 }

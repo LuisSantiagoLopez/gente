@@ -146,7 +146,7 @@ it("rejects expired and forged state before contacting Slack", async () => {
   await expect(f.manager.complete(actor, state, "code")).rejects.toThrow("expired");
   expect(f.provider.exchange).not.toHaveBeenCalled();
 });
-it("does not let another Gente space claim an installed Slack workspace", async () => {
+it("does not let another Your AI space claim an installed Slack workspace", async () => {
   const f = fixture();
   const state = await begin(f);
   f.setInstallation({

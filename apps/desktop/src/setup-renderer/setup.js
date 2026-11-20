@@ -262,7 +262,7 @@
     stackHint.hidden = phase !== "docker-missing";
     stackHint.textContent = dockerDesktop
       ? t(
-          "On this Mac, Gente needs Docker Desktop (a free app) for its workspace. Install it and open it once.",
+          "On this Mac, Your AI needs Docker Desktop (a free app) for its workspace. Install it and open it once.",
         )
       : t("Install Docker Engine and start it.");
   }
@@ -365,7 +365,7 @@
     } catch {
       // Only report a follow the person still sees; leaving "new" already handed the form back.
       if (selectedMode() === "new") {
-        setStatus(t("Gente couldn't finish getting ready. Press Try again."), "error");
+        setStatus(t("Your AI couldn't finish getting ready. Press Try again."), "error");
         setBusy(false);
       }
     } finally {
@@ -385,7 +385,7 @@
       if (started !== null && started.phase !== "idle") renderStack(started);
     } catch {
       if (generation === requestGeneration) {
-        setStatus(t("Gente couldn't finish getting ready. Press Try again."), "error");
+        setStatus(t("Your AI couldn't finish getting ready. Press Try again."), "error");
         setBusy(false);
       }
       return;
@@ -462,16 +462,16 @@
       case "ollama-missing":
       case "installing-ollama":
       case "starting-ollama":
-        brainStatus.textContent = t("Getting Gente ready…");
+        brainStatus.textContent = t("Getting Your AI ready…");
         break;
       case "pulling": {
         const left = minutesLeft(state);
         brainStatus.textContent =
           left === null
-            ? t("Getting Gente ready…")
+            ? t("Getting Your AI ready…")
             : left <= 1
-              ? t("Getting Gente ready, about a minute left")
-              : t("Getting Gente ready, about {n} min left", { n: left });
+              ? t("Getting Your AI ready, about a minute left")
+              : t("Getting Your AI ready, about {n} min left", { n: left });
         if (state.totalBytes > 0)
           detail = `${formatBytes(state.completedBytes)} of ${formatBytes(state.totalBytes)} · ${percent.toFixed(0)}%`;
         break;
@@ -544,7 +544,7 @@
       busyBrain = false;
       lockChoice(false);
       setBusy(false);
-      setStatus(t("Gente couldn't finish getting ready. Press Try again."), "error");
+      setStatus(t("Your AI couldn't finish getting ready. Press Try again."), "error");
       return;
     }
     const result = await settled;
@@ -581,7 +581,7 @@
       if (generation !== requestGeneration) return result;
       if (result.ok) {
         serverUrl.value = result.url;
-        setStatus(t("Gente answered at {url}.", { url: result.url }), "ok");
+        setStatus(t("Your AI answered at {url}.", { url: result.url }), "ok");
       } else {
         setStatus(result.error ?? t("Could not reach that address."), "error");
       }
@@ -739,7 +739,7 @@
         continueButton.focus();
       }
     } catch {
-      setStatus(t("Setup could not start. Quit Gente and try again."), "error");
+      setStatus(t("Setup could not start. Quit Your AI and try again."), "error");
       setBusy(true);
     }
   }

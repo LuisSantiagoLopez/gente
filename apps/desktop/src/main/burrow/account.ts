@@ -42,9 +42,9 @@ export async function signInToGente(): Promise<void> {
   try {
     await session.signIn((url) => shell.openExternal(url));
     signedIn = true;
-    new Notification({ title: "Gente", body: "You're signed in." }).show();
+    new Notification({ title: "Your AI", body: "You're signed in." }).show();
   } catch {
-    new Notification({ title: "Gente", body: "Sign-in didn't finish. Try again from the Gente menu." }).show();
+    new Notification({ title: "Your AI", body: "Sign-in didn't finish. Try again from the Your AI menu." }).show();
   } finally {
     onChange();
   }

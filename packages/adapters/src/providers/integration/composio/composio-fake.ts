@@ -677,11 +677,11 @@ function seedMailbox(): Mailbox {
       {
         messageId: "18c5f5d1a2b3c4d5",
         threadId: "18c5f5d1a2b3c4d5",
-        subject: "Welcome to Gente",
+        subject: "Welcome to Your AI",
         sender: "hello@rakazo.test",
         to: "me@example.test",
         snippet: "Your inbox is ready for agent workflows.",
-        messageText: "Your inbox is ready for agent workflows.\n\n— Gente",
+        messageText: "Your inbox is ready for agent workflows.\n\n— Your AI",
         labelIds: ["INBOX", "UNREAD"],
         internalDate: String(base),
       },

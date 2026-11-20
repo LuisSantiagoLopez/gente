@@ -64,7 +64,7 @@ describe("renderer recovery", () => {
     expect(contents.reload).toHaveBeenCalledTimes(2);
     expect(mocks.showMessageBox).toHaveBeenCalledExactlyOnceWith(
       win,
-      expect.objectContaining({ message: "Gente stopped unexpectedly.", buttons: ["Reload"] }),
+      expect.objectContaining({ message: "Your AI stopped unexpectedly.", buttons: ["Reload"] }),
     );
   });
 

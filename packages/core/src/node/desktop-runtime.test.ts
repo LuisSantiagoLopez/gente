@@ -491,7 +491,7 @@ describe("shared Linux desktop lifecycle", () => {
         writeFileSync(
           path.join(root, "image-menu"),
           [
-            "[begin] (Gente)",
+            "[begin] (Your AI)",
             "  [exec] (Browser) {rakazo-browser}",
             "  [exec] (Docs) {rakazo-browser https://example.test}",
             "  [exec] (Files) {pcmanfm}",
@@ -527,7 +527,7 @@ describe("shared Linux desktop lifecycle", () => {
       expect(readFileSync(path.join(root, "flux-20/.fluxbox/menu"), "utf8")).toBe(
         imageMenu === "readable"
           ? [
-              "[begin] (Gente)",
+              "[begin] (Your AI)",
               `  [exec] (Browser) {${launcher}}`,
               `  [exec] (Docs) {${launcher} https://example.test}`,
               "  [exec] (Files) {pcmanfm}",

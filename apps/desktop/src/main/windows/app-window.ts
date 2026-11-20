@@ -309,7 +309,7 @@ export async function probeDocument(url: string): Promise<ServerUnavailable | nu
     if (response.status >= 400) {
       return withDetail(
         new ServerUnavailable(`The server answered with HTTP ${response.status}.`),
-        t("Gente is getting things ready. This takes a moment."),
+        t("Your AI is getting things ready. This takes a moment."),
       );
     }
     return null;
@@ -353,7 +353,7 @@ function loadAppUrl(win: BrowserWindow, url: string): Promise<AppDocumentState> 
         reject(
           withDetail(
             new ServerUnavailable(`The server answered with HTTP ${mainStatus}.`),
-            t("Gente is getting things ready. This takes a moment."),
+            t("Your AI is getting things ready. This takes a moment."),
           ),
         );
         return;

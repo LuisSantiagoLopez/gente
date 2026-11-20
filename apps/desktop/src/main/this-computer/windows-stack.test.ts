@@ -49,7 +49,7 @@ async function setup(options: { pgVersion?: boolean; e2b?: string } = {}) {
     localWebUrl: "http://127.0.0.1:45173",
     imageTag: "v1.0.0",
     serverBundle: { version: "1" },
-    nodeBinary: "C:\\Gente\\Gente.exe",
+    nodeBinary: "C:\\Your AI\\Your AI.exe",
     platform: "win32",
     env: { PATH: "C:\\Windows", SystemRoot: "C:\\Windows" },
     run: async (command, args, opts) => {

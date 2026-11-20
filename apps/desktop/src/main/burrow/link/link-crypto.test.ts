@@ -20,7 +20,7 @@ const vector = {
   },
 };
 
-describe("Gente Link v1 (desktop)", () => {
+describe("Your AI Link v1 (desktop)", () => {
   it("matches the shared test vector: channel, safety code and a sealed envelope byte for byte", () => {
     const identity = {
       privateKey: vector.deskPriv,

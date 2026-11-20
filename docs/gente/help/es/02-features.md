@@ -1,6 +1,6 @@
-# Lo que Gente puede hacer
+# Lo que Your AI puede hacer
 
-Gente te da asistentes de IA, llamados bots, que chatean contigo, usan herramientas, siguen rutinas y recuerdan lo que te importa. El trabajo de pensar pasa en tu computadora.
+Your AI te da asistentes de IA, llamados bots, que chatean contigo, usan herramientas, siguen rutinas y recuerdan lo que te importa. El trabajo de pensar pasa en tu computadora.
 
 ## Bots y chats
 
@@ -25,14 +25,14 @@ Una rutina es un trabajo que un bot hace con un horario o cuando pasa algo, como
 
 Cada bot puede usar su propia computadora: un navegador, archivos y una terminal. Trabaja ahí, no en tu pantalla.
 
-- **Tomar el control:** cuando un sitio pide tu contraseña o un código, abre la pantalla del bot, escríbelo tú y luego devuélvele el control. Gente nunca escribe tus contraseñas por ti.
+- **Tomar el control:** cuando un sitio pide tu contraseña o un código, abre la pantalla del bot, escríbelo tú y luego devuélvele el control. Your AI nunca escribe tus contraseñas por ti.
 - Normalmente la computadora del bot funciona en privado dentro de tu propia computadora.
 
 ## Trabajo en línea
 
 Algunas tareas funcionan mejor en una computadora en la nube, como pedir un viaje o usar un sitio que necesita un navegador completo. Esto es el **trabajo en línea**. Tu plan incluye cierta cantidad de horas al mes (mira [Planes y pagos](billing)).
 
-- Gente se detiene antes de cualquier paso final, como confirmar un viaje o pagar. Tú lo confirmas.
+- Your AI se detiene antes de cualquier paso final, como confirmar un viaje o pagar. Tú lo confirmas.
 - La computadora en la nube solo ve el sitio que el bot usa para esa tarea. Tus chats se quedan en tu computadora.
 
 ## Enseña una tarea
@@ -49,7 +49,7 @@ Presiona **Cmd+Shift+M** o **Ctrl+Shift+M** para conectar apps como Gmail, Calen
 
 ## Pagos
 
-Un bot puede pedir comprar algo por ti. Tú apruebas cada compra en Link. Link da una tarjeta de un solo uso para esa compra. Gente nunca guarda tu tarjeta.
+Un bot puede pedir comprar algo por ti. Tú apruebas cada compra en Link. Link da una tarjeta de un solo uso para esa compra. Your AI nunca guarda tu tarjeta.
 
 ## Telegram
 
@@ -57,7 +57,7 @@ Habla con tus bots desde tu teléfono por Telegram. Elige **Connect Telegram…*
 
 ## Voz y dictado
 
-Habla en vez de escribir. Gente convierte tu voz en texto en tu computadora. Tu Mac o PC pide permiso para el micrófono una vez.
+Habla en vez de escribir. Your AI convierte tu voz en texto en tu computadora. Tu Mac o PC pide permiso para el micrófono una vez.
 
 ## Páginas
 
@@ -72,4 +72,4 @@ Los bots pueden hacer páginas simples, como un tablero o un documento, para mos
 | Conectar apps | Cmd+Shift+M | Ctrl+Shift+M |
 | Configuración | Cmd+, | Ctrl+, |
 | Todos los atajos | Cmd+/ | Ctrl+/ |
-| Soporte de Gente | Cmd+Shift+/ | Ctrl+Shift+/ |
+| Soporte de Your AI | Cmd+Shift+/ | Ctrl+Shift+/ |

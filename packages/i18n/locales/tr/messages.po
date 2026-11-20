@@ -1750,10 +1750,6 @@ msgstr "Mobilde {name} için izin ver"
 msgid "Allow cross-space bot communication"
 msgstr "Alanlar arası bot iletişimine izin ver"
 
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Gente to use Speech Recognition and the microphone in System Settings."
-msgstr "Gente'nun Konuşma Tanıma ve mikrofonu kullanmasına Sistem Ayarları'ndan izin ver."
-
 #: apps/mobile/lib/cards/ask-action-label.ts
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Allow in this space"
@@ -1781,6 +1777,10 @@ msgstr "Ayarlar'da konuşma tanımaya izin ver veya yazıya döken bir ses sağl
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Allow writing"
 msgstr "Yazmaya izin ver"
+
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Your AI to use Speech Recognition and the microphone in System Settings."
+msgstr "Your AI'nun Konuşma Tanıma ve mikrofonu kullanmasına Sistem Ayarları'ndan izin ver."
 
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2950,8 +2950,8 @@ msgstr "Klasör seç"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Gente"
-msgstr "Gente'yu nasıl kullanacağını seç"
+msgid "Choose how to use Your AI"
+msgstr "Your AI'yu nasıl kullanacağını seç"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3443,8 +3443,8 @@ msgstr "Yapay zekânı bağla"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Gente credits in Billing."
-msgstr "Modeller bölümünde kendi API anahtarınızı bağlayın veya Faturalandırma'da Gente kredilerini seçin."
+msgid "Connect your own API key in Models or choose Your AI credits in Billing."
+msgstr "Modeller bölümünde kendi API anahtarınızı bağlayın veya Faturalandırma'da Your AI kredilerini seçin."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5838,8 +5838,8 @@ msgid "Ends {day}"
 msgstr "{day} tarihinde sona eriyor"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Gente?"
-msgstr "Gente'yu beğendin mi?"
+msgid "Enjoying Your AI?"
+msgstr "Your AI'yu beğendin mi?"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -6381,32 +6381,6 @@ msgstr "Ağ geçidi URL'si"
 msgid "General"
 msgstr "Genel"
 
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Gente"
-msgstr "Gente"
-
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Gente credits"
-msgstr "Gente kredileri"
-
-#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "Gente is easing off this one for now."
-msgstr "Gente şimdilik bu konuda yavaşlıyor."
-
-#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Gente keeps each project's tasks up to date as it works."
-msgstr "Gente çalışırken her projenin görevlerini güncel tutar."
-
-#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "Gente works toward these on its own and tells you what it did."
-msgstr "Gente bunlar için kendi başına çalışır ve ne yaptığını size anlatır."
-
-#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Gente:"
-msgstr "Gente:"
-
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "Deneme başlatan her arkadaşın için bir ay ücretsiz kazan."
@@ -6726,13 +6700,13 @@ msgstr "{0} için ne kadar proaktif"
 msgid "How to check"
 msgstr "Nasıl kontrol edilir"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Gente?"
-msgstr "Gente'yu nasıl kullanacaksın?"
-
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
-msgstr "Gente'yu nasıl kullanacaksın?"
+msgstr "Your AI'yu nasıl kullanacaksın?"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "How will you use Your AI?"
+msgstr "Your AI'yu nasıl kullanacaksın?"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -8310,8 +8284,8 @@ msgid "No computer hours used yet"
 msgstr "Henüz bilgisayar saati kullanılmadı"
 
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "No goals yet. Tell Gente what you want, or add one here."
-msgstr "Henüz hedef yok. Gente'ye ne istediğinizi söyleyin veya buradan ekleyin."
+msgid "No goals yet. Tell Your AI what you want, or add one here."
+msgstr "Henüz hedef yok. Your AI'ye ne istediğinizi söyleyin veya buradan ekleyin."
 
 #: apps/mobile/components/cards/OutgoingDraftCard.tsx
 #: apps/mobile/components/thread/message-bubble.tsx
@@ -8400,8 +8374,8 @@ msgid "No preview for this file type."
 msgstr "Bu dosya türü için önizleme yok."
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "No projects yet. Start one, or ask Gente to start one in a chat."
-msgstr "Henüz proje yok. Bir tane başlatın veya sohbette Gente'den başlatmasını isteyin."
+msgid "No projects yet. Start one, or ask Your AI to start one in a chat."
+msgstr "Henüz proje yok. Bir tane başlatın veya sohbette Your AI'den başlatmasını isteyin."
 
 #: apps/web/src/components/integrations/IntegrationSetup.tsx
 msgid "No remote MCP servers found"
@@ -8535,10 +8509,6 @@ msgstr "{organization} kuruluşunda değil. Yalnızca bu alanı görecek."
 msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "{organizationName} kuruluşunda değil. Yalnızca bu alanı görecek."
 
-#: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Gente's catalog"
-msgstr "Gente kataloğunda yok"
-
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
 msgid "Not in the plugin catalog"
@@ -8548,6 +8518,10 @@ msgstr "Eklenti kataloğunda yok"
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Not in use ({0})"
 msgstr "Kullanılmıyor ({0})"
+
+#: apps/web/src/pages/shell/bots/import-status.ts
+msgid "Not in Your AI's catalog"
+msgstr "Your AI kataloğunda yok"
 
 #: apps/mobile/components/cards/McpApprovalCard.tsx
 #: apps/mobile/lib/auth/passkey.ts
@@ -8591,16 +8565,16 @@ msgstr "Gönderilmedi. Tekrar denemek için dokun"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Gente"
-msgstr "Gente'da desteklenmiyor"
+msgid "Not supported in Your AI"
+msgstr "Your AI'da desteklenmiyor"
 
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "Not this"
 msgstr "Bu değil"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Gente"
-msgstr "Gente tarafından kullanılmıyor"
+msgid "Not used by Your AI"
+msgstr "Your AI tarafından kullanılmıyor"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/components/integrations/McpServerHealthLine.tsx
@@ -8614,8 +8588,8 @@ msgid "Notes, decisions and follow-ups from every call, kept on your computer"
 msgstr "Her görüşmeden notlar, kararlar ve takipler, bilgisayarınızda saklanır"
 
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
-msgid "Nothing here yet. When Gente researches something or hears your feedback, it keeps notes here."
-msgstr "Burada henüz bir şey yok. Gente bir şey araştırdığında veya geri bildiriminizi duyduğunda notlarını burada tutar."
+msgid "Nothing here yet. When Your AI researches something or hears your feedback, it keeps notes here."
+msgstr "Burada henüz bir şey yok. Your AI bir şey araştırdığında veya geri bildiriminizi duyduğunda notlarını burada tutar."
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -8631,8 +8605,8 @@ msgid "Nothing yet. Check that you sent the code to the right chat, exactly as s
 msgstr "Henüz bir şey yok. Kodu doğru sohbete, tam gösterildiği gibi gönderdiğini kontrol et. Kod 10 dakika geçerlidir."
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
-msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
-msgstr "Henüz bir şey yok. WhatsApp için bir Meta işletme uygulaması ve Meta'nın ulaşabileceği bir adres gerekir; ayrıca Meta genel yapay zekâ asistanlarına henüz her ülkede izin vermiyor. Telegram hemen çalışır: Gente menüsünde Telegram'ı bağla'yı seç."
+msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Your AI menu, choose Connect Telegram."
+msgstr "Henüz bir şey yok. WhatsApp için bir Meta işletme uygulaması ve Meta'nın ulaşabileceği bir adres gerekir; ayrıca Meta genel yapay zekâ asistanlarına henüz her ülkede izin vermiyor. Telegram hemen çalışır: Your AI menüsünde Telegram'ı bağla'yı seç."
 
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Nothing yet. When you tell me how you like things done, it shows up here."
@@ -8830,13 +8804,6 @@ msgstr "Sohbeti aç"
 msgid "Open external link?"
 msgstr "Harici bağlantı açılsın mı?"
 
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Gente"
-msgstr "Gente'yu aç"
-
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "{name} görselini aç"
@@ -8867,6 +8834,13 @@ msgstr "Ses'i aç"
 #: apps/web/src/pages/space/ScratchpadSection.tsx
 msgid "Open work"
 msgstr "Açık işler"
+
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Your AI"
+msgstr "Your AI'yu aç"
 
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
 msgid "OpenAI API"
@@ -9113,13 +9087,13 @@ msgstr "Gecikmiş"
 msgid "Paste a replacement key"
 msgstr "Yeni bir anahtar yapıştır"
 
-#: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Gente adds /v1 if needed."
-msgstr "Sunucundaki OpenAI uyumlu adresi yapıştır. Gerekirse Gente /v1 ekler."
-
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
-msgstr "Sunucundaki OpenAI uyumlu adresi yapıştır. Gerekirse Gente /v1 ekler."
+msgstr "Sunucundaki OpenAI uyumlu adresi yapıştır. Gerekirse Your AI /v1 ekler."
+
+#: apps/web/src/pages/model-settings/compatible-model-fields.tsx
+msgid "Paste the OpenAI-compatible address from your server. Your AI adds /v1 if needed."
+msgstr "Sunucundaki OpenAI uyumlu adresi yapıştır. Gerekirse Your AI /v1 ekler."
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -9485,16 +9459,16 @@ msgstr "Seçimi alıntıla"
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
 msgid "Rakazo"
-msgstr "Gente"
+msgstr "Your AI"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 msgid "Rakazo credits"
-msgstr "Gente kredileri"
+msgstr "Your AI kredileri"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
-msgstr "rakazo-shared ve bot- ile başlayan kimlikler Gente için ayrılmıştır."
+msgid "rakazo-shared and IDs starting with bot- are reserved for Your AI."
+msgstr "rakazo-shared ve bot- ile başlayan kimlikler Your AI için ayrılmıştır."
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -9548,8 +9522,8 @@ msgid "Recall from banks"
 msgstr "Hatırlanacak bankalar"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Gente’s own peers."
-msgstr "Bu eşten hatırla; Gente’nun kendi eşlerine kaydet."
+msgid "Recall from this peer; save to Your AI’s own peers."
+msgstr "Bu eşten hatırla; Your AI’nun kendi eşlerine kaydet."
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10171,14 +10145,14 @@ msgstr "Ekranı yeniden dene"
 msgid "Return to call with {0}"
 msgstr "{0} aramasına dön"
 
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Gente"
-msgstr "Gente'ya dön"
-
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
 msgstr "Gelen kutusuna dön"
+
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Your AI"
+msgstr "Your AI'ya dön"
 
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
@@ -11011,18 +10985,18 @@ msgstr "Yine de oturum aç"
 msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "<0>{0}</0> adresinde oturum açın, ardından kodu buraya yapıştırın."
 
-#: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Gente"
-msgstr "Gente'da oturum aç"
-
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
-msgstr "Gente'da oturum aç"
+msgstr "Your AI'da oturum aç"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
 msgstr "Hesabında oturum aç, sonra bu sağlayıcıyı ayarlardan bağla"
+
+#: apps/web/src/pages/auth/Auth.tsx
+msgid "Sign in to Your AI"
+msgstr "Your AI'da oturum aç"
 
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in with demo account"
@@ -11049,7 +11023,7 @@ msgstr "Kaydol"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign up for Rakazo"
-msgstr "Gente'ya kaydol"
+msgstr "Your AI'ya kaydol"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -11392,7 +11366,7 @@ msgstr "Kaydı başlat"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Start using Rakazo"
-msgstr "Gente'yu kullanmaya başla"
+msgstr "Your AI'yu kullanmaya başla"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11693,8 +11667,8 @@ msgid "Technical details"
 msgstr "Teknik ayrıntılar"
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Tell Gente what to keep or change"
-msgstr "Gente'ye neyi tutacağını veya değiştireceğini söyleyin"
+msgid "Tell Your AI what to keep or change"
+msgstr "Your AI'ye neyi tutacağını veya değiştireceğini söyleyin"
 
 #: apps/web/src/components/computers/ComputerProviderSettings.tsx
 msgid "Template"
@@ -11751,7 +11725,7 @@ msgstr "Bu bir Grok Bot dışa aktarımı değil. Bot'un yanıtının tamamını
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL did not look like a Rakazo server"
-msgstr "Bu adres bir Gente sunucusuna benzemiyor"
+msgstr "Bu adres bir Your AI sunucusuna benzemiyor"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11883,13 +11857,13 @@ msgstr "Sunucuda bir sorun oluştu. Birazdan tekrar dene."
 msgid "The shared link stops working"
 msgstr "Paylaşılan bağlantı çalışmayı durdurur"
 
-#: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Gente."
-msgstr "Döküm Gente'dan kaldırılacak."
-
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
-msgstr "Döküm Gente'dan kaldırılacak."
+msgstr "Döküm Your AI'dan kaldırılacak."
+
+#: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
+msgid "The transcript will be removed from Your AI."
+msgstr "Döküm Your AI'dan kaldırılacak."
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -12052,8 +12026,8 @@ msgid "This device"
 msgstr "Bu cihaz"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Gente can read. Update Gente and try again."
-msgstr "Bu dışa aktarım, Gente'nun okuyabileceğinden daha yeni. Gente'yu güncelle ve tekrar dene."
+msgid "This export is newer than Your AI can read. Update Your AI and try again."
+msgstr "Bu dışa aktarım, Your AI'nun okuyabileceğinden daha yeni. Your AI'yu güncelle ve tekrar dene."
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12226,13 +12200,13 @@ msgstr "Bu alanın kendi kasası var, bu yüzden botları hesap öğelerini kull
 msgid "This Space keeps its own vault. Its bots save and use items there, not here: open the Space's settings, then Vault."
 msgstr "Bu alanın kendi kasası var. Botları öğeleri burada değil, orada kaydedip kullanır: alanın ayarlarını aç, ardından Kasa'ya git."
 
-#: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Gente yet. Use a deployment credential or choose another provider."
-msgstr "Bu abonelik girişi Gente'da henüz kullanılamıyor. Bir dağıtım kimlik bilgisi kullan veya başka bir sağlayıcı seç."
-
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr "Bu abonelik girişi Gente'da henüz kullanılamıyor. Bir dağıtım kimlik bilgisi kullan veya başka bir sağlayıcı seç."
+msgstr "Bu abonelik girişi Your AI'da henüz kullanılamıyor. Bir dağıtım kimlik bilgisi kullan veya başka bir sağlayıcı seç."
+
+#: apps/web/src/pages/model-settings/connection-controls.tsx
+msgid "This subscription sign-in is not available in Your AI yet. Use a deployment credential or choose another provider."
+msgstr "Bu abonelik girişi Your AI'da henüz kullanılamıyor. Bir dağıtım kimlik bilgisi kullan veya başka bir sağlayıcı seç."
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -12682,10 +12656,6 @@ msgstr "{name} tarafından güncelleme"
 msgid "Update from {name}: {text}"
 msgstr "{name} tarafından güncelleme: {text}"
 
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Gente to connect your calendar from the desktop app."
-msgstr "Takvimini masaüstü uygulamasından bağlamak için Gente'yu güncelle."
-
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Update instructions?"
@@ -12699,6 +12669,10 @@ msgstr "İlerlemeyi güncelle"
 #: apps/web/src/lib/platform/client-update.ts
 msgid "Update required"
 msgstr "Güncelleme gerekli"
+
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Your AI to connect your calendar from the desktop app."
+msgstr "Takvimini masaüstü uygulamasından bağlamak için Your AI'yu güncelle."
 
 #: apps/mobile/app/(settings)/vault.tsx
 #: apps/mobile/lib/api/api.ts
@@ -12830,10 +12804,6 @@ msgstr "Varsayılanlarını kullan"
 msgid "Use defaults for {label}"
 msgstr "{label}: varsayılanlarını kullan"
 
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Gente credits"
-msgstr "Gente kredilerini kullan"
-
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Use in this bot"
@@ -12870,7 +12840,7 @@ msgstr "Parolalar için Korumalı giriş'i kullan."
 
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Use Rakazo credits"
-msgstr "Gente kredilerini kullan"
+msgstr "Your AI kredilerini kullan"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12879,6 +12849,10 @@ msgstr "Alan varsayılanını kullan"
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Use up to 512 letters, digits, _ or -."
 msgstr "En fazla 512 harf, rakam, _ veya - kullan."
+
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Your AI credits"
+msgstr "Your AI kredilerini kullan"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "Use your own key"
@@ -13122,14 +13096,14 @@ msgstr "Haftalık"
 msgid "Welcome back"
 msgstr "Tekrar hoş geldin"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Gente"
-msgstr "Gente'ya hoş geldin"
-
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 msgid "Welcome to Rakazo"
-msgstr "Gente'ya hoş geldin"
+msgstr "Your AI'ya hoş geldin"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "Welcome to Your AI"
+msgstr "Your AI'ya hoş geldin"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -13147,13 +13121,13 @@ msgstr "Bu alan neleri kullanabilir?"
 msgid "What do you do?"
 msgstr "Ne iş yapıyorsunuz?"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Gente to help with?"
-msgstr "Gente'nun en çok neye yardım etmesini istiyorsun?"
-
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
-msgstr "Gente'nun en çok neye yardım etmesini istiyorsun?"
+msgstr "Your AI'nun en çok neye yardım etmesini istiyorsun?"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "What do you most want Your AI to help with?"
+msgstr "Your AI'nun en çok neye yardım etmesini istiyorsun?"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"
@@ -13162,10 +13136,6 @@ msgstr "İlk olarak neyle ilgilenmemi istiyorsun?"
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "What do you want? For example, land a job"
 msgstr "Ne istiyorsunuz? Örneğin, bir iş bulmak"
-
-#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
-msgid "What Gente learned on each topic, with where it learned it. Stays on this computer."
-msgstr "Gente'nin her konuda öğrendikleri ve nereden öğrendiği. Bu bilgisayarda kalır."
 
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "What I learned about you"
@@ -13200,6 +13170,10 @@ msgstr "Ne döndürülecek"
 msgid "What to watch"
 msgstr "İzlenecek öğe"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "What Your AI learned on each topic, with where it learned it. Stays on this computer."
+msgstr "Your AI'nin her konuda öğrendikleri ve nereden öğrendiği. Bu bilgisayarda kalır."
+
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "What your bots remember between chats."
 msgstr "Botlarının sohbetler arasında hatırladıkları."
@@ -13218,10 +13192,6 @@ msgstr "E-posta geldiğinde"
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "When bots check with you before acting."
 msgstr "Botların harekete geçmeden önce sana ne zaman danışacağı."
-
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
-msgstr "Gente sizin için çevrimiçi çalıştığında (arama, gezinme, uygulamalar) yalnızca o görevin ihtiyaç duyduğu şey dışarı çıkar. Bağlı bir uygulamanın verileri, yalnızca seçtiğiniz uygulamalar için bağlı uygulama sağlayıcımızın bulutundan geçer."
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"
@@ -13246,6 +13216,10 @@ msgstr "Ne zaman çalışacak"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "When to use"
 msgstr "Ne zaman kullanılır"
+
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "Your AI sizin için çevrimiçi çalıştığında (arama, gezinme, uygulamalar) yalnızca o görevin ihtiyaç duyduğu şey dışarı çıkar. Bağlı bir uygulamanın verileri, yalnızca seçtiğiniz uygulamalar için bağlı uygulama sağlayıcımızın bulutundan geçer."
 
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
@@ -13420,6 +13394,32 @@ msgstr "10 ücretsiz mesajını kullandın. Sohbete devam etmek için Ayarlar'da
 #: apps/mobile/app/(settings)/profile.tsx
 msgid "Your account"
 msgstr "Hesabın"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Your AI"
+msgstr "Your AI"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Your AI credits"
+msgstr "Your AI kredileri"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your AI is easing off this one for now."
+msgstr "Your AI şimdilik bu konuda yavaşlıyor."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Your AI keeps each project's tasks up to date as it works."
+msgstr "Your AI çalışırken her projenin görevlerini güncel tutar."
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your AI works toward these on its own and tells you what it did."
+msgstr "Your AI bunlar için kendi başına çalışır ve ne yaptığını size anlatır."
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Your AI:"
+msgstr "Your AI:"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts

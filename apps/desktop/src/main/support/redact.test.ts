@@ -26,7 +26,7 @@ const PRIVATE = {
   ip: "189.203.44.17",
   link: "https://mail.google.com/mail/u/0/#inbox/FMfcgzQXJWDsKmnpqrst",
   homePath: `${HOME}/Documents/taxes-2026.pdf`,
-  windowsPath: "C:\\Users\\ana.lopez\\AppData\\Roaming\\Gente\\stack\\logs\\api.log",
+  windowsPath: "C:\\Users\\ana.lopez\\AppData\\Roaming\\Your AI\\stack\\logs\\api.log",
   username: "ana.lopez",
   botName: "AnaHelperBot",
 };

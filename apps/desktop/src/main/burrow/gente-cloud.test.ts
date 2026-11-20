@@ -6,7 +6,7 @@ import { CloudError, createGenteCloud } from "./gente-cloud.js";
 const json = (status: number, body: unknown, headers: Record<string, string> = {}) =>
   new Response(status === 304 ? null : JSON.stringify(body), { status, headers });
 
-describe("Gente Cloud client", () => {
+describe("Your AI Cloud client", () => {
   it("sends the session token and reuses the plan on 304 (ETag)", async () => {
     const fetch = vi
       .fn()

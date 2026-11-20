@@ -75,7 +75,7 @@ export async function startAppsRelay(deps: AppsRelayDeps) {
       const key = await deps.devKey?.().catch(() => undefined);
       if (!key) {
         res.writeHead(401, { "content-type": "application/json" });
-        res.end(JSON.stringify({ error: "missing_token", message: "Sign in to Gente to use connected apps." }));
+        res.end(JSON.stringify({ error: "missing_token", message: "Sign in to Your AI to use connected apps." }));
         return;
       }
       target = CONNECTED_APPS_DIRECT_URL;

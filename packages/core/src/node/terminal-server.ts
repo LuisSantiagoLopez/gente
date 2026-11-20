@@ -27,7 +27,7 @@ def identity(env):
         passwd = source.read()
     with open("/etc/group") as source:
         group = source.read()
-    passwd += "rakazo:x:%d:%d:Gente:%s:/bin/bash\\n" % (uid, gid, home)
+    passwd += "rakazo:x:%d:%d:Your AI:%s:/bin/bash\\n" % (uid, gid, home)
     if not any(line.split(":")[2:3] == [str(gid)] for line in group.splitlines()):
         group += "rakazo:x:%d:\\n" % gid
     names = {}

@@ -1585,7 +1585,7 @@ describe("composio tool mapping", () => {
     ).toEqual(["first"]);
   });
 
-  it("only fetches live Composio slugs when a Gente row is still pending or errored", () => {
+  it("only fetches live Composio slugs when a Your AI row is still pending or errored", () => {
     expect(needsLivePluginSync([{ status: "connected" }, { status: "revoked" }])).toBe(false);
     expect(needsLivePluginSync([{ status: "pending" }])).toBe(true);
     expect(needsLivePluginSync([{ status: "error" }])).toBe(true);
@@ -1600,7 +1600,7 @@ describe("composio tool mapping", () => {
     ).toEqual([{ provider: "github", displayName: "GitHub" }]);
   });
 
-  it("plans DB sync when Composio is connected but Gente is still pending", () => {
+  it("plans DB sync when Composio is connected but Your AI is still pending", () => {
     expect(
       planLiveConnectionSync(
         [

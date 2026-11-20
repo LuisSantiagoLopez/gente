@@ -285,7 +285,7 @@ export function GeneralSettingsPanels({
         )}
       </SettingsGroup>
 
-      <SettingsGroup title={<Trans>Gente</Trans>}>
+      <SettingsGroup title={<Trans>Your AI</Trans>}>
         <SettingsRow label={<Trans>Plan</Trans>} control={<GentePlanControl />} />
         <SettingsRow
           label={<Trans>Sounds</Trans>}
@@ -357,7 +357,7 @@ export function GeneralSettingsPanels({
                     value="rakazo"
                     className="text-body-sm aria-pressed:bg-background aria-pressed:shadow-sm"
                   >
-                    <Trans>Gente</Trans>
+                    <Trans>Your AI</Trans>
                   </ToggleGroupItem>
                 </ToggleGroup>
                 {botStyleError ? (

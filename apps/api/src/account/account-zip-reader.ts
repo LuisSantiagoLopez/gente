@@ -30,7 +30,7 @@ const ZIP64_EXTRA_TAG = 0x0001;
 
 /** An entry failed to parse or to verify; the caller reports it as unreadable. */
 export class ZipFormatError extends Error {
-  constructor(message = "The file is not a readable Gente export.") {
+  constructor(message = "The file is not a readable Your AI export.") {
     super(message);
     this.name = "ZipFormatError";
   }

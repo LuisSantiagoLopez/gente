@@ -41,7 +41,7 @@ export function digestText(digest: ProactiveDigest, goals: readonly Goal[]): str
         ? "1 thing waits for your OK."
         : `${digest.waiting.length} things wait for your OK.`,
     );
-  lines.push("Open Gente, Goals, to undo anything.");
+  lines.push("Open Your AI, Goals, to undo anything.");
   return lines.join("\n");
 }
 

@@ -17,7 +17,7 @@
       const result = await window.genteTelegram.connect(input.value);
       if (result.ok) {
         input.value = "";
-        say(`Connected to @${result.username}. Open it in Telegram and say hi. In Gente, Settings → Messaging gives you a code to send it once.`, "ok");
+        say(`Connected to @${result.username}. Open it in Telegram and say hi. In Your AI, Settings → Messaging gives you a code to send it once.`, "ok");
       } else {
         say(result.message, "warn");
       }

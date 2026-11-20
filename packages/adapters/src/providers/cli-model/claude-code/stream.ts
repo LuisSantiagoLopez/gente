@@ -66,7 +66,7 @@ for await (const line of createInterface({ input: process.stdin })) {
   } else if (method === "tools/list") {
     send({ id, result: { tools } });
   } else if (method === "tools/call") {
-    send({ id, result: { isError: true, content: [{ type: "text", text: "Gente runs its tools itself." }] } });
+    send({ id, result: { isError: true, content: [{ type: "text", text: "Your AI runs its tools itself." }] } });
   } else if (method === "ping") {
     send({ id, result: {} });
   } else {
@@ -340,7 +340,7 @@ function checkInit(event: Record<string, unknown>, expectTools: boolean): void {
     (entry) => entry && typeof entry === "object" && entry.name === TOOL_SERVER,
   ) as { status?: unknown } | undefined;
   if (expectTools && server?.status !== "connected") {
-    throw new Error("Claude Code could not load Gente's tools.");
+    throw new Error("Claude Code could not load Your AI's tools.");
   }
 }
 

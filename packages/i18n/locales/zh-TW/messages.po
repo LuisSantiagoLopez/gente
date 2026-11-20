@@ -1751,10 +1751,6 @@ msgstr "在手機上允許 {name}"
 msgid "Allow cross-space bot communication"
 msgstr "允許跨空間機器人通訊"
 
-#: apps/web/src/lib/calls/dictation.ts
-msgid "Allow Gente to use Speech Recognition and the microphone in System Settings."
-msgstr "請在系統設定中允許 Gente 使用語音辨識和麥克風。"
-
 #: apps/mobile/lib/cards/ask-action-label.ts
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Allow in this space"
@@ -1782,6 +1778,10 @@ msgstr "請在設定中允許語音辨識，或連接支援轉寫的語音服務
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Allow writing"
 msgstr "允許寫入"
+
+#: apps/web/src/lib/calls/dictation.ts
+msgid "Allow Your AI to use Speech Recognition and the microphone in System Settings."
+msgstr "請在系統設定中允許 Your AI 使用語音辨識和麥克風。"
 
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
@@ -2951,8 +2951,8 @@ msgstr "選擇資料夾"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 #: apps/web/src/components/billing/SubscriptionGate.tsx
-msgid "Choose how to use Gente"
-msgstr "選擇 Gente 的使用方式"
+msgid "Choose how to use Your AI"
+msgstr "選擇 Your AI 的使用方式"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Choose your {home} folder, or a backup of it."
@@ -3444,8 +3444,8 @@ msgstr "連接你的 AI"
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
-msgid "Connect your own API key in Models or choose Gente credits in Billing."
-msgstr "請在「模型」中連接你自己的 API 金鑰，或在「帳務」中選擇 Gente 點數。"
+msgid "Connect your own API key in Models or choose Your AI credits in Billing."
+msgstr "請在「模型」中連接你自己的 API 金鑰，或在「帳務」中選擇 Your AI 點數。"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/mobile/app/(settings)/computers.tsx
@@ -5839,8 +5839,8 @@ msgid "Ends {day}"
 msgstr "於 {day} 結束"
 
 #: apps/web/src/pages/shell/composer/github-star-prompt.tsx
-msgid "Enjoying Gente?"
-msgstr "喜歡 Gente 嗎？"
+msgid "Enjoying Your AI?"
+msgstr "喜歡 Your AI 嗎？"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
@@ -6382,32 +6382,6 @@ msgstr "閘道網址"
 msgid "General"
 msgstr "一般"
 
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
-msgid "Gente"
-msgstr "Gente"
-
-#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
-#: apps/web/src/pages/onboarding/use-onboarding-model.ts
-msgid "Gente credits"
-msgstr "Gente 額度"
-
-#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "Gente is easing off this one for now."
-msgstr "Gente 暫時會放慢這一項。"
-
-#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Gente keeps each project's tasks up to date as it works."
-msgstr "Gente 工作時會隨時更新每個專案的任務。"
-
-#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "Gente works toward these on its own and tells you what it did."
-msgstr "Gente 會自己朝這些目標努力，並告訴你它做了什麼。"
-
-#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Gente:"
-msgstr "Gente："
-
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Get a free month for each friend who starts a trial."
 msgstr "每有一位朋友開始試用，你就能獲得一個月免費。"
@@ -6727,13 +6701,13 @@ msgstr "{0} 的主動程度"
 msgid "How to check"
 msgstr "如何檢查"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "How will you use Gente?"
-msgstr "你會如何使用 Gente？"
-
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "How will you use Rakazo?"
-msgstr "你會如何使用 Gente？"
+msgstr "你會如何使用 Your AI？"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "How will you use Your AI?"
+msgstr "你會如何使用 Your AI？"
 
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "http://127.0.0.1:8000/v1"
@@ -8311,8 +8285,8 @@ msgid "No computer hours used yet"
 msgstr "尚未使用電腦時數"
 
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
-msgid "No goals yet. Tell Gente what you want, or add one here."
-msgstr "還沒有目標。告訴 Gente 你想要什麼，或在這裡新增一個。"
+msgid "No goals yet. Tell Your AI what you want, or add one here."
+msgstr "還沒有目標。告訴 Your AI 你想要什麼，或在這裡新增一個。"
 
 #: apps/mobile/components/cards/OutgoingDraftCard.tsx
 #: apps/mobile/components/thread/message-bubble.tsx
@@ -8401,8 +8375,8 @@ msgid "No preview for this file type."
 msgstr "此檔案類型無法預覽。"
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "No projects yet. Start one, or ask Gente to start one in a chat."
-msgstr "還沒有專案。建立一個，或在聊天中請 Gente 幫你建立。"
+msgid "No projects yet. Start one, or ask Your AI to start one in a chat."
+msgstr "還沒有專案。建立一個，或在聊天中請 Your AI 幫你建立。"
 
 #: apps/web/src/components/integrations/IntegrationSetup.tsx
 msgid "No remote MCP servers found"
@@ -8536,10 +8510,6 @@ msgstr "不在 {organization} 中，只能看到此空間。"
 msgid "Not in {organizationName}. They'll only see this Space."
 msgstr "不在 {organizationName} 中，只能看到此空間。"
 
-#: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not in Gente's catalog"
-msgstr "不在 Gente 目錄中"
-
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/plugin-browse.tsx
 msgid "Not in the plugin catalog"
@@ -8549,6 +8519,10 @@ msgstr "不在外掛程式目錄中"
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Not in use ({0})"
 msgstr "未使用（{0}）"
+
+#: apps/web/src/pages/shell/bots/import-status.ts
+msgid "Not in Your AI's catalog"
+msgstr "不在 Your AI 目錄中"
 
 #: apps/mobile/components/cards/McpApprovalCard.tsx
 #: apps/mobile/lib/auth/passkey.ts
@@ -8592,16 +8566,16 @@ msgstr "未傳送。點一下重試"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
 #: apps/web/src/pages/shell/bots/import-status.ts
-msgid "Not supported in Gente"
-msgstr "Gente 不支援"
+msgid "Not supported in Your AI"
+msgstr "Your AI 不支援"
 
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "Not this"
 msgstr "不要這個"
 
 #: apps/web/src/pages/shell/bots/agent-import-plan.tsx
-msgid "Not used by Gente"
-msgstr "Gente 不使用"
+msgid "Not used by Your AI"
+msgstr "Your AI 不使用"
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/components/integrations/McpServerHealthLine.tsx
@@ -8615,8 +8589,8 @@ msgid "Notes, decisions and follow-ups from every call, kept on your computer"
 msgstr "每次通話的筆記、決定和跟進，都存在你的電腦上"
 
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
-msgid "Nothing here yet. When Gente researches something or hears your feedback, it keeps notes here."
-msgstr "這裡還沒有內容。Gente 研究某件事或聽到你的意見時，會在這裡做筆記。"
+msgid "Nothing here yet. When Your AI researches something or hears your feedback, it keeps notes here."
+msgstr "這裡還沒有內容。Your AI 研究某件事或聽到你的意見時，會在這裡做筆記。"
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -8632,8 +8606,8 @@ msgid "Nothing yet. Check that you sent the code to the right chat, exactly as s
 msgstr "還沒有收到。請確認你是否依照顯示的內容原樣將代碼傳到正確的聊天。代碼 10 分鐘內有效。"
 
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
-msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Gente menu, choose Connect Telegram."
-msgstr "還沒有收到。WhatsApp 需要一個 Meta 商業應用程式和一個 Meta 能連到的地址，而且 Meta 尚未在所有國家允許通用 AI 助理。Telegram 可以立即使用：在 Gente 選單中選擇「連結 Telegram」。"
+msgid "Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and Meta doesn't allow general AI assistants in every country yet. Telegram works right away: in the Your AI menu, choose Connect Telegram."
+msgstr "還沒有收到。WhatsApp 需要一個 Meta 商業應用程式和一個 Meta 能連到的地址，而且 Meta 尚未在所有國家允許通用 AI 助理。Telegram 可以立即使用：在 Your AI 選單中選擇「連結 Telegram」。"
 
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "Nothing yet. When you tell me how you like things done, it shows up here."
@@ -8831,13 +8805,6 @@ msgstr "開啟對話"
 msgid "Open external link?"
 msgstr "開啟外部連結？"
 
-#: apps/web/src/components/pages/PublicPageShell.tsx
-#: apps/web/src/pages/auth/Invite.tsx
-#: apps/web/src/pages/auth/JoinOrganization.tsx
-#: apps/web/src/pages/SharedPage.tsx
-msgid "Open Gente"
-msgstr "開啟 Gente"
-
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "開啟圖片 {name}"
@@ -8868,6 +8835,13 @@ msgstr "開啟語音設定"
 #: apps/web/src/pages/space/ScratchpadSection.tsx
 msgid "Open work"
 msgstr "待辦"
+
+#: apps/web/src/components/pages/PublicPageShell.tsx
+#: apps/web/src/pages/auth/Invite.tsx
+#: apps/web/src/pages/auth/JoinOrganization.tsx
+#: apps/web/src/pages/SharedPage.tsx
+msgid "Open Your AI"
+msgstr "開啟 Your AI"
 
 #: apps/web/src/pages/onboarding/use-onboarding-model.ts
 msgid "OpenAI API"
@@ -9114,13 +9088,13 @@ msgstr "付款逾期"
 msgid "Paste a replacement key"
 msgstr "貼上替換金鑰"
 
-#: apps/web/src/pages/model-settings/compatible-model-fields.tsx
-msgid "Paste the OpenAI-compatible address from your server. Gente adds /v1 if needed."
-msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Gente 會補上 /v1。"
-
 #: apps/mobile/components/models/compatible-endpoint-form.tsx
 msgid "Paste the OpenAI-compatible address from your server. Rakazo adds /v1 if needed."
-msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Gente 會補上 /v1。"
+msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Your AI 會補上 /v1。"
+
+#: apps/web/src/pages/model-settings/compatible-model-fields.tsx
+msgid "Paste the OpenAI-compatible address from your server. Your AI adds /v1 if needed."
+msgstr "貼上伺服器的 OpenAI 相容地址。需要時 Your AI 會補上 /v1。"
 
 #: apps/web/src/pages/shell/bots/agent-import.tsx
 msgid "Paste the reply"
@@ -9486,16 +9460,16 @@ msgstr "引用所選內容"
 #: apps/mobile/app/(settings)/general.tsx
 #: apps/mobile/app/bot-settings.tsx
 msgid "Rakazo"
-msgstr "Gente"
+msgstr "Your AI"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/mobile/components/models/model-role-settings.tsx
 msgid "Rakazo credits"
-msgstr "Gente 額度"
+msgstr "Your AI 額度"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "rakazo-shared and IDs starting with bot- are reserved for Gente."
-msgstr "rakazo-shared 與以 bot- 開頭的 ID 保留給 Gente 使用。"
+msgid "rakazo-shared and IDs starting with bot- are reserved for Your AI."
+msgstr "rakazo-shared 與以 bot- 開頭的 ID 保留給 Your AI 使用。"
 
 #: apps/mobile/components/thread/message-row.tsx
 #: apps/web/src/pages/shell/chat/message-hover-actions.tsx
@@ -9549,8 +9523,8 @@ msgid "Recall from banks"
 msgstr "從記憶庫回想"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
-msgid "Recall from this peer; save to Gente’s own peers."
-msgstr "從此 peer 讀取；儲存至 Gente 自己的 peer。"
+msgid "Recall from this peer; save to Your AI’s own peers."
+msgstr "從此 peer 讀取；儲存至 Your AI 自己的 peer。"
 
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Recall only"
@@ -10172,14 +10146,14 @@ msgstr "重新連線螢幕"
 msgid "Return to call with {0}"
 msgstr "返回與 {0} 的通話"
 
-#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
-#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
-msgid "Return to Gente"
-msgstr "返回 Gente"
-
 #: apps/mobile/app/thread.tsx
 msgid "Return to inbox"
 msgstr "返回收件匣"
+
+#: apps/web/src/pages/integrations/McpOAuthCallback.tsx
+#: apps/web/src/pages/integrations/SlackInstallCallback.tsx
+msgid "Return to Your AI"
+msgstr "返回 Your AI"
 
 #: apps/web/src/lib/models/model-connection-preflight.ts
 msgid "Review provider settings and test again."
@@ -11012,18 +10986,18 @@ msgstr "仍要登入"
 msgid "Sign in at <0>{0}</0>, then paste the code here."
 msgstr "在 <0>{0}</0> 登入，然後將代碼貼到這裡。"
 
-#: apps/web/src/pages/auth/Auth.tsx
-msgid "Sign in to Gente"
-msgstr "登入 Gente"
-
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
-msgstr "登入 Gente"
+msgstr "登入 Your AI"
 
 #: apps/mobile/lib/api/user-error.ts
 #: apps/web/src/lib/query/user-error.ts
 msgid "Sign in to your account, then link this provider in settings"
 msgstr "請先登入你的帳號，然後在設定中連結此供應商"
+
+#: apps/web/src/pages/auth/Auth.tsx
+msgid "Sign in to Your AI"
+msgstr "登入 Your AI"
 
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in with demo account"
@@ -11050,7 +11024,7 @@ msgstr "註冊"
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign up for Rakazo"
-msgstr "註冊 Gente"
+msgstr "註冊 Your AI"
 
 #: apps/web/src/pages/plugins/PluginsOverlay.tsx
 msgid "Sign-in cancelled. Retry in Manage MCP servers."
@@ -11393,7 +11367,7 @@ msgstr "開始錄製"
 
 #: apps/mobile/app/paywall.tsx
 msgid "Start using Rakazo"
-msgstr "開始使用 Gente"
+msgstr "開始使用 Your AI"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -11694,8 +11668,8 @@ msgid "Technical details"
 msgstr "技術詳細資訊"
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
-msgid "Tell Gente what to keep or change"
-msgstr "告訴 Gente 要保留或修改什麼"
+msgid "Tell Your AI what to keep or change"
+msgstr "告訴 Your AI 要保留或修改什麼"
 
 #: apps/web/src/components/computers/ComputerProviderSettings.tsx
 msgid "Template"
@@ -11752,7 +11726,7 @@ msgstr "這不是 Grok Bot 的匯出內容。請貼上該 Bot 的完整回覆。
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL did not look like a Rakazo server"
-msgstr "這個地址看起來不像 Gente 伺服器"
+msgstr "這個地址看起來不像 Your AI 伺服器"
 
 #: apps/mobile/lib/api/endpoint.ts
 msgid "That URL is missing a host"
@@ -11884,13 +11858,13 @@ msgstr "伺服器出現問題。請稍後重試。"
 msgid "The shared link stops working"
 msgstr "共用連結將失效"
 
-#: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
-msgid "The transcript will be removed from Gente."
-msgstr "文字紀錄將從 Gente 中移除。"
-
 #: apps/mobile/app/meeting-transcript.tsx
 msgid "The transcript will be removed from Rakazo."
-msgstr "文字紀錄將從 Gente 中移除。"
+msgstr "文字紀錄將從 Your AI 中移除。"
+
+#: apps/web/src/pages/shell/meetings/meeting-transcript.tsx
+msgid "The transcript will be removed from Your AI."
+msgstr "文字紀錄將從 Your AI 中移除。"
 
 #: apps/mobile/app/(settings)/billing.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
@@ -12053,8 +12027,8 @@ msgid "This device"
 msgstr "本裝置"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
-msgid "This export is newer than Gente can read. Update Gente and try again."
-msgstr "此匯出內容的版本比 Gente 能讀取的更新。請更新 Gente 後再試一次。"
+msgid "This export is newer than Your AI can read. Update Your AI and try again."
+msgstr "此匯出內容的版本比 Your AI 能讀取的更新。請更新 Your AI 後再試一次。"
 
 #: apps/web/src/lib/bots/agent-import-errors.ts
 msgid "This export is too large to import."
@@ -12227,13 +12201,13 @@ msgstr "此空間使用自己的保管庫，因此其機器人無法使用帳號
 msgid "This Space keeps its own vault. Its bots save and use items there, not here: open the Space's settings, then Vault."
 msgstr "此空間有自己的保管庫。其中的機器人會在那裡儲存和使用項目，而不是這裡：請開啟該空間的設定，然後進入保管庫。"
 
-#: apps/web/src/pages/model-settings/connection-controls.tsx
-msgid "This subscription sign-in is not available in Gente yet. Use a deployment credential or choose another provider."
-msgstr "此訂閱登入在 Gente 中尚不可用。請使用部署憑證或選擇其他供應商。"
-
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "This subscription sign-in is not available in Rakazo yet. Use a deployment credential or choose another provider."
-msgstr "此訂閱登入在 Gente 中尚不可用。請使用部署憑證或選擇其他供應商。"
+msgstr "此訂閱登入在 Your AI 中尚不可用。請使用部署憑證或選擇其他供應商。"
+
+#: apps/web/src/pages/model-settings/connection-controls.tsx
+msgid "This subscription sign-in is not available in Your AI yet. Use a deployment credential or choose another provider."
+msgstr "此訂閱登入在 Your AI 中尚不可用。請使用部署憑證或選擇其他供應商。"
 
 #: apps/mobile/app/(settings)/bot-template.tsx
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
@@ -12683,10 +12657,6 @@ msgstr "來自 {name} 的更新"
 msgid "Update from {name}: {text}"
 msgstr "來自 {name} 的更新：{text}"
 
-#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
-msgid "Update Gente to connect your calendar from the desktop app."
-msgstr "請更新 Gente，以便從桌面應用程式連線日曆。"
-
 #: apps/mobile/components/thread/message-bubble.tsx
 #: apps/web/src/components/messages/AskCard.tsx
 msgid "Update instructions?"
@@ -12700,6 +12670,10 @@ msgstr "更新進度"
 #: apps/web/src/lib/platform/client-update.ts
 msgid "Update required"
 msgstr "需要更新"
+
+#: apps/web/src/lib/integrations/meeting-calendar-connect.ts
+msgid "Update Your AI to connect your calendar from the desktop app."
+msgstr "請更新 Your AI，以便從桌面應用程式連線日曆。"
 
 #: apps/mobile/app/(settings)/vault.tsx
 #: apps/mobile/lib/api/api.ts
@@ -12831,10 +12805,6 @@ msgstr "使用預設值"
 msgid "Use defaults for {label}"
 msgstr "{label}使用預設值"
 
-#: apps/web/src/components/billing/ModelCredits.tsx
-msgid "Use Gente credits"
-msgstr "使用 Gente 額度"
-
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
 msgid "Use in this bot"
@@ -12871,7 +12841,7 @@ msgstr "輸入密碼時，請使用受保護的輸入。"
 
 #: apps/mobile/app/(settings)/billing.tsx
 msgid "Use Rakazo credits"
-msgstr "使用 Gente 額度"
+msgstr "使用 Your AI 額度"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "Use space default"
@@ -12880,6 +12850,10 @@ msgstr "使用空間預設模型"
 #: apps/web/src/components/models/ProviderSettingsForm.tsx
 msgid "Use up to 512 letters, digits, _ or -."
 msgstr "最多可使用 512 個英文字母、數字、_ 或 -。"
+
+#: apps/web/src/components/billing/ModelCredits.tsx
+msgid "Use Your AI credits"
+msgstr "使用 Your AI 額度"
 
 #: apps/mobile/app/(settings)/model-connection.tsx
 msgid "Use your own key"
@@ -13123,14 +13097,14 @@ msgstr "每週"
 msgid "Welcome back"
 msgstr "歡迎回來"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "Welcome to Gente"
-msgstr "歡迎使用 Gente"
-
 #: apps/mobile/app/(settings)/_layout.tsx
 #: apps/mobile/app/sign-in.tsx
 msgid "Welcome to Rakazo"
-msgstr "歡迎使用 Gente"
+msgstr "歡迎使用 Your AI"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "Welcome to Your AI"
+msgstr "歡迎使用 Your AI"
 
 #: apps/web/src/pages/shell/create-delete-dialogs.tsx
 msgid "What about its memories?"
@@ -13148,13 +13122,13 @@ msgstr "此空間可以使用什麼？"
 msgid "What do you do?"
 msgstr "你是做什麼的？"
 
-#: apps/web/src/components/account/SignupSurvey.tsx
-msgid "What do you most want Gente to help with?"
-msgstr "你最希望 Gente 幫你做什麼？"
-
 #: apps/mobile/app/(settings)/signup-survey.tsx
 msgid "What do you most want Rakazo to help with?"
-msgstr "你最希望 Gente 幫你做什麼？"
+msgstr "你最希望 Your AI 幫你做什麼？"
+
+#: apps/web/src/components/account/SignupSurvey.tsx
+msgid "What do you most want Your AI to help with?"
+msgstr "你最希望 Your AI 幫你做什麼？"
 
 #: apps/web/src/pages/shell/chat/message-cards.tsx
 msgid "What do you want me on first?"
@@ -13163,10 +13137,6 @@ msgstr "你想讓我先做什麼？"
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 msgid "What do you want? For example, land a job"
 msgstr "你想要什麼？例如：找到一份工作"
-
-#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
-msgid "What Gente learned on each topic, with where it learned it. Stays on this computer."
-msgstr "Gente 在每個主題上學到的內容，以及從哪裡學到。存在這台電腦上。"
 
 #: apps/web/src/pages/learning/LearnedOverlay.tsx
 msgid "What I learned about you"
@@ -13201,6 +13171,10 @@ msgstr "回傳內容"
 msgid "What to watch"
 msgstr "監視內容"
 
+#: apps/web/src/pages/knowledge/BrainsOverlay.tsx
+msgid "What Your AI learned on each topic, with where it learned it. Stays on this computer."
+msgstr "Your AI 在每個主題上學到的內容，以及從哪裡學到。存在這台電腦上。"
+
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "What your bots remember between chats."
 msgstr "你的機器人在聊天之間記住的內容。"
@@ -13219,10 +13193,6 @@ msgstr "收到電子郵件時"
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "When bots check with you before acting."
 msgstr "機器人何時在行動前先與你確認。"
-
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
-msgstr "當 Gente 替你在線上工作時（搜尋、瀏覽、應用程式），只會送出該任務需要的內容。已連接應用程式的資料會經過我們的連接應用程式供應商的雲端，僅限你選擇的應用程式。"
 
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"
@@ -13247,6 +13217,10 @@ msgstr "何時執行"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "When to use"
 msgstr "何時使用"
+
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "When Your AI works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through our connected-apps provider's cloud, only for the apps you choose."
+msgstr "當 Your AI 替你在線上工作時（搜尋、瀏覽、應用程式），只會送出該任務需要的內容。已連接應用程式的資料會經過我們的連接應用程式供應商的雲端，僅限你選擇的應用程式。"
 
 #: apps/web/src/pages/shell/host-computer-prompt.tsx
 msgid "Where should bots run?"
@@ -13421,6 +13395,32 @@ msgstr "你已用完 10 則免費訊息。請在設定中選擇方案以繼續�
 #: apps/mobile/app/(settings)/profile.tsx
 msgid "Your account"
 msgstr "你的帳號"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+#: apps/web/src/pages/shell/bots/avatar-studio-popover.tsx
+msgid "Your AI"
+msgstr "Your AI"
+
+#: apps/web/src/pages/model-settings/ModelRoleSettings.tsx
+#: apps/web/src/pages/onboarding/use-onboarding-model.ts
+msgid "Your AI credits"
+msgstr "Your AI 額度"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your AI is easing off this one for now."
+msgstr "Your AI 暫時會放慢這一項。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Your AI keeps each project's tasks up to date as it works."
+msgstr "Your AI 工作時會隨時更新每個專案的任務。"
+
+#: apps/web/src/pages/knowledge/GoalsOverlay.tsx
+msgid "Your AI works toward these on its own and tells you what it did."
+msgstr "Your AI 會自己朝這些目標努力，並告訴你它做了什麼。"
+
+#: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
+msgid "Your AI:"
+msgstr "Your AI："
 
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts

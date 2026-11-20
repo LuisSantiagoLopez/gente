@@ -198,7 +198,7 @@ async function boot(
 
 // Gente: the setup page was redesigned for beginners (one screen, starts by itself, no Docker or
 // cloud mode), so the upstream page's flows were replaced by these.
-describe("Gente setup", () => {
+describe("Your AI setup", () => {
   afterEach(() => {
     vi.useRealTimers();
     document.body.innerHTML = "";

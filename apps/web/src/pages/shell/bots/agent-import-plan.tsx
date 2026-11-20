@@ -131,10 +131,10 @@ export function AgentImportPlanReview({
   };
   const skipReason = (reason: AgentImportSkipReason) =>
     ({
-      runtime: t`Not used by Gente`,
+      runtime: t`Not used by Your AI`,
       invalid_skill: t`Not a valid skill`,
       builtin: t`Built-in`,
-      unsupported: t`Not supported in Gente`,
+      unsupported: t`Not supported in Your AI`,
       connected: t`Already connected`,
       invalid_file: t`Could not read these files`,
       default: defaultNote,

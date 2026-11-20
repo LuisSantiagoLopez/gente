@@ -17,7 +17,7 @@ export function LearnShortcuts({ onOpen }: { onOpen: (overlay: LearnOverlay) => 
     "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-body-sm text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary";
   return (
     <nav
-      aria-label="Gente"
+      aria-label="Your AI"
       data-gente-rise
       className="pointer-events-auto mx-auto flex w-fit items-center gap-1 pb-1"
     >

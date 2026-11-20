@@ -21,7 +21,7 @@ describe("Composio Connect key", () => {
   });
 });
 
-describe("Composio through Gente Cloud", () => {
+describe("Composio through Your AI Cloud", () => {
   it("sends Composio Connect traffic to the desktop relay when one is set, and nothing else", async () => {
     const { composioEndpoint } = await import("./composio-key.js");
     const relay = "http://127.0.0.1:5555/secret/mcp";

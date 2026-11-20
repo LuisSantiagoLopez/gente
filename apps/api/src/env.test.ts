@@ -293,12 +293,12 @@ describe("loadEnv", () => {
       loadEnv({
         ...base,
         SMTP_URL: " smtps://user:secret@smtp.example.test:465 ",
-        EMAIL_FROM: " Gente <no-reply@example.test> ",
+        EMAIL_FROM: " Your AI <no-reply@example.test> ",
         EMAIL_EMULATOR: "true",
       }),
     ).toMatchObject({
       smtpUrl: "smtps://user:secret@smtp.example.test:465",
-      emailFrom: "Gente <no-reply@example.test>",
+      emailFrom: "Your AI <no-reply@example.test>",
       emailEmulator: true,
     });
     expect(

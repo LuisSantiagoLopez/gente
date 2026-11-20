@@ -103,7 +103,7 @@ export function MeetingTranscript({
         <ConfirmDialog
           title={t`Delete this transcript?`}
           confirmLabel={t`Delete transcript`}
-          description={t`The transcript will be removed from Gente.`}
+          description={t`The transcript will be removed from Your AI.`}
           busy={removal.pending}
           error={
             removal.error && errorDetails(removal.error, t`Could not delete transcript`).message

@@ -281,7 +281,7 @@ describe("distillation", () => {
     const sources = await researchSources(prisma, "r1");
     expect(sources.map((source) => source.citation)).toEqual([
       { kind: "message", ref: "m1", label: "the request" },
-      { kind: "message", ref: "m2", label: "Gente's answer" },
+      { kind: "message", ref: "m2", label: "Your AI's answer" },
       { kind: "run", ref: "r1", label: "web_search: light marathon shoes" },
       { kind: "url", ref: "https://example.com/p41" },
     ]);

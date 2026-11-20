@@ -53,8 +53,8 @@ export function useImportStatusText() {
         return t`Contains code to run`;
       case "unsupported":
         return value.reason === "not_in_catalog"
-          ? t`Not in Gente's catalog`
-          : t`Not supported in Gente`;
+          ? t`Not in Your AI's catalog`
+          : t`Not supported in Your AI`;
     }
   };
   return { need, status };

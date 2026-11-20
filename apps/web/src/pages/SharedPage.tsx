@@ -57,7 +57,7 @@ function SharedPageBody() {
             <Trans>The owner may have turned off its link or deleted it.</Trans>
           </p>
           <a href="/" className={`${buttonVariants({ variant: "outline", size: "sm" })} mt-1`}>
-            <Trans>Open Gente</Trans>
+            <Trans>Open Your AI</Trans>
           </a>
         </div>
       </main>

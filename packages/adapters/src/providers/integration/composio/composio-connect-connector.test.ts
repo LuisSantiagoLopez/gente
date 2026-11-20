@@ -150,7 +150,7 @@ describe("ComposioConnectConnector", () => {
       auth: { bearer: async () => undefined },
       fetch: fake.fetchImpl,
     });
-    await expect(signedOut.catalog(context())).rejects.toThrow("Sign in to Gente");
+    await expect(signedOut.catalog(context())).rejects.toThrow("Sign in to Your AI");
   });
 
   it("filters by name and still offers an unlisted app by its exact slug", async () => {

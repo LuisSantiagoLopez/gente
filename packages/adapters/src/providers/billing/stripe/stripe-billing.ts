@@ -239,7 +239,7 @@ export class StripeBillingProvider implements BillingProvider {
                 price: await this.recurringPrice(
                   `rakazo_monthly_credits_${input.amountCents}`,
                   input.amountCents,
-                  "Gente monthly model credits",
+                  "Your AI monthly model credits",
                 ),
               }
             : {
@@ -247,7 +247,7 @@ export class StripeBillingProvider implements BillingProvider {
                 price_data: {
                   currency: "usd",
                   unit_amount: input.amountCents,
-                  product_data: { name: "Gente model credits" },
+                  product_data: { name: "Your AI model credits" },
                 },
               },
         ],
@@ -282,7 +282,7 @@ export class StripeBillingProvider implements BillingProvider {
           price: await this.recurringPrice(
             `rakazo_monthly_credits_${amountCents}`,
             amountCents,
-            "Gente monthly model credits",
+            "Your AI monthly model credits",
           ),
           quantity: 1,
         },
@@ -382,8 +382,8 @@ export class StripeBillingProvider implements BillingProvider {
         : `${BYOK_PRICE_KEY_PREFIX}${tier}_${period}_${amountCents}`,
       amountCents,
       tier === "standard"
-        ? "Gente own-key plan"
-        : `Gente own-key plan (${BYOK_TIERS[tier].name})`,
+        ? "Your AI own-key plan"
+        : `Your AI own-key plan (${BYOK_TIERS[tier].name})`,
       interval,
     );
   }

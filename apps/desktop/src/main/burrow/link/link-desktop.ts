@@ -61,7 +61,7 @@ export function createDesktopLink(input: {
     token: input.token,
     sealer: input.sealer,
     userDataDir: app.getPath("userData"),
-    deviceName: os.hostname().replace(/\.local$/, "") || "Gente",
+    deviceName: os.hostname().replace(/\.local$/, "") || "Your AI",
     localAnswer: (messages) => localAnswer(input.stackDir, messages),
     onAppMessage: (message) => {
       inbox.push(message);

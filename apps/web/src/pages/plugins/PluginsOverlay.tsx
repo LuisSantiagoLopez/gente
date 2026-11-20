@@ -398,15 +398,15 @@ export function PluginsOverlay({
             <DialogTitle className="text-heading2 text-foreground">
               <Trans>Connections</Trans>
             </DialogTitle>
-            {/* Gente: the private-by-default promise, stated where it changes. */}
+            {/* Your AI: the private-by-default promise, stated where it changes. */}
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
               <Trans>
-                When Gente works online for you (searching, browsing, apps), only what that task
+                When Your AI works online for you (searching, browsing, apps), only what that task
                 needs goes out. A connected app's data goes through our connected-apps provider's
                 cloud, only for the apps you choose.
               </Trans>
             </p>
-            {/* Gente: apps connect from their tiles below or from a card in chat; no setup step. */}
+            {/* Your AI: apps connect from their tiles below or from a card in chat; no setup step. */}
             <Button
               variant="outline"
               size="sm"

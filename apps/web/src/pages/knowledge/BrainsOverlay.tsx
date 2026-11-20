@@ -134,7 +134,7 @@ export function BrainsOverlay({
             </DialogTitle>
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
               <Trans>
-                What Gente learned on each topic, with where it learned it. Stays on this computer.
+                What Your AI learned on each topic, with where it learned it. Stays on this computer.
               </Trans>
             </p>
           </div>
@@ -254,7 +254,7 @@ export function BrainsOverlay({
               data-testid="brains-empty"
             >
               <Trans>
-                Nothing here yet. When Gente researches something or hears your feedback, it keeps
+                Nothing here yet. When Your AI researches something or hears your feedback, it keeps
                 notes here.
               </Trans>
             </p>

@@ -86,11 +86,11 @@ export async function openBrowserAuth(
             !code ||
             target.searchParams.has("error")
           ) {
-            response.writeHead(400).end(t("Sign-in callback rejected. Return to Gente to retry."));
+            response.writeHead(400).end(t("Sign-in callback rejected. Return to Your AI to retry."));
             return;
           }
           consumed = true;
-          response.end(t("You can close this tab and return to Gente."), close);
+          response.end(t("You can close this tab and return to Your AI."), close);
           options.onCallback({ code, state });
         });
         server.requestTimeout = 10_000;

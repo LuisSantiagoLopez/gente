@@ -201,7 +201,7 @@ export function GoalsOverlay({ onClose }: { onClose: () => void }) {
               <Trans>Goals</Trans>
             </DialogTitle>
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
-              <Trans>Gente works toward these on its own and tells you what it did.</Trans>
+              <Trans>Your AI works toward these on its own and tells you what it did.</Trans>
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -307,7 +307,7 @@ export function GoalsOverlay({ onClose }: { onClose: () => void }) {
             </div>
           ) : goals.length === 0 && !adding ? (
             <p className="py-6 text-center text-body-sm text-muted-foreground">
-              <Trans>No goals yet. Tell Gente what you want, or add one here.</Trans>
+              <Trans>No goals yet. Tell Your AI what you want, or add one here.</Trans>
             </p>
           ) : (
             <ul className="space-y-2" aria-label={t`Your goals`}>
@@ -377,7 +377,7 @@ export function GoalsOverlay({ onClose }: { onClose: () => void }) {
                               </Trans>
                             )}{" "}
                             {metrics.effectiveDial !== goal.dial ? (
-                              <Trans>Gente is easing off this one for now.</Trans>
+                              <Trans>Your AI is easing off this one for now.</Trans>
                             ) : null}
                           </p>
                         ) : null}

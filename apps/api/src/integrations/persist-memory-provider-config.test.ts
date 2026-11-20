@@ -794,7 +794,7 @@ describe("updateMemoryProviderConfig", () => {
       [
         "honcho",
         { workspaceId: "team", userPeerId: "bot-1" },
-        "rakazo-shared and IDs starting with bot- are reserved for Gente.",
+        "rakazo-shared and IDs starting with bot- are reserved for Your AI.",
       ],
       ["hindsight", { recallBudget: "deepest" }, "recallBudget is not one of its choices"],
       ["serenity", { allowWrites: "false" }, "Serenity endpoint is required."],

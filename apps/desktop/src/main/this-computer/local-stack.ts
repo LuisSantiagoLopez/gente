@@ -332,8 +332,8 @@ export function stackFailureMessage(
       );
     case "other":
       return phase === "pulling"
-        ? t("Downloading Gente images failed. Check the output below, then retry.")
-        : t("Gente services did not start. Check the output below, then retry.");
+        ? t("Downloading Your AI images failed. Check the output below, then retry.")
+        : t("Your AI services did not start. Check the output below, then retry.");
   }
 }
 
@@ -603,8 +603,8 @@ export class LocalStackController extends StackLifecycle {
         type: "docker-missing",
         message:
           this.deps.platform === "linux"
-            ? t("Gente needs Docker to run on this computer.")
-            : t("Gente needs Docker Desktop to run on this computer."),
+            ? t("Your AI needs Docker to run on this computer.")
+            : t("Your AI needs Docker Desktop to run on this computer."),
       });
       return;
     }

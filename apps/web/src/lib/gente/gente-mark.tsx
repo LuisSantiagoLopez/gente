@@ -20,7 +20,7 @@ export function GenteMark({ size = 22 }: { size?: number }) {
       height={size}
       viewBox="0 0 24 24"
       role="img"
-      aria-label="Gente"
+      aria-label="Your AI"
     >
       {DOTS.map((dot) => (
         <path key={dot.d} d={dot.d} fill={dot.accent ? "var(--primary)" : "currentColor"} />

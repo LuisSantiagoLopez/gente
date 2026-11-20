@@ -51,7 +51,7 @@ function catalogHosts(provider: string) {
 }
 
 describe.each(entries)("%s model provider", (id, definition) => {
-  it("is a provider the model registry lists, or one Gente runs itself", () => {
+  it("is a provider the model registry lists, or one Your AI runs itself", () => {
     expect(catalogIds(id).length > 0 || outsideCatalog.includes(id)).toBe(true);
   });
 

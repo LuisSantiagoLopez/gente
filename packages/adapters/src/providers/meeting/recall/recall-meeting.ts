@@ -58,7 +58,7 @@ const MAX_DOWNLOAD_BYTES = 8 * 1024 * 1024;
 
 export function buildRecallBotConfig(input: MeetingJoinRequest) {
   const liveVoice = Boolean(input.mediaUrl && input.liveVoice);
-  const recordingNotice = "Gente is capturing audio to create a meeting transcript.";
+  const recordingNotice = "Your AI is capturing audio to create a meeting transcript.";
   const liveNotice =
     " It also processes speech in real time with AI services and may reply aloud when addressed by name.";
   return {

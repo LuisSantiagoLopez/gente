@@ -1,6 +1,6 @@
 # Planes y pagos
 
-Gente corre su IA en tu computadora, así que no pagas por pregunta. Pagas por el plan que elijas.
+Your AI corre su IA en tu computadora, así que no pagas por pregunta. Pagas por el plan que elijas.
 
 ## Planes
 
@@ -8,7 +8,7 @@ Gente corre su IA en tu computadora, así que no pagas por pregunta. Pagas por e
 
 ## Horas de trabajo en línea
 
-Casi todo lo que hace Gente corre en tu computadora. El **trabajo en línea** es la parte que corre en una computadora en la nube, como un navegador completo que te pide un viaje.
+Casi todo lo que hace Your AI corre en tu computadora. El **trabajo en línea** es la parte que corre en una computadora en la nube, como un navegador completo que te pide un viaje.
 
 - Tu plan incluye cierta cantidad de horas cada mes. El tiempo solo cuenta mientras una computadora en la nube trabaja en tu tarea.
 - **Las horas incluidas que no uses vencen al final de cada mes.** No pasan al mes siguiente.
@@ -20,7 +20,7 @@ Tus chats se quedan en tu computadora de todas formas.
 
 - Puedes **cancelar cuando quieras**.
 - Cuando cancelas, tu plan **sigue activo hasta el final del periodo que ya pagaste**. Después ya no se renueva.
-- Para cambiar o cancelar, abre **Ayuda → Soporte de Gente** y pregunta.
+- Para cambiar o cancelar, abre **Ayuda → Soporte de Your AI** y pregunta.
 
 Tus chats y bots se quedan en tu computadora, sin importar tu plan.
 
@@ -32,4 +32,4 @@ Tus chats y bots se quedan en tu computadora, sin importar tu plan.
 
 ## Compras que hace un bot
 
-Lo que un bot compra para ti no es parte de tu plan. Tú apruebas cada compra en Link, y Link la cobra a la tarjeta que elegiste ahí. Gente nunca guarda tu tarjeta.
+Lo que un bot compra para ti no es parte de tu plan. Tú apruebas cada compra en Link, y Link la cobra a la tarjeta que elegiste ahí. Your AI nunca guarda tu tarjeta.

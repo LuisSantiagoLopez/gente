@@ -51,7 +51,7 @@ import { moveToFastDefault, OLLAMA_URL, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { startComputerBroker } from "./burrow/computer-broker.js";
 import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
-import { useLegacyUserData } from "./burrow/legacy-user-data.js";
+import { useLegacyKeychainName, useLegacyUserData } from "./burrow/legacy-user-data.js";
 import type { createDesktopLink } from "./burrow/link/link-desktop.js";
 import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
 import { startModelRouter } from "./burrow/model-router.js";
@@ -277,7 +277,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address redirects elsewhere. Enter the final Gente server address."),
+        error: t("That address redirects elsewhere. Enter the final Your AI server address."),
       };
     }
     if (!response.ok) {
@@ -286,7 +286,7 @@ async function probeServer(
         status: response.status,
         url,
         // Gente: calm words on screen; the status code stays in the result for logs.
-        error: t("That address didn't answer like a Gente server. Check it, then try again."),
+        error: t("That address didn't answer like a Your AI server. Check it, then try again."),
       };
     }
     const health = await readProbeJson(response);
@@ -295,7 +295,7 @@ async function probeServer(
         ok: false,
         status: response.status,
         url,
-        error: t("That address did not respond like a Gente server."),
+        error: t("That address did not respond like a Your AI server."),
       };
     }
     return {
@@ -324,7 +324,7 @@ async function offerDockerMove(userStackDir: string): Promise<StackChoice> {
     return "docker";
   const options: Electron.MessageBoxOptions = {
     type: "question",
-    message: t("Run Gente without Docker?"),
+    message: t("Run Your AI without Docker?"),
     detail: t("Your bots and data move over. Docker is stopped, not removed."),
     buttons: [t("Move"), t("Keep Docker")],
     defaultId: 0,
@@ -619,6 +619,10 @@ async function recoverFromCrashedSave(
 // Gente (renamed from Burrow): keep using an existing Burrow folder so chats, bots and the
 // workspace survive the rename. Nothing is moved, so a running workspace is never cut off.
 useLegacyUserData();
+// Your AI (renamed from Gente): secrets in an old data folder were sealed with the "Gente Safe
+// Storage" keychain key; Electron picks the key by app name as it starts, so use the old name
+// until the app is ready, then show "Your AI" again.
+const shownAppName = useLegacyKeychainName();
 // A second launch on Linux/Windows would rerun host-computer setup, overwrite
 // the saved token and restart the local stack under the running instance.
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
@@ -632,6 +636,7 @@ if (!hasSingleInstanceLock) {
   });
 }
 app.whenReady().then(async () => {
+  if (shownAppName) app.setName(shownAppName);
   if (!hasSingleInstanceLock) return;
   installSessionPermissions(session.defaultSession, permissionTarget);
   const userDataDir = app.getPath("userData");
@@ -676,15 +681,17 @@ app.whenReady().then(async () => {
       const options: Electron.MessageBoxOptions = {
         type: "info",
         title: t("Mac app control"),
-        message: readyForRestart ? t("Restart Gente to finish setup") : t("Set up Mac app control"),
+        message: readyForRestart
+          ? t("Restart Your AI to finish setup")
+          : t("Set up Mac app control"),
         detail: readyForRestart
           ? undefined
           : t(
-              "Commands already work. To use apps, allow Accessibility and Screen Recording for Gente in System Settings, then restart Gente.",
+              "Commands already work. To use apps, allow Accessibility and Screen Recording for Your AI in System Settings, then restart Your AI.",
             ),
         buttons: readyForRestart
-          ? [t("Restart Gente"), t("Not Now")]
-          : [t("Open System Settings"), t("Restart Gente"), t("Not Now")],
+          ? [t("Restart Your AI"), t("Not Now")]
+          : [t("Open System Settings"), t("Restart Your AI"), t("Not Now")],
         defaultId: 0,
         cancelId: readyForRestart ? 1 : 2,
         noLink: true,

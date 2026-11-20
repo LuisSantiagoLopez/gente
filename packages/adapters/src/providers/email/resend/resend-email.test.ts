@@ -5,7 +5,7 @@ import { deferred } from "@rakazo/core/test-async";
 import { describe, expect, it, vi } from "vitest";
 import { ResendEmailProvider } from "./resend-email.js";
 
-const config = { apiKey: "fake-api-key", from: "Gente <hello@example.test>" };
+const config = { apiKey: "fake-api-key", from: "Your AI <hello@example.test>" };
 const message = { to: "user@example.test", subject: "Reset password", text: "Reset link" };
 
 function provider(request: typeof fetch, timeoutMs = 1_000) {

@@ -1,6 +1,6 @@
-# What Gente can do
+# What Your AI can do
 
-Gente gives you AI helpers, called bots, that chat with you, use tools, follow routines and remember what matters to you. The thinking happens on your computer.
+Your AI gives you AI helpers, called bots, that chat with you, use tools, follow routines and remember what matters to you. The thinking happens on your computer.
 
 ## Bots and chats
 
@@ -25,14 +25,14 @@ A routine is work a bot does on a schedule or when something happens, like a mor
 
 Each bot can use its own computer: a browser, files and a terminal. It works there, not on your screen.
 
-- **Take control:** when a site needs your password or a code, open the bot's screen, type it yourself, then hand it back. Gente never types your passwords for you.
+- **Take control:** when a site needs your password or a code, open the bot's screen, type it yourself, then hand it back. Your AI never types your passwords for you.
 - By default the bot's computer runs privately on your own computer.
 
 ## Online work
 
 Some jobs work better on a computer in the cloud, like booking a ride or using a site that needs a full browser. This is **online work**. Your plan includes a number of hours of it each month (see [Plans and billing](billing)).
 
-- Gente stops before anything final, like confirming a ride or paying. You confirm it.
+- Your AI stops before anything final, like confirming a ride or paying. You confirm it.
 - The cloud computer only sees the site the bot is using for that task. Your chats stay on your computer.
 
 ## Teach a task
@@ -49,7 +49,7 @@ Press **Cmd+Shift+M** or **Ctrl+Shift+M** to connect apps like Gmail, Calendar, 
 
 ## Payments
 
-A bot can ask to buy something for you. You approve each purchase yourself in Link. Link gives a one-time card for that purchase. Gente never stores your card.
+A bot can ask to buy something for you. You approve each purchase yourself in Link. Link gives a one-time card for that purchase. Your AI never stores your card.
 
 ## Telegram
 
@@ -57,7 +57,7 @@ Talk to your bots from your phone through Telegram. Choose **Connect Telegram…
 
 ## Voice and dictation
 
-Talk instead of typing. Gente turns your voice into text on your computer. Your Mac or PC asks once for microphone permission.
+Talk instead of typing. Your AI turns your voice into text on your computer. Your Mac or PC asks once for microphone permission.
 
 ## Pages
 
@@ -72,4 +72,4 @@ Bots can build simple pages, like a dashboard or a document, to show their work.
 | Connect apps | Cmd+Shift+M | Ctrl+Shift+M |
 | Settings | Cmd+, | Ctrl+, |
 | All shortcuts | Cmd+/ | Ctrl+/ |
-| Gente Support | Cmd+Shift+/ | Ctrl+Shift+/ |
+| Your AI Support | Cmd+Shift+/ | Ctrl+Shift+/ |

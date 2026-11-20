@@ -297,7 +297,7 @@ export function createRouterContext(deps: RouterDeps) {
           ? {
               ...entry,
               managed: true,
-              billing: runsOnHostedCredits(auth, entry) ? "Uses Gente credits" : entry.billing,
+              billing: runsOnHostedCredits(auth, entry) ? "Uses Your AI credits" : entry.billing,
             }
           : entry,
       );

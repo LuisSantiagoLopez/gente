@@ -5,7 +5,7 @@ import { looksLikeBotToken, TelegramPoller, telegramBotName, telegramSecret } fr
 
 const TOKEN = "123456789:AAH_fake_token_value_for_tests_abcdef12";
 
-describe("Gente Telegram (long polling, no webhook)", () => {
+describe("Your AI Telegram (long polling, no webhook)", () => {
   it("checks a BotFather token and reads the bot's name", async () => {
     expect(looksLikeBotToken(TOKEN)).toBe(true);
     expect(looksLikeBotToken("not a token")).toBe(false);

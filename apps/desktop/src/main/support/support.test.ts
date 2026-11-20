@@ -239,7 +239,7 @@ describe("help articles", () => {
         );
   });
 
-  it("fill prices and hours from Gente Cloud's plan list, never by hand", async () => {
+  it("fill prices and hours from Your AI Cloud's plan list, never by hand", async () => {
     const plans = JSON.parse(
       await readFile(path.join(HELP_DIR, "plans.json"), "utf8"),
     ) as BillingPlans;
@@ -292,7 +292,7 @@ describe("support assistant", () => {
       articleTitle: "Fix a problem",
       heading: "The model server stopped",
       anchor: "the-model-server-stopped",
-      text: "Gente uses Ollama. Tap Restart Gente's services.",
+      text: "Your AI uses Ollama. Tap Restart Your AI's services.",
     },
   ]);
   const collect = async (gen: AsyncGenerator<SupportEvent>) => {
@@ -371,7 +371,7 @@ describe("support assistant", () => {
     );
     const done = events.at(-1);
     expect(done).toMatchObject({ type: "done", fromModel: false });
-    expect(done?.type === "done" && done.text).toContain("Restart Gente's services");
+    expect(done?.type === "done" && done.text).toContain("Restart Your AI's services");
   });
 
   it("offers a person only when stuck", () => {

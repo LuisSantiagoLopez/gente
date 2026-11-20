@@ -32,7 +32,7 @@ async function runMenuUpdateCheck() {
   if (state.phase === "available" || state.phase === "downloading") {
     // Say so now: the download can take minutes, and the menu click has no other answer.
     const downloading = alert({
-      message: t("Downloading Gente {version}…", { version: state.availableVersion ?? "" }),
+      message: t("Downloading Your AI {version}…", { version: state.availableVersion ?? "" }),
     });
     state = await desktop.desktopUpdater.download();
     // The result waits for that alert, so the two never show at once.
@@ -40,7 +40,7 @@ async function runMenuUpdateCheck() {
   }
   if (state.phase === "ready") {
     const { response } = await alert({
-      message: t("Gente {version} is ready to install.", {
+      message: t("Your AI {version} is ready to install.", {
         version: state.availableVersion ?? "",
       }),
       buttons: [t("Restart"), t("Later")],
@@ -66,7 +66,7 @@ async function runMenuUpdateCheck() {
     });
   } else if (state.phase === "idle") {
     await alert({
-      message: t("Gente is up to date."),
+      message: t("Your AI is up to date."),
       detail: t("Version {version}", { version: state.currentVersion }),
     });
   }
@@ -138,8 +138,8 @@ export function applicationMenuInstaller({
     };
     // Gente: the account opens Clerk's sign-in in the browser; local chat works without it.
     const account: Electron.MenuItemConstructorOptions = isSignedIn()
-      ? { label: t("Sign Out of Gente"), click: () => void signOutOfGente() }
-      : { label: t("Sign In to Gente…"), click: () => void signInToGente() };
+      ? { label: t("Sign Out of Your AI"), click: () => void signOutOfGente() }
+      : { label: t("Sign In to Your AI…"), click: () => void signInToGente() };
     const connectTelegram: Electron.MenuItemConstructorOptions = {
       label: t("Connect Telegram…"),
       click: () => openTelegramWindow(),
@@ -154,7 +154,7 @@ export function applicationMenuInstaller({
     };
     const changeServer: Electron.MenuItemConstructorOptions = {
       id: "change-rakazo-server",
-      label: t("Change Gente Server…"),
+      label: t("Change Your AI Server…"),
       accelerator: "CmdOrCtrl+Shift+K",
       click: () => showSetupWindow(),
     };
@@ -194,7 +194,7 @@ export function applicationMenuInstaller({
       role: "help",
       submenu: [
         {
-          label: t("Gente Support…"),
+          label: t("Your AI Support…"),
           accelerator: "CmdOrCtrl+Shift+/",
           click: () => openSupportWindow(),
         },

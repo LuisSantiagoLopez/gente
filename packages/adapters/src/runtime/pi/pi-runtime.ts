@@ -1134,6 +1134,8 @@ export class PiAgentRuntime implements AgentRuntime {
                 if (!tool) throw new Error("Pending checkpoint tool is no longer available");
                 const interaction =
                   call.id === restored.pendingToolCallId && ANSWERED_ON_RESUME.has(call.name);
+                // Gente: the answered card counts as this turn's one question.
+                if (interaction && call.name === "ask_user") host.askedThisTurn = true;
                 let result: AgentToolResult<JsonValue | undefined>;
                 try {
                   signal.throwIfAborted();

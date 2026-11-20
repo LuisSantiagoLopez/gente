@@ -1,34 +1,34 @@
-# Instale o Gente
+# Instale o Your AI
 
-O Gente é um assistente de IA privado que roda no seu próprio computador. A instalação leva um clique e um pouco de espera enquanto ele baixa.
+O Your AI é um assistente de IA privado que roda no seu próprio computador. A instalação leva um clique e um pouco de espera enquanto ele baixa.
 
 ## O que você precisa
 
 - Um Mac com Apple silicon (M1 ou mais novo) e macOS 26, ou um PC com Windows 11 (64 bits).
-- Pelo menos **16 GB de memória**. O modelo do Gente usa cerca de 11 GB enquanto trabalha.
-- Cerca de **20 GB livres no disco**. O modelo tem 8,9 GB, e o Gente deixa espaço de sobra.
+- Pelo menos **16 GB de memória**. O modelo do Your AI usa cerca de 11 GB enquanto trabalha.
+- Cerca de **20 GB livres no disco**. O modelo tem 8,9 GB, e o Your AI deixa espaço de sobra.
 - Internet para a primeira instalação. Depois disso, os chats funcionam sem internet.
 
 ## Instalar no Mac
 
-1. Baixe o Gente para Mac e abra o arquivo.
-2. Arraste o **Gente** para **Aplicativos**.
-3. Abra o Gente pela pasta Aplicativos.
-4. Se o seu Mac disser que não consegue verificar o app, clique com o botão direito no Gente, escolha **Open** (Abrir) e depois **Open** de novo. Você só faz isso uma vez.
+1. Baixe o Your AI para Mac e abra o arquivo.
+2. Arraste o **Your AI** para **Aplicativos**.
+3. Abra o Your AI pela pasta Aplicativos.
+4. Se o seu Mac disser que não consegue verificar o app, clique com o botão direito no Your AI, escolha **Open** (Abrir) e depois **Open** de novo. Você só faz isso uma vez.
 
 ## Instalar no Windows
 
-1. Baixe o instalador do Gente e abra.
+1. Baixe o instalador do Your AI e abra.
 2. Se o Windows mostrar "O Windows protegeu o computador", clique em **More info** (Mais informações) e depois em **Run anyway** (Executar assim mesmo). Você só faz isso uma vez.
-3. O Gente é instalado só para o seu usuário. Ele não precisa de um administrador.
+3. O Your AI é instalado só para o seu usuário. Ele não precisa de um administrador.
 
 ## Primeira vez
 
-Clique em **Get started** (Começar). Depois o Gente faz tudo sozinho:
+Clique em **Get started** (Começar). Depois o Your AI faz tudo sozinho:
 
 1. Confere se o seu computador tem memória suficiente.
 2. Instala o Ollama, o app gratuito que roda modelos de IA, se você não tiver.
-3. Baixa o modelo do Gente, Swift 1.5 27B (8,9 GB, uma vez só). Você vê uma barra de progresso. Se a internet cair, ele continua de onde parou.
+3. Baixa o modelo do Your AI, Swift 1.5 27B (8,9 GB, uma vez só). Você vê uma barra de progresso. Se a internet cair, ele continua de onde parou.
 4. Carrega o modelo uma vez para ter certeza de que funciona.
 5. Abre o seu espaço de trabalho privado e um chat.
 
@@ -40,13 +40,13 @@ Quase todo o tempo é o download de 8,9 GB. Com uma conexão rápida, leva cerca
 
 ## Atualizações
 
-O Gente se atualiza sozinho. Quando uma atualização está pronta, ela é instalada na próxima vez que você fechar e abrir o Gente. Você também pode escolher **Check for Updates** (Procurar atualizações) no menu do app.
+O Your AI se atualiza sozinho. Quando uma atualização está pronta, ela é instalada na próxima vez que você fechar e abrir o Your AI. Você também pode escolher **Check for Updates** (Procurar atualizações) no menu do app.
 
-Se quiser as correções antes, abra **Ajuda → Suporte do Gente**, clique na engrenagem e coloque **Atualizações** em **Correções antes**. A maioria das pessoas deve deixar em **Normais**.
+Se quiser as correções antes, abra **Ajuda → Suporte do Your AI**, clique na engrenagem e coloque **Atualizações** em **Correções antes**. A maioria das pessoas deve deixar em **Normais**.
 
 ## Desinstalar
 
-- **Mac:** feche o Gente e arraste ele de Aplicativos para o Lixo. Seus dados ficam na Biblioteca do seu usuário, em Application Support/Gente, até você apagar essa pasta.
-- **Windows:** vá em **Configurações → Aplicativos → Aplicativos instalados → Gente → Desinstalar**. Seus dados ficam na sua pasta AppData/Roaming/Gente até você apagar.
+- **Mac:** feche o Your AI e arraste ele de Aplicativos para o Lixo. Seus dados ficam na Biblioteca do seu usuário, em Application Support/Gente, até você apagar essa pasta.
+- **Windows:** vá em **Configurações → Aplicativos → Aplicativos instalados → Your AI → Desinstalar**. Seus dados ficam na sua pasta AppData/Roaming/Gente até você apagar.
 
 O Ollama e o modelo continuam instalados. Você pode removê-los pelo app do Ollama.

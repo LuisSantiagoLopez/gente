@@ -170,7 +170,7 @@ export class TeamChat {
   async mirrorTranscript(message: TeamChatMessage, files?: TranscriptFiles): Promise<void> {
     if (message.threadMessageId) return;
     const conversation = message.externalConversation;
-    if (!conversation.thread) throw new Error("Team chat conversation has no Gente thread");
+    if (!conversation.thread) throw new Error("Team chat conversation has no Your AI thread");
     const stored = files ?? {
       artifacts: await this.deps.prisma.artifact.findMany({
         where: {
@@ -223,7 +223,7 @@ export class TeamChat {
     if (!message || !from.includes(message.status)) return;
     const conversation = message.externalConversation;
     const thread = conversation.thread;
-    if (!thread) throw new Error("Team chat conversation has no Gente thread");
+    if (!thread) throw new Error("Team chat conversation has no Your AI thread");
     // A routine the previous release woke without claiming the message already answers it. Rows
     // it left stay in the database, so this goes only with a migration that settles them.
     if (await this.routineWoken(message)) {

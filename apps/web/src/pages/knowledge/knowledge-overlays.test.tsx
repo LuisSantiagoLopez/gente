@@ -249,7 +249,7 @@ it("opens a project on its tasks and feedback, folding the timeline and links aw
 
   await click("Timeline");
   expect(host.querySelector('[data-testid="project-timeline"]')?.textContent).toContain(
-    "Gente: Write copy: doing",
+    "Your AI: Write copy: doing",
   );
   await click("Brains and skills");
   await click("running shoes");

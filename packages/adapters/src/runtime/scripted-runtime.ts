@@ -752,7 +752,7 @@ code-b
         toolCalls: [
           {
             name: "destination.write",
-            args: { collection: "notes", title: "Gente result", body: prompt },
+            args: { collection: "notes", title: "Your AI result", body: prompt },
           },
         ],
         complete: true,

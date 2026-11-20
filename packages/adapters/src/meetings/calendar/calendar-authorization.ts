@@ -226,7 +226,7 @@ export class CalendarAuthorization {
             ) {
               throw new ClientError(
                 "SERVICE_UNAVAILABLE",
-                "Calendar sign-in could not be confirmed. Check the connection in Gente.",
+                "Calendar sign-in could not be confirmed. Check the connection in Your AI.",
                 undefined,
                 { cause: error },
               );

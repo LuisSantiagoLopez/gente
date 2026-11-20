@@ -114,12 +114,12 @@ function conversationContext(request: SemanticMemoryConversationRequest): string
     ...new Set(request.turns.flatMap((turn) => (turn.speaker ? [turn.speaker] : []))),
   ];
   if (request.conversation === "group") {
-    return `Group chat in Gente with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
+    return `Group chat in Your AI with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
   }
   if (speakers.length) {
-    return `Conversation in Gente with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
+    return `Conversation in Your AI with ${joinNames([...new Set([request.userName, request.botName, ...speakers])])}`;
   }
-  return `Chat in Gente between ${request.userName} and ${request.botName}, an AI assistant`;
+  return `Chat in Your AI between ${request.userName} and ${request.botName}, an AI assistant`;
 }
 
 /**
@@ -546,7 +546,7 @@ export class HindsightMemoryProvider implements SemanticMemoryProvider {
     const item = {
       content: truncateUtf8(content, MAX_CONTENT_BYTES),
       context:
-        "A fact a Gente AI assistant chose to remember about the people it works for and their work",
+        "A fact a Your AI AI assistant chose to remember about the people it works for and their work",
       timestamp: new Date().toISOString(),
     };
     // The same fact saved again by the same operation, as a retried tool call does, reuses its id,

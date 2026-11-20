@@ -13,7 +13,7 @@ const sealer = {
   unseal: (b: Buffer) => Buffer.from(b.toString().slice(7), "hex").toString(),
 };
 
-describe("Gente keyring", () => {
+describe("Your AI keyring", () => {
   it("moves the vault key and sign-in secret out of .env, keeps the same values, and is idempotent", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "gente-keyring-"));
     const key = "a".repeat(64);

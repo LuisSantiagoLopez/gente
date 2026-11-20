@@ -94,9 +94,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     ],
     what: c("tasks stopped running", "las tareas dejaron de correr", "as tarefas pararam de rodar"),
     calm: c(
-      "Gente couldn't restart its tasks. Your chats are safe. Restart your computer if it keeps happening.",
-      "Gente no pudo reiniciar sus tareas. Tus chats están a salvo. Reinicia tu computadora si sigue pasando.",
-      "O Gente não conseguiu reiniciar as tarefas. Suas conversas estão seguras. Reinicie o computador se continuar.",
+      "Your AI couldn't restart its tasks. Your chats are safe. Restart your computer if it keeps happening.",
+      "Your AI no pudo reiniciar sus tareas. Tus chats están a salvo. Reinicia tu computadora si sigue pasando.",
+      "O Your AI não conseguiu reiniciar as tarefas. Suas conversas estão seguras. Reinicie o computador se continuar.",
     ),
   },
   {
@@ -138,9 +138,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "suas conversas salvas pararam de abrir",
     ),
     calm: c(
-      "Gente can't open your saved chats right now. They're safe on this computer. Restart your computer if it keeps happening.",
-      "Gente no puede abrir tus chats guardados ahora. Están a salvo en esta computadora. Reinicia tu computadora si sigue pasando.",
-      "O Gente não consegue abrir suas conversas agora. Elas estão seguras neste computador. Reinicie o computador se continuar.",
+      "Your AI can't open your saved chats right now. They're safe on this computer. Restart your computer if it keeps happening.",
+      "Your AI no puede abrir tus chats guardados ahora. Están a salvo en esta computadora. Reinicia tu computadora si sigue pasando.",
+      "O Your AI não consegue abrir suas conversas agora. Elas estão seguras neste computador. Reinicie o computador se continuar.",
     ),
   },
   {
@@ -178,9 +178,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "o assistente parou de responder",
     ),
     calm: c(
-      "Gente is having trouble starting. Your chats are safe. Restart your computer if it keeps happening.",
-      "Gente tiene problemas para arrancar. Tus chats están a salvo. Reinicia tu computadora si sigue pasando.",
-      "O Gente está com problemas para iniciar. Suas conversas estão seguras. Reinicie o computador se continuar.",
+      "Your AI is having trouble starting. Your chats are safe. Restart your computer if it keeps happening.",
+      "Your AI tiene problemas para arrancar. Tus chats están a salvo. Reinicia tu computadora si sigue pasando.",
+      "O Your AI está com problemas para iniciar. Suas conversas estão seguras. Reinicie o computador se continuar.",
     ),
   },
   {
@@ -202,9 +202,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     ],
     what: c("the model stopped", "el modelo se detuvo", "o modelo parou"),
     calm: c(
-      "Gente's model isn't running. Restart your computer if it keeps happening.",
-      "El modelo de Gente no está funcionando. Reinicia tu computadora si sigue pasando.",
-      "O modelo do Gente não está rodando. Reinicie o computador se continuar.",
+      "Your AI's model isn't running. Restart your computer if it keeps happening.",
+      "El modelo de Your AI no está funcionando. Reinicia tu computadora si sigue pasando.",
+      "O modelo do Your AI não está rodando. Reinicie o computador se continuar.",
     ),
   },
   {
@@ -274,9 +274,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "faltava uma parte do app",
     ),
     calm: c(
-      "Part of Gente is missing. An update will fix it; reinstalling works too.",
-      "Falta una parte de Gente. Una actualización lo arregla; reinstalar también funciona.",
-      "Falta uma parte do Gente. Uma atualização conserta; reinstalar também funciona.",
+      "Part of Your AI is missing. An update will fix it; reinstalling works too.",
+      "Falta una parte de Your AI. Una actualización lo arregla; reinstalar también funciona.",
+      "Falta uma parte do Your AI. Uma atualização conserta; reinstalar também funciona.",
     ),
   },
   {
@@ -330,9 +330,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     ],
     what: c("your sign-in ran out", "tu sesión venció", "seu login expirou"),
     calm: c(
-      "Please sign in to Gente again. Your chats are safe.",
-      "Vuelve a iniciar sesión en Gente. Tus chats están a salvo.",
-      "Entre no Gente de novo. Suas conversas estão seguras.",
+      "Please sign in to Your AI again. Your chats are safe.",
+      "Vuelve a iniciar sesión en Your AI. Tus chats están a salvo.",
+      "Entre no Your AI de novo. Suas conversas estão seguras.",
     ),
   },
   {
@@ -365,9 +365,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "seus apps conectados perderam o link",
     ),
     calm: c(
-      "Your connected apps can't be reached right now. Gente keeps trying.",
-      "No se puede llegar a tus apps conectadas ahora. Gente sigue intentando.",
-      "Não dá para acessar seus apps conectados agora. O Gente continua tentando.",
+      "Your connected apps can't be reached right now. Your AI keeps trying.",
+      "No se puede llegar a tus apps conectadas ahora. Your AI sigue intentando.",
+      "Não dá para acessar seus apps conectados agora. O Your AI continua tentando.",
     ),
   },
   {
@@ -389,9 +389,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
         kind: "retry",
         id: "clear-cache",
         did: c(
-          "cleared Gente's temporary files",
-          "borré los archivos temporales de Gente",
-          "apaguei os arquivos temporários do Gente",
+          "cleared Your AI's temporary files",
+          "borré los archivos temporales de Your AI",
+          "apaguei os arquivos temporários do Your AI",
         ),
         run: (env) => env.clearCaches(),
         verifyWithinMs: 2_000,
@@ -399,9 +399,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
     ],
     what: c("the disk was almost full", "el disco estaba casi lleno", "o disco estava quase cheio"),
     calm: c(
-      "Your disk is almost full. Free up a few GB so Gente can keep working.",
-      "Tu disco está casi lleno. Libera unos GB para que Gente siga funcionando.",
-      "Seu disco está quase cheio. Libere alguns GB para o Gente continuar.",
+      "Your disk is almost full. Free up a few GB so Your AI can keep working.",
+      "Tu disco está casi lleno. Libera unos GB para que Your AI siga funcionando.",
+      "Seu disco está quase cheio. Libere alguns GB para o Your AI continuar.",
     ),
   },
   {
@@ -417,9 +417,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
         kind: "restart",
         id: "restart-on-free-port",
         did: c(
-          "moved Gente to a free address",
-          "moví Gente a una dirección libre",
-          "mudei o Gente para um endereço livre",
+          "moved Your AI to a free address",
+          "moví Your AI a una dirección libre",
+          "mudei o Your AI para um endereço livre",
         ),
         // Starting the API again picks a free port when the saved one is taken.
         run: (env) => env.restartService("api"),
@@ -439,14 +439,14 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       },
     ],
     what: c(
-      "another app took Gente's address",
-      "otra app tomó la dirección de Gente",
-      "outro app pegou o endereço do Gente",
+      "another app took Your AI's address",
+      "otra app tomó la dirección de Your AI",
+      "outro app pegou o endereço do Your AI",
     ),
     calm: c(
-      "Another app is using what Gente needs. Restart your computer if it keeps happening.",
-      "Otra app usa lo que Gente necesita. Reinicia tu computadora si sigue pasando.",
-      "Outro app está usando o que o Gente precisa. Reinicie o computador se continuar.",
+      "Another app is using what Your AI needs. Restart your computer if it keeps happening.",
+      "Otra app usa lo que Your AI necesita. Reinicia tu computadora si sigue pasando.",
+      "Outro app está usando o que o Your AI precisa. Reinicie o computador se continuar.",
     ),
   },
   {
@@ -480,9 +480,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "o download do modelo estava danificado",
     ),
     calm: c(
-      "Gente is downloading its model again. It picks up where it stopped.",
-      "Gente está descargando su modelo otra vez. Sigue donde se quedó.",
-      "O Gente está baixando o modelo de novo. Ele continua de onde parou.",
+      "Your AI is downloading its model again. It picks up where it stopped.",
+      "Your AI está descargando su modelo otra vez. Sigue donde se quedó.",
+      "O Your AI está baixando o modelo de novo. Ele continua de onde parou.",
     ),
   },
   {
@@ -499,9 +499,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
         kind: "reconnect",
         id: "reconnect-apps",
         did: c(
-          "reconnected your apps through Gente Cloud",
-          "reconecté tus apps a través de Gente Cloud",
-          "reconectei seus apps pelo Gente Cloud",
+          "reconnected your apps through Your AI Cloud",
+          "reconecté tus apps a través de Your AI Cloud",
+          "reconectei seus apps pelo Your AI Cloud",
         ),
         run: async (env) => {
           await env.refreshSignIn();
@@ -517,9 +517,9 @@ export const CATALOG: readonly FailureSpec<HealEnv>[] = [
       "seus apps conectados não estavam prontos",
     ),
     calm: c(
-      "Connected apps need you to sign in to Gente.",
-      "Las apps conectadas necesitan que inicies sesión en Gente.",
-      "Os apps conectados precisam que você entre no Gente.",
+      "Connected apps need you to sign in to Your AI.",
+      "Las apps conectadas necesitan que inicies sesión en Your AI.",
+      "Os apps conectados precisam que você entre no Your AI.",
     ),
   },
   {

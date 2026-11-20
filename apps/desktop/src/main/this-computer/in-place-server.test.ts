@@ -6,7 +6,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { installServerBundle, readServerBundle } from "./mac-runtime.js";
 
-describe("Gente runs its server from inside the app", () => {
+describe("Your AI runs its server from inside the app", () => {
   it("uses the unpacked server in the app's resources: nothing downloaded, nothing unpacked", async () => {
     const resources = await mkdtemp(path.join(os.tmpdir(), "gente-res-"));
     const server = path.join(resources, "rakazo-server");

@@ -40,7 +40,7 @@ export function registerTelegram(stackDir: string) {
     const username = await telegramBotName(token);
     if (!username) return { ok: false, message: "Telegram didn't recognize that token. Copy it again from BotFather." };
     if (!(await saveTelegramToken(token)))
-      return { ok: false, message: "Gente couldn't save the token to the keychain. Please try again." };
+      return { ok: false, message: "Your AI couldn't save the token to the keychain. Please try again." };
     // The server reads the token when it starts, so it restarts once (a few seconds).
     poller?.stop();
     poller = null;

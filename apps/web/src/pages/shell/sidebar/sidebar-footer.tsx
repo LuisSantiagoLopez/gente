@@ -242,7 +242,7 @@ export function SidebarFooter({
               </Button>
             ))}
             <div className="my-1 border-t border-border" />
-            {/* Gente (QA-018): no mobile app yet, so no mobile link. */}
+            {/* Your AI (QA-018): no mobile app yet, so no mobile link. */}
             {onInvite ? (
               <Button
                 variant="ghost"
