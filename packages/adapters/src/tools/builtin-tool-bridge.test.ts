@@ -63,8 +63,8 @@ describe("built-in tool bridge", () => {
     // most used deferred tool, and a lookup before each message cost a step; schedule_create says
     // whether a routine runs in its chat, and takes the events (webhook, Git, chat, email) a
     // routine can start on, saying a Git event needs no connected app; the deferred index names
-    // project_update.
-    expect(definitionBytes(listed)).toBeLessThanOrEqual(37_778);
+    // project_update. The product name "Your AI" is two bytes longer than "Gente" in three places.
+    expect(definitionBytes(listed)).toBeLessThanOrEqual(37_784);
     expect(deferred.map((tool) => tool.name)).toEqual(
       expect.arrayContaining(["render_plot", "create_space", "generate_secret", "scratchpad_add"]),
     );
