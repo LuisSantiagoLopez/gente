@@ -5,6 +5,7 @@
 // uses it. Local chat never needs an account; plan, hours and cloud tools do.
 import { app, Notification, shell } from "electron";
 import { createClerkSession, clerkConfig } from "./clerk-auth.js";
+import type { GenteAccountState } from "@rakazo/contracts";
 import { createGenteCloud, type GenteCloud } from "./gente-cloud.js";
 
 type Sealer = { seal(value: string): Buffer; unseal(sealed: Buffer): string };
@@ -49,4 +50,45 @@ export async function signOutOfGente(): Promise<void> {
   await session?.signOut();
   signedIn = false;
   onChange();
+}
+
+const EMPTY: Omit<GenteAccountState, "signedIn"> = {
+  plan: null,
+  messagesUsed: null,
+  messagesLimit: null,
+  hoursLeft: null,
+  monthlyHours: null,
+};
+
+/** What Settings shows. Offline or a cloud error keeps the values unknown, never zero. */
+export async function accountState(): Promise<GenteAccountState> {
+  if (!signedIn || !cloud) return { signedIn, ...EMPTY };
+  try {
+    const me = await cloud.me();
+    return {
+      signedIn: true,
+      plan: me.plan?.name ?? null,
+      messagesUsed: me.plan?.messagesUsed ?? null,
+      messagesLimit: me.plan?.messagesLimit ?? null,
+      hoursLeft:
+        typeof me.balance?.totalSeconds === "number" ? Math.floor(me.balance.totalSeconds / 360) / 10 : null,
+      monthlyHours: me.plan?.monthlyOnlineHours ?? null,
+    };
+  } catch {
+    return { signedIn: true, ...EMPTY };
+  }
+}
+
+/**
+ * Free plan: each message counts once at Gente Cloud (same id twice counts once). Signed out, or
+ * offline, local chat keeps working: it costs nothing, and a network blip must never block it.
+ */
+export async function consumeFreeMessage(messageId: unknown): Promise<boolean> {
+  if (typeof messageId !== "string" || !/^[\w-]{6,128}$/.test(messageId)) return true;
+  if (!signedIn || !cloud) return true;
+  try {
+    return (await cloud.consumeMessage(messageId, "app")).allowed;
+  } catch {
+    return true;
+  }
 }

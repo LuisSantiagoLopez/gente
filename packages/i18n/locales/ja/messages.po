@@ -143,6 +143,18 @@ msgstr "残り{0}"
 msgid "{0} MB"
 msgstr "{0} MB"
 
+#. placeholder {0}: Math.max(0, state.messagesLimit - state.messagesUsed)
+#. placeholder {1}: state.messagesLimit
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} of {1} free messages left"
+msgstr "無料メッセージ 残り {0} / {1}"
+
+#. placeholder {0}: state.hoursLeft
+#. placeholder {1}: state.monthlyHours
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} of {1} hours left"
+msgstr "残り {0} / {1} 時間"
+
 #. placeholder {0}: sender.name
 #: apps/web/src/pages/settings/ExternalConversationSettings.tsx
 msgid "{0} rollup hours"
@@ -5760,6 +5772,7 @@ msgstr "{count}個のモデルが見つかりました。"
 
 #: apps/mobile/app/paywall.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
+#: apps/web/src/lib/gente/account.tsx
 msgid "Free"
 msgstr "無料"
 
@@ -5776,7 +5789,6 @@ msgid "Free plan ends {day}"
 msgstr "無料プランは{day}に終了します"
 
 #: apps/mobile/app/(settings)/billing.tsx
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Free trial"
 msgstr "無料トライアル"
 
@@ -5873,10 +5885,6 @@ msgstr "このボットが完了したときや入力が必要なときに通知
 #: apps/web/src/pages/shell/meetings/meetings-dialog.tsx
 msgid "Get permission to record and share the transcript with this Space."
 msgstr "録音と、このスペースへの文字起こしの共有について許可を得てください。"
-
-#: apps/web/src/pages/shell/sidebar/sidebar-footer.tsx
-msgid "Get the mobile app"
-msgstr "モバイルアプリを入手"
 
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
@@ -7928,10 +7936,6 @@ msgstr "Genteでは使用しません"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "動作していません"
-
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
-msgstr "アプリを接続するまで、何もこのコンピューターの外に出ません。接続したアプリのデータはComposioのクラウドを経由します。アプリごとに、選んだアプリだけです。"
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -10213,6 +10217,7 @@ msgstr "サイドバーの密度"
 #: apps/mobile/app/sign-in.tsx
 #: apps/mobile/components/inbox/inbox-error-state.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/lib/models/localized-provider-hint.ts
 #: apps/web/src/pages/auth/Auth.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
@@ -10762,10 +10767,6 @@ msgstr "クレジットに申し込む"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Subscribe with your own AI"
 msgstr "自分の AI で申し込む"
-
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-msgid "Subscription"
-msgstr "サブスクリプション"
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -11764,6 +11765,10 @@ msgstr "アンインストール"
 msgid "Unit"
 msgstr "単位"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Unknown"
+msgstr "不明"
+
 #: apps/mobile/app/(settings)/messaging.tsx
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Unlink"
@@ -12361,6 +12366,10 @@ msgstr "メールを受信したとき"
 msgid "When bots check with you before acting."
 msgstr "ボットが実行前に確認するタイミング。"
 
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
+msgstr "Gente があなたのためにオンラインで作業するとき（検索、閲覧、アプリ）、その作業に必要なものだけが外に出ます。連携したアプリのデータは、あなたが選んだアプリについてのみ Composio のクラウドを経由します。"
+
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"
 msgstr "完了時または入力が必要なとき"
@@ -12540,6 +12549,10 @@ msgstr "友だちが新しいカードでトライアルを始めると、あな
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "準備が整いました"
+
+#: apps/web/src/pages/shell/composer/use-composer-actions.ts
+msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."
+msgstr "無料メッセージ10件を使い切りました。チャットを続けるには、設定でプランを選んでください。"
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/app/(settings)/profile.tsx

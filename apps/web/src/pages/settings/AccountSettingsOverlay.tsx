@@ -35,7 +35,7 @@ import {
 import { DesktopUpdateSection } from "../../components/DesktopUpdates";
 import { AccountDataSettings } from "../../components/settings/AccountDataSettings";
 import { SettingsGroup, SettingsRow } from "../../components/settings/SettingsRows";
-import { checkEntitlement } from "../../lib/burrow/entitlement";
+import { GentePlanControl } from "../../lib/gente/account";
 import { playSound, setSoundsEnabled, soundsEnabled } from "../../lib/gente/sounds";
 import { TrustedLinkSitesSettings } from "../../components/settings/TrustedLinkSitesSettings";
 import { authClient } from "../../lib/auth/auth";
@@ -288,9 +288,7 @@ export function GeneralSettingsPanels({
         <SettingsRow
           label={<Trans>Plan</Trans>}
           control={
-            <span className="text-body-sm text-muted-foreground">
-              {checkEntitlement().plan === "free-trial" ? <Trans>Free trial</Trans> : <Trans>Subscription</Trans>}
-            </span>
+            <GentePlanControl />
           }
         />
         <SettingsRow

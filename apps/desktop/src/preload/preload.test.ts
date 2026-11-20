@@ -50,6 +50,7 @@ describe("desktop preload bridge", () => {
       "clipboard",
       "computer",
       "device",
+      "gente",
       "locale",
       "mcpBrowser",
       "menu",
@@ -246,6 +247,7 @@ describe("setup preload bridge", () => {
     expect(globalName).toBe("rakazoSetup");
     expect(bridge.platform).toBe("linux");
     expect(Object.keys(bridge).sort()).toEqual([
+      "brain",
       "locale",
       "openLink",
       "platform",

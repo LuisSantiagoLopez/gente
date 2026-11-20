@@ -144,6 +144,18 @@ msgstr "剩餘 {0}"
 msgid "{0} MB"
 msgstr "{0} MB"
 
+#. placeholder {0}: Math.max(0, state.messagesLimit - state.messagesUsed)
+#. placeholder {1}: state.messagesLimit
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} of {1} free messages left"
+msgstr "剩餘 {0}/{1} 則免費訊息"
+
+#. placeholder {0}: state.hoursLeft
+#. placeholder {1}: state.monthlyHours
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} of {1} hours left"
+msgstr "剩餘 {0}/{1} 小時"
+
 #. placeholder {0}: sender.name
 #: apps/web/src/pages/settings/ExternalConversationSettings.tsx
 msgid "{0} rollup hours"
@@ -5761,6 +5773,7 @@ msgstr "找到 {count} 個模型。"
 
 #: apps/mobile/app/paywall.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
+#: apps/web/src/lib/gente/account.tsx
 msgid "Free"
 msgstr "免費"
 
@@ -5777,7 +5790,6 @@ msgid "Free plan ends {day}"
 msgstr "免費方案將於 {day} 結束"
 
 #: apps/mobile/app/(settings)/billing.tsx
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Free trial"
 msgstr "免費試用"
 
@@ -5874,10 +5886,6 @@ msgstr "在此機器人完成或需要輸入時收到通知"
 #: apps/web/src/pages/shell/meetings/meetings-dialog.tsx
 msgid "Get permission to record and share the transcript with this Space."
 msgstr "請先取得同意，再錄製會議並與此空間共用文字紀錄。"
-
-#: apps/web/src/pages/shell/sidebar/sidebar-footer.tsx
-msgid "Get the mobile app"
-msgstr "下載手機應用程式"
 
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
@@ -7929,10 +7937,6 @@ msgstr "Gente 不使用"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "無法正常工作"
-
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
-msgstr "在你連結應用程式之前，任何內容都不會離開你的電腦。已連結應用程式的資料會經過 Composio 的雲端，一次一個應用程式，且只限你選擇的應用程式。"
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -10214,6 +10218,7 @@ msgstr "側邊欄密度"
 #: apps/mobile/app/sign-in.tsx
 #: apps/mobile/components/inbox/inbox-error-state.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/lib/models/localized-provider-hint.ts
 #: apps/web/src/pages/auth/Auth.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
@@ -10763,10 +10768,6 @@ msgstr "訂閱額度"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Subscribe with your own AI"
 msgstr "使用自己的 AI 訂閱"
-
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-msgid "Subscription"
-msgstr "訂閱"
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -11765,6 +11766,10 @@ msgstr "解除安裝"
 msgid "Unit"
 msgstr "單位"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Unknown"
+msgstr "未知"
+
 #: apps/mobile/app/(settings)/messaging.tsx
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Unlink"
@@ -12362,6 +12367,10 @@ msgstr "收到電子郵件時"
 msgid "When bots check with you before acting."
 msgstr "機器人何時在行動前先與你確認。"
 
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
+msgstr "當 Gente 為你在線上工作時（搜尋、瀏覽、應用程式），只會送出該任務需要的內容。已連結應用程式的資料僅針對你選擇的應用程式經過 Composio 的雲端。"
+
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"
 msgstr "完成任務或需要輸入時"
@@ -12541,6 +12550,10 @@ msgstr "對方用新卡開始試用後，你將獲得一個月免費。"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "一切就緒"
+
+#: apps/web/src/pages/shell/composer/use-composer-actions.ts
+msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."
+msgstr "你已用完 10 則免費訊息。請在設定中選擇方案以繼續聊天。"
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/app/(settings)/profile.tsx

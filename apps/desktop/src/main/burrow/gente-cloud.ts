@@ -129,6 +129,13 @@ export function createGenteCloud(options: GenteCloudOptions) {
       return { plan: lastPlan, changed: true };
     },
 
+    /** User, plan, balance and settings in one call. */
+    me: async () =>
+      (await call<{
+        plan: { name?: string; messagesUsed?: number; messagesLimit?: number; monthlyOnlineHours?: number };
+        balance: { totalSeconds?: number };
+      }>("GET", "/v1/me")).data!,
+
     balance: async () =>
       (await call<{ planSeconds: number; topupSeconds: number; totalSeconds: number; totalHours: number }>(
         "GET",

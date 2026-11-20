@@ -143,6 +143,18 @@ msgstr "{0} restantes"
 msgid "{0} MB"
 msgstr "{0} MB"
 
+#. placeholder {0}: Math.max(0, state.messagesLimit - state.messagesUsed)
+#. placeholder {1}: state.messagesLimit
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} of {1} free messages left"
+msgstr "Restam {0} de {1} mensagens grátis"
+
+#. placeholder {0}: state.hoursLeft
+#. placeholder {1}: state.monthlyHours
+#: apps/web/src/lib/gente/account.tsx
+msgid "{0} of {1} hours left"
+msgstr "Restam {0} de {1} horas"
+
 #. placeholder {0}: sender.name
 #: apps/web/src/pages/settings/ExternalConversationSettings.tsx
 msgid "{0} rollup hours"
@@ -5760,6 +5772,7 @@ msgstr "{count} modelos encontrados."
 
 #: apps/mobile/app/paywall.tsx
 #: apps/web/src/components/billing/ModelCredits.tsx
+#: apps/web/src/lib/gente/account.tsx
 msgid "Free"
 msgstr "Grátis"
 
@@ -5776,7 +5789,6 @@ msgid "Free plan ends {day}"
 msgstr "O plano gratuito termina em {day}"
 
 #: apps/mobile/app/(settings)/billing.tsx
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
 msgid "Free trial"
 msgstr "Teste grátis"
 
@@ -5873,10 +5885,6 @@ msgstr "Receba notificações quando este bot terminar ou precisar de resposta"
 #: apps/web/src/pages/shell/meetings/meetings-dialog.tsx
 msgid "Get permission to record and share the transcript with this Space."
 msgstr "Peça permissão para gravar e compartilhar a transcrição com este Espaço."
-
-#: apps/web/src/pages/shell/sidebar/sidebar-footer.tsx
-msgid "Get the mobile app"
-msgstr "Baixar o aplicativo móvel"
 
 #: apps/mobile/components/computers/computer-update-progress.tsx
 #: apps/web/src/components/computers/ComputerUpdateProgress.tsx
@@ -7928,10 +7936,6 @@ msgstr "Não usado pelo Gente"
 #: apps/web/src/pages/plugins/parts.tsx
 msgid "Not working"
 msgstr "Não está funcionando"
-
-#: apps/web/src/pages/plugins/PluginsOverlay.tsx
-msgid "Nothing leaves your computer until you connect an app. A connected app's data goes through Composio's cloud, one app at a time, only for the apps you choose."
-msgstr "Nada sai do seu computador até você conectar um app. Os dados de um app conectado passam pela nuvem da Composio, um app por vez, só para os apps que você escolher."
 
 #: apps/mobile/app/(settings)/memory.tsx
 #: apps/web/src/pages/space/KnowledgeSection.tsx
@@ -10213,6 +10217,7 @@ msgstr "Densidade da barra lateral"
 #: apps/mobile/app/sign-in.tsx
 #: apps/mobile/components/inbox/inbox-error-state.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
+#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/lib/models/localized-provider-hint.ts
 #: apps/web/src/pages/auth/Auth.tsx
 #: apps/web/src/pages/model-settings/connection-controls.tsx
@@ -10762,10 +10767,6 @@ msgstr "Assinar créditos"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Subscribe with your own AI"
 msgstr "Assinar com sua própria IA"
-
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-msgid "Subscription"
-msgstr "Assinatura"
 
 #: apps/web/src/pages/auth/Paywall.tsx
 msgid "Subscription required"
@@ -11764,6 +11765,10 @@ msgstr "Desinstalar"
 msgid "Unit"
 msgstr "Unidade"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Unknown"
+msgstr "Desconhecido"
+
 #: apps/mobile/app/(settings)/messaging.tsx
 #: apps/web/src/pages/settings/MessagingSettingsPanel.tsx
 msgid "Unlink"
@@ -12361,6 +12366,10 @@ msgstr "Quando chegar um e-mail"
 msgid "When bots check with you before acting."
 msgstr "Quando os bots consultam você antes de agir."
 
+#: apps/web/src/pages/plugins/PluginsOverlay.tsx
+msgid "When Gente works online for you (searching, browsing, apps), only what that task needs goes out. A connected app's data goes through Composio's cloud, only for the apps you choose."
+msgstr "Quando o Gente trabalha online para você (pesquisar, navegar, apps), só sai o que essa tarefa precisa. Os dados de um app conectado passam pela nuvem da Composio, só para os apps que você escolher."
+
 #: apps/mobile/app/bot-settings.tsx
 msgid "When it finishes or needs input"
 msgstr "Quando terminar ou precisar de uma resposta"
@@ -12540,6 +12549,10 @@ msgstr "Você ganha um mês grátis quando eles começarem o teste com um cartã
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "Tudo pronto"
+
+#: apps/web/src/pages/shell/composer/use-composer-actions.ts
+msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."
+msgstr "Você usou suas 10 mensagens grátis. Escolha um plano nos Ajustes para continuar conversando."
 
 #: apps/mobile/app/(settings)/account.tsx
 #: apps/mobile/app/(settings)/profile.tsx

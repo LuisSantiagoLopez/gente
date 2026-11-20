@@ -26,9 +26,9 @@ jobs:
       - run: npm i -g pnpm@12.18.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
-      - name: Desktop (every main-process test, including the 14 language catalogs)
+      - name: Desktop (every test: main process, preload, setup page, 14 language catalogs)
         working-directory: apps/desktop
-        run: npx vitest run src/main
+        run: npx vitest run --root ../.. apps/desktop/src
       - name: Web (every unit test, including the 14 language catalogs)
         working-directory: apps/web
         run: npx vitest run --root ../.. apps/web/src apps/web/server
