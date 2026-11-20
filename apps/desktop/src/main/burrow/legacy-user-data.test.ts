@@ -19,3 +19,12 @@ describe("Your AI keeps Burrow data", () => {
     expect(pickUserData(`${support}/Gente`, () => false)).toBe(`${support}/Gente`);
   });
 });
+
+describe("the keychain key for a data folder", () => {
+  it("keeps the old Gente key for a folder from before the rename, and none for a new one", async () => {
+    const { keychainAppName } = await import("./legacy-user-data.js");
+    expect(keychainAppName("/Users/a/Library/Application Support/Burrow")).toBe("Gente");
+    expect(keychainAppName("/Users/a/Library/Application Support/Gente")).toBe("Gente");
+    expect(keychainAppName("/Users/a/Library/Application Support/Your AI")).toBeNull();
+  });
+});

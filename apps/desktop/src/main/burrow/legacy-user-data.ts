@@ -25,3 +25,23 @@ export function useLegacyUserData() {
   const chosen = pickUserData(current, existsSync);
   if (chosen !== current) app.setPath("userData", chosen);
 }
+
+/**
+ * The app name the OS keychain key for this data folder was made under. Electron names that key
+ * "<app name> Safe Storage" and reads the name once, as the app starts. Secrets in a folder from
+ * before the rename to "Your AI" were sealed under "Gente", so the app keeps that key for them.
+ */
+export function keychainAppName(userDataDir: string): string | null {
+  return (LEGACY_APP_NAMES as readonly string[]).includes(path.basename(userDataDir))
+    ? "Gente"
+    : null;
+}
+
+/** Before the app is ready: use the old keychain key for an old data folder. Returns the shown name to restore. */
+export function useLegacyKeychainName(): string | null {
+  const legacy = keychainAppName(app.getPath("userData"));
+  if (!legacy) return null;
+  const shown = app.getName();
+  app.setName(legacy);
+  return shown;
+}

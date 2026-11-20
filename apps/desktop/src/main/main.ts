@@ -51,7 +51,7 @@ import { moveToFastDefault, OLLAMA_URL, prewarmSwift } from "./burrow/brain.js";
 import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { startComputerBroker } from "./burrow/computer-broker.js";
 import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
-import { useLegacyUserData } from "./burrow/legacy-user-data.js";
+import { useLegacyKeychainName, useLegacyUserData } from "./burrow/legacy-user-data.js";
 import type { createDesktopLink } from "./burrow/link/link-desktop.js";
 import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
 import { startModelRouter } from "./burrow/model-router.js";
@@ -619,6 +619,10 @@ async function recoverFromCrashedSave(
 // Gente (renamed from Burrow): keep using an existing Burrow folder so chats, bots and the
 // workspace survive the rename. Nothing is moved, so a running workspace is never cut off.
 useLegacyUserData();
+// Your AI (renamed from Gente): secrets in an old data folder were sealed with the "Gente Safe
+// Storage" keychain key; Electron picks the key by app name as it starts, so use the old name
+// until the app is ready, then show "Your AI" again.
+const shownAppName = useLegacyKeychainName();
 // A second launch on Linux/Windows would rerun host-computer setup, overwrite
 // the saved token and restart the local stack under the running instance.
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
@@ -632,6 +636,7 @@ if (!hasSingleInstanceLock) {
   });
 }
 app.whenReady().then(async () => {
+  if (shownAppName) app.setName(shownAppName);
   if (!hasSingleInstanceLock) return;
   installSessionPermissions(session.defaultSession, permissionTarget);
   const userDataDir = app.getPath("userData");
@@ -676,7 +681,9 @@ app.whenReady().then(async () => {
       const options: Electron.MessageBoxOptions = {
         type: "info",
         title: t("Mac app control"),
-        message: readyForRestart ? t("Restart Your AI to finish setup") : t("Set up Mac app control"),
+        message: readyForRestart
+          ? t("Restart Your AI to finish setup")
+          : t("Set up Mac app control"),
         detail: readyForRestart
           ? undefined
           : t(
