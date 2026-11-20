@@ -1,5 +1,6 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { findMissingAppFiles } from "./app-files.js";
@@ -12,6 +13,7 @@ import { runHealthChecks } from "./health.js";
 import { HelpIndex, helpLang, loadHelpArticles, sectionsOf } from "./help-docs.js";
 import { renderMarkdown } from "./markdown.js";
 import { SupportMonitor } from "./monitor.js";
+import type { BillingPlans } from "./plans.js";
 import { failureSignature, normalizeMessage } from "./signature.js";
 
 const HELP_DIR = path.resolve(import.meta.dirname, "../../../../../docs/gente/help");
@@ -235,6 +237,21 @@ describe("help articles", () => {
         expect(slugs.has(match[1] ?? ""), `${article.lang}/${article.slug} -> ${match[1]}`).toBe(
           true,
         );
+  });
+
+  it("fill prices and hours from Gente Cloud's plan list, never by hand", async () => {
+    const plans = JSON.parse(
+      await readFile(path.join(HELP_DIR, "plans.json"), "utf8"),
+    ) as BillingPlans;
+    for (const article of articles)
+      expect(article.markdown, `${article.lang}/${article.slug}`).not.toContain("{{");
+    const billing = articles.filter((a) => a.slug === "billing");
+    expect(billing).toHaveLength(3);
+    for (const article of billing) {
+      for (const plan of plans.plans.filter((p) => p.onlineHours !== null))
+        expect(article.markdown).toContain(`**${plan.onlineHours} `);
+      expect(article.markdown).toContain(String(plans.topup.onlineHours));
+    }
   });
 
   it("maps app locales to a help language", () => {

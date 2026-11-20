@@ -6,7 +6,7 @@ How Gente finds problems on people's computers, fixes what it can there, and shi
 
 | Piece | Where | What it does |
 | --- | --- | --- |
-| Help articles | `docs/gente/help/{en,es,pt}` | Setup, features, troubleshooting, billing, privacy, support. Shown in the app and on the site. |
+| Help articles | `docs/gente/help/{en,es,pt}` | Setup, features, troubleshooting, billing, privacy, support. Shown in the app and on the site. Prices and hours are filled from Gente Cloud's `GET /v1/billing/plans` (`scripts/gente-plans.mjs` saves `plans.json`; the gates fail if it drifts). |
 | Support window | `apps/desktop/src/main/support`, `src/support-renderer` | Help → Gente Support. Local model answers from the articles; one-tap fixes; a person only when stuck. |
 | Health checks | `support/health.ts`, `support/probes.ts` | Model server, model files, disk, ports, app files, workspace, Telegram. Every 5 minutes and after errors. |
 | Self-heal | `support/monitor.ts` | Runs the safe automatic fixes (restart services) once per 30 minutes per problem. |
@@ -63,7 +63,7 @@ pnpm exec tsx scripts/gente-help-site.ts /tmp/site/help   # the help website
 
 ## Where it runs
 
-- **Intake and update feed:** Gente Cloud owns them (branch `cloud`): migration `cloud/db/migrations/010_self_heal.sql` (private `gente` schema, RLS forced) and the edge function `cloud/supabase/functions/gente-selfheal`. Builds and feed files live in the public `gente-updates` storage bucket of the same project.
+- **Intake and update feed:** Gente Cloud owns them (branch `cloud`): migration `cloud/db/migrations/010_self_heal.sql` (private `gente` schema, RLS forced) and the edge function `cloud/supabase/functions/gente-selfheal`. Installers go to GitHub releases (2 GB per file). Only the update feed (`latest.yml`, `latest-mac.yml`, `rollout.json`) lives in the public `gente-updates` storage bucket; it points at the release files.
 - **Settings in this repository:** `vars.GENTE_SELFHEAL_URL` (the function), `vars.GENTE_UPDATE_URL` (the bucket's public address), `secrets.SELF_HEAL_CLOUD_TOKEN` (CI token; only its sha256 is stored in `gente.selfheal_tokens`). The desktop build reads `GENTE_SELFHEAL_URL`; a build without it sends no reports.
 - **Branches and labels:** fixes merge into `canary`; labels `self-heal` and `blocked-on-owner`.
 - **Pages:** help at `/gente/help/`, status at `/gente/self-heal/` (`gente-pages.yml`).
@@ -71,7 +71,6 @@ pnpm exec tsx scripts/gente-help-site.ts /tmp/site/help   # the help website
 ### Blocked on owner
 
 - **Repair agent:** set `vars.SELF_HEAL_AGENT`, `vars.SELF_HEAL_AGENT_SETUP` and its key. Until then each failure group becomes an issue labeled `blocked-on-owner`, with the redacted evidence, and the pipeline stops there.
-- **Build uploads:** the project's storage upload limit is 50 MB, so installers are refused (413). Raise it in Supabase → Storage → Settings (2 GB is enough).
 - **Schedules:** GitHub runs `schedule` only from the default branch (`main`). Until these workflows are there, a push to `canary` runs them.
 - **Signing:** see below. Builds are unsigned and say so in the run summary; that never fails a run.
 

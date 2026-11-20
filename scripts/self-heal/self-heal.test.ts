@@ -18,6 +18,7 @@ import {
   publishCandidate,
   rollBack,
   setStage,
+  withAssetBase,
   withStaging,
 } from "./rollout.js";
 
@@ -237,6 +238,16 @@ describe("staged rollout", () => {
     expect(await feed.read("latest.yml")).toContain("version: 0.2.0");
     expect(withStaging("version: 1\nstagingPercentage: 5\n", 25)).toBe(
       "version: 1\nstagingPercentage: 25\n",
+    );
+  });
+});
+
+describe("installers on GitHub releases", () => {
+  it("points feed files at the release and leaves absolute addresses alone", () => {
+    const yml =
+      "version: 0.2.9\nfiles:\n  - url: Gente-0.2.9-arm64-mac.zip\n    sha512: x\n  - url: https://a.example/b.zip\npath: Gente-0.2.9-arm64-mac.zip\n";
+    expect(withAssetBase(yml, "https://github.com/o/r/releases/download/v0.2.9/")).toBe(
+      "version: 0.2.9\nfiles:\n  - url: https://github.com/o/r/releases/download/v0.2.9/Gente-0.2.9-arm64-mac.zip\n    sha512: x\n  - url: https://a.example/b.zip\npath: https://github.com/o/r/releases/download/v0.2.9/Gente-0.2.9-arm64-mac.zip\n",
     );
   });
 });

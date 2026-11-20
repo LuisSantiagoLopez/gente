@@ -6,8 +6,7 @@
 //
 //   tsx scripts/self-heal/cli.ts intake  --since <iso> [--dir <reports>] --out clusters.json
 //   tsx scripts/self-heal/cli.ts repair  --clusters clusters.json --signature <sig>
-//   tsx scripts/self-heal/cli.ts upload  --dir <builds>
-//   tsx scripts/self-heal/cli.ts publish --built <folder> --feed <folder|cloud>
+//   tsx scripts/self-heal/cli.ts publish --built <folder> --assets <release download url> --feed <folder|cloud>
 //   tsx scripts/self-heal/cli.ts rollout --feed <folder|cloud> [--apply]
 //   tsx scripts/self-heal/cli.ts status  --records <folder> --out status.html
 import { execFile } from "node:child_process";
@@ -29,6 +28,7 @@ import {
   rollBack,
   STAGES,
   setStage,
+  withAssetBase,
 } from "./rollout.js";
 import { renderStatusPage } from "./status-page.js";
 
@@ -245,36 +245,15 @@ const commands: Record<string, () => Promise<number>> = {
     return 0;
   },
 
-  /** Uploads every build file in a folder to the update bucket (signed upload, file by file). */
-  async upload() {
-    const dir = arg("dir");
-    for (const file of (await readdir(dir)).filter((f) => !f.endsWith(".yml"))) {
-      const signed = await cloud("/feed/upload-url", {
-        method: "POST",
-        body: JSON.stringify({ path: file }),
-      });
-      const { url } = (await signed.json()) as { url?: string };
-      if (!url) throw new Error(`no upload address for ${file} (${signed.status})`);
-      const put = await fetch(url, {
-        method: "PUT",
-        headers: { "content-type": "application/octet-stream" },
-        body: await readFile(path.join(dir, file)),
-      });
-      if (put.status === 413)
-        throw new Error(
-          `blocked-on-owner: ${file} is larger than the storage upload limit; raise it in Supabase → Storage → Settings`,
-        );
-      if (!put.ok) throw new Error(`upload ${file} answered ${put.status}`);
-      console.log(`uploaded ${file}`);
-    }
-    return 0;
-  },
-
   async publish() {
     const feed = feedFor(arg("feed"));
     const built: Record<string, string> = {};
+    // Installers live on the GitHub release (--assets); only the feed goes to Gente Cloud.
     for (const file of feedFiles("latest"))
-      built[file] = await readFile(path.join(arg("built"), file), "utf8");
+      built[file] = withAssetBase(
+        await readFile(path.join(arg("built"), file), "utf8"),
+        arg("assets"),
+      );
     await publishCandidate(feed, built);
     const version = feedVersion(built["latest.yml"] ?? null) ?? "unknown";
     await writeState(feed, { version, stage: STAGES[0], since: new Date().toISOString() });

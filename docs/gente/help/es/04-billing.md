@@ -4,14 +4,7 @@ Gente corre su IA en tu computadora, así que no pagas por pregunta. Pagas por e
 
 ## Planes
 
-| Plan | Qué incluye |
-| --- | --- |
-| **Free** | 10 mensajes para probar Gente. |
-| **Pro** | Chats con tus bots en tu computadora, más **39 horas** de trabajo en línea cada mes. |
-| **Max** | Todo lo de Pro, con **230 horas** de trabajo en línea cada mes. |
-| **Max Plus** | Todo lo de Pro, con **460 horas** de trabajo en línea cada mes. |
-
-El precio de cada plan se muestra cuando lo eliges.
+{{plans-table}}
 
 ## Horas de trabajo en línea
 
@@ -19,7 +12,7 @@ Casi todo lo que hace Gente corre en tu computadora. El **trabajo en línea** es
 
 - Tu plan incluye cierta cantidad de horas cada mes. El tiempo solo cuenta mientras una computadora en la nube trabaja en tu tarea.
 - **Las horas incluidas que no uses vencen al final de cada mes.** No pasan al mes siguiente.
-- Si necesitas más, puedes comprar **horas extra: 5 dólares por 10 horas**. Las horas extra duran **12 meses** desde el día en que las compras.
+- Si necesitas más, puedes comprar **horas extra: {{topup}}**. Las horas extra duran **12 meses** desde el día en que las compras.
 
 Tus chats se quedan en tu computadora de todas formas.
 

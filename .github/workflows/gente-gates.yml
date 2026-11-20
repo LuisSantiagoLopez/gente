@@ -29,6 +29,8 @@ jobs:
         run: pnpm exec vitest run apps/desktop/src scripts/self-heal
       - name: Repo checks
         run: pnpm checks
+      - name: Help prices match Gente Cloud's plan list
+        run: node scripts/gente-plans.mjs --check
       - name: Desktop typecheck
         run: pnpm --filter @rakazo/desktop exec tsc --noEmit -p tsconfig.json
 

@@ -1,0 +1,144 @@
+{
+  "plans": [
+    {
+      "id": "pro",
+      "monthlyCents": 2000,
+      "yearlyCents": 20400,
+      "currency": "usd",
+      "onlineHours": 37,
+      "hoursPacks": [
+        {
+          "hours": 8,
+          "cents": 500
+        }
+      ],
+      "features": [
+        {
+          "id": "local-chat",
+          "status": "available"
+        },
+        {
+          "id": "online-work",
+          "status": "available"
+        },
+        {
+          "id": "routines",
+          "status": "available"
+        },
+        {
+          "id": "connections",
+          "status": "available"
+        },
+        {
+          "id": "telegram",
+          "status": "available"
+        }
+      ]
+    },
+    {
+      "id": "max",
+      "monthlyCents": 10000,
+      "yearlyCents": null,
+      "currency": "usd",
+      "onlineHours": 215,
+      "hoursPacks": [
+        {
+          "hours": 8,
+          "cents": 500
+        }
+      ],
+      "features": [
+        {
+          "id": "local-chat",
+          "status": "available"
+        },
+        {
+          "id": "online-work",
+          "status": "available"
+        },
+        {
+          "id": "routines",
+          "status": "available"
+        },
+        {
+          "id": "connections",
+          "status": "available"
+        },
+        {
+          "id": "telegram",
+          "status": "available"
+        }
+      ]
+    },
+    {
+      "id": "max_plus",
+      "monthlyCents": 20000,
+      "yearlyCents": null,
+      "currency": "usd",
+      "onlineHours": 430,
+      "hoursPacks": [
+        {
+          "hours": 8,
+          "cents": 500
+        }
+      ],
+      "features": [
+        {
+          "id": "local-chat",
+          "status": "available"
+        },
+        {
+          "id": "online-work",
+          "status": "available"
+        },
+        {
+          "id": "routines",
+          "status": "available"
+        },
+        {
+          "id": "connections",
+          "status": "available"
+        },
+        {
+          "id": "telegram",
+          "status": "available"
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "monthlyCents": null,
+      "yearlyCents": null,
+      "currency": "usd",
+      "onlineHours": null,
+      "contactUs": true,
+      "features": []
+    },
+    {
+      "id": "family",
+      "monthlyCents": null,
+      "yearlyCents": null,
+      "currency": "usd",
+      "onlineHours": null,
+      "contactUs": true,
+      "features": []
+    },
+    {
+      "id": "enterprise",
+      "monthlyCents": null,
+      "yearlyCents": null,
+      "currency": "usd",
+      "onlineHours": null,
+      "contactUs": true,
+      "features": []
+    }
+  ],
+  "free": {
+    "messagesLimit": 10,
+    "onlineHours": 0
+  },
+  "topup": {
+    "cents": 500,
+    "onlineHours": 8
+  }
+}

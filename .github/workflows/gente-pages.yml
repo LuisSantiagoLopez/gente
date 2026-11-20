@@ -5,6 +5,9 @@ name: gente-pages
 on:
   push:
     branches: [canary]
+  # Prices and hours change in Gente Cloud; rebuild the help daily so the site follows.
+  schedule:
+    - cron: "5 7 * * *"
   workflow_run:
     workflows: [gente-self-heal]
     types: [completed]
@@ -31,6 +34,8 @@ jobs:
           node-version: 24.15.0
       - run: npm i -g pnpm@12.18.0
       - run: pnpm install --frozen-lockfile
+      - name: Plans and prices from Gente Cloud
+        run: node scripts/gente-plans.mjs
       - name: Help site
         run: pnpm exec tsx scripts/gente-help-site.ts site/help --base "/${{ github.event.repository.name }}/help"
       - name: Latest self-heal status (if a run has made one)
