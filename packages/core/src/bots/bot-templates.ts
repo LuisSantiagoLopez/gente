@@ -1,5 +1,6 @@
 import type { BotTemplate, ConnectionCatalogItem } from "@rakazo/contracts";
 import { matchConnectedAppCatalog } from "../integrations/app-connect.js";
+import { MONEY_RECIPES } from "./money-recipes.js";
 
 /**
  * Reviewed, ready-made bots. Bump a template's `version` whenever any of its content changes:
@@ -220,6 +221,8 @@ export const BOT_TEMPLATES: readonly BotTemplate[] = [
     ],
     apps: [],
   },
+  // Gente: recipes for the work people do to make money.
+  ...MONEY_RECIPES,
 ];
 
 export function findBotTemplate(id: string): BotTemplate | undefined {

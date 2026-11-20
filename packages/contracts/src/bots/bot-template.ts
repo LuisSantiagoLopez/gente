@@ -11,6 +11,12 @@ const slug = z
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   .max(64);
 
+/** Catalog app slugs may join words with underscores (google_business_profile). */
+const appSlug = z
+  .string()
+  .regex(/^[a-z0-9]+(?:[-_][a-z0-9]+)*$/)
+  .max(64);
+
 /**
  * A reviewed, ready-made bot: instructions, skills and routines that install paused, plus the
  * apps it works best with. Strict, and with no field for keys, memory, history, models or
@@ -50,7 +56,7 @@ export const BotTemplateSchema = z.strictObject({
     )
     .max(5),
   /** Connection catalog slugs; the bot asks for any that are missing and works without them. */
-  apps: z.array(slug).max(6),
+  apps: z.array(appSlug).max(6),
 });
 export type BotTemplate = z.infer<typeof BotTemplateSchema>;
 

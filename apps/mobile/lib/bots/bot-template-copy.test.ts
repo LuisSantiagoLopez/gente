@@ -1,14 +1,18 @@
-import { BOT_TEMPLATES } from "@rakazo/core";
+import { BOT_TEMPLATES, MONEY_RECIPES } from "@rakazo/core";
 import { afterEach, describe, expect, it } from "vitest";
 import { resetI18nForTests } from "../i18n/i18n";
 import { botTemplateCopy } from "./bot-template-copy";
 
 afterEach(() => resetI18nForTests());
 
+// Gente: the recipes ship in English first; their copy and translations come in their own PR.
+const recipes = new Set(MONEY_RECIPES.map((recipe) => recipe.id));
+const TRANSLATED = BOT_TEMPLATES.filter((template) => !recipes.has(template.id));
+
 describe("botTemplateCopy", () => {
   it("matches the server's English for every template", () => {
     resetI18nForTests("en");
-    for (const template of BOT_TEMPLATES) {
+    for (const template of TRANSLATED) {
       expect(botTemplateCopy(template)).toEqual({
         name: template.name,
         summary: template.summary,
@@ -19,7 +23,7 @@ describe("botTemplateCopy", () => {
 
   it("translates every template", () => {
     resetI18nForTests("de");
-    for (const template of BOT_TEMPLATES) {
+    for (const template of TRANSLATED) {
       const copy = botTemplateCopy(template);
       expect(copy.summary).not.toBe(template.summary);
       expect(copy.sample).not.toBe(template.sample);

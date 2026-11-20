@@ -11,7 +11,7 @@ import type {
 import { MeetingJoinRejected } from "@rakazo/adapter-kit";
 import type { Actor } from "@rakazo/contracts";
 import { MeetingPlatformSchema, MeetingStatusSchema } from "@rakazo/contracts";
-import { ClientError } from "@rakazo/core";
+import { ClientError, meetingBotName } from "@rakazo/core";
 import type { Prisma, PrismaClient, ThreadEvents } from "@rakazo/db";
 import { LeaseHeldError, runAsSystem, runAsSystemInTransaction, withLease } from "@rakazo/db";
 import { bestEffort } from "@rakazo/logging";
@@ -448,6 +448,10 @@ export class MeetingService {
       where: { id: row.botId, spaceId: row.spaceId, archivedAt: null },
       select: { name: true },
     });
+    const owner = await prisma.user.findUnique({
+      where: { id: row.userId },
+      select: { name: true },
+    });
     if (!row.meetingUrl || !bot || !(await this.member(row))) {
       await this.finish(row, "failed", errors.join);
       return;
@@ -456,7 +460,7 @@ export class MeetingService {
       sessionId: row.id,
       meetingUrl: row.meetingUrl,
       platform: MeetingPlatformSchema.parse(row.platform),
-      botName: `${bot.name.slice(0, 88)} · Gente`,
+      botName: meetingBotName(owner?.name),
       expiresAt: row.expiresAt,
     };
     const { count } = await prisma.meetingSession.updateMany({
