@@ -2,6 +2,7 @@ package com.deskhead.gente.net
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import okio.buffer
 
 /** A record of one request. Never holds content. */
 data class EgressRecord(
@@ -59,9 +60,26 @@ class EgressInterceptor(private val sink: EgressSink, private val clock: () -> L
         val started = clock()
         return try {
             val res = chain.proceed(req)
-            val inLen = res.body.contentLength().coerceAtLeast(0)
-            sink.record(EgressRecord(started, service, req.method, req.url.encodedPath, out, inLen, res.code))
-            res
+            // Count the bytes actually read (streams and chunked replies have no Content-Length),
+            // and record once when the body is closed.
+            val original = res.body
+            val counted = object : okhttp3.ResponseBody() {
+                private var read = 0L
+                private var done = false
+                private fun finish() { if (!done) { done = true; sink.record(EgressRecord(started, service, req.method, req.url.encodedPath, out, read, res.code)) } }
+                private val src = object : okio.ForwardingSource(original.source()) {
+                    override fun read(sink: okio.Buffer, byteCount: Long): Long {
+                        val n = super.read(sink, byteCount)
+                        if (n > 0) read += n else if (n == -1L) finish()
+                        return n
+                    }
+                    override fun close() { super.close(); finish() }
+                }.buffer()
+                override fun contentType() = original.contentType()
+                override fun contentLength() = original.contentLength()
+                override fun source(): okio.BufferedSource = src
+            }
+            res.newBuilder().body(counted).build()
         } catch (e: Exception) {
             sink.record(EgressRecord(started, service, req.method, req.url.encodedPath, out, 0, -1))
             throw e

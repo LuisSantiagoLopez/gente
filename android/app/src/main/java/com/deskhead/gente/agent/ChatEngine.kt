@@ -125,7 +125,7 @@ class ChatEngine(
                     when (e) {
                         is InferenceEvent.Text -> {
                             acc.append(e.delta)
-                            if (clock() - lastWrite > 50) { dao.updateMessage(replyId, acc.toString(), "streaming"); lastWrite = clock() }
+                            if (clock() - lastWrite >= 33) { /* about 30 updates a second */ dao.updateMessage(replyId, acc.toString(), "streaming"); lastWrite = clock() }
                         }
                         is InferenceEvent.ToolCall -> calls += e
                         is InferenceEvent.Done -> stub = e.stub
@@ -155,7 +155,7 @@ class ChatEngine(
         dao.upsertMessage(MessageEntity(replyId, chatId, "assistant", "", clock() + 1, ranOn = Ran.DEMO, status = "streaming"))
         val words = demoText().split(" ")
         val sb = StringBuilder()
-        for (w in words) { sb.append(w).append(' '); dao.updateMessage(replyId, sb.toString(), "streaming"); delay(28) }
+        for (w in words) { sb.append(w).append(' '); dao.updateMessage(replyId, sb.toString(), "streaming"); delay(33) }
         dao.updateMessage(replyId, sb.toString().trim(), "done")
     }
 

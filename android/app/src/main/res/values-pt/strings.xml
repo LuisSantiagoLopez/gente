@@ -212,7 +212,7 @@
     <string name="current_plan">Seu plano</string>
 
     <string name="pair_title">Conectar seu computador</string>
-    <string name="pair_body">No computador, abra o Gente, depois Configurações e depois Celular. Escaneie o código que aparece.</string>
+    <string name="pair_body">No computador, abra o Gente, depois Configurações e depois Dispositivos. Escaneie o código que aparece.</string>
     <string name="pair_scan">Escanear código</string>
     <string name="pair_paste">Colar o código</string>
     <string name="pair_code_hint">Código de conexão</string>

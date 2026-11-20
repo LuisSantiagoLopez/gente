@@ -33,7 +33,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.scale
@@ -86,11 +88,12 @@ fun reduceMotion(): Boolean {
 fun GenteMark(modifier: Modifier = Modifier, size: Dp = 28.dp, thinking: Boolean = false, ink: Color = LocalGenteExtras.current.markInk) {
     val paths: List<Path> = remember { MARK_PATHS.map { PathParser().parsePathString(it).toPath() } }
     val animate = thinking && !reduceMotion()
-    val t = if (animate) {
-        val inf = rememberInfiniteTransition(label = "mark")
-        inf.animateFloat(0f, 1f, infiniteRepeatable(tween(1400, easing = LinearEasing)), label = "phase").value
-    } else 0f
+    // The phase State is read inside the draw block only, so the animation redraws without recomposing.
+    val phase: androidx.compose.runtime.State<Float>? = if (animate) {
+        rememberInfiniteTransition(label = "mark").animateFloat(0f, 1f, infiniteRepeatable(tween(1400, easing = LinearEasing)), label = "phase")
+    } else null
     Canvas(modifier.size(size).semantics { contentDescription = "Gente" }) {
+        val t = phase?.value ?: 0f
         val s = this.size.minDimension / 24f
         scale(s, s, pivot = Offset.Zero) {
             paths.forEachIndexed { i, p ->
@@ -108,36 +111,50 @@ fun GenteMark(modifier: Modifier = Modifier, size: Dp = 28.dp, thinking: Boolean
 }
 
 /**
- * Streaming text that reveals smoothly. New characters glide in with a short fade at the tail
- * instead of popping, at a speed that catches up when the network sends a big chunk.
+ * Streaming text that reveals smoothly. The text is laid out only when new tokens arrive
+ * (the engine batches them at about 30 per second). The reveal itself runs in the draw phase:
+ * a short soft edge sweeps across the newest words each frame, with no recomposition and no
+ * relayout per frame.
  */
 @Composable
 fun StreamingText(text: String, streaming: Boolean, style: TextStyle, color: Color, modifier: Modifier = Modifier) {
-    var shown by remember { mutableIntStateOf(if (streaming) 0 else text.length) }
+    val reveal = remember { androidx.compose.runtime.mutableFloatStateOf(if (streaming) 0f else Float.MAX_VALUE) }
+    val layout = remember { arrayOfNulls<androidx.compose.ui.text.TextLayoutResult>(1) }
+    val target = text.length.toFloat()
+    val cover = MaterialTheme.colorScheme.background
     LaunchedEffect(text, streaming) {
-        if (!streaming && shown == 0) shown = text.length
-        while (shown < text.length) {
+        while (reveal.floatValue < target) {
             withFrameNanos { }
-            val gap = text.length - shown
-            shown = (shown + max(1, gap / 6)).coerceAtMost(text.length)
-        }
-        if (shown > text.length) shown = text.length
-    }
-    // The soft tail only exists while text is still arriving; a finished reply is fully solid.
-    // Text can also shrink (a final trim, an edit), so every index is clamped to the current length.
-    val end = shown.coerceIn(0, text.length)
-    val fade = if (!streaming && end >= text.length) 0 else 18
-    val solid = (end - fade).coerceAtLeast(0)
-    val annotated = remember(text, end, color, fade) {
-        buildAnnotatedString {
-            append(text.substring(0, solid))
-            for (i in solid until end) {
-                val a = 1f - (i - solid + 1).toFloat() / (fade + 1)
-                withStyle(SpanStyle(color = color.copy(alpha = 0.25f + 0.75f * a))) { append(text[i]) }
-            }
+            val gap = target - reveal.floatValue
+            reveal.floatValue = minOf(target, reveal.floatValue + max(1f, gap / 6f))
         }
     }
-    Text(annotated, style = style, color = color, modifier = modifier)
+    Text(
+        text, style = style, color = color,
+        onTextLayout = { layout[0] = it },
+        modifier = modifier
+            // No offscreen layer and no blend modes: the not-yet-shown part is covered with the
+            // background color, and the soft edge is a short fade into it. Three plain rects a frame.
+            .drawWithContent {
+                drawContent()
+                val l = layout[0] ?: return@drawWithContent
+                val n = l.layoutInput.text.length
+                val r = reveal.floatValue
+                if (!streaming && r >= n) return@drawWithContent
+                val k = r.toInt().coerceIn(0, n)
+                val line = l.getLineForOffset(k)
+                val x = l.getHorizontalPosition(k, usePrimaryDirection = true)
+                val top = l.getLineTop(line)
+                val bottom = l.getLineBottom(line)
+                val edge = 40.dp.toPx()
+                drawRect(
+                    androidx.compose.ui.graphics.Brush.horizontalGradient(0f to cover.copy(alpha = 0f), 1f to cover, startX = x - edge, endX = x),
+                    topLeft = Offset(x - edge, top), size = androidx.compose.ui.geometry.Size(edge, bottom - top),
+                )
+                drawRect(cover, Offset(x, top), androidx.compose.ui.geometry.Size(this.size.width - x, bottom - top))
+                if (bottom < this.size.height) drawRect(cover, Offset(0f, bottom), androidx.compose.ui.geometry.Size(this.size.width, this.size.height - bottom))
+            },
+    )
 }
 
 /** "Answered on our servers, not stored" and friends. */
@@ -169,11 +186,10 @@ fun Pill(text: String, modifier: Modifier = Modifier, container: Color = Materia
 /** A short hand-drawn underline under a word. The 10% hand-made touch. */
 @Composable
 fun Squiggle(modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary) {
-    val p = if (reduceMotion()) 0.5f else {
-        val inf = rememberInfiniteTransition(label = "sq")
-        inf.animateFloat(0f, 1f, infiniteRepeatable(tween(2600, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "p").value
-    }
+    val wiggle: androidx.compose.runtime.State<Float>? = if (reduceMotion()) null else
+        rememberInfiniteTransition(label = "sq").animateFloat(0f, 1f, infiniteRepeatable(tween(2600, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "p")
     Canvas(modifier) {
+        val p = wiggle?.value ?: 0.5f
         val w = size.width; val h = size.height
         val path = Path().apply {
             moveTo(0f, h * 0.6f)

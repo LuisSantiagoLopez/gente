@@ -133,3 +133,17 @@ class LinkCryptoTest {
         assertNull(LinkCrypto.parseQr("gente://link?v=2&id=x&pk=AAAA&s=BBBB"))
     }
 }
+
+class EgressCountTest {
+    @Test fun countsBytesActuallyReceivedEvenWhenStreamed() {
+        val server = mockwebserver3.MockWebServer()
+        server.enqueue(mockwebserver3.MockResponse.Builder().chunkedBody("x".repeat(5000), 512).build())
+        server.start()
+        val got = mutableListOf<com.deskhead.gente.net.EgressRecord>()
+        val c = okhttp3.OkHttpClient.Builder().addInterceptor(com.deskhead.gente.net.EgressInterceptor({ got += it })).build()
+        c.newCall(okhttp3.Request.Builder().url(server.url("/v1/inference/chat/completions")).build()).execute().use { it.body.string() }
+        server.close()
+        assertEquals(1, got.size)
+        assertEquals(5000L, got.single().bytesIn)
+    }
+}

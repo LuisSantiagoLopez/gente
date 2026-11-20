@@ -224,7 +224,7 @@
 
     <!-- Pairing -->
     <string name="pair_title">Pair your computer</string>
-    <string name="pair_body">On your computer, open Gente, then Settings, then Phone. Scan the code it shows.</string>
+    <string name="pair_body">On your computer, open Gente, then Settings, then Devices. Scan the code it shows.</string>
     <string name="pair_scan">Scan code</string>
     <string name="pair_paste">Paste code instead</string>
     <string name="pair_code_hint">Pairing code</string>

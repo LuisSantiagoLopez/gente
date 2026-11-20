@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
     id("io.github.takahirom.roborazzi")
+    id("androidx.baselineprofile")
 }
 
 // Release signing comes only from environment variables that scripts/bundle-release.sh
@@ -49,7 +50,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            if (uploadStore != null) signingConfig = signingConfigs.getByName("upload")
+            // Store builds always use the upload key (scripts/bundle-release.sh). Without it (local
+            // benchmark runs only) the debug key is used so the build can be installed.
+            signingConfig = signingConfigs.getByName(if (uploadStore != null) "upload" else "debug")
         }
         debug {
             applicationIdSuffix = ".debug"
@@ -126,6 +129,7 @@ dependencies {
     implementation("androidx.glance:glance-material3:1.2.0")
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
 
+    baselineProfile(project(":baselineprofile"))
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 

@@ -212,7 +212,7 @@
     <string name="current_plan">Tu plan</string>
 
     <string name="pair_title">Vincular tu computadora</string>
-    <string name="pair_body">En tu computadora, abre Gente, luego Ajustes y luego Teléfono. Escanea el código que aparece.</string>
+    <string name="pair_body">En tu computadora, abre Gente, luego Ajustes y luego Dispositivos. Escanea el código que aparece.</string>
     <string name="pair_scan">Escanear código</string>
     <string name="pair_paste">Pegar el código</string>
     <string name="pair_code_hint">Código para vincular</string>
