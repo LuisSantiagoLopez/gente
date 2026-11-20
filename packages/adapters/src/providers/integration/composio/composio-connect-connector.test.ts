@@ -43,7 +43,11 @@ function fakeConnect(initial: Record<string, Account[]> = {}) {
     const { name, arguments: args } = body.params;
     if (name === "COMPOSIO_MANAGE_CONNECTIONS") {
       const results: Record<string, unknown> = {};
-      for (const item of args.toolkits as Array<Record<string, string>>) {
+      for (const item of args.toolkits as Array<{
+        name: string;
+        action: string;
+        account_id?: string;
+      }>) {
         const list = accounts.get(item.name) ?? [];
         if (item.action === "add") {
           const account = { id: `${item.name}_new-${++added}`, status: "INITIATED" };
