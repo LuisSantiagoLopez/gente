@@ -38,6 +38,7 @@ jobs:
           packages/adapters/src/tools/builtin-skills.test.ts
           packages/adapters/src/web
           packages/adapters/src/providers/web
+          packages/adapters/src/providers/computer/e2b/gente-cloud-sdk.test.ts
           packages/adapters/src/runtime/pi/models
           packages/adapters/src/mcp
           packages/adapters/src/storage/thread-artifacts.test.ts
