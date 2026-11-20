@@ -6,6 +6,8 @@
 // Plain keyword scoring (BM25): it runs in a millisecond and needs no second model.
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import type { BillingPlans } from "./plans.js";
+import { fillPlans } from "./plans.js";
 
 export const HELP_LANGS = ["en", "es", "pt"] as const;
 export type HelpLang = (typeof HELP_LANGS)[number];
@@ -37,6 +39,10 @@ export function anchorFor(heading: string): string {
 
 export async function loadHelpArticles(dir: string): Promise<HelpArticle[]> {
   const articles: HelpArticle[] = [];
+  // Prices and hours come from Gente Cloud's plan list (scripts/gente-plans.mjs saves it here).
+  const plans = await readFile(path.join(dir, "plans.json"), "utf8")
+    .then((text) => JSON.parse(text) as BillingPlans)
+    .catch(() => null);
   for (const lang of HELP_LANGS) {
     let files: string[];
     try {
@@ -45,7 +51,7 @@ export async function loadHelpArticles(dir: string): Promise<HelpArticle[]> {
       continue;
     }
     for (const file of files) {
-      const markdown = await readFile(path.join(dir, lang, file), "utf8");
+      const markdown = fillPlans(await readFile(path.join(dir, lang, file), "utf8"), plans, lang);
       const title = /^#\s+(.+)$/m.exec(markdown)?.[1]?.trim() ?? file;
       articles.push({
         lang,

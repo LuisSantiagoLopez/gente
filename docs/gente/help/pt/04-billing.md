@@ -4,14 +4,7 @@ O Gente roda a IA no seu computador, então você não paga por pergunta. Você 
 
 ## Planos
 
-| Plano | O que inclui |
-| --- | --- |
-| **Free** | 10 mensagens para experimentar o Gente. |
-| **Pro** | Conversas com seus bots no seu computador, mais **39 horas** de trabalho online por mês. |
-| **Max** | Tudo do Pro, com **230 horas** de trabalho online por mês. |
-| **Max Plus** | Tudo do Pro, com **460 horas** de trabalho online por mês. |
-
-O preço de cada plano aparece quando você escolhe.
+{{plans-table}}
 
 ## Horas de trabalho online
 
@@ -19,7 +12,7 @@ Quase tudo que o Gente faz roda no seu computador. O **trabalho online** é a pa
 
 - Seu plano inclui um número de horas por mês. O tempo só conta enquanto um computador na nuvem trabalha na sua tarefa.
 - **As horas incluídas que você não usar expiram no fim de cada mês.** Elas não passam para o mês seguinte.
-- Se precisar de mais, você pode comprar **horas extras: 5 dólares por 10 horas**. As horas extras duram **12 meses** a partir do dia da compra.
+- Se precisar de mais, você pode comprar **horas extras: {{topup}}**. As horas extras duram **12 meses** a partir do dia da compra.
 
 Suas conversas continuam no seu computador de qualquer jeito.
 

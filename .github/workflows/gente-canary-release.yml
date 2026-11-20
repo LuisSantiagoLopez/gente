@@ -3,8 +3,11 @@ name: gente-canary-release
 # then builds Mac and Windows, publishes them to the update bucket, and starts the staged rollout:
 # canary channel at once, everyone else at 5%. gente-rollout.yml moves it to 25% and 100%.
 #
-# Needs: vars.GENTE_UPDATE_URL (the public address of Gente Cloud's gente-updates bucket),
-# vars.GENTE_SELFHEAL_URL and secrets.SELF_HEAL_CLOUD_TOKEN (uploads go through Gente Cloud).
+# Installers go to a GitHub release (up to 2 GB per file). Only the update feed (latest.yml,
+# latest-mac.yml, rollout state) goes to Gente Cloud's gente-updates bucket, through its
+# self-heal service; the feed points at the release's files.
+# Needs: vars.GENTE_UPDATE_URL (the bucket's public address, where installed apps read the feed),
+# vars.GENTE_SELFHEAL_URL and secrets.SELF_HEAL_CLOUD_TOKEN.
 # Signing is skipped until the certificates exist (CSC_LINK, CSC_KEY_PASSWORD, APPLE_ID,
 # APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID, WIN_CSC_LINK, WIN_CSC_KEY_PASSWORD); a skipped
 # signature is noted in the run summary and never fails the build.
@@ -105,11 +108,18 @@ jobs:
         with:
           path: out
           merge-multiple: true
-      - name: Upload the builds, then publish the feed (canary 100%, everyone else 5%)
+      - name: Installers to a GitHub release (pre-release until the rollout reaches 100%)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v0.2.${{ github.run_number }}"
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \
+            --title "Gente 0.2.${{ github.run_number }} (canary)" --notes "Staged rollout: canary channel, then 5%, 25%, 100%." \
+            $(ls out/*.dmg out/*.zip out/*.exe out/*.blockmap 2>/dev/null)
+          echo "ASSETS=https://github.com/$GITHUB_REPOSITORY/releases/download/$tag" >> "$GITHUB_ENV"
+      - name: Publish the feed to Gente Cloud (canary 100%, everyone else 5%)
         env:
           GENTE_SELFHEAL_URL: ${{ vars.GENTE_SELFHEAL_URL }}
           SELF_HEAL_CLOUD_TOKEN: ${{ secrets.SELF_HEAL_CLOUD_TOKEN }}
           GENTE_UPDATE_URL: ${{ vars.GENTE_UPDATE_URL }}
-        run: |
-          pnpm exec tsx scripts/self-heal/cli.ts upload --dir out
-          pnpm exec tsx scripts/self-heal/cli.ts publish --built out --feed cloud
+        run: pnpm exec tsx scripts/self-heal/cli.ts publish --built out --assets "$ASSETS" --feed cloud

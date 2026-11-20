@@ -81,3 +81,7 @@ No signing certificates exist on this Mac (`security find-identity -v -p codesig
 
 - **Mac:** an Apple Developer Program membership, a "Developer ID Application" certificate exported as .p12 → `CSC_LINK` (base64 or URL) and `CSC_KEY_PASSWORD`; for notarization `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID`. Unsigned Mac apps cannot update themselves with Squirrel.Mac, so Mac auto-update needs this.
 - **Windows:** an OV or EV code-signing certificate (or Azure Trusted Signing) → `WIN_CSC_LINK`, `WIN_CSC_KEY_PASSWORD`. Without it, SmartScreen warns on install and `verifyUpdateCodeSignature` has to stay off.
+
+## Pending checks
+
+- **Media privacy line:** the help says fal.ai keeps requests 90 days by default (confirmed from fal's docs). The stronger line (no record, fal copy deleted after 1 hour, from Gente Cloud commit 6716250c8) is held in `docs/gente/help-privacy-media-held.md`. After the first real fal job confirms it (no entry in fal's request history; the fal file link stops working after 1 hour), swap it into `docs/gente/help/*/05-privacy.md` together with the growth agent's `docs/gente/trust-page-media-held.html`.

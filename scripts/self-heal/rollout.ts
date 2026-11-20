@@ -129,6 +129,17 @@ export function withStaging(yml: string, percent: number): string {
   return lines.join("\n");
 }
 
+/**
+ * Points every file in a feed at where the installers really live (a GitHub release). The feed
+ * itself stays in Gente Cloud's bucket; electron-updater follows absolute file addresses.
+ */
+export function withAssetBase(yml: string, base: string): string {
+  return yml.replace(
+    /^([ \t]*(?:-[ \t]+)?(?:url|path):[ \t]*)(?!https?:\/\/)(\S+)[ \t]*$/gm,
+    (_m, key: string, file: string) => `${key}${base.replace(/\/$/, "")}/${file}`,
+  );
+}
+
 export const feedVersion = (yml: string | null) =>
   /^version:\s*(\S+)/m.exec(yml ?? "")?.[1] ?? null;
 
