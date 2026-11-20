@@ -1,4 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+import { inspect } from "node:util";
 import { setTimeout as sleep } from "node:timers/promises";
 import type { JobPublisher, JobWorkerHost } from "@rakazo/adapter-kit";
 import { unwrapEnvFromKeyManager } from "@rakazo/adapters";
@@ -479,6 +480,10 @@ async function main() {
 // row-level security bypass; jobs re-enter it explicitly (see wakeup.ts).
 runAsSystem("worker process", main).catch(async (error) => {
   logger.error("worker startup failed", error);
+  // Gente: the database driver's own detail (address, code) for a startup failure.
+  const detail = error as { meta?: unknown; cause?: unknown };
+  if (detail?.meta || detail?.cause)
+    console.error("worker startup failed detail:", inspect({ meta: detail.meta, cause: detail.cause }, { depth: 8 }));
   await logger.flush({ timeoutMs: 2_000 });
   // jobHost.start retries 53300 without bound above, so a saturated Postgres at
   // that step does not reach here. Other startup failures still exit.
