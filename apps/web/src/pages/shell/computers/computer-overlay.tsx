@@ -1,3 +1,5 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+import { PointerOverlay } from "../../../lib/gente/pointer-overlay";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import type { Bot, ComputerReleaseReason, ComputerStatus, TaughtSkill } from "@rakazo/contracts";
@@ -203,6 +205,13 @@ export function ComputerOverlay({
                   }}
                 />
               ))}
+              {bot ? (
+                <PointerOverlay
+                  botId={bot.id}
+                  screenWidth={computer?.screenWidth}
+                  screenHeight={computer?.screenHeight}
+                />
+              ) : null}
               {bot ? (
                 <TeachCaptureOverlay
                   botId={bot.id}

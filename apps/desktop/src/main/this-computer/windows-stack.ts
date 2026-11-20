@@ -123,6 +123,8 @@ export interface WindowsStackDeps {
   modelRouter?: () => string | null;
   /** Gente: the loopback relay for Composio through Gente Cloud. */
   composioProxy?: () => string | null;
+  /** Gente: the loopback broker for Gente Cloud computers; null unless the plan has hours. */
+  computerBroker?: () => string | null;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -451,7 +453,12 @@ export class WindowsStackController extends StackLifecycle {
     const e2bKey =
       (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
       (stackEnv.get("E2B_API_KEY") || undefined);
-    const computer = computerEnv(e2bKey, await readComputerChoice(this.deps.stackDir), "none");
+    const computer = computerEnv(
+      e2bKey,
+      await readComputerChoice(this.deps.stackDir),
+      "none",
+      this.deps.computerBroker?.() ?? null,
+    );
     const telegramToken = await this.deps.telegramToken?.().catch(() => undefined);
     const appEnv = this.appEnv(stackEnv, {
       DATABASE_URL: databaseUrl,

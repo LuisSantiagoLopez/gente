@@ -37,6 +37,7 @@ import { startSearchBroker } from "./burrow/search-broker.js";
 import { createAiMode } from "./burrow/ai-mode.js";
 import { startModelRouter } from "./burrow/model-router.js";
 import { startComposioRelay } from "./burrow/composio-relay.js";
+import { startComputerBroker } from "./burrow/computer-broker.js";
 import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
 import {
   accountCloud,
@@ -804,6 +805,14 @@ app.whenReady().then(async () => {
       composioProxy = relay.url;
     })
     .catch(() => undefined);
+  // Gente: bots' cloud computers through Gente Cloud sessions (billed only while one runs).
+  let computerBroker: { url: string; closeAll: () => Promise<void> } | null = null;
+  void startComputerBroker(accountCloud)
+    .then((broker) => {
+      computerBroker = broker;
+      app.once("will-quit", () => void broker.closeAll());
+    })
+    .catch(() => undefined);
   // Gente: the server's searches go through Gente Cloud when the person is signed in.
   let searchBroker: { url: string; token: string } | null = null;
   void startSearchBroker(accountCloud, isSignedIn)
@@ -895,6 +904,7 @@ app.whenReady().then(async () => {
       searchBroker: () => searchBroker,
       modelRouter: () => modelRouterBase,
       composioProxy: () => composioProxy,
+      computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
       telegramToken: () => readTelegramToken(),
     });
   };
@@ -946,6 +956,7 @@ app.whenReady().then(async () => {
           searchBroker: () => searchBroker,
       modelRouter: () => modelRouterBase,
       composioProxy: () => composioProxy,
+      computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
       telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null

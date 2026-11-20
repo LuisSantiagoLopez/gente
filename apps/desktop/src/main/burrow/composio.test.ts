@@ -17,6 +17,14 @@ describe("Gente bot computers", () => {
     await writeFile(path.join(dir, COMPUTER_CHOICE_FILE), "local\n");
     expect(await readComputerChoice(dir)).toBe("local");
     expect(computerEnv("e2b_x", "local", "local-vm")).toEqual({ SANDBOX_PROVIDER: "local-vm" });
+    // A paid plan uses Gente Cloud's computers through the broker, with no vendor key.
+    expect(computerEnv(undefined, "cloud", "local-vm", "http://127.0.0.1:1/s")).toEqual({
+      SANDBOX_PROVIDER: "e2b",
+      E2B_API_KEY: "gente-cloud",
+      GENTE_COMPUTER_BROKER_URL: "http://127.0.0.1:1/s",
+    });
+    expect(computerEnv(undefined, "local", "local-vm", "http://127.0.0.1:1/s")).toEqual({ SANDBOX_PROVIDER: "local-vm" });
+    expect(computerEnv(undefined, "cloud", "local-vm", null)).toEqual({ SANDBOX_PROVIDER: "local-vm" });
     expect(computerEnv(undefined, "cloud", "none")).toEqual({ SANDBOX_PROVIDER: "none" });
   });
 });

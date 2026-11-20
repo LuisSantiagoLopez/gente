@@ -202,3 +202,23 @@
     transition: transform 600ms var(--gente-spring);
   }
 }
+
+/* Gente: a soft ring where the bot clicked on its screen. */
+@keyframes gente-click-ripple {
+  from {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.6);
+  }
+}
+.gente-click-ripple {
+  animation: gente-click-ripple 900ms ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gente-click-ripple {
+    animation-duration: 1ms;
+  }
+}

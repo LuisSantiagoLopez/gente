@@ -26,8 +26,10 @@ export function initAccount(input: { sealer: Sealer | undefined; rebuildMenu: ()
     sealer: input.sealer,
   });
   cloud = createGenteCloud({ token: () => session?.accessToken() ?? Promise.resolve(null) });
-  void session.signedIn().then((value) => {
+  void session.signedIn().then(async (value) => {
     signedIn = value;
+    // Learn the plan early: Fast mode and cloud computers depend on it.
+    if (value) await accountState().catch(() => undefined);
     onChange();
   });
 }

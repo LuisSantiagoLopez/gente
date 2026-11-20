@@ -27,6 +27,8 @@ export const ProductEventType = z.enum([
   "computer.takeover.granted",
   "computer.takeover.released",
   "computer.command",
+  /** Gente: where the bot pointed or clicked on its screen, for the live view's highlight. */
+  "computer.pointer",
   "memory.revised",
   "routine.created",
   "routine.updated",
