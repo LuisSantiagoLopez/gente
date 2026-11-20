@@ -1,8 +1,19 @@
 import { build } from "esbuild";
 
+// Gente: dist/main.js is a small guard with no native imports; it loads dist/app-main.js.
+await build({
+  entryPoints: ["src/main/startup-guard.ts"],
+  outfile: "dist/main.js",
+  bundle: true,
+  platform: "node",
+  format: "esm",
+  target: "node24",
+  external: ["electron"],
+});
+
 await build({
   entryPoints: ["src/main/main.ts"],
-  outfile: "dist/main.js",
+  outfile: "dist/app-main.js",
   bundle: true,
   platform: "node",
   format: "esm",
