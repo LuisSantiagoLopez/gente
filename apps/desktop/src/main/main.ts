@@ -61,7 +61,13 @@ import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
 import { startWatchdogs } from "./burrow/watchdogs.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
-import { initAccount } from "./burrow/account.js";
+import {
+  accountState,
+  consumeFreeMessage,
+  initAccount,
+  signInToGente,
+  signOutOfGente,
+} from "./burrow/account.js";
 import { readComposioKey, readKeychainSecret, vendorKeysAllowed } from "./burrow/composio.js";
 import { WindowsStackController, windowsStackEligible } from "./this-computer/windows-stack.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
@@ -1050,6 +1056,16 @@ app.whenReady().then(async () => {
   );
   handleIpc("desktop.passkeys.rpIds", () => passkeyRpIds);
   handleIpc("desktop.monitoring.enabled", () => reportsErrors);
+  handleIpc("desktop.gente.account", () => accountState());
+  handleIpc("desktop.gente.consumeMessage", (_event, messageId: unknown) => consumeFreeMessage(messageId));
+  handleIpc("desktop.gente.signIn", async () => {
+    await signInToGente();
+    return accountState();
+  });
+  handleIpc("desktop.gente.signOut", async () => {
+    await signOutOfGente();
+    return accountState();
+  });
   handleIpc("desktop.server.change", () => {
     showSetupWindow();
   });

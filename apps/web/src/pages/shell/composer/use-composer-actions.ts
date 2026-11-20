@@ -1,3 +1,5 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+import { desktopBridge } from "../../../lib/platform/desktop";
 import { useLingui } from "@lingui/react/macro";
 import type {
   Bot,
@@ -359,6 +361,14 @@ export function useComposerActions({
         hasAttachments: attachments.length > 0,
       });
       if (plan.isNoOp) return false;
+      // Gente: the free plan includes 10 messages, counted once each by Gente Cloud.
+      const gente = desktopBridge()?.gente;
+      if (plan.shouldSend && gente && !(await gente.consumeMessage(clientNonce).catch(() => true))) {
+        setSendError(
+          t`You've used your 10 free messages. Choose a plan in Settings to keep chatting.`,
+        );
+        return false;
+      }
       const reroutedToGroup = Boolean(
         plan.rerouteGroupId && plan.rerouteGroupId !== initialGroupTarget,
       );

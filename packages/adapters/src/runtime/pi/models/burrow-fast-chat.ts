@@ -15,7 +15,7 @@ const FAST_CHAT_ENV = "BURROW_FAST_CHAT";
 export const QUICK_CHAT_MAX_CHARS = 140;
 /** Words that mean "do some work", which keeps thinking on even for a short message. */
 const TASK_WORDS =
-  /\b(create|make|build|write|research|find|search|schedule|remind|routine|every|daily|weekly|compare|analy[sz]e|plan|fix|debug|code|file|summari[sz]e|draft|email|book|order|calculate|step|steps)\b/i;
+  /\b(create|make|build|write|research|find|search|schedule|remind|routine|every|daily|weekly|compare|analy[sz]e|plan|fix|debug|code|file|files|summari[sz]e|draft|email|emails|inbox|book|order|calculate|step|steps|calendar|meeting|remember|forget|memory|open|run|install|telegram|whatsapp|slack|computer|browser|website|site|app|image|picture|photo|video|slides|deck|doc|document|spreadsheet|pdf|buy|pay|send|call|text|message|bot|bots|skill|connect)\b/i;
 
 type ChatMessage = { role?: string; content?: unknown; tool_calls?: unknown };
 
@@ -47,6 +47,13 @@ export function isQuickChat(messages: readonly ChatMessage[]): boolean {
   if (!last || last.role !== "user") return false;
   const words = userWords(last.content);
   return words.length > 0 && words.length <= QUICK_CHAT_MAX_CHARS && !TASK_WORDS.test(words);
+}
+
+/** A short question or remark with no task words, sent as a new turn (not inside a tool loop). */
+export function isPlainQuestion(messages: readonly ChatMessage[]): boolean {
+  if (!isQuickChat(messages)) return false;
+  const previous = messages.at(-2);
+  return !(previous && (previous.role === "tool" || previous.tool_calls));
 }
 
 export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
@@ -105,7 +112,10 @@ export function quickChatBody(
   }
   if (!Array.isArray(parsed.messages)) return null;
   const prefix = { ...parsed, messages: parsed.messages.slice(0, -1) };
-  if (isSmallTalk(parsed.messages)) {
+  // Gente: small talk, and short plain questions that need no tool ("who painted the Mona
+  // Lisa?"), skip the 23 tool schemas (~25k characters) and the long manual. They share one small
+  // cached prompt, so the first word comes in about a second instead of after ~10k tokens.
+  if (isSmallTalk(parsed.messages) || isPlainQuestion(parsed.messages)) {
     const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
     // One assistant, two engines: greetings go to the small fast model when Gente set one.
     const quick = process.env.BURROW_CHAT_MODEL?.trim();

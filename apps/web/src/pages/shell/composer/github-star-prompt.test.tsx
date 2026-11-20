@@ -40,26 +40,10 @@ async function send(times: number) {
   for (let i = 0; i < times; i++) await act(async () => recordMessageSent());
 }
 
-it("asks after the sixth message and never again once dismissed", async () => {
-  await send(5);
+// Gente (QA-024): people using Gente are never asked for a GitHub star.
+it("never asks for a GitHub star", async () => {
+  await send(10);
   expect(prompt()).toBeNull();
-  await send(1);
-  // The toaster mounts toasts on its own timers.
-  await vi.waitFor(() => expect(prompt()).not.toBeNull());
-  const link = prompt()?.querySelector("a");
-  expect(link?.getAttribute("href")).toBe("https://github.com/elie222/rakazo");
-
-  const notNow = [...(prompt()?.querySelectorAll("button") ?? [])].find(
-    (button) => button.textContent === "Not now",
-  );
-  await act(async () => notNow?.click());
-  expect(localStorage.getItem(STAR_PROMPT_DISMISSED_KEY)).toBe("1");
-  await vi.waitFor(() => expect(prompt()).toBeNull());
-
-  resetStarPromptSessionForTests();
-  const count = localStorage.getItem(STAR_PROMPT_SENT_KEY);
-  await send(3);
-  expect(localStorage.getItem(STAR_PROMPT_SENT_KEY)).toBe(count);
 });
 
 it("asks at most once per session", async () => {

@@ -266,7 +266,7 @@ it("shows a silent failed run summary with diagnostics behind Details", async ()
   try {
     await view.settled(() => expect(view.rows()).toHaveLength(1));
     expect(view.container.textContent).toContain(
-      "Your model provider took too long to respond. Try again.",
+      "Getting your AI ready again…",
     );
     const details = view.container.querySelector("details");
     expect(details?.open).toBe(false);

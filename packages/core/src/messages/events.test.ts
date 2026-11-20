@@ -252,7 +252,7 @@ describe("runFailureError", () => {
     ]);
     const shown = runFailureError({ type: "run.failed", payload: { error } });
     expect(normalizeRunError(shown!).summary).toBe(
-      "Your model provider took too long to respond. Try again. Your backup models also failed.",
+      "Getting your AI ready again… Your backup models also failed.",
     );
     expect(normalizeRunError(shown!).details).toBe(
       `Request timed out.\nfake-provider fake-model: ${"x".repeat(300)}…\nfake-provider fake-other: Timeout`,
