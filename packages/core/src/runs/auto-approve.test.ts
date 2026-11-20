@@ -52,6 +52,26 @@ describe("alwaysAskCategory", () => {
     ).toBe("delete");
   });
 
+  it("counts refunds, transfers, payouts, charges and subscription changes as spending", () => {
+    for (const slug of [
+      "STRIPE_CREATE_REFUND",
+      "SHOPIFY_REFUND_ORDER",
+      "STRIPE_CREATE_TRANSFER",
+      "STRIPE_CREATE_PAYOUT",
+      "PAYPAL_WITHDRAW_FUNDS",
+      "STRIPE_CREATE_CHARGE",
+      "STRIPE_CANCEL_SUBSCRIPTION",
+      "STRIPE_UPDATE_SUBSCRIPTION",
+      "CHARGEBEE_UPGRADE_PLAN",
+      "SQUARE_UPDATE_INVOICE",
+    ]) {
+      expect(kind("x", [slug]), slug).toBe("spend");
+    }
+    // Reading money records is not spending.
+    expect(kind("x", ["STRIPE_LIST_REFUNDS"])).toBeUndefined();
+    expect(kind("x", ["STRIPE_GET_SUBSCRIPTION"])).toBeUndefined();
+  });
+
   it("counts a connector write that invites people as a send", () => {
     expect(kind("x", ["GOOGLECALENDAR_CREATE_EVENT"], ["ana@example.com"])).toBe("send");
     expect(kind("x", ["GOOGLECALENDAR_CREATE_EVENT"])).toBeUndefined();
