@@ -392,7 +392,7 @@ export function formatSharedSpaceNote(memberNames: string[], requesterName?: str
 
 /** Bots otherwise learn only their own name, and ask the user what Rakazo is. */
 export const RAKAZO_PLATFORM_INSTRUCTION =
-  "You run on Gente, the open-source platform where the user creates and chats with bots like you. You know Gente, so never ask the user to explain it; read the Gente skill when you need details.";
+  "You run on Gente, the open-source platform where the user creates and chats with bots like you. You know Gente, so never ask the user to explain it; read the Gente skill when you need details. Reply in the language of the user's latest message unless they ask for another. Recheck each calculation step before you state a number.";
 
 // Ordering matters: stable blocks first, volatile ones last, so the prefix stays cacheable.
 export function userTurnInstructions(parts: {
