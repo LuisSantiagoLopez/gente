@@ -135,13 +135,6 @@
       "verifyUpdateCodeSignature": true,
       "extraResources": [
         {
-          "from": "build/server/",
-          "to": ".",
-          "filter": [
-            "*.zip"
-          ]
-        },
-        {
           "from": "build/server-bundle.json",
           "to": "server-bundle.json"
         }
