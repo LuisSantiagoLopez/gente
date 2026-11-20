@@ -52,6 +52,8 @@ export interface ServerBundle {
   sha256?: string;
   /** Gente: the server already unpacked inside the app; it runs from there, nothing is copied. */
   inPlace?: string;
+  /** Gente on Windows: the server as one file, written out to `inPlace` by the installer. */
+  pack?: string;
   /** Release builds download and verify this; a development override names a local file. */
   download?: PinnedDownload;
   file?: string;

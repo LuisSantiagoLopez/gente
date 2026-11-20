@@ -939,11 +939,22 @@ app.whenReady().then(async () => {
           override: process.env.RAKAZO_SERVER_BUNDLE,
         })
     : null;
+  // Windows ships the server as one file the installer writes out (long paths); the stack
+  // writes it out itself if that step did not finish.
+  const serverPack = path.join(process.resourcesPath, "rakazo-server.pack");
+  const plainOrPack =
+    process.platform === "win32" && app.isPackaged && existsSync(serverPack)
+      ? {
+          version: plainBundle?.version ?? "win-pack",
+          inPlace: path.join(process.resourcesPath, "rakazo-server"),
+          pack: serverPack,
+        }
+      : plainBundle;
   const windowsBundle =
-    plainBundle !== null &&
+    plainOrPack !== null &&
     (process.platform === "win32" ||
-      (plainBundle.inPlace !== undefined && existsSync(postgresBin(plainBundle.inPlace, "pg_ctl"))))
-      ? plainBundle
+      (plainOrPack.inPlace !== undefined && existsSync(postgresBin(plainOrPack.inPlace, "pg_ctl"))))
+      ? plainOrPack
       : null;
   desktop.localStack =
     windowsBundle !== null
