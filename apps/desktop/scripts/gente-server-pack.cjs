@@ -118,6 +118,8 @@ function unpack(packFile, target) {
     fs.mkdirSync(path.dirname(at), { recursive: true });
     fs.symlinkSync(dest, at, process.platform === "win32" ? "junction" : "dir");
   }
+  // The app re-points these at its own spelling of the folder before each start.
+  fs.writeFileSync(path.join(root, "gente-links.json"), JSON.stringify(links));
   const stat = fs.statSync(packFile);
   fs.writeFileSync(path.join(root, COMPLETE), `${stat.size}:${Math.trunc(stat.mtimeMs)}`);
   return { files: count, links: links.length };
