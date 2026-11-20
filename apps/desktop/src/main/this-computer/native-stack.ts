@@ -15,8 +15,6 @@ import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
-import type { Sealer } from "../burrow/keyring.js";
-import { sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { telegramSecret } from "../burrow/telegram.js";
 import { t } from "../i18n.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";

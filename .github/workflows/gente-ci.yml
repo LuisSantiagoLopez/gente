@@ -41,6 +41,12 @@ jobs:
           packages/adapters/src/providers/computer/e2b/gente-cloud-sdk.test.ts
           packages/adapters/src/runtime/pi/models
           packages/adapters/src/mcp
+          packages/adapters/src/computers/computer-task-limit.test.ts
+          packages/adapters/src/computers/orphan-computers.test.ts
+          packages/adapters/src/runs/lifecycle/run-model-outage.test.ts
+          packages/adapters/src/runs/tools/run-tools.test.ts
+          packages/adapters/src/runs/wakeups/wakeup.test.ts
+          packages/adapters/src/runtime/pi/stream/pi-runtime-yield.test.ts
           packages/adapters/src/storage/thread-artifacts.test.ts
           packages/adapters/src/storage/thread-artifacts.store.test.ts
           packages/core/src/primitives/user-error.test.ts
