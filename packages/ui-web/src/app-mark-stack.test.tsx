@@ -40,9 +40,9 @@ it("uses the same inset tile for artwork, missing artwork, and failed artwork", 
     expect(rings[i]!.classList.contains("ring-sidebar-accent")).toBe(true);
     expect(tile.style.width).toBe("24px");
     expect(tile.style.height).toBe("24px");
-    // A square logo fits inside the round plate without its corners being cut.
-    expect(tile.style.padding).toBe("4px");
-    expect(tile.classList.contains("overflow-hidden")).toBe(false);
+    // A square logo sits in a smaller box (24 - 2×4 px) inside the round plate, so it is never cut.
+    const box = tile.querySelector<HTMLElement>("[data-logo-box]");
+    if (box) expect(box.style.width).toBe("16px");
   }
   expect(rings.map((ring) => ring.style.marginLeft)).toEqual(["0px", "-2px", "-2px"]);
   expect(rings.map((ring) => ring.style.zIndex)).toEqual(["0", "1", "2"]);
@@ -67,7 +67,7 @@ it("scales its geometry and retries replacement artwork", async () => {
   await render("https://example.test/old.svg");
   const tile = host.querySelector<HTMLElement>("[data-logo-tile]")!;
   expect(tile.style.width).toBe("30px");
-  expect(tile.style.padding).toBe("5px");
+  expect(tile.querySelector<HTMLElement>("[data-logo-box]")!.style.width).toBe("20px");
   expect(tile.parentElement?.nextElementSibling?.textContent).toBe("?");
   await act(async () => tile.querySelector("img")!.dispatchEvent(new Event("error")));
   expect(tile.textContent).toBe("A");

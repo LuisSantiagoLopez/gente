@@ -32,7 +32,9 @@ describe("an app's logo", () => {
   });
 
   it("uses the catalog logo first, then the bundled mark, and the letter only when nothing loads", async () => {
-    const host = await render(<AppLogo name="Figma" logo="https://logos.test/figma.png" slug="figma" />);
+    const host = await render(
+      <AppLogo name="Figma" logo="https://logos.test/figma.png" slug="figma" />,
+    );
     const first = host.querySelector("img")!;
     expect(first.src).toBe("https://logos.test/figma.png");
     await fail(first);
@@ -51,8 +53,8 @@ describe("an app's logo", () => {
   it("pads the logo inside a plate that never masks it", async () => {
     const host = await render(<AppLogo name="Notion" size={40} />);
     const tile = host.querySelector<HTMLElement>("[data-logo-tile]")!;
-    expect(tile.style.padding).toBe("6px");
-    expect(tile.className).not.toContain("overflow-hidden");
+    expect(host.querySelector<HTMLElement>("[data-logo-box]")!.style.width).toBe("28px");
+    expect(host.querySelector("img")!.className).toContain("h-full w-full");
     expect(host.querySelector("img")!.className).toContain("object-contain");
   });
 });
