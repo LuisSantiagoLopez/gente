@@ -1,7 +1,15 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 import { describe, expect, it } from "vitest";
-import { codingBody, isCodingTurn, isPlainQuestion, isQuickChat, quickChatBody, repairToolPairs, userWords } from "./burrow-fast-chat.js";
+import {
+  codingBody,
+  isCodingTurn,
+  isPlainQuestion,
+  isQuickChat,
+  quickChatBody,
+  repairToolPairs,
+  userWords,
+} from "./burrow-fast-chat.js";
 
 const time = "\n\n<current_time>\nCurrent date and time: Thursday.\n</current_time>";
 const body = (messages: unknown[], effort = "medium") =>
@@ -13,16 +21,30 @@ describe("Your AI fast chat", () => {
   });
 
   it("turns thinking off for a short hello", () => {
-    const out = quickChatBody(body([{ role: "system", content: "s" }, { role: "user", content: `hey${time}` }]));
+    const out = quickChatBody(
+      body([
+        { role: "system", content: "s" },
+        { role: "user", content: `hey${time}` },
+      ]),
+    );
     expect(JSON.parse(out!.body).reasoning_effort).toBe("none");
     expect((out!.prefix as { messages: unknown[] }).messages).toHaveLength(1);
   });
 
   it("keeps thinking for tasks, long messages and tool follow-ups", () => {
-    expect(isQuickChat([{ role: "user", content: "create a routine that reminds me to stretch" }])).toBe(false);
+    expect(
+      isQuickChat([{ role: "user", content: "create a routine that reminds me to stretch" }]),
+    ).toBe(false);
     expect(isQuickChat([{ role: "user", content: "x".repeat(200) }])).toBe(false);
-    expect(isQuickChat([{ role: "user", content: "hi" }, { role: "tool", content: "ok" }])).toBe(false);
-    const out = quickChatBody(body([{ role: "user", content: "please research flights to Tokyo" }]));
+    expect(
+      isQuickChat([
+        { role: "user", content: "hi" },
+        { role: "tool", content: "ok" },
+      ]),
+    ).toBe(false);
+    const out = quickChatBody(
+      body([{ role: "user", content: "please research flights to Tokyo" }]),
+    );
     expect(JSON.parse(out!.body).reasoning_effort).toBe("medium");
   });
 
@@ -33,7 +55,8 @@ describe("Your AI fast chat", () => {
 });
 
 describe("Your AI small talk", () => {
-  const system = "You run on Your AI.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
+  const system =
+    "You run on Your AI.\n\nChief\n\nLong operating manual...\n\n<durable_memory>\n# Chief\nFavorite color is green.";
   const messages = [
     { role: "system", content: system },
     { role: "user", content: "earlier" },
@@ -48,13 +71,24 @@ describe("Your AI small talk", () => {
     expect(isSmallTalk([{ role: "user", content: `hey${time}` }])).toBe(true);
     expect(isSmallTalk([{ role: "user", content: "thanks!" }])).toBe(true);
     expect(isSmallTalk([{ role: "user", content: "how are you?" }])).toBe(true);
-    expect(isSmallTalk([{ role: "user", content: "hey can you research the best flights to Tokyo next week" }])).toBe(false);
+    expect(
+      isSmallTalk([
+        { role: "user", content: "hey can you research the best flights to Tokyo next week" },
+      ]),
+    ).toBe(false);
     expect(isSmallTalk([{ role: "user", content: "what's on my calendar" }])).toBe(false);
-    const out = quickChatBody(JSON.stringify({ model: "m", reasoning_effort: "medium", tools: [{}], messages }));
+    const out = quickChatBody(
+      JSON.stringify({ model: "m", reasoning_effort: "medium", tools: [{}], messages }),
+    );
     const body = JSON.parse(out!.body);
     expect(body.tools).toBeUndefined();
     expect(body.reasoning_effort).toBe("none");
-    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user", "assistant", "user"]);
+    expect(body.messages.map((m: { role: string }) => m.role)).toEqual([
+      "system",
+      "user",
+      "assistant",
+      "user",
+    ]);
     expect(body.messages[0].content).toContain("Favorite color is green.");
     expect(body.messages[0].content).not.toContain("operating manual");
   });
@@ -64,14 +98,20 @@ describe("Your AI small-talk window", () => {
   it("moves in steps so consecutive turns share their start", () => {
     const turns = (n: number) => [
       { role: "system", content: "s" },
-      ...Array.from({ length: n }, (_, i) => ({ role: i % 2 ? "assistant" : "user", content: `m${i}` })),
+      ...Array.from({ length: n }, (_, i) => ({
+        role: i % 2 ? "assistant" : "user",
+        content: `m${i}`,
+      })),
       { role: "user", content: "hey" },
     ];
-    const first = (n: number) => JSON.parse(quickChatBody(JSON.stringify({ messages: turns(n) }))!.body).messages[1].content;
+    const first = (n: number) =>
+      JSON.parse(quickChatBody(JSON.stringify({ messages: turns(n) }))!.body).messages[1].content;
     expect(first(10)).toBe("m0");
     expect(first(20)).toBe(first(21));
     expect(first(21)).toBe(first(22));
-    expect(JSON.parse(quickChatBody(JSON.stringify({ messages: turns(40) }))!.body).messages.length).toBeLessThanOrEqual(22);
+    expect(
+      JSON.parse(quickChatBody(JSON.stringify({ messages: turns(40) }))!.body).messages.length,
+    ).toBeLessThanOrEqual(22);
   });
 });
 
@@ -79,9 +119,19 @@ describe("Your AI quick-reply model", () => {
   it("sends small talk to BURROW_CHAT_MODEL and keeps everything else on the main model", async () => {
     process.env.BURROW_CHAT_MODEL = "swift-1.5-ornith-9b";
     try {
-      const hey = quickChatBody(JSON.stringify({ model: "swift-1.5-27b-iq2xxs", messages: [{ role: "user", content: "hey" }] }));
+      const hey = quickChatBody(
+        JSON.stringify({
+          model: "swift-1.5-27b-iq2xxs",
+          messages: [{ role: "user", content: "hey" }],
+        }),
+      );
       expect(JSON.parse(hey!.body).model).toBe("swift-1.5-ornith-9b");
-      const task = quickChatBody(JSON.stringify({ model: "swift-1.5-27b-iq2xxs", messages: [{ role: "user", content: "research flights to Tokyo" }] }));
+      const task = quickChatBody(
+        JSON.stringify({
+          model: "swift-1.5-27b-iq2xxs",
+          messages: [{ role: "user", content: "research flights to Tokyo" }],
+        }),
+      );
       expect(JSON.parse(task!.body).model).toBe("swift-1.5-27b-iq2xxs");
     } finally {
       delete process.env.BURROW_CHAT_MODEL;
@@ -92,18 +142,37 @@ describe("Your AI quick-reply model", () => {
 // Gente routing: coding turns and plain questions after a tool-using turn.
 
 describe("Your AI routing", () => {
-  const tools = ["shell", "read_file", "write_file", "schedule_create", "request_secret", "web_search"].map((name) => ({
+  const tools = [
+    "shell",
+    "read_file",
+    "write_file",
+    "schedule_create",
+    "request_secret",
+    "web_search",
+  ].map((name) => ({
     type: "function",
     function: { name },
   }));
   it("gives a coding turn only the code tools and light thinking, for every request of the turn", () => {
-    const ask = [{ role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." }, { role: "user", content: "Write a Python function that reverses a string." }];
+    const ask = [
+      { role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." },
+      { role: "user", content: "Write a Python function that reverses a string." },
+    ];
     expect(isCodingTurn(ask)).toBe(true);
     const body = codingBody({ messages: ask, tools, reasoning_effort: "medium" });
-    expect((body.tools as { function: { name: string } }[]).map((t) => t.function.name)).toEqual(["shell", "read_file", "write_file", "web_search"]);
+    expect((body.tools as { function: { name: string } }[]).map((t) => t.function.name)).toEqual([
+      "shell",
+      "read_file",
+      "write_file",
+      "web_search",
+    ]);
     expect(body.reasoning_effort).toBe("low");
     // A tool follow-up in the same turn keeps the same shape.
-    const followUp = [...ask, { role: "assistant", content: "", tool_calls: [{ id: "1" }] }, { role: "tool", content: "ok" }];
+    const followUp = [
+      ...ask,
+      { role: "assistant", content: "", tool_calls: [{ id: "1" }] },
+      { role: "tool", content: "ok" },
+    ];
     expect(isCodingTurn(followUp)).toBe(true);
   });
 
@@ -120,7 +189,16 @@ describe("Your AI routing", () => {
   });
 
   it("routes a coding request through quickChatBody with fast chat on", () => {
-    const out = quickChatBody(JSON.stringify({ messages: [{ role: "system", content: "a\n\nb\n\nc" }, { role: "user", content: "fix this bug in my JavaScript" }], tools, reasoning_effort: "medium" }));
+    const out = quickChatBody(
+      JSON.stringify({
+        messages: [
+          { role: "system", content: "a\n\nb\n\nc" },
+          { role: "user", content: "fix this bug in my JavaScript" },
+        ],
+        tools,
+        reasoning_effort: "medium",
+      }),
+    );
     expect(JSON.parse(out!.body).tools).toHaveLength(4);
   });
 });
@@ -133,10 +211,12 @@ describe("tool call pairs (QA-025)", () => {
       { role: "tool", tool_call_id: "a", content: "ok" } as never,
       { role: "user", content: "hola" },
     ]);
-    expect(fixed.map((m) => `${m.role}:${(m as { tool_call_id?: string }).tool_call_id ?? ""}`)).toEqual([
-      "system:", "assistant:", "tool:a", "tool:b", "user:",
+    expect(
+      fixed.map((m) => `${m.role}:${(m as { tool_call_id?: string }).tool_call_id ?? ""}`),
+    ).toEqual(["system:", "assistant:", "tool:a", "tool:b", "user:"]);
+    const trailing = repairToolPairs([
+      { role: "assistant", content: "", tool_calls: [{ id: "x" }] },
     ]);
-    const trailing = repairToolPairs([{ role: "assistant", content: "", tool_calls: [{ id: "x" }] }]);
     expect(trailing.at(-1)).toMatchObject({ role: "tool", tool_call_id: "x" });
   });
 });
@@ -166,6 +246,20 @@ describe("the reply follows the conversation's language", () => {
     expect(
       conversationLanguage([{ role: "user", content: "hey, what can you do for me today?" }]),
     ).toBeNull();
+  });
+
+  it("follows the newest message when it is clearly in another language", async () => {
+    const { conversationLanguage } = await import("./burrow-fast-chat.js");
+    const switched = [
+      ...spanishChat.slice(0, -1),
+      { role: "user", content: "Remember that my favorite color is blue." },
+    ];
+    expect(conversationLanguage(switched)).toBe("English");
+    const toPortuguese = [
+      ...spanishChat.slice(0, -1),
+      { role: "user", content: "olá, você pode me ajudar com isso?" },
+    ];
+    expect(conversationLanguage(toPortuguese)).toBe("Portuguese");
   });
 
   it("tells the small-talk path to answer 'hey' in Spanish in a Spanish chat", () => {

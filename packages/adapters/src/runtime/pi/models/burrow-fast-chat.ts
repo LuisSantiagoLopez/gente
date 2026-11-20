@@ -229,11 +229,10 @@ function recentPersonWords(messages: readonly ChatMessage[], limit = 6): string[
   return out;
 }
 
-/** The conversation's language when it is clearly Spanish or Portuguese; null otherwise. */
-export function conversationLanguage(
-  messages: readonly ChatMessage[],
-): "Spanish" | "Portuguese" | null {
-  const text = recentPersonWords(messages).join(" \n ");
+type ReplyLanguage = "Spanish" | "Portuguese" | "English";
+
+/** The language a text is clearly in (two or more of its common words and the most of them), or null. */
+function clearLanguage(text: string): ReplyLanguage | null {
   if (!text) return null;
   const score = (re: RegExp) => text.match(re)?.length ?? 0;
   const es = score(LANGUAGE_WORDS.Spanish) + (/[¿¡ñ]/.test(text) ? 2 : 0);
@@ -241,7 +240,26 @@ export function conversationLanguage(
   const en = score(LANGUAGE_WORDS.English);
   if (es >= 2 && es > pt && es > en) return "Spanish";
   if (pt >= 2 && pt > es && pt > en) return "Portuguese";
+  if (en >= 2 && en > es && en > pt) return "English";
   return null;
+}
+
+/**
+ * The language to reply in: the newest message's, when it is clearly in one ("Remember that my
+ * favorite color is blue" after a Spanish chat is English); otherwise, for a short or unclear
+ * message like "hey", the recent conversation's (Spanish or Portuguese only). Null leaves it to
+ * the model.
+ */
+export function conversationLanguage(messages: readonly ChatMessage[]): ReplyLanguage | null {
+  const words = recentPersonWords(messages);
+  const recent = clearLanguage(words.slice(1).join(" \n "));
+  const newest = clearLanguage(words[0] ?? "");
+  // English needs saying only when it breaks from a Spanish or Portuguese conversation.
+  if (newest === "English")
+    return recent === "Spanish" || recent === "Portuguese" ? "English" : null;
+  if (newest) return newest;
+  const overall = clearLanguage(words.join(" \n "));
+  return overall === "English" ? null : overall;
 }
 
 const LANGUAGE_TAG = /\n*<reply_language>[\s\S]*?<\/reply_language>/g;
@@ -262,7 +280,7 @@ export function withReplyLanguage(messages: ChatMessage[]): ChatMessage[] {
     }
   }
   if (index < 0) return messages;
-  const note = `<reply_language>Reply in ${language}, the language of this conversation.</reply_language>`;
+  const note = `<reply_language>Reply in ${language}, the language the person is writing in.</reply_language>`;
   const target = messages[index]!;
   let content: unknown = target.content;
   if (typeof content === "string") content = `${content.replace(LANGUAGE_TAG, "")}\n\n${note}`;
