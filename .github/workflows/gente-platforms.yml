@@ -82,8 +82,6 @@ jobs:
           echo "{\"install\": $(( $(date +%s) - start ))}" > "$RUNNER_TEMP/e2e/install.json"
           echo "APP=$app" >> "$GITHUB_ENV"
           cat "$RUNNER_TEMP/e2e/install.json"
-      - name: Stand-in model server on 11434
-        run: nohup node apps/desktop/scripts/ollama-stub.mjs 11434 > "$RUNNER_TEMP/stub.log" 2>&1 &
       - name: Where the main process is after 45 s (diagnostic)
         continue-on-error: true
         timeout-minutes: 5
@@ -93,7 +91,8 @@ jobs:
             osascript -e 'tell application "System Events" to get value of every static text of every window of (every process whose name is "Gente")' || true
           fi
         env: { PROBE_OUT: "${{ runner.temp }}/e2e" }
-      - name: Smoke test (memory check → setup → sign up → first reply)
+      - name: Smoke test (memory check → setup → sign up → first reply; stand-in model on 11434)
+        timeout-minutes: 45
         run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
       - name: Collect logs
         if: always()
@@ -102,7 +101,6 @@ jobs:
             [ -d "$d/stack/logs" ] && cp -r "$d/stack/logs" "$RUNNER_TEMP/e2e/stack-logs" || true
             [ -d "$d/logs" ] && cp -r "$d/logs" "$RUNNER_TEMP/e2e/app-logs" || true
           done
-          cp "$RUNNER_TEMP/stub.log" "$RUNNER_TEMP/e2e/" 2>/dev/null || true
       - name: Step times
         if: always()
         run: |

@@ -10,6 +10,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { _electron as electron } from "@playwright/test";
+import { createOllamaStub } from "../scripts/ollama-stub.mjs";
 
 const [exe, outArg] = process.argv.slice(2);
 const out = path.resolve(outArg ?? "gente-e2e");
@@ -20,13 +21,25 @@ const log = (...a) => {
   lines.push(line);
   console.log(line);
 };
+// The stand-in model server lives in this process: a step's background process does not
+// survive on Windows runners, and Gente would then install the real Ollama and model.
+const stub = createOllamaStub();
+await new Promise((resolve, reject) => {
+  stub.server.once("error", reject);
+  stub.server.listen(11434, "127.0.0.1", resolve);
+});
 const t0 = Date.now();
 const timings = {};
 const mark = (step) => {
   timings[step] = Math.round((Date.now() - t0) / 1000);
   log(`step ${step} at ${timings[step]}s`);
 };
-const shot = (page, name) => page.screenshot({ path: path.join(out, name) }).catch((e) => log("screenshot failed", name, e.message));
+const within = (promise, ms) => Promise.race([promise, new Promise((r) => setTimeout(r, ms))]);
+const shot = (page, name) =>
+  within(page.screenshot({ path: path.join(out, name), timeout: 15_000 }), 20_000).catch((e) =>
+    log("screenshot failed", name, e.message),
+  );
+const close = (app) => within(app.close().catch(() => {}), 30_000);
 const launch = (memoryGB) =>
   electron.launch({
     executablePath: exe,
@@ -50,7 +63,7 @@ try {
       await shot(setup, "00-memory-check.png");
       log("memory check:", await setup.textContent("#brain-status"));
     } finally {
-      await app.close().catch(() => {});
+      await close(app);
     }
   }
 
@@ -120,7 +133,7 @@ try {
     log("PASS: chat reply arrived");
   } finally {
     for (const w of app.windows()) await shot(w, `99-last-${app.windows().indexOf(w)}.png`);
-    await app.close().catch(() => {});
+    await close(app);
   }
 } catch (error) {
   failure = error;
@@ -128,5 +141,6 @@ try {
 } finally {
   writeFileSync(path.join(out, "timings.json"), `${JSON.stringify(timings, null, 2)}\n`);
   writeFileSync(path.join(out, "smoke.log"), `${lines.join("\n")}\n`);
+  writeFileSync(path.join(out, "stub-calls.json"), JSON.stringify(stub.calls.map((c) => c.path), null, 1));
 }
-if (failure) process.exit(1);
+process.exit(failure ? 1 : 0);
