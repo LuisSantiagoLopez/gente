@@ -68,6 +68,18 @@ describe("tool scout", () => {
     expect(toolOfferApprovals(trial)).toEqual(["legal", "spend"]);
     expect(toolOfferApprovals({ ...trial, freeTier: true, monthlyUsd: 0 })).toEqual(["legal"]);
     expect(toolOfferApprovals({ ...trial, path: "app" })).toEqual([]);
+    const open: ToolOption = {
+      ...base,
+      name: "Frankfurter",
+      path: "api",
+      fit: 1,
+      freeTier: true,
+      needsAccount: false,
+    };
+    expect(toolOfferText("convert the invoice to USD", open)).toBe(
+      "To convert the invoice to USD, I need Frankfurter. Free, no account needed. Use it?",
+    );
+    expect(toolOfferApprovals(open)).toEqual([]);
   });
 
   it("reminds two days before a trial charges, or now when that is already past", () => {

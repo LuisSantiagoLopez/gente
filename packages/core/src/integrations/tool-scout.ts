@@ -27,6 +27,8 @@ export type ToolOption = {
   automationAllowed?: boolean;
   /** Gente already built or connected it, so it is ready at once. */
   cached?: boolean;
+  /** False for an open API that needs no account or key: nothing to sign up for or accept. */
+  needsAccount?: boolean;
 };
 
 const PATH_SCORE: Record<ToolPath, number> = { app: 1, api: 0.85, web: 0.6, desktop: 0.45 };
@@ -71,22 +73,38 @@ function money(usd: number): string {
   return Number.isInteger(usd) ? `$${usd}` : `$${usd.toFixed(2)}`;
 }
 
+function afterTrial(monthlyUsd: number | undefined): string {
+  return monthlyUsd === undefined
+    ? "a price I'll confirm before it charges"
+    : `${money(monthlyUsd)}/mo`;
+}
+
 /** The single card's sentence: what for, what it costs, and the one question. */
 export function toolOfferText(task: string, option: ToolOption): string {
   const price =
-    option.freeTier || option.monthlyUsd === 0
-      ? "Free plan, no card needed."
-      : option.trialDays
-        ? `Free trial, ${option.trialDays} days, then ${money(option.monthlyUsd ?? 0)}/mo. I'll remind you 2 days before it charges.`
-        : `${money(option.monthlyUsd ?? 0)}/mo.`;
-  const how = option.path === "app" ? "Connect it?" : "Sign up and use it?";
+    option.needsAccount === false
+      ? "Free, no account needed."
+      : option.freeTier || option.monthlyUsd === 0
+        ? "Free plan, no card needed."
+        : option.trialDays
+          ? `Free trial, ${option.trialDays} days, then ${afterTrial(option.monthlyUsd)}. I'll remind you 2 days before it charges.`
+          : option.monthlyUsd === undefined
+            ? "Paid; I'll show the price before anything is charged."
+            : `${money(option.monthlyUsd)}/mo.`;
+  const how =
+    option.path === "app"
+      ? "Connect it?"
+      : option.needsAccount === false
+        ? "Use it?"
+        : "Sign up and use it?";
   return `To ${task}, I need ${option.name}. ${price} ${how}`;
 }
 
 /** Which always-ask approvals the offer needs: accepting terms always; money when it can charge. */
 export function toolOfferApprovals(option: ToolOption): Array<"legal" | "spend"> {
-  if (option.path === "app") return [];
-  const charges = !option.freeTier && (option.monthlyUsd ?? 0) > 0;
+  if (option.path === "app" || option.needsAccount === false) return [];
+  // An unknown price counts as one that can charge.
+  const charges = !option.freeTier && (option.monthlyUsd ?? 1) > 0;
   return charges ? ["legal", "spend"] : ["legal"];
 }
 
