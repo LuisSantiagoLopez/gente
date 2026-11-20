@@ -5891,6 +5891,11 @@ msgstr "Pide permiso para grabar y compartir la transcripción con este Espacio.
 msgid "Getting ready"
 msgstr "Preparando"
 
+#. js-lingui-explicit-id
+#: packages/i18n/src/run-error.ts
+msgid "Getting your AI ready again…"
+msgstr "Preparando tu IA de nuevo…"
+
 #: apps/mobile/lib/routines/routine.ts
 #: apps/web/src/pages/routines/routine-editor/add-trigger-menu.tsx
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx

@@ -5891,6 +5891,11 @@ msgstr "Hol die Erlaubnis ein, aufzuzeichnen und das Transkript mit diesem Space
 msgid "Getting ready"
 msgstr "Wird vorbereitet"
 
+#. js-lingui-explicit-id
+#: packages/i18n/src/run-error.ts
+msgid "Getting your AI ready again…"
+msgstr "Deine KI wird wieder vorbereitet…"
+
 #: apps/mobile/lib/routines/routine.ts
 #: apps/web/src/pages/routines/routine-editor/add-trigger-menu.tsx
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx

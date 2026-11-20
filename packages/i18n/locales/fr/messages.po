@@ -5891,6 +5891,11 @@ msgstr "Obtenez l’autorisation d’enregistrer et de partager la transcription
 msgid "Getting ready"
 msgstr "Préparation en cours"
 
+#. js-lingui-explicit-id
+#: packages/i18n/src/run-error.ts
+msgid "Getting your AI ready again…"
+msgstr "Votre IA se prépare à nouveau…"
+
 #: apps/mobile/lib/routines/routine.ts
 #: apps/web/src/pages/routines/routine-editor/add-trigger-menu.tsx
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx

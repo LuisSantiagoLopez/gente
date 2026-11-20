@@ -5891,6 +5891,11 @@ msgstr "Kayıt yapmak ve dökümü bu Alanla paylaşmak için izin al."
 msgid "Getting ready"
 msgstr "Hazırlanıyor"
 
+#. js-lingui-explicit-id
+#: packages/i18n/src/run-error.ts
+msgid "Getting your AI ready again…"
+msgstr "Yapay zekan yeniden hazırlanıyor…"
+
 #: apps/mobile/lib/routines/routine.ts
 #: apps/web/src/pages/routines/routine-editor/add-trigger-menu.tsx
 #: apps/web/src/pages/routines/routine-editor/trigger-cards.tsx
