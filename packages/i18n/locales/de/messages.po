@@ -2673,6 +2673,7 @@ msgstr "Kann keine Bilder lesen"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/lib/gente/devices.tsx
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
@@ -5466,6 +5467,10 @@ msgstr "Entwicklung"
 msgid "Device voice"
 msgstr "Gerätestimme"
 
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Devices"
+msgstr "Geräte"
+
 #: apps/mobile/components/messages/mermaid-diagram.tsx
 msgid "Diagram"
 msgstr "Diagramm"
@@ -7902,7 +7907,6 @@ msgstr "Modell: {model}, {detail}"
 #: apps/mobile/components/models/connection-model-list.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/model-settings/provider-page.tsx
-#: apps/web/src/pages/settings/settings-nav.ts
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Models"
 msgstr "Modelle"
@@ -8859,6 +8863,10 @@ msgstr "Externen Link öffnen?"
 msgid "Open Gente"
 msgstr "Gente öffnen"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Open Gente on your phone and scan this code."
+msgstr "Öffne Gente auf deinem Handy und scanne diesen Code."
+
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "Bild {name} öffnen"
@@ -9069,6 +9077,18 @@ msgstr "Seiten, die diese Gruppe für dich erstellt, erscheinen hier."
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Pages this group builds for you appear here. Ask for a dashboard, tracker or plan to make one."
 msgstr "Seiten, die diese Gruppe für dich erstellt, erscheinen hier. Bitte um ein Dashboard, einen Tracker oder einen Plan, um eine zu erstellen."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Pair a phone"
+msgstr "Handy koppeln"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with {phoneName}"
+msgstr "Gekoppelt mit {phoneName}"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with your phone"
+msgstr "Mit deinem Handy gekoppelt"
 
 #: apps/mobile/app/(settings)/profile.tsx
 #: apps/web/src/components/account/PasskeySettings.tsx
@@ -10345,6 +10365,10 @@ msgstr "Ausführungen"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "Läuft, wenn dieser Bot eine verifizierte Nachricht von diesem Anbieter erhält."
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Safety code <0>{code}</0>. Your phone shows the same code."
+msgstr "Sicherheitscode <0>{code}</0>. Dein Handy zeigt denselben Code."
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Sales"
 msgstr "Vertrieb"
@@ -11045,6 +11069,10 @@ msgstr "Melde dich bei <0>{0}</0> an und füge dann den Code hier ein."
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in to Gente"
 msgstr "Bei Gente anmelden"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Sign in to Gente to pair your phone."
+msgstr "Melde dich bei Gente an, um dein Handy zu koppeln."
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -12631,6 +12659,10 @@ msgstr "Verknüpfung aufheben"
 msgid "Unmute"
 msgstr "Stummschaltung aufheben"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Unpair"
+msgstr "Entkoppeln"
+
 #: apps/mobile/app/pages.tsx
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/lib/inbox/inbox-swipe.ts
@@ -12864,6 +12896,14 @@ msgstr "Standards für {label} verwenden"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Use Gente credits"
 msgstr "Gente-Guthaben verwenden"
+
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Use Gente on your phone."
+msgstr "Nutze Gente auf deinem Handy."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Use Gente on your phone. Chats and tasks run on this computer, sealed end to end."
+msgstr "Nutze Gente auf deinem Handy. Chats und Aufgaben laufen auf diesem Computer, Ende-zu-Ende verschlüsselt."
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -13294,10 +13334,6 @@ msgstr "Womit deine Bots bezahlen."
 msgid "Which Bot?"
 msgstr "Welcher Bot?"
 
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Which LLMs your bots use."
-msgstr "Welche LLMs deine Bots verwenden."
-
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Who can open this page"
 msgstr "Wer diese Seite öffnen kann"
@@ -13552,6 +13588,10 @@ msgstr "Dein OpenRouter"
 #: apps/web/src/components/spaces/SharedSpaceRules.tsx
 msgid "Your other spaces stay private"
 msgstr "Deine anderen Spaces bleiben privat"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Your phone"
+msgstr "Dein Handy"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Your plan becomes {annualPrice} / year when your trial ends."

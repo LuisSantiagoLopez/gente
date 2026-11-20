@@ -2673,6 +2673,7 @@ msgstr "Görselleri okuyamaz"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/lib/gente/devices.tsx
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
@@ -5466,6 +5467,10 @@ msgstr "Geliştirici"
 msgid "Device voice"
 msgstr "Cihaz sesi"
 
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Devices"
+msgstr "Cihazlar"
+
 #: apps/mobile/components/messages/mermaid-diagram.tsx
 msgid "Diagram"
 msgstr "Diyagram"
@@ -7902,7 +7907,6 @@ msgstr "Model: {model}, {detail}"
 #: apps/mobile/components/models/connection-model-list.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/model-settings/provider-page.tsx
-#: apps/web/src/pages/settings/settings-nav.ts
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Models"
 msgstr "Modeller"
@@ -8859,6 +8863,10 @@ msgstr "Harici bağlantı açılsın mı?"
 msgid "Open Gente"
 msgstr "Gente'yu aç"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Open Gente on your phone and scan this code."
+msgstr "Telefonunuzda Gente'yi açın ve bu kodu tarayın."
+
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "{name} görselini aç"
@@ -9069,6 +9077,18 @@ msgstr "Bu grubun senin için oluşturduğu sayfalar burada görünür."
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Pages this group builds for you appear here. Ask for a dashboard, tracker or plan to make one."
 msgstr "Bu grubun sizin için oluşturduğu sayfalar burada görünür. Bir pano, takip listesi veya plan isteyerek oluşturun."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Pair a phone"
+msgstr "Telefon eşleştir"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with {phoneName}"
+msgstr "{phoneName} ile eşleştirildi"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with your phone"
+msgstr "Telefonunuzla eşleştirildi"
 
 #: apps/mobile/app/(settings)/profile.tsx
 #: apps/web/src/components/account/PasskeySettings.tsx
@@ -10345,6 +10365,10 @@ msgstr "Çalıştırmalar"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "Bu bot bu sağlayıcıdan doğrulanmış bir mesaj aldığında çalışır."
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Safety code <0>{code}</0>. Your phone shows the same code."
+msgstr "Güvenlik kodu <0>{code}</0>. Telefonunuz da aynı kodu gösterir."
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Sales"
 msgstr "Satış"
@@ -11045,6 +11069,10 @@ msgstr "<0>{0}</0> adresinde oturum açın, ardından kodu buraya yapıştırın
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in to Gente"
 msgstr "Gente'da oturum aç"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Sign in to Gente to pair your phone."
+msgstr "Telefonunuzu eşleştirmek için Gente'ye giriş yapın."
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -12631,6 +12659,10 @@ msgstr "Bağlantıyı kaldır"
 msgid "Unmute"
 msgstr "Sesi aç"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Unpair"
+msgstr "Eşleştirmeyi kaldır"
+
 #: apps/mobile/app/pages.tsx
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/lib/inbox/inbox-swipe.ts
@@ -12864,6 +12896,14 @@ msgstr "{label}: varsayılanlarını kullan"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Use Gente credits"
 msgstr "Gente kredilerini kullan"
+
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Use Gente on your phone."
+msgstr "Gente'yi telefonunuzda kullanın."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Use Gente on your phone. Chats and tasks run on this computer, sealed end to end."
+msgstr "Gente'yi telefonunuzda kullanın. Sohbetler ve görevler bu bilgisayarda, uçtan uca şifreli olarak çalışır."
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -13294,10 +13334,6 @@ msgstr "Botlarının ödemeyi nereden yaptığı."
 msgid "Which Bot?"
 msgstr "Hangi Bot?"
 
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Which LLMs your bots use."
-msgstr "Botlarının hangi LLM'leri kullandığı."
-
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Who can open this page"
 msgstr "Bu sayfayı kimler açabilir"
@@ -13552,6 +13588,10 @@ msgstr "OpenRouter sağlayıcınız"
 #: apps/web/src/components/spaces/SharedSpaceRules.tsx
 msgid "Your other spaces stay private"
 msgstr "Diğer alanların gizli kalır"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Your phone"
+msgstr "Telefonunuz"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Your plan becomes {annualPrice} / year when your trial ends."

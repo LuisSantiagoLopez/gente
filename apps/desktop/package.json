@@ -23,13 +23,15 @@
     "@rakazo/logging": "workspace:*",
     "@sentry/electron": "8.3.0",
     "electron-updater": "6.8.12",
-    "koffi": "3.3.7"
+    "koffi": "3.3.7",
+    "qrcode": "1.5.4"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",
     "@rakazo/adapters": "workspace:*",
     "@rakazo/core": "workspace:*",
     "@rakazo/ui-tokens": "workspace:*",
+    "@types/qrcode": "1.5.5",
     "electron": "45.2.3",
     "electron-builder": "26.18.1",
     "esbuild": "0.28.2",

@@ -2673,6 +2673,7 @@ msgstr "No puede leer imágenes"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
+#: apps/web/src/lib/gente/devices.tsx
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
@@ -5466,6 +5467,10 @@ msgstr "Desarrollo"
 msgid "Device voice"
 msgstr "Voz del dispositivo"
 
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Devices"
+msgstr "Dispositivos"
+
 #: apps/mobile/components/messages/mermaid-diagram.tsx
 msgid "Diagram"
 msgstr "Diagrama"
@@ -7902,7 +7907,6 @@ msgstr "Modelo: {model}, {detail}"
 #: apps/mobile/components/models/connection-model-list.tsx
 #: apps/web/src/pages/model-settings/ModelSettingsOverlay.tsx
 #: apps/web/src/pages/model-settings/provider-page.tsx
-#: apps/web/src/pages/settings/settings-nav.ts
 #: apps/web/src/pages/settings/SpaceSettingOverrides.tsx
 msgid "Models"
 msgstr "Modelos"
@@ -8859,6 +8863,10 @@ msgstr "¿Abrir enlace externo?"
 msgid "Open Gente"
 msgstr "Abrir Gente"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Open Gente on your phone and scan this code."
+msgstr "Abre Gente en tu teléfono y escanea este código."
+
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "Abrir imagen {name}"
@@ -9069,6 +9077,18 @@ msgstr "Las páginas que este grupo cree para ti aparecerán aquí."
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Pages this group builds for you appear here. Ask for a dashboard, tracker or plan to make one."
 msgstr "Las páginas que este grupo crea para ti aparecen aquí. Pide un panel, un seguimiento o un plan para crear una."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Pair a phone"
+msgstr "Vincular un teléfono"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with {phoneName}"
+msgstr "Vinculado con {phoneName}"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Paired with your phone"
+msgstr "Vinculado con tu teléfono"
 
 #: apps/mobile/app/(settings)/profile.tsx
 #: apps/web/src/components/account/PasskeySettings.tsx
@@ -10345,6 +10365,10 @@ msgstr "Ejecuciones"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "Se ejecuta cuando este bot recibe un mensaje verificado de este proveedor."
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Safety code <0>{code}</0>. Your phone shows the same code."
+msgstr "Código de seguridad <0>{code}</0>. Tu teléfono muestra el mismo código."
+
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Sales"
 msgstr "Ventas"
@@ -11045,6 +11069,10 @@ msgstr "Inicia sesión en <0>{0}</0> y pega el código aquí."
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in to Gente"
 msgstr "Inicia sesión en Gente"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Sign in to Gente to pair your phone."
+msgstr "Inicia sesión en Gente para vincular tu teléfono."
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -12631,6 +12659,10 @@ msgstr "Desvincular"
 msgid "Unmute"
 msgstr "Activar el sonido"
 
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Unpair"
+msgstr "Desvincular"
+
 #: apps/mobile/app/pages.tsx
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/lib/inbox/inbox-swipe.ts
@@ -12864,6 +12896,14 @@ msgstr "Usar predeterminados en {label}"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Use Gente credits"
 msgstr "Usar créditos de Gente"
+
+#: apps/web/src/pages/settings/settings-nav.ts
+msgid "Use Gente on your phone."
+msgstr "Usa Gente en tu teléfono."
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Use Gente on your phone. Chats and tasks run on this computer, sealed end to end."
+msgstr "Usa Gente en tu teléfono. Los chats y las tareas se ejecutan en esta computadora, cifrados de extremo a extremo."
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -13294,10 +13334,6 @@ msgstr "Desde dónde pagan tus bots."
 msgid "Which Bot?"
 msgstr "¿Qué Bot?"
 
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Which LLMs your bots use."
-msgstr "Qué LLM usan tus bots."
-
 #: apps/web/src/components/pages/SharePopover.tsx
 msgid "Who can open this page"
 msgstr "Quién puede abrir esta página"
@@ -13552,6 +13588,10 @@ msgstr "Tu OpenRouter"
 #: apps/web/src/components/spaces/SharedSpaceRules.tsx
 msgid "Your other spaces stay private"
 msgstr "Tus otros espacios siguen siendo privados"
+
+#: apps/web/src/lib/gente/devices.tsx
+msgid "Your phone"
+msgstr "Tu teléfono"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Your plan becomes {annualPrice} / year when your trial ends."

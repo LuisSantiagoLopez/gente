@@ -39,6 +39,7 @@ import { startModelRouter } from "./burrow/model-router.js";
 import { startComposioRelay } from "./burrow/composio-relay.js";
 import { startComputerBroker } from "./burrow/computer-broker.js";
 import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
+import { createDesktopLink } from "./burrow/link/link-desktop.js";
 import {
   accountCloud,
   accountToken,
@@ -823,6 +824,14 @@ app.whenReady().then(async () => {
       searchBroker = broker;
     })
     .catch(() => undefined);
+  // Gente: Settings → Devices, pairing a phone with this computer (Gente Link v1).
+  const link = createDesktopLink({
+    cloudUrl: GENTE_CLOUD_URL,
+    token: accountToken,
+    signedIn: isSignedIn,
+    sealer,
+    stackDir: userStackDir,
+  });
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
@@ -1175,6 +1184,10 @@ app.whenReady().then(async () => {
   });
   handleIpc("desktop.gente.aiMode", () => aiModeState());
   handleIpc("desktop.gente.privateOffer", () => privateOffer());
+  const linkOff = async () => ({ status: "off" as const });
+  handleIpc("desktop.gente.linkState", () => (link ? link.state() : linkOff()));
+  handleIpc("desktop.gente.linkStart", () => (link ? link.start() : linkOff()));
+  handleIpc("desktop.gente.linkUnpair", () => (link ? link.unpair() : linkOff()));
   handleIpc("desktop.gente.setPrivateWaitlist", (_event, join: unknown) =>
     privateOffer(join === true ? "join" : "leave"),
   );
