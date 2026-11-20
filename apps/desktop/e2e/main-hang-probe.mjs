@@ -16,6 +16,17 @@ const output = [];
 for (const s of [child.stdout, child.stderr]) s.on("data", (d) => output.push(String(d)));
 await new Promise((r) => setTimeout(r, Number(waitArg ?? 45) * 1000));
 console.log("--- app output\n" + output.join("").slice(-6000));
+// A startup error shows as a modal box: capture the screen, and check the main bundle's packages.
+const shots = process.env.PROBE_OUT ?? ".";
+try {
+  if (process.platform === "darwin") execFileSync("/usr/sbin/screencapture", ["-x", `${shots}/probe-screen.png`]);
+  if (process.platform === "win32")
+    execFileSync("powershell", ["-NoProfile", "-Command", `Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $b=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds; $i=New-Object System.Drawing.Bitmap $b.Width,$b.Height; [System.Drawing.Graphics]::FromImage($i).CopyFromScreen($b.Location,[System.Drawing.Point]::Empty,$b.Size); $i.Save('${shots}\\probe-screen.png')`]);
+  if (process.platform === "win32")
+    console.log(execFileSync("powershell", ["-NoProfile", "-Command", `Add-Type -AssemblyName UIAutomationClient; $r=[System.Windows.Automation.AutomationElement]::RootElement; $c=New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, ${child.pid}); $w=$r.FindAll([System.Windows.Automation.TreeScope]::Children,$c); foreach($x in $w){ $x.Current.Name; foreach($t in $x.FindAll([System.Windows.Automation.TreeScope]::Descendants,[System.Windows.Automation.Condition]::TrueCondition)){ $t.Current.Name } }`], { encoding: "utf8", timeout: 30_000 }));
+} catch (error) {
+  console.log("screen capture failed:", error.message);
+}
 // Native stack of the main thread (macOS `sample`), for a thread stuck outside JavaScript.
 if (process.platform === "darwin") {
   try {

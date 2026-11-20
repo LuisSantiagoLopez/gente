@@ -87,7 +87,12 @@ jobs:
       - name: Where the main process is after 45 s (diagnostic)
         continue-on-error: true
         timeout-minutes: 5
-        run: node apps/desktop/e2e/main-hang-probe.mjs "$APP" 45 | tee "$RUNNER_TEMP/e2e/main-probe.txt"
+        run: |
+          node apps/desktop/e2e/main-hang-probe.mjs "$APP" 45 | tee "$RUNNER_TEMP/e2e/main-probe.txt"
+          if [ "${{ matrix.kind }}" = mac ]; then
+            osascript -e 'tell application "System Events" to get value of every static text of every window of (every process whose name is "Gente")' || true
+          fi
+        env: { PROBE_OUT: "${{ runner.temp }}/e2e" }
       - name: Smoke test (memory check → setup → sign up → first reply)
         run: node apps/desktop/e2e/gente-smoke.mjs "$APP" "$RUNNER_TEMP/e2e"
       - name: Collect logs
