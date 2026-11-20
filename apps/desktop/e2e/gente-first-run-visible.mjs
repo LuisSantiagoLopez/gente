@@ -86,8 +86,18 @@ try {
   step('Filled the sign-up form; pressing "Create account"');
   await page.getByRole("button", { name: /Create account/i }).click();
 
+  // The chat box shows once the first bot is ready. Page handles can go stale while the window
+  // navigates after sign-up, so look again in every open window on each try.
+  const hasBox = (w) =>
+    w.evaluate(() => document.querySelector("textarea[placeholder^=Message]") !== null).catch(() => false);
+  let found = null;
+  for (let i = 0; i < 300 && !found; i++) {
+    for (const w of app.windows()) if (w.url().startsWith("http") && (await hasBox(w))) found = w;
+    if (!found) await new Promise((r) => setTimeout(r, 1000));
+  }
+  if (!found) throw new Error("The chat box never appeared");
+  page = found;
   const box = page.locator("textarea[placeholder^=Message]").first();
-  await box.waitFor({ timeout: 180_000 });
   await look(page, "chat");
   step('Chat is open; typing "hey"');
   await box.click();
