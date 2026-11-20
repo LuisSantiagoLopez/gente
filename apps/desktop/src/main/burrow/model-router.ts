@@ -25,11 +25,13 @@ export interface RouterDeps {
   onAnswered?: (where: "cloud" | "local") => void;
 }
 
-const STATUS_TTL_MS = 15_000;
+/** How often the cloud model's state is checked, in the background. */
+const STATUS_EVERY_MS = 30_000;
 
 export async function startModelRouter(deps: RouterDeps) {
   const doFetch = deps.fetch ?? fetch;
   const secret = randomBytes(24).toString("hex");
+  // The cloud model's state, refreshed in the background: a message never waits on it.
   let status: { at: number; warm: boolean } = { at: 0, warm: false };
   // Gente self-heal: a preferred side (expires), the last side used, this computer's last wait.
   let preferred: { where: "cloud" | "local"; until: number } | null = null;
@@ -38,18 +40,35 @@ export async function startModelRouter(deps: RouterDeps) {
   const prefers = (where: "cloud" | "local") =>
     preferred !== null && preferred.where === where && Date.now() < preferred.until;
 
-  async function cloudWarm(token: string): Promise<boolean> {
-    if (Date.now() - status.at < STATUS_TTL_MS) return status.warm;
-    const res = await doFetch(`${deps.cloudBase}/status`, {
-      headers: { authorization: `Bearer ${token}` },
-      signal: AbortSignal.timeout(3_000),
-    }).catch(() => null);
-    const body = res?.ok
-      ? ((await res.json().catch(() => null)) as { status?: string } | null)
-      : null;
-    status = { at: Date.now(), warm: body?.status === "warm" };
-    return status.warm;
+  let refreshing: Promise<void> | null = null;
+  /** Checks the cloud model (only in Fast mode, only signed in). Never called on a message's path. */
+  function refresh(): Promise<void> {
+    refreshing ??= (async () => {
+      try {
+        if (deps.mode() !== "fast") return;
+        const token = await deps.token().catch(() => null);
+        if (!token) {
+          status = { at: Date.now(), warm: false };
+          return;
+        }
+        const res = await doFetch(`${deps.cloudBase}/status`, {
+          headers: { authorization: `Bearer ${token}` },
+          signal: AbortSignal.timeout(5_000),
+        }).catch(() => null);
+        const body = res?.ok
+          ? ((await res.json().catch(() => null)) as { state?: string; status?: string } | null)
+          : null;
+        // Gente Cloud answers { state: "warm" | "waking" | "off" }; older builds said `status`.
+        status = { at: Date.now(), warm: (body?.state ?? body?.status) === "warm" };
+      } finally {
+        refreshing = null;
+      }
+    })();
+    return refreshing;
   }
+  void refresh();
+  const timer = setInterval(() => void refresh(), STATUS_EVERY_MS);
+  timer.unref();
 
   async function pipe(upstream: Response, res: ServerResponse) {
     const headers: Record<string, string> = {};
@@ -71,9 +90,11 @@ export async function startModelRouter(deps: RouterDeps) {
         body: body && body.length > 0 ? new Uint8Array(body) : undefined,
       });
     const isChat = req.method === "POST" && path.startsWith("/v1/chat/completions");
-    if (isChat && deps.mode() === "fast" && !prefers("local")) {
+    // When the cloud model isn't warm, this computer answers with no added wait: no sign-in
+    // lookup and no status check on the message's path.
+    if (isChat && deps.mode() === "fast" && !prefers("local") && status.warm) {
       const token = await deps.token().catch(() => null);
-      if (token && (await cloudWarm(token))) {
+      if (token) {
         const cloud = await doFetch(`${deps.cloudBase}${path.replace(/^\/v1/, "")}`, {
           method: "POST",
           headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
@@ -86,7 +107,7 @@ export async function startModelRouter(deps: RouterDeps) {
           deps.onAnswered?.("cloud");
           return pipe(cloud, res);
         }
-        if (cloud?.status === 402 || (cloud && cloud.status >= 500))
+        if (!cloud || cloud.status === 402 || cloud.status >= 500)
           status = { at: Date.now(), warm: false };
       }
     }
@@ -130,11 +151,17 @@ export async function startModelRouter(deps: RouterDeps) {
   return {
     /** What the server uses as its model base URL (ends without /v1). */
     base: `http://127.0.0.1:${port}/${secret}`,
-    close: () => new Promise<void>((resolve) => server.close(() => resolve())),
+    close: () =>
+      new Promise<void>((resolve) => {
+        clearInterval(timer);
+        server.close(() => resolve());
+      }),
+    /** Checks the cloud model now (tests, and right after sign-in or a mode switch). */
+    refresh,
     /** Self-heal: lean to one side for a few minutes ("auto" clears it). Private mode stays local. */
     prefer: (where: "cloud" | "local" | "auto", forMs = 5 * 60_000) => {
       preferred = where === "auto" ? null : { where, until: Date.now() + forMs };
-      if (where === "cloud") status = { at: 0, warm: false }; // check the cloud again right away
+      if (where === "cloud") void refresh(); // check the cloud again right away
     },
     route: () => lastRoute,
     /** This computer's last time to first token, if it answered in the last two minutes. */

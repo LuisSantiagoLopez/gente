@@ -31,6 +31,8 @@ export type RouterHandle = {
   route: () => "cloud" | "local";
   localWaitMs: () => number | null;
   cloudWarm: () => boolean;
+  /** Checks the cloud model now, in the background (optional for test stand-ins). */
+  refresh?: () => Promise<void>;
 };
 
 type ServiceControl = {
