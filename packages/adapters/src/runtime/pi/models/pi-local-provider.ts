@@ -9,6 +9,7 @@ import { fetchPairedWithDispatcher } from "../../../network/undici-fetch.js";
 import { MODEL_STREAM_AGENT_TIMEOUTS } from "../pi-runtime-limits.js";
 import { splitLeadingThinkBlock } from "../stream/pi-think-tags.js";
 import { burrowFastChatInit } from "./burrow-fast-chat.js";
+import { cachedAnswerResponse, planWebAnswer, withPreface } from "./gente-web-answer.js";
 import { LOCAL_PROVIDER_ID, localModelIds, localModelsApiKey } from "./pi-local-provider-id.js";
 
 /** Reasoning effort names for an OpenAI-style chat completions server that accepts them. */
@@ -102,11 +103,25 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
   const dispatcher = localDispatcher;
   const transport = fetchPairedWithDispatcher(baseFetch);
   // Gente (modified from Rakazo): quick chat without thinking, and a saved prefix to prewarm.
-  return (input, init) =>
-    transport(input, {
+  return async (input, init) => {
+    // Gente: a question that plainly needs the web becomes one model call with fresh sources.
+    if (process.env.BURROW_FAST_CHAT === "on" && typeof init?.body === "string") {
+      const plan = await planWebAnswer(init.body).catch(() => null);
+      if (plan?.kind === "cached") return cachedAnswerResponse(plan.answer);
+      if (plan?.kind === "ask") {
+        const response = await transport(input, {
+          ...init,
+          body: plan.body,
+          dispatcher,
+        } as RequestInit & { dispatcher: Dispatcher });
+        return withPreface(response, plan.preface, plan.cacheKey);
+      }
+    }
+    return transport(input, {
       ...burrowFastChatInit(init),
       dispatcher,
     } as RequestInit & { dispatcher: Dispatcher });
+  };
 }
 
 function localApi(): ProviderStreams {
