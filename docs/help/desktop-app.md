@@ -6,6 +6,7 @@ everything on your own computer.
 
 ## Install
 
+
 ## Choose a server
 
 The first time it opens, the app asks which server to use:

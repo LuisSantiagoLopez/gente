@@ -65,11 +65,11 @@ Os bots podem criar páginas simples, como um painel ou um documento, para mostr
 
 ## Atalhos de teclado
 
-| Ação               | Mac         | Windows      |
-| ------------------ | ----------- | ------------ |
-| Novo chat ou bot   | Cmd+N       | Ctrl+N       |
+| Ação | Mac | Windows |
+| --- | --- | --- |
+| Novo chat ou bot | Cmd+N | Ctrl+N |
 | Novo chat em grupo | Cmd+Shift+N | Ctrl+Shift+N |
-| Conectar apps      | Cmd+Shift+M | Ctrl+Shift+M |
-| Configurações      | Cmd+,       | Ctrl+,       |
-| Todos os atalhos   | Cmd+/       | Ctrl+/       |
-| Suporte do Gente   | Cmd+Shift+/ | Ctrl+Shift+/ |
+| Conectar apps | Cmd+Shift+M | Ctrl+Shift+M |
+| Configurações | Cmd+, | Ctrl+, |
+| Todos os atalhos | Cmd+/ | Ctrl+/ |
+| Suporte do Gente | Cmd+Shift+/ | Ctrl+Shift+/ |
