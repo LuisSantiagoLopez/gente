@@ -180,7 +180,7 @@ export function recordSkillExample(log: SkillLearningLog, example: SkillExample)
 
 /** Plain words for why a change is not in use. Never an internal error. */
 function heldBecause(change: StoredSkillChange): string | undefined {
-  if (change.status === "quarantined") return "Learned from a web page. Confirm it to use it.";
+  if (change.status === "quarantined") return "Learned while outside content was in play. Confirm it to use it.";
   if (change.status !== "rejected") return undefined;
   if (change.violations?.length)
     return "Kept out: it would have let me do more without asking you.";

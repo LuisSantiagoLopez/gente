@@ -233,7 +233,7 @@ describe("skill change log", () => {
       const view = learnedChanges(log)[0]!;
       expect(view.status).toBe("quarantined");
       expect(view.canUndo).toBe(false);
-      expect(view.heldBecause).toMatch(/web page/);
+      expect(view.heldBecause).toMatch(/outside content/);
       expect(confirmSkillChange(log, "w1", V1, later).change.status).toBe("live");
     });
 

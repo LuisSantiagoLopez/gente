@@ -186,7 +186,7 @@ function ChangeCard({ change, children }: { change: LearnedChange; children?: Re
   const [open, setOpen] = useState(false);
   const source = {
     user_feedback: t`From what you said`,
-    web_content: t`From a web page`,
+    web_content: t`From outside content`,
     run_outcome: t`From how a task went`,
   }[change.source];
   const date = new Date(change.decidedAt ?? change.createdAt).toLocaleDateString(undefined, {

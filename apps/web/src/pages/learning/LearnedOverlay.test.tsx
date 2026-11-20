@@ -107,14 +107,14 @@ it("lists learnings in plain words and undoes one in a click", async () => {
       source: "web_content",
       status: "quarantined",
       canUndo: false,
-      heldBecause: "Learned from a web page. Confirm it to use it.",
+      heldBecause: "Learned while outside content was in play. Confirm it to use it.",
     }),
   ]);
   api.learning.undo.mockResolvedValue(change({ status: "undone", canUndo: false }));
   await open();
   await vi.waitFor(() => expect(host.textContent).toContain("Use a warmer tone."));
   expect(host.textContent).toContain("Waiting for you");
-  expect(host.textContent).toContain("From a web page");
+  expect(host.textContent).toContain("From outside content");
   expect(host.textContent).toContain("From what you said");
 
   await act(async () => button("See the change")?.click());
