@@ -191,6 +191,16 @@ fs.writeFileSync(
   `${JSON.stringify({ version, entrypoints }, null, 2)}\n`,
 );
 
+// Gente: GENTE_BUNDLE_STAGE_ONLY=1 leaves the unpacked folder in <out-dir>/rakazo-server and skips
+// the slow xz archive, for local test runs.
+if (process.env.GENTE_BUNDLE_STAGE_ONLY === "1") {
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.rmSync(path.join(outDir, "rakazo-server"), { recursive: true, force: true });
+  fs.renameSync(stage, path.join(outDir, "rakazo-server"));
+  fs.rmSync(work, { recursive: true, force: true });
+  console.log(`staged ${path.join(outDir, "rakazo-server")}`);
+  process.exit(0);
+}
 fs.mkdirSync(outDir, { recursive: true });
 const archive = path.join(outDir, `${name}.tar.xz`);
 fs.rmSync(archive, { force: true });

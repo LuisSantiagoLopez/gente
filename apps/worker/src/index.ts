@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { setTimeout as sleep } from "node:timers/promises";
 import type { JobPublisher, JobWorkerHost } from "@rakazo/adapter-kit";
 import { unwrapEnvFromKeyManager } from "@rakazo/adapters";
@@ -96,8 +97,10 @@ import { bestEffort, SERVICE_NAMES } from "@rakazo/logging";
 import { createRootLogger } from "@rakazo/logging/axiom";
 import { watchEventLoopStalls } from "@rakazo/logging/event-loop";
 import { MarkdownMemoryStore } from "@rakazo/memory";
+import { startJobPickupWatchdog } from "./job-pickup-watchdog.js";
 
 const logger = await createRootLogger(SERVICE_NAMES.worker);
+
 
 async function main() {
   const stopStallWatch = watchEventLoopStalls("worker.event_loop_stalled");
@@ -453,6 +456,21 @@ async function main() {
   reconciler.start();
   stopHealth = startWorkerHealth(reconciler.lastCompletedAt);
 
+  // Gente: a worker that stops taking jobs (for example after losing its database connections)
+  // exits, so the desktop app's supervisor starts a fresh one.
+  if (process.env.GENTE_JOB_WATCHDOG === "on" && !inMemoryJobs) {
+    startJobPickupWatchdog(pool, {
+      intervalMs: 10_000,
+      log: (message, fields) => logger.warn(message, fields),
+      onUnhealthy: (reason) => {
+        logger.error("worker.watchdog.restart", { reason });
+        process.exitCode = 1;
+        void stopNow().finally(() => process.exit(1));
+        // A hung shutdown must not keep a dead worker around.
+        setTimeout(() => process.exit(1), 15_000).unref();
+      },
+    });
+  }
   logger.info("worker ready", { degraded: secrets.describe().capabilities.degraded ?? false });
 }
 

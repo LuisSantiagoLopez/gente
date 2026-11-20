@@ -5891,6 +5891,10 @@ msgstr "请先征得同意，再录制会议并与此空间共享文字记录。
 msgid "Getting ready"
 msgstr "正在准备"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "正在让事情动起来…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

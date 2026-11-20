@@ -5891,6 +5891,10 @@ msgstr "Получите разрешение на запись и переда�
 msgid "Getting ready"
 msgstr "Подготовка"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "Запускаем всё снова…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

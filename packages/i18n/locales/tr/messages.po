@@ -5891,6 +5891,10 @@ msgstr "Kayıt yapmak ve dökümü bu Alanla paylaşmak için izin al."
 msgid "Getting ready"
 msgstr "Hazırlanıyor"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "İşler yoluna konuyor…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

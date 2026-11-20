@@ -5891,6 +5891,10 @@ msgstr "יש לקבל רשות להקליט ולשתף את התמליל עם ה
 msgid "Getting ready"
 msgstr "מתכונן"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "מתניעים את העניינים…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"

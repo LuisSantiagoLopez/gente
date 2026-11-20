@@ -5891,6 +5891,10 @@ msgstr "Vraag toestemming om op te nemen en het transcript te delen met deze spa
 msgid "Getting ready"
 msgstr "Aan het voorbereiden"
 
+#: apps/web/src/pages/shell/chat/transcript.tsx
+msgid "Getting things moving…"
+msgstr "Even op gang brengen…"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/run-error.ts
 msgid "Getting your AI ready again…"
