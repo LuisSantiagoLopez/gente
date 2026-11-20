@@ -3,8 +3,8 @@ import type { ConnectionCatalogItem } from "@rakazo/contracts";
 import { CONNECTION_LABEL_MAX_LENGTH } from "@rakazo/contracts";
 import { appToolLabel, catalogItemAccounts, catalogItemKey } from "@rakazo/core";
 import { Badge, Button, Disclosure, Input } from "@rakazo/ui-web";
-import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { ChevronLeft, Plus } from "lucide-react";
+import { AppLogo } from "../../lib/integrations/app-logo";
 import { ChatAppLink } from "./parts";
 import type { PluginConnections } from "./use-plugin-connections";
 
@@ -53,7 +53,7 @@ export function ConnectorDetail({
           >
             <ChevronLeft />
           </Button>
-          <LogoTile name={item.name} logo={item.logo} size={36} />
+          <AppLogo name={item.name} logo={item.logo} slug={item.slug} size={36} />
           <div className="truncate text-heading3 font-medium text-foreground">{item.name}</div>
         </div>
         <Button

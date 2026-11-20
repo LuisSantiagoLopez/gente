@@ -28,6 +28,7 @@ import {
   createToolkitDirectoryCache,
   mergeCatalogWithConnected,
 } from "./composio-catalog-cache.js";
+import { connectAppLogo } from "./composio-connect-apps.js";
 
 type SdkSession = Awaited<ReturnType<Composio["create"]>>;
 
@@ -622,7 +623,7 @@ export class ComposioConnector implements ComposioProvider {
     return toolkits.map((toolkit) => ({
       slug: toolkit.slug,
       name: toolkitDisplayName(toolkit),
-      logo: toolkit.logo ?? null,
+      logo: toolkit.logo ?? connectAppLogo(toolkit.slug.toLowerCase()),
       noAuth: Boolean(toolkit.isNoAuth),
       ...(!toolkit.isNoAuth && needsSetup.has(composioSlugKey(toolkit.slug))
         ? { needsSignInSetup: true }

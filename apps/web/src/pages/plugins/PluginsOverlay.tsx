@@ -28,7 +28,6 @@ import {
   Input,
   Spinner,
 } from "@rakazo/ui-web";
-import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { ChevronDown, ChevronRight, LayoutTemplate, X } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { IntegrationSetup } from "../../components/integrations/IntegrationSetup";
@@ -38,6 +37,7 @@ import type {
 } from "../../components/integrations/plugin-marketplace";
 import { PluginDetail, pluginSelection } from "../../components/integrations/plugin-marketplace";
 import { reachesOtherSpaces, useOwnSpaces } from "../../components/integrations/space-availability";
+import { AppLogo } from "../../lib/integrations/app-logo";
 import type { connectedAppMarks } from "../../lib/integrations/connected-apps";
 import { connectMcpOauth } from "../../lib/integrations/mcp-connect";
 import { rpc } from "../../lib/query/rpc";
@@ -438,7 +438,7 @@ export function PluginsOverlay({
                 <span aria-hidden className="flex -space-x-1.5">
                   {connectedMarks.map((mark) => (
                     <span key={mark.key} className="rounded-[9px] ring-2 ring-card">
-                      <LogoTile name={mark.name} logo={mark.logo} size={24} />
+                      <AppLogo name={mark.name} logo={mark.logo} size={24} />
                     </span>
                   ))}
                 </span>

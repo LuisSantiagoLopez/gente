@@ -3,12 +3,12 @@ import { useLinkPrompt } from "@rakazo/chat-ui/web";
 import type { MessageBlock } from "@rakazo/contracts";
 import { appConnectedInput, waitForSignIn } from "@rakazo/core";
 import { Button, Dialog, DialogClose, DialogContent, DialogTitle } from "@rakazo/ui-web";
-import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BuiCard, SuccessPop } from "../../../components/ai/primitives";
 import { ErrorNotice } from "../../../components/ErrorNotice";
 import { OptionRow } from "../../../components/messages/OptionRow";
+import { AppLogo } from "../../../lib/integrations/app-logo";
 import { connectMcpOauth } from "../../../lib/integrations/mcp-connect";
 import type { ArtifactTarget } from "../../../lib/pages/artifact-open";
 import { chartViewport } from "../../../lib/pages/chart-viewport";
@@ -209,7 +209,7 @@ export function AppConnectCard({
       className="w-full max-w-[440px] px-4 py-3.5"
     >
       <div className="flex items-center gap-3.5">
-        <LogoTile name={block.name} logo={block.logo} size={40} />
+        <AppLogo name={block.name} logo={block.logo} size={40} />
         <span className="min-w-0 flex-1">
           <span className="block text-body-lg font-medium text-foreground">{block.name}</span>
           <span className="block truncate text-body-sm text-muted-foreground">
