@@ -6,7 +6,7 @@
 import type { ChildProcess } from "node:child_process";
 import { spawn } from "node:child_process";
 import type { WriteStream } from "node:fs";
-import { createWriteStream, readFileSync } from "node:fs";
+import { createWriteStream, readFileSync, renameSync, statSync } from "node:fs";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { connect } from "node:net";
 import path from "node:path";
@@ -15,6 +15,8 @@ import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
 import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
 import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
+import type { Sealer } from "../burrow/keyring.js";
+import { sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { telegramSecret } from "../burrow/telegram.js";
 import { t } from "../i18n.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
@@ -86,6 +88,11 @@ const STOP_GRACE_MS = 10_000;
 /** A process that stayed up this long starts its next crash from the shortest delay again. */
 const STABLE_RUN_MS = 60_000;
 const LOG_TAIL_LINES = 12;
+/**
+ * Gente: a stack that stays up for weeks rotates each service log at this size while it runs,
+ * keeping one `.previous.log`, so logs never take more than twice this per service.
+ */
+export const MAX_SERVICE_LOG_BYTES = 20 * 1024 * 1024;
 
 /** Resolves once Postgres itself answers on the loopback port; a forwarder that only accepts is not enough. */
 export function postgresAnswers(
@@ -140,6 +147,9 @@ export class Service {
   private child: ChildProcess | null = null;
   private log: WriteStream | null = null;
   private stopping = false;
+  private logBytes = 0;
+  private rotating: Promise<void> | undefined;
+  private held: string[] = [];
   private attempts = 0;
   private restartTimer: NodeJS.Timeout | undefined;
   private lineListeners = new Set<(line: string) => void>();
@@ -154,6 +164,8 @@ export class Service {
       runDir: string;
       /** Called when the process exits unexpectedly; returns whether to restart it. */
       onCrash: (service: Service) => boolean;
+      /** Test seam for MAX_SERVICE_LOG_BYTES. */
+      maxLogBytes?: number;
     },
   ) {}
 
@@ -164,10 +176,7 @@ export class Service {
   start() {
     this.stopping = false;
     const startedAt = Date.now();
-    this.log ??= createWriteStream(path.join(this.ctx.logDir, `${this.spec.name}.log`), {
-      flags: "a",
-      mode: 0o600,
-    });
+    if (!this.log) this.openLog();
     const child = this.ctx.spawn(this.spec.command, this.spec.args, {
       cwd: this.spec.cwd,
       env: this.spec.env,
@@ -179,7 +188,7 @@ export class Service {
       let pending = "";
       stream?.setEncoding("utf8");
       stream?.on("data", (text: string) => {
-        this.log?.write(text);
+        this.writeLog(text);
         const parts = (pending + text).split(/\r?\n/);
         pending = parts.pop() ?? "";
         for (const line of parts) this.line(line);
@@ -247,8 +256,59 @@ export class Service {
       clearTimeout(timer);
     }
     await rm(this.pidFile(), { force: true });
+    await this.rotating;
     await new Promise<void>((resolve) => (this.log ? this.log.end(resolve) : resolve()));
     this.log = null;
+  }
+
+  private logFile(suffix = "") {
+    return path.join(this.ctx.logDir, `${this.spec.name}${suffix}.log`);
+  }
+
+  private openLog() {
+    const file = this.logFile();
+    try {
+      this.logBytes = statSync(file).size;
+    } catch {
+      this.logBytes = 0;
+    }
+    this.log = createWriteStream(file, { flags: "a", mode: 0o600 });
+  }
+
+  private writeLog(text: string) {
+    if (this.rotating) {
+      this.held.push(text);
+      return;
+    }
+    if (!this.log) return;
+    this.log.write(text);
+    this.logBytes += Buffer.byteLength(text);
+    if (this.logBytes >= (this.ctx.maxLogBytes ?? MAX_SERVICE_LOG_BYTES)) this.rotateLog();
+  }
+
+  /**
+   * Closes the full log, moves it aside (replacing the previous one) and writes on in a fresh
+   * file. Output arriving meanwhile is held and written to the fresh file in order.
+   */
+  private rotateLog() {
+    const full = this.log;
+    if (!full) return;
+    this.log = null;
+    this.rotating = new Promise<void>((resolve) => {
+      full.end(() => {
+        try {
+          renameSync(this.logFile(), this.logFile(".previous"));
+        } catch {
+          // A log that cannot be moved keeps growing; the next rotation tries again.
+        }
+        this.openLog();
+        const held = this.held;
+        this.held = [];
+        this.rotating = undefined;
+        for (const text of held) this.writeLog(text);
+        resolve();
+      });
+    });
   }
 
   private line(line: string) {
@@ -673,7 +733,8 @@ export class NativeStackController extends StackLifecycle {
     await writePrivateFile(this.dir(STACK_WEB_URL_FILE), this.currentWebUrl);
 
     const computerImage = `${stackEnv.get("RAKAZO_COMPUTER_IMAGE") || COMPUTER_IMAGE}:${this.deps.imageTag}`;
-    const composioKey = (await this.deps.composioKey?.().catch(() => undefined)) ??
+    const composioKey =
+      (await this.deps.composioKey?.().catch(() => undefined)) ??
       (stackEnv.get("GENTE_COMPOSIO_KEY") || undefined);
     const e2bKey =
       (await this.deps.cloudComputerKey?.().catch(() => undefined)) ??
@@ -694,7 +755,10 @@ export class NativeStackController extends StackLifecycle {
       ...computer,
       // Updates arrive through Gente's long-poll hand-off, signed with this computer's secret.
       ...(telegramToken
-        ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
+        ? {
+            TELEGRAM_BOT_TOKEN: telegramToken,
+            TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken),
+          }
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
@@ -781,7 +845,8 @@ export class NativeStackController extends StackLifecycle {
           ...(await this.runtimeRoot(runtime.cli)),
         ]).catch(() => undefined);
         // Gente: a cloud computer needs no local image.
-        if (computer.SANDBOX_PROVIDER === "local-vm") this.pullComputerImage(runtime.cli, computerImage);
+        if (computer.SANDBOX_PROVIDER === "local-vm")
+          this.pullComputerImage(runtime.cli, computerImage);
         return;
       }
       if (Date.now() >= deadline) break;

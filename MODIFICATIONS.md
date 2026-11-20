@@ -247,6 +247,7 @@ DeskHead Inc. changed the files below in 2026. Text files also carry a notice at
 - `apps/desktop/src/main/burrow/brain-ipc.ts`
 - `apps/desktop/src/main/burrow/brain.ts`
 - `apps/desktop/src/main/burrow/entitlement.ts`
+- `apps/desktop/src/main/this-computer/native-stack-logs.test.ts`
 - `apps/web/src/lib/burrow/entitlement.ts`
 - `brand/burrow-mark.png`
 - `brand/burrow-mark.svg`
