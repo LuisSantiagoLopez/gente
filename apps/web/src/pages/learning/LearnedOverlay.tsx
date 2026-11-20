@@ -20,7 +20,14 @@ import { errorText } from "../../lib/query/user-error";
 type Action = { kind: "confirm" | "dismiss" | "undo"; change: LearnedChange };
 
 /** "What Gente learned about you": every skill change, why, and a way back. */
-export function LearnedOverlay({ onClose }: { onClose: () => void }) {
+export function LearnedOverlay({
+  onClose,
+  onOpenSkills,
+}: {
+  onClose: () => void;
+  /** Opens the full skills list, for skills written by hand. */
+  onOpenSkills?: () => void;
+}) {
   const { t } = useLingui();
   const queries = useSpaceQueries();
   const listQuery = useQuery(queries.learning.list.queryOptions());
@@ -68,6 +75,11 @@ export function LearnedOverlay({ onClose }: { onClose: () => void }) {
             <p className="mt-1 max-w-[52ch] text-body-sm text-muted-foreground">
               <Trans>Stays on this computer. Undo anything.</Trans>
             </p>
+            {onOpenSkills ? (
+              <Button variant="link" size="sm" className="mt-1 px-0" onClick={onOpenSkills}>
+                <Trans>All skills</Trans>
+              </Button>
+            ) : null}
           </div>
           <DialogClose render={<Button variant="ghost" size="icon-sm" aria-label={t`Close`} />}>
             <X />

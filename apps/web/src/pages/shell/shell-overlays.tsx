@@ -43,6 +43,16 @@ const McpServersOverlay = lazyOverlay(() =>
   import("../integrations/McpServersOverlay").then((module) => module.McpServersOverlay),
 );
 
+const ProjectsOverlay = lazyOverlay(() =>
+  import("../knowledge/ProjectsOverlay").then((module) => module.ProjectsOverlay),
+);
+const BrainsOverlay = lazyOverlay(() =>
+  import("../knowledge/BrainsOverlay").then((module) => module.BrainsOverlay),
+);
+const LearnedOverlay = lazyOverlay(() =>
+  import("../learning/LearnedOverlay").then((module) => module.LearnedOverlay),
+);
+
 /** Bound Settings leave so a hung voice status refresh cannot block dismissal. */
 const VOICE_STATUS_REFRESH_TIMEOUT_MS = 10_000;
 
@@ -109,6 +119,22 @@ export function AppOverlays({
             setOverlay(null);
             onOpenBot(bot);
           }}
+        />
+      ) : null}
+      {overlay?.kind === "projects" ? (
+        <ProjectsOverlay
+          initialProjectId={overlay.projectId}
+          onClose={() => setOverlay(null)}
+          onOpenBrain={(slug) => setOverlay({ kind: "brains", slug })}
+        />
+      ) : null}
+      {overlay?.kind === "brains" ? (
+        <BrainsOverlay initialSlug={overlay.slug} onClose={() => setOverlay(null)} />
+      ) : null}
+      {overlay?.kind === "learned" ? (
+        <LearnedOverlay
+          onClose={() => setOverlay(null)}
+          onOpenSkills={() => setOverlay({ kind: "skills" })}
         />
       ) : null}
       {overlay?.kind === "mcp" ? (

@@ -87,3 +87,16 @@ describe("shellOverlaySearch", () => {
     expect(shellOverlaySearch(new URLSearchParams("?routine=r_1"))).toBe("");
   });
 });
+
+describe("Gente learning overlays", () => {
+  it("round-trips projects, brains and learned through the URL", () => {
+    for (const overlay of [
+      { kind: "projects" },
+      { kind: "projects", projectId: "p1" },
+      { kind: "brains", slug: "coffee" },
+      { kind: "learned" },
+    ] as const) {
+      expect(readShellOverlay(withShellOverlay(new URLSearchParams(), overlay))).toEqual(overlay);
+    }
+  });
+});
