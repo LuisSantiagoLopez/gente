@@ -650,6 +650,7 @@ export function planActionGate(input: {
   if (input.alwaysAsk) {
     if (input.mode === "never" && input.steerable) return "deny";
     const ruleAllows =
+      input.resolved.decision === "allow" &&
       input.resolved.source === "always_allow" &&
       input.alwaysAsk !== "spend" &&
       !input.purchase &&
