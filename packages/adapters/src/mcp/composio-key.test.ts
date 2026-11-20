@@ -18,3 +18,13 @@ describe("Composio Connect key", () => {
     expect(withComposioKey("https://connect.composio.dev/mcp", undefined, "")).toBeUndefined();
   });
 });
+
+describe("Composio through Gente Cloud", () => {
+  it("sends Composio Connect traffic to the desktop relay when one is set, and nothing else", async () => {
+    const { composioEndpoint } = await import("./composio-key.js");
+    const relay = "http://127.0.0.1:5555/secret/mcp";
+    expect(String(composioEndpoint("https://connect.composio.dev/mcp", relay))).toBe(relay);
+    expect(String(composioEndpoint("https://example.com/mcp", relay))).toBe("https://example.com/mcp");
+    expect(String(composioEndpoint("https://connect.composio.dev/mcp", undefined))).toBe("https://connect.composio.dev/mcp");
+  });
+});

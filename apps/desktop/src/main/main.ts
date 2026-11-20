@@ -36,6 +36,7 @@ import { registerBrainIpc } from "./burrow/brain-ipc.js";
 import { startSearchBroker } from "./burrow/search-broker.js";
 import { createAiMode } from "./burrow/ai-mode.js";
 import { startModelRouter } from "./burrow/model-router.js";
+import { startComposioRelay } from "./burrow/composio-relay.js";
 import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
 import {
   accountCloud,
@@ -791,6 +792,17 @@ app.whenReady().then(async () => {
       modelRouterBase = router.base;
     })
     .catch(() => undefined);
+  // Gente: connected apps (Composio) through Gente Cloud, with the person's own sign-in.
+  let composioProxy: string | null = null;
+  void startComposioRelay({
+    cloudUrl: `${GENTE_CLOUD_URL}/v1/proxy/composio/mcp`,
+    token: accountToken,
+    devKey: () => (devVendorKeys() ? readComposioKey() : Promise.resolve(undefined)),
+  })
+    .then((relay) => {
+      composioProxy = relay.url;
+    })
+    .catch(() => undefined);
   // Gente: the server's searches go through Gente Cloud when the person is signed in.
   let searchBroker: { url: string; token: string } | null = null;
   void startSearchBroker(accountCloud, isSignedIn)
@@ -881,6 +893,7 @@ app.whenReady().then(async () => {
         devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
       searchBroker: () => searchBroker,
       modelRouter: () => modelRouterBase,
+      composioProxy: () => composioProxy,
       telegramToken: () => readTelegramToken(),
     });
   };
@@ -931,6 +944,7 @@ app.whenReady().then(async () => {
             devVendorKeys() ? readKeychainSecret("E2B_API_KEY") : Promise.resolve(undefined),
           searchBroker: () => searchBroker,
       modelRouter: () => modelRouterBase,
+      composioProxy: () => composioProxy,
       telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null

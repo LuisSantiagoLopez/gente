@@ -121,6 +121,8 @@ export interface WindowsStackDeps {
   searchBroker?: () => { url: string; token: string } | null;
   /** Gente: the loopback model router (Fast or Private), used as the model server's address. */
   modelRouter?: () => string | null;
+  /** Gente: the loopback relay for Composio through Gente Cloud. */
+  composioProxy?: () => string | null;
   /** The E2B key from the OS keychain: bots get a cloud computer unless the person picks local. */
   cloudComputerKey?: () => Promise<string | undefined>;
   /** The Composio Connect consumer key from the OS keychain, if the person set one. */
@@ -462,6 +464,7 @@ export class WindowsStackController extends StackLifecycle {
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
+      ...(this.deps.composioProxy?.() ? { GENTE_COMPOSIO_PROXY_URL: this.deps.composioProxy()! } : {}),
     });
     await encryptExistingContent({
       run: this.deps.run,
