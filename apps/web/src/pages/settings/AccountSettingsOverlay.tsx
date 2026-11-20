@@ -36,7 +36,7 @@ import { DesktopUpdateSection } from "../../components/DesktopUpdates";
 import { AccountDataSettings } from "../../components/settings/AccountDataSettings";
 import { SettingsGroup, SettingsRow } from "../../components/settings/SettingsRows";
 import { desktopBridge } from "../../lib/platform/desktop";
-import { GenteAiModeControl, GentePlanControl } from "../../lib/gente/account";
+import { GenteAiModeControl, GentePlanControl, GentePrivateWaitlist } from "../../lib/gente/account";
 import { playSound, setSoundsEnabled, soundsEnabled } from "../../lib/gente/sounds";
 import { TrustedLinkSitesSettings } from "../../components/settings/TrustedLinkSitesSettings";
 import { authClient } from "../../lib/auth/auth";
@@ -294,6 +294,9 @@ export function GeneralSettingsPanels({
         />
         {desktopBridge()?.gente ? (
           <SettingsRow label={<Trans>Where the AI runs</Trans>} control={<GenteAiModeControl />} />
+        ) : null}
+        {desktopBridge()?.gente ? (
+          <SettingsRow label={<Trans>Make my AI private</Trans>} control={<GentePrivateWaitlist />} />
         ) : null}
         <SettingsRow
           label={<Trans>Sounds</Trans>}

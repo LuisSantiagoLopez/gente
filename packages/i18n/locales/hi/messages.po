@@ -1167,6 +1167,11 @@ msgstr "**मंगलवार: 31 ऑर्डर से $2,340** (पिछ�
 msgid "/ month"
 msgstr "/ महीना"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price}/माह · {0} प्रतीक्षा में"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "1 बॉट का अपना मॉडल है:"
@@ -7083,6 +7088,10 @@ msgstr "{spaceName} से जुड़ें"
 msgid "Join meeting"
 msgstr "मीटिंग में जुड़ें"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "वेटलिस्ट में जुड़ें"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7498,6 +7507,10 @@ msgstr "एडमिन बनाएँ"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "सदस्य बनाएँ"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "मेरा AI निजी बनाएँ"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13437,6 +13450,10 @@ msgstr "आप:"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "सब तैयार है"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "आप वेटलिस्ट में हैं"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

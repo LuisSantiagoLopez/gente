@@ -24,6 +24,13 @@ export interface DesktopUpdateState {
   checkedAt: string | null;
 }
 
+/** Gente: the "Make my AI private" offer, a waitlist for now. */
+export interface GentePrivateOffer {
+  monthlyCents: number;
+  onWaitlist: boolean;
+  waiting: number;
+}
+
 /** Gente: where the AI runs now, and whether the person picked it (otherwise it follows the plan). */
 export interface GenteAiMode {
   mode: "fast" | "private";
@@ -168,6 +175,9 @@ export interface RakazoDesktop {
     /** Where the AI runs: Fast (Gente Cloud) or Private (this computer). */
     aiMode: () => Promise<GenteAiMode>;
     setAiMode: (mode: "fast" | "private") => Promise<GenteAiMode>;
+    /** "Make my AI private" waitlist; null when signed out or offline. */
+    privateOffer: () => Promise<GentePrivateOffer | null>;
+    setPrivateWaitlist: (join: boolean) => Promise<GentePrivateOffer | null>;
   };
   /** Absent on older desktop releases, which have no Settings… menu item. */
   settings?: {

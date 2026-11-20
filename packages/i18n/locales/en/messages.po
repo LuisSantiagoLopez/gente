@@ -1167,6 +1167,11 @@ msgstr "**Tuesday: $2,340 from 31 orders** (up 12% on last Tuesday)\n"
 msgid "/ month"
 msgstr "/ month"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price}/mo · {0} waiting"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "1 bot has its own model:"
@@ -7083,6 +7088,10 @@ msgstr "Join {spaceName}"
 msgid "Join meeting"
 msgstr "Join meeting"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "Join the waitlist"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7498,6 +7507,10 @@ msgstr "Make admin"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "Make member"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "Make my AI private"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13437,6 +13450,10 @@ msgstr "You:"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "You're all set"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "You're on the waitlist"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

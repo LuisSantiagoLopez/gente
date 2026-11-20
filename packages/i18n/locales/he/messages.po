@@ -1167,6 +1167,11 @@ msgstr "**שלישי: $2,340 מ-31 הזמנות** (עלייה של 12% לעומ�
 msgid "/ month"
 msgstr "/ חודש"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price} לחודש · {0} ממתינים"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "לבוט אחד יש מודל משלו:"
@@ -7083,6 +7088,10 @@ msgstr "הצטרפות ל-{spaceName}"
 msgid "Join meeting"
 msgstr "הצטרפות לפגישה"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "להצטרף לרשימת ההמתנה"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7498,6 +7507,10 @@ msgstr "הפיכה למנהל"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "הפיכה לחבר"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "להפוך את ה־AI שלי לפרטי"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13437,6 +13450,10 @@ msgstr "אתה:"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "הכול מוכן"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "אתה ברשימת ההמתנה"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

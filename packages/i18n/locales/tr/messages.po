@@ -1167,6 +1167,11 @@ msgstr "**Salı: 31 siparişten $2,340** (geçen salıya göre %12 artış)\n"
 msgid "/ month"
 msgstr "/ ay"
 
+#. placeholder {0}: offer.waiting
+#: apps/web/src/lib/gente/account.tsx
+msgid "${price}/mo · {0} waiting"
+msgstr "${price}/ay · {0} kişi bekliyor"
+
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
 msgstr "1 botun kendi modeli var:"
@@ -7083,6 +7088,10 @@ msgstr "{spaceName} alanına katıl"
 msgid "Join meeting"
 msgstr "Toplantıya katıl"
 
+#: apps/web/src/lib/gente/account.tsx
+msgid "Join the waitlist"
+msgstr "Bekleme listesine katıl"
+
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7498,6 +7507,10 @@ msgstr "Yönetici yap"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "Üye yap"
+
+#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
+msgid "Make my AI private"
+msgstr "Yapay zekamı özel yap"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -13437,6 +13450,10 @@ msgstr "Siz:"
 #: apps/mobile/app/paywall.tsx
 msgid "You're all set"
 msgstr "Her şey hazır"
+
+#: apps/web/src/lib/gente/account.tsx
+msgid "You're on the waitlist"
+msgstr "Bekleme listesindesin"
 
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."

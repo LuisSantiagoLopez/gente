@@ -69,7 +69,7 @@ export function createGenteCloud(options: GenteCloudOptions) {
   let lastPlan: PlanStatus | undefined;
 
   async function call<T>(
-    method: "GET" | "POST" | "PATCH",
+    method: "GET" | "POST" | "PATCH" | "DELETE",
     path: string,
     body?: unknown,
     headers: Record<string, string> = {},
@@ -165,6 +165,19 @@ export function createGenteCloud(options: GenteCloudOptions) {
     /** Search with page text included, so nothing else has to be fetched. */
     search: async (query: string, numResults = 5) =>
       (await call<unknown>("POST", "/v1/proxy/search", { query, numResults, includeText: true })).data,
+
+    /** "Make my AI private": the offer and the person's place on the waitlist. */
+    privateOffer: async () =>
+      (await call<{ status: string; monthlyCents: number; onWaitlist: boolean; waiting: number }>(
+        "GET",
+        "/v1/private/offer",
+      )).data!,
+    joinPrivateWaitlist: async () => {
+      await call("POST", "/v1/private/waitlist", {});
+    },
+    leavePrivateWaitlist: async () => {
+      await call("DELETE", "/v1/private/waitlist");
+    },
 
     /** Where the Composio MCP client points instead of connect.composio.dev with a vendor key. */
     composioMcpUrl: () => `${base}/v1/proxy/composio/mcp`,

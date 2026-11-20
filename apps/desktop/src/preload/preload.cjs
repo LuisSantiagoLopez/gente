@@ -34,6 +34,8 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
     consumeMessage: (messageId) => ipcRenderer.invoke("desktop.gente.consumeMessage", messageId),
     aiMode: () => ipcRenderer.invoke("desktop.gente.aiMode"),
     setAiMode: (mode) => ipcRenderer.invoke("desktop.gente.setAiMode", mode),
+    privateOffer: () => ipcRenderer.invoke("desktop.gente.privateOffer"),
+    setPrivateWaitlist: (join) => ipcRenderer.invoke("desktop.gente.setPrivateWaitlist", join),
   },
   server: {
     change: () => ipcRenderer.invoke("desktop.server.change"),

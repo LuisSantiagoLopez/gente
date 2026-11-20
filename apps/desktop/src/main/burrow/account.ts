@@ -5,7 +5,7 @@
 // uses it. Local chat never needs an account; plan, hours and cloud tools do.
 import { app, Notification, shell } from "electron";
 import { createClerkSession, clerkConfig } from "./clerk-auth.js";
-import type { GenteAccountState } from "@rakazo/contracts";
+import type { GenteAccountState, GentePrivateOffer } from "@rakazo/contracts";
 import { createGenteCloud, type GenteCloud } from "./gente-cloud.js";
 
 type Sealer = { seal(value: string): Buffer; unseal(sealed: Buffer): string };
@@ -100,3 +100,16 @@ export const isPaidPlan = () => signedIn && paidPlan;
 
 /** The person's own token for Gente Cloud, refreshed as needed; null when signed out. */
 export const accountToken = () => session?.accessToken() ?? Promise.resolve(null);
+
+/** "Make my AI private" waitlist; null when signed out or offline (the row then stays hidden). */
+export async function privateOffer(change?: "join" | "leave"): Promise<GentePrivateOffer | null> {
+  if (!signedIn || !cloud) return null;
+  try {
+    if (change === "join") await cloud.joinPrivateWaitlist();
+    if (change === "leave") await cloud.leavePrivateWaitlist();
+    const offer = await cloud.privateOffer();
+    return { monthlyCents: offer.monthlyCents, onWaitlist: offer.onWaitlist, waiting: offer.waiting };
+  } catch {
+    return null;
+  }
+}
