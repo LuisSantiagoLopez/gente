@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Debug builds only: renders the Play feature graphic from the real theme and mark. -->
+        <activity android:name=".StoreArtActivity" android:exported="true" android:theme="@style/Theme.Gente" />
+    </application>
+</manifest>

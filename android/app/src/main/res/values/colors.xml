@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_bg">#FFFBF6EC</color>
+    <color name="bg">#FFFBF6EC</color>
+    <color name="mark_accent">#FFE8951A</color>
+    <color name="mark_ink">#FF1C1914</color>
+    <color name="widget_bg">#FFF4ECDD</color>
+    <color name="widget_fg">#FF1C1710</color>
+</resources>

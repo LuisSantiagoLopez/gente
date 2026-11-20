@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Gente</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">Your own private helper</string>
+    <string name="welcome_body">Gente does the work for you. Your chats stay on this phone.</string>
+    <string name="welcome_point_phone">Chats, memory and files live only on this phone, locked with a key only it has.</string>
+    <string name="welcome_point_server">Answers made on our servers are not stored. Not even for a second after.</string>
+    <string name="welcome_point_ask">Gente always asks before it pays, sends as you, deletes or accepts terms.</string>
+    <string name="sign_in">Sign in</string>
+    <string name="try_first">Try it first</string>
+    <string name="signing_in">Opening sign in…</string>
+
+    <!-- Home -->
+    <string name="home_title">Gente</string>
+    <string name="new_chat">New chat</string>
+    <string name="empty_chats_title">Ask anything</string>
+    <string name="empty_chats_body">Plan a trip, write an email, look something up. Gente can do it for you.</string>
+    <string name="suggest_1">Plan a weekend in Mexico City</string>
+    <string name="suggest_2">Write a kind reply to my landlord</string>
+    <string name="suggest_3">What is new in solar panels this year?</string>
+    <string name="untitled_chat">New chat</string>
+    <string name="pending_approvals">%d things need your OK</string>
+    <string name="pending_approval_one">1 thing needs your OK</string>
+    <string name="pinned">Pinned</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_data">Where\'s my data</string>
+    <string name="cd_back">Back</string>
+    <string name="delete_chat">Delete chat</string>
+    <string name="chat_deleted">Chat deleted from this phone</string>
+
+    <!-- Chat -->
+    <string name="composer_hint">Ask Gente</string>
+    <string name="cd_send">Send</string>
+    <string name="cd_stop">Stop</string>
+    <string name="cd_mic">Talk</string>
+    <string name="cd_mic_stop">Stop listening</string>
+    <string name="listening">Listening on your phone…</string>
+    <string name="badge_cloud">Answered on our servers, not stored</string>
+    <string name="badge_cloud_preview">Preview answer. Our servers made it and kept nothing</string>
+    <string name="badge_desktop">Answered on your computer, sent encrypted</string>
+    <string name="badge_phone">Answered on this phone</string>
+    <string name="badge_demo">Sample reply made on this phone</string>
+    <string name="thinking">Thinking</string>
+    <string name="stopped">Stopped</string>
+    <string name="reply_failed">That reply didn\'t finish.</string>
+    <string name="retry">Try again</string>
+    <string name="read_aloud">Read aloud</string>
+    <string name="stop_reading">Stop reading</string>
+    <string name="copy">Copy</string>
+    <string name="copied">Copied</string>
+    <string name="report">Report</string>
+    <string name="continue_on_computer">Continue on my computer</string>
+    <string name="handed_off">Opened on your computer</string>
+    <string name="tool_search">Searched the web for “%s”</string>
+    <string name="tool_remember">Saved on your phone: %s</string>
+    <string name="tool_image">Made an image: %s</string>
+    <string name="tool_browser">Opened an online browser: %s</string>
+    <string name="tool_desktop">Sent to your computer: %s</string>
+    <string name="tool_waiting">Waiting for your OK: %s</string>
+    <string name="tool_approved">You said yes: %s</string>
+    <string name="tool_declined">You said no: %s</string>
+    <string name="out_of_messages_title">You\'ve used your 10 free messages</string>
+    <string name="out_of_messages_body">Pick a plan to keep going. Your chats stay on this phone.</string>
+    <string name="see_plans">See plans</string>
+    <string name="watch_live">Watch it live</string>
+
+    <!-- Where the AI runs -->
+    <string name="where_ai_runs">Where the AI runs</string>
+    <string name="where_cloud">Cloud</string>
+    <string name="where_cloud_body">Fastest. Our servers answer and keep nothing.</string>
+    <string name="where_desktop">On my computer</string>
+    <string name="where_desktop_body">Your computer\'s own AI answers. Messages go there encrypted.</string>
+    <string name="where_desktop_unpaired">Pair your computer first.</string>
+    <string name="where_phone">On this phone</string>
+    <string name="where_phone_body">Not available yet. Coming once it\'s fast enough on phones.</string>
+    <string name="where_changed">Answers now run: %s</string>
+    <string name="where_fallback_desktop">Your computer isn\'t paired, so this answer ran in the cloud.</string>
+    <string name="where_fallback_phone">On-phone answers aren\'t ready, so this answer ran in the cloud.</string>
+    <string name="pair_now">Pair now</string>
+
+    <!-- Approvals -->
+    <string name="approval_title">Gente needs your OK</string>
+    <string name="approval_money">This spends money</string>
+    <string name="approval_send">This sends something as you</string>
+    <string name="approval_delete">This deletes data</string>
+    <string name="approval_legal">This accepts legal terms</string>
+    <string name="approval_other">This needs your OK</string>
+    <string name="approval_always_asks">Gente always asks for this. It can\'t be turned off.</string>
+    <string name="approval_from_desktop">From your computer</string>
+    <string name="approval_from_routine">From a routine</string>
+    <string name="approve">Yes, do it</string>
+    <string name="decline">No</string>
+    <string name="approved_toast">Done. You said yes.</string>
+    <string name="declined_toast">OK, Gente won\'t do it.</string>
+
+    <!-- Report -->
+    <string name="report_title">Report this reply</string>
+    <string name="report_body">Tell us what\'s wrong. We use reports to make Gente safer.</string>
+    <string name="report_offensive">Offensive or hateful</string>
+    <string name="report_harmful">Harmful or dangerous</string>
+    <string name="report_sexual">Sexual content</string>
+    <string name="report_false">False or misleading</string>
+    <string name="report_other">Something else</string>
+    <string name="report_include_text">Include this reply so we can see it</string>
+    <string name="report_include_text_hint">Off by default. Only this one reply is sent, nothing else.</string>
+    <string name="report_send">Send report</string>
+    <string name="report_sent">Thanks. Your report was sent.</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Data center -->
+    <string name="data_title">Where\'s my data</string>
+    <string name="data_subtitle">Live from this phone. Updated as things happen.</string>
+    <string name="data_lives">Where it lives</string>
+    <string name="data_chats">Chats</string>
+    <string name="data_messages">Messages</string>
+    <string name="data_memory">Memory</string>
+    <string name="data_files">Files</string>
+    <string name="data_account">Account and plan</string>
+    <string name="data_purchases">Purchases</string>
+    <string name="place_phone">Only on this phone, encrypted</string>
+    <string name="place_phone_computer">This phone and your paired computer, end-to-end encrypted</string>
+    <string name="place_cloud_account">Gente Cloud: email, plan and hours used. No chats.</string>
+    <string name="place_play">Google Play keeps the receipt</string>
+    <string name="data_timeline">Timeline</string>
+    <string name="data_timeline_empty">Nothing has left your phone yet.</string>
+    <string name="data_what_left">What left your phone</string>
+    <string name="data_what_left_body">Every request: when, where and how big. Never what it said.</string>
+    <string name="data_receipts">Deletion receipts</string>
+    <string name="data_receipts_empty">No deletions yet.</string>
+    <string name="data_receipt_row">Receipt %1$s</string>
+    <string name="data_export">Export everything</string>
+    <string name="data_export_body">Saves one file with all your chats and memory. You pick where.</string>
+    <string name="data_exported">Exported</string>
+    <string name="data_delete_all">Delete everything</string>
+    <string name="data_delete_all_body">Deletes every chat, memory and file on this phone, and the key that unlocks them.</string>
+    <string name="data_delete_confirm_title">Delete everything?</string>
+    <string name="data_delete_confirm_body">This can\'t be undone. Chats, memory, files and pairing on this phone are erased.</string>
+    <string name="data_delete_also_cloud">Also delete my Gente Cloud account</string>
+    <string name="delete">Delete</string>
+    <string name="egress_row">%1$s · %2$s up · %3$s down</string>
+    <string name="egress_chat_note">Chat text, answered and not stored</string>
+    <string name="egress_none">Nothing yet.</string>
+    <string name="storage_key">Key: %s</string>
+    <string name="storage_strongbox">StrongBox chip</string>
+    <string name="storage_keystore">Android Keystore</string>
+    <string name="backup_off">Not in Google backup</string>
+
+    <string name="svc_AI">Gente AI (answered, not stored)</string>
+    <string name="svc_RELAY">Encrypted relay to your computer</string>
+    <string name="svc_SEARCH">Web search</string>
+    <string name="svc_VOICE">Cloud voice</string>
+    <string name="svc_MEDIA">Images and video</string>
+    <string name="svc_APPS">Connected apps</string>
+    <string name="svc_COMPUTER">Online computer</string>
+    <string name="svc_BILLING">Plans and billing</string>
+    <string name="svc_ACCOUNT">Account</string>
+    <string name="svc_SIGN_IN">Sign in</string>
+    <string name="svc_SUPPORT">Support</string>
+    <string name="svc_OTHER">Other</string>
+
+    <string name="ev_send">Sent</string>
+    <string name="ev_sync">Synced</string>
+    <string name="ev_delete">Deleted</string>
+    <string name="ev_export">Exported</string>
+    <string name="ev_receipt">Receipt</string>
+    <string name="ev_pair">Paired</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="account">Account</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signed_out">Not signed in</string>
+    <string name="sign_out">Sign out</string>
+    <string name="plan_label">Plan</string>
+    <string name="hours_left">%1$s hours of online work left</string>
+    <string name="free_left">%1$d of %2$d free messages left</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="voice">Voice</string>
+    <string name="cloud_voice">Cloud voice</string>
+    <string name="cloud_voice_body">A more natural voice. Reply text goes to our voice service and isn\'t stored. Off: your phone reads it.</string>
+    <string name="look">Look</string>
+    <string name="dynamic_color">Use my wallpaper colors</string>
+    <string name="dynamic_color_body">Off keeps Gente\'s own colors.</string>
+    <string name="haptics">Haptics</string>
+    <string name="computer">Your computer</string>
+    <string name="pair_computer">Pair your computer</string>
+    <string name="language">Language</string>
+    <string name="language_body">Use your phone\'s language settings for Gente.</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="support">Help and support</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_body">Deletes your Gente Cloud account and everything on this phone.</string>
+    <string name="delete_account_done">Your account was deleted. Receipt %s.</string>
+    <string name="version">Version %s</string>
+    <string name="routines">Routines</string>
+    <string name="routines_body">Routines run on a schedule and ask you before anything important.</string>
+    <string name="routines_push_off">Push alerts start once notifications are set up.</string>
+    <string name="notifications_permission">Allow notifications for approvals</string>
+
+    <!-- Paywall -->
+    <string name="paywall_title">Get more done</string>
+    <string name="paywall_body">Every plan keeps your chats on your phone. Hours are for online work like browsing and building.</string>
+    <string name="plan_free">Free</string>
+    <string name="plan_pro">Pro</string>
+    <string name="plan_max">Max</string>
+    <string name="plan_max_plus">Max Plus</string>
+    <string name="plan_hours">%d hours a month</string>
+    <string name="plan_free_desc">10 messages to try it</string>
+    <string name="per_month">%s a month</string>
+    <string name="per_year">%s a year</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="buy_hours">Add 8 hours for %s</string>
+    <string name="choose_plan">Choose %s</string>
+    <string name="purchase_working">Opening Google Play…</string>
+    <string name="purchase_confirmed">You\'re all set. Thanks!</string>
+    <string name="purchase_pending">Payment received. We\'re confirming it, this can take a minute.</string>
+    <string name="restore">Restore purchases</string>
+    <string name="paywall_terms">Billed by Google Play. Cancel anytime in Google Play.</string>
+    <string name="current_plan">Your plan</string>
+
+    <!-- Pairing -->
+    <string name="pair_title">Pair your computer</string>
+    <string name="pair_body">On your computer, open Gente, then Settings, then Phone. Scan the code it shows.</string>
+    <string name="pair_scan">Scan code</string>
+    <string name="pair_paste">Paste code instead</string>
+    <string name="pair_code_hint">Pairing code</string>
+    <string name="pair_connect">Connect</string>
+    <string name="pair_safety">Check that your computer shows %s</string>
+    <string name="pair_done">Paired with %s</string>
+    <string name="pair_devices">Paired</string>
+    <string name="pair_none">No computer paired yet.</string>
+    <string name="unpair">Unpair</string>
+    <string name="pair_what">What pairing does</string>
+    <string name="pair_what_1">Chats, memory and projects sync between your phone and computer, end-to-end encrypted.</string>
+    <string name="pair_what_2">Approve your computer\'s actions from your phone.</string>
+    <string name="pair_what_3">Use your computer\'s private AI from anywhere.</string>
+    <string name="pair_what_4">Move a chat to the other device in one tap.</string>
+    <string name="pair_relay_note">Gente Cloud passes along locked messages it can\'t read.</string>
+
+    <!-- Live view -->
+    <string name="live_title">Online browser</string>
+    <string name="live_stop">Stop</string>
+
+    <!-- Widget, tile, push -->
+    <string name="widget_ask">Ask Gente</string>
+    <string name="widget_desc">Start a private chat in one tap</string>
+    <string name="tile_label">Ask Gente</string>
+    <string name="channel_approvals">Approvals</string>
+    <string name="channel_routines">Routines</string>
+    <string name="push_approval_title">Gente needs your OK</string>
+    <string name="push_approval_body">Open Gente to see what and decide.</string>
+
+    <string name="demo_reply">Hi, I\'m Gente. You\'re not signed in, so this is a sample reply made on your phone. Sign in to get real answers. Your chats stay on this phone either way.</string>
+
+    <!-- Errors: plain words only, never raw codes -->
+    <string name="err_offline">You\'re offline. Your chat is saved on the phone. Try again when you\'re connected.</string>
+    <string name="err_sign_in">Please sign in again.</string>
+    <string name="err_no_credit">You\'re out of hours. Add more to keep going.</string>
+    <string name="err_busy">Gente is busy right now. Try again in a moment.</string>
+    <string name="err_server">Something went wrong on our side. Your chat is safe. Try again.</string>
+    <string name="err_relay">Your computer can\'t be reached right now. Make sure Gente is open on it.</string>
+    <string name="err_no_desktop">Pair your computer first.</string>
+    <string name="err_bad_qr">That code didn\'t work. Try scanning it again.</string>
+    <string name="err_stt">Voice typing isn\'t available on this phone yet. You can type instead.</string>
+    <string name="err_billing">Google Play isn\'t available right now. Try again soon.</string>
+    <string name="err_generic">That didn\'t work. Try again.</string>
+</resources>
