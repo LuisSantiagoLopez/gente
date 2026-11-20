@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { randomUUID } from "node:crypto";
 import { setTimeout as sleep } from "node:timers/promises";
 import type { BrowserProvider, SandboxProvider } from "@rakazo/adapter-kit";
@@ -93,6 +94,36 @@ function appendComputerCommand(ctx: RunContext, payload: ComputerCommand) {
         }
       })
   );
+}
+
+/** Gente: the last screen size seen per run, to place pointer highlights before a new look. */
+const lastScreenSize = new WeakMap<object, { width: number; height: number }>();
+
+/**
+ * Gente: tells the live view where the bot clicked or pointed, so it can draw the cursor and a
+ * soft highlight on the click. Coordinates are screen pixels with the screen's size.
+ */
+function appendComputerPointers(
+  ctx: RunContext,
+  actions: readonly { kind: string; x?: number; y?: number }[],
+  size: { width: number; height: number } | undefined,
+) {
+  if (!size) return;
+  const points = actions
+    .filter((action) => (action.kind === "click" || action.kind === "move" || action.kind === "down") && typeof action.x === "number" && typeof action.y === "number")
+    .map((action) => ({ kind: action.kind === "move" ? "move" : "click", x: action.x!, y: action.y! }));
+  if (points.length === 0) return;
+  const { deps, run, runId, bot, thread } = ctx;
+  void deps.events
+    .append({
+      spaceId: run.spaceId,
+      threadId: thread.id,
+      botId: bot.id,
+      runId,
+      type: "computer.pointer",
+      payload: { points, width: size.width, height: size.height },
+    })
+    .catch(() => undefined);
 }
 
 /** Record a finished file/app action for the terminal's Activity view. */
@@ -482,12 +513,11 @@ export const computerTools: ToolHandlers = {
     const { name } = call;
     const blocked = await screenBlocked(ctx, true);
     if (blocked) return { error: blocked };
-    return computerScreenToolResult(async () =>
-      formatObservation(
-        ctx,
-        await deps.sandbox.observe(await ctx.computer.get("tool", name), context),
-      ),
-    );
+    return computerScreenToolResult(async () => {
+      const observation = await deps.sandbox.observe(await ctx.computer.get("tool", name), context);
+      lastScreenSize.set(ctx.state, { width: observation.width, height: observation.height });
+      return formatObservation(ctx, observation);
+    });
   },
   async computer_act(ctx, call) {
     const { deps, context } = ctx;
@@ -505,6 +535,7 @@ export const computerTools: ToolHandlers = {
       // Counted just before the press; a desktop press is never known not to have happened.
       const refused = await countPayment(ctx, call);
       if (refused) return { error: refused };
+      appendComputerPointers(ctx, actions as never, lastScreenSize.get(ctx.state));
       const result = await deps.sandbox.act(
         computer,
         {
@@ -514,6 +545,10 @@ export const computerTools: ToolHandlers = {
         },
         context,
       );
+      if (result.observation) {
+        if (!lastScreenSize.has(ctx.state)) appendComputerPointers(ctx, actions as never, result.observation);
+        lastScreenSize.set(ctx.state, { width: result.observation.width, height: result.observation.height });
+      }
       return result.observation
         ? formatObservation(
             ctx,
