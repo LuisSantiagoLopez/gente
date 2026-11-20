@@ -30,19 +30,22 @@ it("uses the same inset tile for artwork, missing artwork, and failed artwork", 
     ),
   );
   const stack = host.firstElementChild!;
-  const tiles = [...stack.children] as HTMLElement[];
+  const rings = [...stack.children] as HTMLElement[];
+  const tiles = rings.map((ring) => ring.firstElementChild as HTMLElement);
   expect(stack.getAttribute("aria-hidden")).toBe("true");
   expect(tiles).toHaveLength(3);
   expect(new Set(tiles.map((tile) => tile.className)).size).toBe(1);
-  for (const tile of tiles) {
+  for (const [i, tile] of tiles.entries()) {
     expect(tile.classList.contains("bg-favicon-plate")).toBe(true);
-    expect(tile.classList.contains("ring-sidebar-accent")).toBe(true);
+    expect(rings[i]!.classList.contains("ring-sidebar-accent")).toBe(true);
     expect(tile.style.width).toBe("24px");
     expect(tile.style.height).toBe("24px");
+    // A square logo fits inside the round plate without its corners being cut.
     expect(tile.style.padding).toBe("4px");
+    expect(tile.classList.contains("overflow-hidden")).toBe(false);
   }
-  expect(tiles.map((tile) => tile.style.marginLeft)).toEqual(["0px", "-2px", "-2px"]);
-  expect(tiles.map((tile) => tile.style.zIndex)).toEqual(["0", "1", "2"]);
+  expect(rings.map((ring) => ring.style.marginLeft)).toEqual(["0px", "-2px", "-2px"]);
+  expect(rings.map((ring) => ring.style.zIndex)).toEqual(["0", "1", "2"]);
   expect(tiles[1]!.textContent).toBe("N");
   await act(async () => tiles[2]!.querySelector("img")!.dispatchEvent(new Event("error")));
   expect(tiles[2]!.textContent).toBe("G");
@@ -62,10 +65,10 @@ it("scales its geometry and retries replacement artwork", async () => {
       ),
     );
   await render("https://example.test/old.svg");
-  const tile = host.querySelector<HTMLElement>("span > span")!;
+  const tile = host.querySelector<HTMLElement>("[data-logo-tile]")!;
   expect(tile.style.width).toBe("30px");
   expect(tile.style.padding).toBe("5px");
-  expect(tile.nextElementSibling?.textContent).toBe("?");
+  expect(tile.parentElement?.nextElementSibling?.textContent).toBe("?");
   await act(async () => tile.querySelector("img")!.dispatchEvent(new Event("error")));
   expect(tile.textContent).toBe("A");
   await render("https://example.test/new.svg");

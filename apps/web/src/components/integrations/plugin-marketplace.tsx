@@ -10,6 +10,7 @@ import type {
 import { mcpServerConnection, mcpServerNeedsSignIn, PluginPreviewSchema } from "@rakazo/contracts";
 import { installedPluginParts, pluginSite } from "@rakazo/core";
 import { Button, Spinner } from "@rakazo/ui-web";
+import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { ArrowUpRight, Check, ChevronLeft, FileText, Plug } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { connectMcpOauth } from "../../lib/integrations/mcp-connect";
@@ -54,22 +55,14 @@ export function PluginLogo({
   const useLogo = Boolean(logo) && !logoFailed;
   const favicon = useLinkFavicon(useLogo ? "" : (site ?? ""));
   const src = useLogo ? logo : favicon.icon;
-  const box = large ? "h-14 w-14 rounded-2xl text-heading2" : "h-10 w-10 rounded-xl text-body";
-  return src ? (
-    <img
-      src={src}
-      alt=""
-      loading="lazy"
-      decoding="async"
+  return (
+    <LogoTile
+      key={src ?? "none"}
+      name={name}
+      logo={src || null}
+      size={large ? 56 : 40}
       onError={() => (useLogo ? setLogoFailed(true) : favicon.unusable())}
-      className={`${box} shrink-0 border border-border/60 bg-favicon-plate object-contain p-1.5`}
     />
-  ) : (
-    <div
-      className={`${box} grid shrink-0 place-items-center border border-border/60 bg-favicon-plate font-semibold text-foreground`}
-    >
-      {Array.from(name)[0]?.toUpperCase()}
-    </div>
   );
 }
 

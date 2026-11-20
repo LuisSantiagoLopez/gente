@@ -351,8 +351,8 @@ describe("integration fallback icons", () => {
     ["🦞 OpenClaw", "🦞", "🦞"],
     ["𠮷野", "𠮷", "𠮷"],
     ["中文", "中", "中"],
-    ["notes", "N", "n"],
-    ["", "", ""],
+    ["notes", "N", "N"],
+    ["", "?", "?"],
   ])("preserves the first code point of %s", async (name, pluginInitial, connectorInitial) => {
     const item = {
       connectorId: "test",

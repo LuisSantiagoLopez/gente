@@ -14,7 +14,13 @@ function seeded(seed: number) {
 }
 
 /** A filled dot that looks drawn with a marker: slightly lumpy, smoothly closed. */
-export function handDotPath(cx: number, cy: number, r: number, seed: number, wobble = 0.14): string {
+export function handDotPath(
+  cx: number,
+  cy: number,
+  r: number,
+  seed: number,
+  wobble = 0.14,
+): string {
   const rand = seeded(seed);
   const n = 9;
   const pts = Array.from({ length: n }, (_, i) => {

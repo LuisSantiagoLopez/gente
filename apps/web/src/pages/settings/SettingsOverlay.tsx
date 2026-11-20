@@ -21,7 +21,6 @@ import {
 } from "../../components/settings/SettingsRows";
 import { VaultSettings } from "../../components/vault/VaultSettings";
 import { canChooseOwnComputer } from "../../lib/computers/computer-sandbox";
-import { DevicesSettingsPanel } from "../../lib/gente/devices";
 import { desktopBridge } from "../../lib/platform/desktop";
 import type { RpcClient } from "../../lib/query/rpc";
 import { SpaceRpcProvider } from "../../lib/query/space-rpc";
@@ -138,7 +137,6 @@ export function SettingsOverlay({
       keepComputerRecovery ||
       computersAreUnavailable(sandboxProvider));
   const showUpdates = Boolean(desktopBridge()?.update);
-  const showDevices = Boolean(desktopBridge()?.gente?.linkState);
   // A section that isn't available yet (billing before its flag loads) shows General until it is.
   const section =
     (requestedSection === "computer" && !showComputer) ||
@@ -146,7 +144,6 @@ export function SettingsOverlay({
     (requestedSection === "messaging" && !messagingEnabled) ||
     (requestedSection === "wallet" && !paymentWalletProvider) ||
     (requestedSection === "updates" && !showUpdates) ||
-    (requestedSection === "devices" && !showDevices) ||
     (requestedSection === "labs" && labsAvailable.length === 0)
       ? "general"
       : requestedSection;
@@ -176,7 +173,6 @@ export function SettingsOverlay({
     computer: showComputer,
     billing: billingEnabled,
     updates: showUpdates,
-    devices: showDevices,
     labs: labsAvailable.length > 0,
   });
 
@@ -485,7 +481,6 @@ export function SettingsOverlay({
                     <BillingSettingsPanel client={shellRpc} />
                   ) : null}
                   {section === "updates" && showUpdates ? <UpdatesSettingsPanel /> : null}
-                  {section === "devices" && showDevices ? <DevicesSettingsPanel /> : null}
                   {section === "models" ? (
                     <ModelSettingsOverlay embedded scope="account" onClose={requestClose} />
                   ) : null}

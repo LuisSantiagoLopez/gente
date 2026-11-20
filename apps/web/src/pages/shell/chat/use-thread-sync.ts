@@ -451,7 +451,9 @@ export function useThreadSync({
         // Gente: the live view draws the bot's cursor and click highlights from these.
         if (event.type === "computer.pointer")
           globalThis.dispatchEvent(
-            new CustomEvent("gente:pointer", { detail: { botId: active.id, ...(event.payload as object) } }),
+            new CustomEvent("gente:pointer", {
+              detail: { botId: active.id, ...(event.payload as object) },
+            }),
           );
         if (event.type === "thread.cleared") resetHistory();
         if (event.type === "bot.archived") {

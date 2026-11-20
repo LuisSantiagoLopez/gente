@@ -181,11 +181,6 @@ msgstr "Tot nu toe {0} dingen gedaan."
 msgid "{0} things done, you kept {1}."
 msgstr "{0} dingen gedaan, jij hebt er {1} gehouden."
 
-#. placeholder {0}: offer.waiting
-#: apps/web/src/lib/gente/account.tsx
-msgid "{0} waiting"
-msgstr "{0} wachtend"
-
 #. placeholder {0}: schedule(routine.crons)
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "{0}, paused until you turn it on"
@@ -1171,10 +1166,6 @@ msgstr "**Dinsdag: $ 2.340 uit 31 bestellingen** (12% meer dan vorige dinsdag)\n
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "/ month"
 msgstr "/ maand"
-
-#: apps/web/src/lib/gente/account.tsx
-msgid "${price}/mo"
-msgstr "${price}/mnd"
 
 #: apps/mobile/components/settings/space-bots-model.tsx
 msgid "1 bot has its own model:"
@@ -2677,7 +2668,6 @@ msgstr "Kan afbeeldingen niet lezen"
 #: apps/web/src/components/messages/markdown-link-prompt.tsx
 #: apps/web/src/components/teach/TeachComputerOverlay.tsx
 #: apps/web/src/components/vault/VaultItemDetail.tsx
-#: apps/web/src/lib/gente/devices.tsx
 #: apps/web/src/pages/knowledge/BrainsOverlay.tsx
 #: apps/web/src/pages/knowledge/GoalsOverlay.tsx
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
@@ -5471,10 +5461,6 @@ msgstr "Ontwikkelaar"
 msgid "Device voice"
 msgstr "Apparaatstem"
 
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Devices"
-msgstr "Apparaten"
-
 #: apps/mobile/components/messages/mermaid-diagram.tsx
 msgid "Diagram"
 msgstr "Diagram"
@@ -6146,14 +6132,6 @@ msgstr "Mislukt."
 #: apps/web/src/components/teach/SkillDraftCard.tsx
 msgid "Failure handling"
 msgstr "Foutafhandeling"
-
-#: apps/web/src/lib/gente/account.tsx
-msgid "Fast"
-msgstr "Snel"
-
-#: apps/web/src/lib/gente/account.tsx
-msgid "Fast mode sends your messages to our servers to answer quickly. We don't store or train on them."
-msgstr "De snelle modus stuurt je berichten naar onze servers om snel te antwoorden. We bewaren ze niet en trainen er niet op."
 
 #: apps/web/src/pages/knowledge/ProjectsOverlay.tsx
 msgid "Feedback"
@@ -7097,10 +7075,6 @@ msgstr "Deelnemen aan {spaceName}"
 msgid "Join meeting"
 msgstr "Deelnemen aan meeting"
 
-#: apps/web/src/lib/gente/account.tsx
-msgid "Join the waitlist"
-msgstr "Op de wachtlijst"
-
 #. js-lingui-explicit-id
 #: packages/i18n/src/meeting.ts
 msgid "Join this meeting"
@@ -7516,10 +7490,6 @@ msgstr "Beheerder maken"
 #: apps/web/src/components/spaces/OrganizationMembersSettings.tsx
 msgid "Make member"
 msgstr "Lid maken"
-
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-msgid "Make my AI private"
-msgstr "Mijn AI privé maken"
 
 #: apps/web/src/pages/settings/BillingSettingsPanel.tsx
 #: apps/web/src/pages/settings/SettingsOverlay.tsx
@@ -8867,10 +8837,6 @@ msgstr "Externe link openen?"
 msgid "Open Gente"
 msgstr "Gente openen"
 
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Open Gente on your phone and scan this code."
-msgstr "Open Gente op je telefoon en scan deze code."
-
 #: apps/mobile/components/media/inline-image-attachment.tsx
 msgid "Open image {name}"
 msgstr "Afbeelding {name} openen"
@@ -9081,18 +9047,6 @@ msgstr "Pagina's die deze groep voor je maakt, verschijnen hier."
 #: apps/web/src/components/pages/PagesList.tsx
 msgid "Pages this group builds for you appear here. Ask for a dashboard, tracker or plan to make one."
 msgstr "Pagina's die deze groep voor je maakt, verschijnen hier. Vraag om een dashboard, tracker of plan om er een te maken."
-
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Pair a phone"
-msgstr "Telefoon koppelen"
-
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Paired with {phoneName}"
-msgstr "Gekoppeld met {phoneName}"
-
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Paired with your phone"
-msgstr "Gekoppeld met je telefoon"
 
 #: apps/mobile/app/(settings)/profile.tsx
 #: apps/web/src/components/account/PasskeySettings.tsx
@@ -9412,7 +9366,6 @@ msgid "Privacy policy"
 msgstr "Privacybeleid"
 
 #: apps/mobile/components/computers/computer-mode-picker.tsx
-#: apps/web/src/lib/gente/account.tsx
 #: apps/web/src/pages/shell/bots/bot-settings-sections.tsx
 msgid "Private"
 msgstr "Privé"
@@ -9424,14 +9377,6 @@ msgstr "Privécomputer"
 #: apps/web/src/pages/shell/bots/bot-picker.tsx
 msgid "Private workspace with its own bots and groups."
 msgstr "Privéwerkruimte met eigen bots en groepen."
-
-#: apps/web/src/lib/gente/account.tsx
-msgid "Private: the AI runs on this computer. Fast mode comes with a paid plan."
-msgstr "Privé: de AI draait op deze computer. De snelle modus hoort bij een betaald abonnement."
-
-#: apps/web/src/lib/gente/account.tsx
-msgid "Private: the AI runs on this computer. Slower, and nothing leaves it."
-msgstr "Privé: de AI draait op deze computer. Trager, en niets verlaat hem."
 
 #: apps/mobile/app/(settings)/integrations.tsx
 #: apps/web/src/pages/plugins/use-catalog-browse.ts
@@ -10369,10 +10314,6 @@ msgstr "Uitvoeringen"
 msgid "Runs when this bot receives a verified message from this provider."
 msgstr "Draait wanneer deze bot een geverifieerd bericht van deze aanbieder ontvangt."
 
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Safety code <0>{code}</0>. Your phone shows the same code."
-msgstr "Beveiligingscode <0>{code}</0>. Je telefoon toont dezelfde code."
-
 #: apps/web/src/components/bot-templates/bot-templates-dialog.tsx
 msgid "Sales"
 msgstr "Sales"
@@ -11073,10 +11014,6 @@ msgstr "Meld je aan op <0>{0}</0> en plak de code hier."
 #: apps/web/src/pages/auth/Auth.tsx
 msgid "Sign in to Gente"
 msgstr "Aanmelden bij Gente"
-
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Sign in to Gente to pair your phone."
-msgstr "Log in bij Gente om je telefoon te koppelen."
 
 #: apps/mobile/app/sign-in.tsx
 msgid "Sign in to Rakazo"
@@ -12663,10 +12600,6 @@ msgstr "Koppeling verbreken"
 msgid "Unmute"
 msgstr "Dempen opheffen"
 
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Unpair"
-msgstr "Ontkoppelen"
-
 #: apps/mobile/app/pages.tsx
 #: apps/mobile/components/inbox/bot-organize-modal.tsx
 #: apps/mobile/lib/inbox/inbox-swipe.ts
@@ -12900,14 +12833,6 @@ msgstr "Standaardinstellingen gebruiken voor {label}"
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Use Gente credits"
 msgstr "Gente-tegoed gebruiken"
-
-#: apps/web/src/pages/settings/settings-nav.ts
-msgid "Use Gente on your phone."
-msgstr "Gebruik Gente op je telefoon."
-
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Use Gente on your phone. Chats and tasks run on this computer, sealed end to end."
-msgstr "Gebruik Gente op je telefoon. Chats en taken draaien op deze computer, end-to-end versleuteld."
 
 #: apps/mobile/app/(settings)/plugin.tsx
 #: apps/web/src/components/integrations/plugin-marketplace.tsx
@@ -13326,10 +13251,6 @@ msgstr "Wanneer gebruiken"
 msgid "Where should bots run?"
 msgstr "Waar moeten bots draaien?"
 
-#: apps/web/src/pages/settings/AccountSettingsOverlay.tsx
-msgid "Where the AI runs"
-msgstr "Waar de AI draait"
-
 #: apps/web/src/pages/settings/settings-nav.ts
 msgid "Where your bots pay from."
 msgstr "Waarmee je bots betalen."
@@ -13491,10 +13412,6 @@ msgstr "Jij:"
 msgid "You're all set"
 msgstr "Alles staat klaar"
 
-#: apps/web/src/lib/gente/account.tsx
-msgid "You're on the waitlist"
-msgstr "Je staat op de wachtlijst"
-
 #: apps/web/src/pages/shell/composer/use-composer-actions.ts
 msgid "You've used your 10 free messages. Choose a plan in Settings to keep chatting."
 msgstr "Je hebt je 10 gratis berichten gebruikt. Kies een abonnement in Instellingen om verder te chatten."
@@ -13592,10 +13509,6 @@ msgstr "Jouw OpenRouter"
 #: apps/web/src/components/spaces/SharedSpaceRules.tsx
 msgid "Your other spaces stay private"
 msgstr "Je andere spaces blijven privé"
-
-#: apps/web/src/lib/gente/devices.tsx
-msgid "Your phone"
-msgstr "Je telefoon"
 
 #: apps/web/src/components/billing/ModelCredits.tsx
 msgid "Your plan becomes {annualPrice} / year when your trial ends."

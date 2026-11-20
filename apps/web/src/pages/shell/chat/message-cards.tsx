@@ -3,6 +3,7 @@ import { useLinkPrompt } from "@rakazo/chat-ui/web";
 import type { MessageBlock } from "@rakazo/contracts";
 import { appConnectedInput, waitForSignIn } from "@rakazo/core";
 import { Button, Dialog, DialogClose, DialogContent, DialogTitle } from "@rakazo/ui-web";
+import { LogoTile } from "@rakazo/ui-web/logo-tile";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BuiCard, SuccessPop } from "../../../components/ai/primitives";
@@ -208,17 +209,7 @@ export function AppConnectCard({
       className="w-full max-w-[440px] px-4 py-3.5"
     >
       <div className="flex items-center gap-3.5">
-        {block.logo ? (
-          <img
-            src={block.logo}
-            alt=""
-            className="h-10 w-10 rounded-md bg-favicon-plate object-contain p-1"
-          />
-        ) : (
-          <span className="grid h-10 w-10 place-items-center rounded-md bg-muted text-body-lg text-foreground">
-            {block.name.slice(0, 1).toUpperCase()}
-          </span>
-        )}
+        <LogoTile name={block.name} logo={block.logo} size={40} />
         <span className="min-w-0 flex-1">
           <span className="block text-body-lg font-medium text-foreground">{block.name}</span>
           <span className="block truncate text-body-sm text-muted-foreground">

@@ -45,6 +45,7 @@ import {
   writeComposerRetryNonce,
 } from "../../../lib/composer/composer-draft";
 import { isFilePaste } from "../../../lib/composer/pending-attachments";
+import { playSound } from "../../../lib/gente/sounds";
 import type { ArtifactTarget } from "../../../lib/pages/artifact-open";
 import { usePageSession } from "../../../lib/pages/pages";
 import { hasOpenDialog } from "../../../lib/platform/has-open-dialog";
@@ -66,7 +67,6 @@ import { HoldToTalkStrip, useHoldToTalk } from "./hold-to-talk";
 import { useComposerFileDrop } from "./use-composer-file-drop";
 import { useComposerLayout } from "./use-composer-layout";
 import { useComposerTriggers } from "./use-composer-triggers";
-import { playSound } from "../../../lib/gente/sounds";
 
 export const LARGE_PASTE_THRESHOLD = 4_000;
 

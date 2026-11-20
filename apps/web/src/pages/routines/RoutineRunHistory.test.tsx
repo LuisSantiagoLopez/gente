@@ -265,9 +265,7 @@ it("shows a silent failed run summary with diagnostics behind Details", async ()
   const view = await mounted();
   try {
     await view.settled(() => expect(view.rows()).toHaveLength(1));
-    expect(view.container.textContent).toContain(
-      "Getting your AI ready again…",
-    );
+    expect(view.container.textContent).toContain("Getting your AI ready again…");
     const details = view.container.querySelector("details");
     expect(details?.open).toBe(false);
     expect(details?.querySelector("summary")?.textContent).toBe("Details");

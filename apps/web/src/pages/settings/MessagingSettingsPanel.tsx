@@ -486,7 +486,10 @@ export function MessagingSettingsPanel() {
         ) : null}
         {linkCode && slowLink ? (
           // Gente: never wait silently. After 30 seconds, say plainly what may be missing.
-          <div className="mt-3 rounded-xl bg-muted px-4 py-3 text-body-sm text-muted-foreground" data-testid="messaging-link-help">
+          <div
+            className="mt-3 rounded-xl bg-muted px-4 py-3 text-body-sm text-muted-foreground"
+            data-testid="messaging-link-help"
+          >
             {linkRequest?.provider.startsWith("whatsapp") ? (
               <Trans>
                 Nothing yet. WhatsApp needs a Meta business app and an address Meta can reach, and

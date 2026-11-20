@@ -1,4 +1,5 @@
 export { AppMarkStack } from "./app-mark-stack.js";
+export { LogoTile } from "./logo-tile.js";
 export {
   BOT_COLORS,
   BOT_MASCOT_SHAPES,

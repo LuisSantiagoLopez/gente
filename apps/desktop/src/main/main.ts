@@ -4,6 +4,8 @@ import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import type { ServiceKey } from "@rakazo/adapters/desktop-server-env";
+import { CONNECTED_APPS_CLOUD_PATH } from "@rakazo/adapters/desktop-server-env";
 import type { HostScreen } from "@rakazo/adapters/host-screen";
 import { startUserDeviceClient } from "@rakazo/adapters/user-device-client";
 import type {
@@ -31,38 +33,33 @@ import { openBrowserAuth } from "./auth/browser-auth.js";
 import { associatedPasskeyRpIds } from "./auth/passkeys.js";
 import { installSessionPermissions } from "./auth/session-permissions.js";
 import { createUserDeviceAccess, deviceName } from "./auth/user-device.js";
-import { moveToFastDefault, OLLAMA_URL, prewarmSwift } from "./burrow/brain.js";
-import { registerBrainIpc } from "./burrow/brain-ipc.js";
-import { startSearchBroker } from "./burrow/search-broker.js";
-import { createAiMode } from "./burrow/ai-mode.js";
-import { startModelRouter } from "./burrow/model-router.js";
-import { startAppsRelay } from "./burrow/apps-relay.js";
-import { startComputerBroker } from "./burrow/computer-broker.js";
-import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
-import { createDesktopLink } from "./burrow/link/link-desktop.js";
 import {
   accountCloud,
+  accountState,
   accountToken,
+  consumeFreeMessage,
+  initAccount,
   isPaidPlan,
   isSignedIn,
   privateOffer,
-  accountState,
-  consumeFreeMessage,
-  initAccount,
   signInToGente,
   signOutOfGente,
 } from "./burrow/account.js";
-import { readServiceKey, vendorKeysAllowed } from "./burrow/service-keys.js";
-import {
-  CONNECTED_APPS_CLOUD_PATH,
-  type ServiceKey,
-} from "@rakazo/adapters/desktop-server-env";
+import { createAiMode } from "./burrow/ai-mode.js";
+import { startAppsRelay } from "./burrow/apps-relay.js";
+import { moveToFastDefault, OLLAMA_URL, prewarmSwift } from "./burrow/brain.js";
+import { registerBrainIpc } from "./burrow/brain-ipc.js";
+import { startComputerBroker } from "./burrow/computer-broker.js";
+import { GENTE_CLOUD_URL } from "./burrow/gente-cloud.js";
 import { useLegacyUserData } from "./burrow/legacy-user-data.js";
+import type { createDesktopLink } from "./burrow/link/link-desktop.js";
+import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
+import { startModelRouter } from "./burrow/model-router.js";
+import { startSearchBroker } from "./burrow/search-broker.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
+import { readServiceKey, vendorKeysAllowed } from "./burrow/service-keys.js";
 import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
-import { startSelfHeal } from "./self-heal/start.js";
-import type { RouterHandle } from "./self-heal/desktop-env.js";
 import { appWindowTargets, desktop, permissionTarget } from "./desktop-state.js";
 import {
   createLocaleHandler,
@@ -74,6 +71,8 @@ import {
 } from "./i18n.js";
 import type { IpcCaller } from "./ipc/ipc.js";
 import { handleIpc, sentFrom } from "./ipc/ipc.js";
+import type { RouterHandle } from "./self-heal/desktop-env.js";
+import { startSelfHeal } from "./self-heal/start.js";
 import { installServerHeaders } from "./setup/server-request-headers.js";
 import {
   DEFAULT_LOCAL_WEB_URL,
@@ -93,7 +92,6 @@ import {
   writeSetup,
   writeUiLocale,
 } from "./setup/setup-store.js";
-import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
 import { destroySetupWindow, registerSetupIpc, showSetupWindow } from "./setup/setup-window.js";
 import { readSupportSettings } from "./support/settings.js";
 import {
@@ -156,7 +154,11 @@ import {
   StackStopMenuAvailability,
   stopStackLeftBehind,
 } from "./this-computer/stop-local-stack.js";
-import { plainStackEligible, postgresBin, WindowsStackController } from "./this-computer/windows-stack.js";
+import {
+  plainStackEligible,
+  postgresBin,
+  WindowsStackController,
+} from "./this-computer/windows-stack.js";
 import type { ElectronAutoUpdater } from "./updates/auto-update.js";
 import { DesktopUpdateController } from "./updates/auto-update.js";
 import { verifyDownloadedLinuxUpdate } from "./updates/linux-update-signature.js";
@@ -794,12 +796,7 @@ app.whenReady().then(async () => {
   const aiMode = createAiMode(app.getPath("userData"), isPaidPlan);
   let modelRouterBase: string | null = null;
   let modelRouter: RouterHandle | null = null;
-  void startModelRouter({
-    localBase: OLLAMA_URL,
-    cloudBase: `${GENTE_CLOUD_URL}/v1/inference`,
-    mode: () => aiMode.current(),
-    token: accountToken,
-  })
+  void startModelRouter({ localBase: OLLAMA_URL })
     .then((router) => {
       modelRouterBase = router.base;
       modelRouter = router;
@@ -834,14 +831,8 @@ app.whenReady().then(async () => {
       searchBroker = broker;
     })
     .catch(() => undefined);
-  // Gente: Settings → Devices, pairing a phone with this computer (Gente Link v1).
-  const link = createDesktopLink({
-    cloudUrl: GENTE_CLOUD_URL,
-    token: accountToken,
-    signedIn: isSignedIn,
-    sealer,
-    stackDir: userStackDir,
-  });
+  // Gente: phone pairing is off (desktop only); its channels answer "off".
+  const link = null as ReturnType<typeof createDesktopLink>;
   // Must exist before the stack controller: its lifecycle transitions refresh the stop item.
   const stopStackMenu = new StackStopMenuAvailability(() => installApplicationMenu());
   let prewarmed = false;
@@ -986,11 +977,11 @@ app.whenReady().then(async () => {
           connectedAppsKey: () => devServiceKey("connectedApps"),
           cloudComputerKey: () => devServiceKey("cloudComputers"),
           searchBroker: () => searchBroker,
-      modelRouter: () => modelRouterBase,
-      appsRelay: () => appsRelay,
-      computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
-      mediaRelay: () => (isPaidPlan() ? mediaRelay : null),
-      telegramToken: () => readTelegramToken(),
+          modelRouter: () => modelRouterBase,
+          appsRelay: () => appsRelay,
+          computerBroker: () => (isPaidPlan() ? (computerBroker?.url ?? null) : null),
+          mediaRelay: () => (isPaidPlan() ? mediaRelay : null),
+          telegramToken: () => readTelegramToken(),
         })
       : choice === "native" && serverBundle !== null
         ? await nativeStack(serverBundle)
@@ -1197,7 +1188,7 @@ app.whenReady().then(async () => {
   handleIpc("desktop.monitoring.enabled", () => reportsErrors);
   handleIpc("desktop.gente.account", () => accountState());
   const aiModeState = () => ({
-    mode: aiMode.current(),
+    mode: "private" as const,
     picked: aiMode.picked() !== null,
     fastAvailable: isPaidPlan(),
   });
@@ -1208,19 +1199,21 @@ app.whenReady().then(async () => {
   handleIpc("desktop.gente.linkStart", () => (link ? link.start() : linkOff()));
   handleIpc("desktop.gente.linkUnpair", () => (link ? link.unpair() : linkOff()));
   handleIpc("desktop.gente.linkTake", async () => (link ? link.take() : []));
-  handleIpc("desktop.gente.linkSend", async (_event, message: unknown) => (link ? link.send(message) : false));
+  handleIpc("desktop.gente.linkSend", async (_event, message: unknown) =>
+    link ? link.send(message) : false,
+  );
   handleIpc("desktop.gente.setPrivateWaitlist", (_event, join: unknown) =>
     privateOffer(join === true ? "join" : "leave"),
   );
   handleIpc("desktop.gente.setAiMode", async (_event, mode: unknown) => {
     await aiMode.set(mode);
-    void (modelRouter as RouterHandle | null)?.refresh?.();
     return aiModeState();
   });
-  handleIpc("desktop.gente.consumeMessage", (_event, messageId: unknown) => consumeFreeMessage(messageId));
+  handleIpc("desktop.gente.consumeMessage", (_event, messageId: unknown) =>
+    consumeFreeMessage(messageId),
+  );
   handleIpc("desktop.gente.signIn", async () => {
     await signInToGente();
-    void (modelRouter as RouterHandle | null)?.refresh?.();
     return accountState();
   });
   handleIpc("desktop.gente.signOut", async () => {
@@ -1250,7 +1243,8 @@ app.whenReady().then(async () => {
     userDataDir: app.getPath("userData"),
     stackDir: stackDir(app.getPath("userData")),
     router: () => modelRouter,
-    mode: () => aiMode.current(),
+    // The AI always runs on this computer.
+    mode: () => "private" as const,
   });
   registerSetupIpc({
     userDataDir,
