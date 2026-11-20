@@ -18,6 +18,7 @@ import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring
 import { computerEnv, readComputerChoice } from "../burrow/composio.js";
 import { telegramSecret } from "../burrow/telegram.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
+import { ensureServerLinks } from "./server-links.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
   allocateLoopbackPort,
@@ -87,11 +88,25 @@ const INHERITED_ENV = [
   "HTTP_PROXY",
   "HTTPS_PROXY",
   "NO_PROXY",
+  // macOS (the same plain-process stack runs on Intel Macs and Macs without Apple container).
+  "HOME",
+  "USER",
+  "LOGNAME",
+  "TMPDIR",
+  "LANG",
 ];
 
 /** Windows is supported on x64 (and arm64 through x64 emulation) with a bundle for it. */
 export function windowsStackEligible(input: { platform: string }): boolean {
   return input.platform === "win32";
+}
+
+/**
+ * The plain-process stack (server on Electron's Node, Postgres from the app's own resources):
+ * every Windows PC, and every Mac that cannot run Apple container (Intel, or macOS before 26).
+ */
+export function plainStackEligible(input: { platform: string; appleContainer: boolean }): boolean {
+  return input.platform === "win32" || (input.platform === "darwin" && !input.appleContainer);
 }
 
 interface WindowsPorts {
@@ -130,6 +145,8 @@ export interface WindowsStackDeps {
   portFree?: (port: number) => Promise<boolean>;
   allocatePort?: () => Promise<number>;
   healthTimeoutMs?: number;
+  /** win32 or darwin; defaults to this computer's. */
+  platform?: string;
   /** The archive tool; Windows 10 and 11 ship bsdtar as tar.exe, which reads zip files. */
   tar?: string;
   installServer?: (
@@ -169,8 +186,8 @@ export async function installWindowsServerBundle(
 }
 
 /** Postgres's own programs inside the bundle. */
-export function postgresBin(serverDir: string, program: string) {
-  return path.join(serverDir, "postgres", "bin", `${program}.exe`);
+export function postgresBin(serverDir: string, program: string, platform: string = process.platform) {
+  return path.join(serverDir, "postgres", "bin", platform === "win32" ? `${program}.exe` : program);
 }
 
 /**
@@ -197,6 +214,10 @@ export class WindowsStackController extends StackLifecycle {
   /** Set once the bundle is unpacked, so a stop can ask Postgres to shut down cleanly. */
   private serverDir: string | null = null;
   private postgresUp = false;
+
+  private get platform() {
+    return this.deps.platform ?? process.platform;
+  }
 
   constructor(private readonly deps: WindowsStackDeps) {
     super(deps.imageTag, deps.localWebUrl, deps.onState);
@@ -309,6 +330,9 @@ export class WindowsStackController extends StackLifecycle {
         },
         this.deps.serverBundle,
       );
+      // Windows: put pnpm's links back as junctions (a no-op once they are in place).
+      const linked = ensureServerLinks(server.dir);
+      if (linked > 0) this.push({ type: "output", line: `linked ${linked} server packages` });
     } catch (error) {
       if (signal.aborted) throw error;
       const detail = error instanceof Error ? error.message : String(error);
@@ -333,7 +357,7 @@ export class WindowsStackController extends StackLifecycle {
       await writeFile(pwfile, password, { mode: 0o600 });
       try {
         const init = await this.runTool(
-          postgresBin(server.dir, "initdb"),
+          postgresBin(server.dir, "initdb", this.platform),
           ["-D", pgdata, "-U", OWNER, "-E", "UTF8", "--locale=C", "-A", "scram-sha-256", `--pwfile=${pwfile}`],
           this.baseEnv(),
           signal,
@@ -348,7 +372,7 @@ export class WindowsStackController extends StackLifecycle {
     // administrator; a server a crashed launch left running is stopped first.
     await this.stopPostgres(server.dir);
     const started = await this.deps.run(
-      postgresBin(server.dir, "pg_ctl"),
+      postgresBin(server.dir, "pg_ctl", this.platform),
       [
         "start",
         "-D",
@@ -359,7 +383,10 @@ export class WindowsStackController extends StackLifecycle {
         "-t",
         "120",
         "-o",
-        `-p ${ports.postgres} -c listen_addresses=127.0.0.1`,
+        // On a Mac the socket goes in the data folder, never a shared /tmp another Postgres uses.
+        this.platform === "win32"
+          ? `-p ${ports.postgres} -c listen_addresses=127.0.0.1`
+          : `-p ${ports.postgres} -c listen_addresses=127.0.0.1 -k "${pgdata}"`,
       ],
       { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: 150_000, signal },
     );
@@ -575,7 +602,7 @@ export class WindowsStackController extends StackLifecycle {
     this.postgresUp = false;
     if (!this.deps.exists(path.join(this.dir("pgdata"), "postmaster.pid"))) return;
     await this.deps
-      .run(postgresBin(serverDir, "pg_ctl"), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
+      .run(postgresBin(serverDir, "pg_ctl", this.platform), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
         cwd: this.deps.stackDir,
         env: this.baseEnv(),
         timeoutMs: 30_000,
