@@ -11,6 +11,8 @@ import { Readable } from "node:stream";
 
 export interface ComposioRelayDeps {
   cloudUrl: string; // ${GENTE_CLOUD_URL}/v1/proxy/composio/mcp
+  /** Gente Cloud's media proxy (${GENTE_CLOUD_URL}/v1/proxy/media); the relay also serves /media. */
+  mediaUrl?: string;
   token: () => Promise<string | null>;
   /** Developer builds only: a Composio key for connect.composio.dev when signed out. */
   devKey?: () => Promise<string | undefined>;
@@ -24,6 +26,31 @@ export async function startComposioRelay(deps: ComposioRelayDeps) {
   const doFetch = deps.fetch ?? fetch;
   const secret = randomBytes(24).toString("hex");
   const server: Server = createServer(async (req, res) => {
+    // Gente: images and video, with the person's sign-in only (no developer key path).
+    if (deps.mediaUrl && req.url?.startsWith(`/${secret}/media`)) {
+      const token = await deps.token().catch(() => null);
+      if (!token) {
+        res.writeHead(401, { "content-type": "application/json" });
+        res.end(JSON.stringify({ error: "missing_token" }));
+        return;
+      }
+      const chunks: Buffer[] = [];
+      for await (const chunk of req) chunks.push(chunk as Buffer);
+      const rest = req.url.slice(`/${secret}/media`.length);
+      const upstream = await doFetch(`${deps.mediaUrl}${rest}`, {
+        method: req.method,
+        headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+        body: req.method === "GET" ? undefined : new Uint8Array(Buffer.concat(chunks)),
+        signal: AbortSignal.timeout(60_000),
+      }).catch(() => null);
+      if (!upstream) {
+        res.writeHead(502).end();
+        return;
+      }
+      res.writeHead(upstream.status, { "content-type": upstream.headers.get("content-type") ?? "application/json" });
+      res.end(Buffer.from(await upstream.arrayBuffer()));
+      return;
+    }
     if (req.url !== `/${secret}/mcp`) {
       res.writeHead(404).end();
       return;
@@ -75,6 +102,7 @@ export async function startComposioRelay(deps: ComposioRelayDeps) {
   const port = (server.address() as { port: number }).port;
   return {
     url: `http://127.0.0.1:${port}/${secret}/mcp`,
+    mediaUrl: `http://127.0.0.1:${port}/${secret}/media`,
     close: () => new Promise<void>((resolve) => server.close(() => resolve())),
   };
 }
