@@ -15,7 +15,17 @@ export interface Sealer {
   unseal(sealed: Buffer): string;
 }
 
-export const SEALED_SECRETS = ["ENCRYPTION_KEY", "BETTER_AUTH_SECRET", "GENTE_COMPOSIO_KEY", "E2B_API_KEY"] as const;
+// QA-021: every secret Gente generates or holds is sealed; `.env` keeps only markers.
+export const SEALED_SECRETS = [
+  "ENCRYPTION_KEY",
+  "BETTER_AUTH_SECRET",
+  "GENTE_COMPOSIO_KEY",
+  "E2B_API_KEY",
+  "POSTGRES_PASSWORD",
+  "POSTGRES_APP_PASSWORD",
+  "SCREEN_PROXY_SECRET",
+  "SANDBOX_SUPERVISOR_TOKEN",
+] as const;
 export const KEYCHAIN_MARKER = "keychain:";
 
 const sealedFile = (stackDir: string, name: string) => path.join(stackDir, "keyring", `${name}.sealed`);
