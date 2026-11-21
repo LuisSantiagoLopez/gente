@@ -3,11 +3,13 @@
 import { describe, expect, it } from "vitest";
 import { guardsActionClaims, quickChatBody } from "./burrow-fast-chat.js";
 import {
+  ASK_IN_CARDS_RULE,
   claimsAction,
   guardActionClaims,
   HONESTY_RULE,
   toolRanThisTurn,
   USE_TOOLS_NOTE,
+  withAskInCardsRule,
   withUseToolsNote,
 } from "./gente-honest-actions.js";
 
@@ -154,5 +156,14 @@ describe("where the guard applies", () => {
     }
     const retried = JSON.parse(withUseToolsNote(body("make me a website")));
     expect(retried.messages.at(-1).content).toContain(USE_TOOLS_NOTE);
+  });
+
+  it("tells a request that offers ask_user to ask in cards, once", () => {
+    const system = { role: "system", content: "You are a bot." };
+    const tools = [{ type: "function", function: { name: "ask_user" } }];
+    const once = withAskInCardsRule([system], tools);
+    expect(once[0]?.content).toContain(ASK_IN_CARDS_RULE);
+    expect(withAskInCardsRule(once, tools)).toBe(once);
+    expect(withAskInCardsRule([system], [])).toEqual([system]);
   });
 });
