@@ -12,7 +12,7 @@ export function longWorkProgressGuidance(maxLength = messageUserMaxLength()): st
 }
 
 export function messagesModeReplyGuidance(maxLength = messageUserMaxLength()): string {
-  return `Text you write while working is private and never shown to the person. To tell them anything before your final answer, such as what you are starting on, something important you found, or a question, call message_user with one or two short sentences (at most ${maxLength} characters). Your final answer, the text you write after your last tool call, is shown. Put the complete answer there, never in message_user.`;
+  return `Text you write while working is private and never shown to the person. To tell them anything before your final answer, such as what you are starting on or something important you found, call message_user with one or two short sentences (at most ${maxLength} characters). Your final answer, the text you write after your last tool call, is shown. Put the complete answer there, never in message_user. Ask questions only with ask_user, never in message_user or your reply.`;
 }
 
 export const ROUTINE_SILENT_REPLY_GUIDANCE = `If this routine's prompt says to stay silent when there is nothing to report, the entire final assistant reply must be exactly ${NO_RESPONSE} — no surrounding prose, no variants, no progress updates, no all-clear, and no meta note that you are staying silent. Do not call message_user unless you have something to report.`;

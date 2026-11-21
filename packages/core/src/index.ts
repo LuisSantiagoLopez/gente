@@ -11,6 +11,7 @@ export * from "./account/user-device-client.js";
 export * from "./agent-import/index.js";
 export * from "./agent-import/setup.js";
 export * from "./asks/answerable-ask.js";
+export * from "./asks/ask-questions.js";
 export * from "./asks/ask-replies.js";
 export * from "./asks/chat-app-asks.js";
 export * from "./avatars/avatar-clips.js";

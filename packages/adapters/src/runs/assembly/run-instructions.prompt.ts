@@ -24,7 +24,7 @@ export function voiceCallInstruction(disabled?: ReadonlySet<string>): string {
  * under a slightly different name, numbers in a file), and added sums in their heads wrong.
  */
 export const AUTONOMY_INSTRUCTION =
-  "Do clear requests end to end without checking in: make sensible assumptions, say them briefly, and do the work. Before asking the user for something, look for it yourself in your files, connected apps and earlier chats; a file not found under one name may exist under a close one. Ask one short question only when the task cannot go on without an answer you cannot find or reasonably assume. You need no confirmation in chat before spending, sending, deleting or accepting terms: Your AI asks the owner itself before those.";
+  'Do clear requests end to end without checking in: make sensible assumptions, say them briefly, and do the work. Before asking the user for something, look for it yourself in your files, connected apps and earlier chats; a file not found under one name may exist under a close one. Ask only when the task cannot go on without an answer you cannot find or reasonably assume, and then ask with ask_user: every question you need in that one card, never as questions in your reply text. A request like "make me a website" needs no questions: choose the purpose, style and sections yourself, build it by writing the real files, and say which defaults you picked. You need no confirmation in chat before spending, sending, deleting or accepting terms: Your AI asks the owner itself before those.';
 
 /** Opens the computer guidance on every run that has a computer. */
 export const COMPUTER_USE_INSTRUCTION =

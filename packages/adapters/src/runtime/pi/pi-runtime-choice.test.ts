@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const fakeAgentState = vi.hoisted(() => ({
   options: ["Berlin", "Seoul", "Toronto"],
   detail: undefined as string | undefined,
+  more: undefined as unknown,
   askTwice: false,
   results: [] as unknown[],
   tools: [] as Array<{
@@ -33,6 +34,7 @@ vi.mock("@earendil-works/pi-agent-core", () => ({
         question: "Which city should I use?",
         options: fakeAgentState.options,
         ...(fakeAgentState.detail === undefined ? {} : { detail: fakeAgentState.detail }),
+        ...(fakeAgentState.more === undefined ? {} : { more_questions: fakeAgentState.more }),
       };
       const args = askUser.prepareArguments?.(raw) ?? raw;
       fakeAgentState.results.push(await askUser.execute("call-choice-1", args));
@@ -106,6 +108,7 @@ describe("Pi choice asks", () => {
     fakeAgentState.tools = [];
     fakeAgentState.options = ["Berlin", "Seoul", "Toronto"];
     fakeAgentState.detail = undefined;
+    fakeAgentState.more = undefined;
     fakeAgentState.askTwice = false;
     fakeAgentState.results = [];
   });
@@ -119,6 +122,35 @@ describe("Pi choice asks", () => {
 
     expect(events.filter((event) => event.type === "ask")).toHaveLength(1);
     expect(JSON.stringify(fakeAgentState.results[1])).not.toContain("Waiting for the user");
+  });
+
+  it("puts several questions on one card, each with its own option ids", async () => {
+    fakeAgentState.more = [{ question: "Which style?", options: ["Calm", "Bold"] }];
+    const runtime = new PiAgentRuntime();
+    const events: AgentRuntimeEvent[] = [];
+
+    for await (const event of runtime.run(runRequest, runContext)) events.push(event);
+
+    expect(events.filter((event) => event.type === "ask")).toEqual([
+      {
+        type: "ask",
+        text: "Which city should I use?",
+        actions: [
+          { id: "choice-1", label: "Berlin" },
+          { id: "choice-2", label: "Seoul" },
+          { id: "choice-3", label: "Toronto" },
+        ],
+        questions: [
+          {
+            text: "Which style?",
+            actions: [
+              { id: "q2-choice-1", label: "Calm" },
+              { id: "q2-choice-2", label: "Bold" },
+            ],
+          },
+        ],
+      },
+    ]);
   });
 
   it("emits a tappable ask and stops without a finished-work fallback", async () => {

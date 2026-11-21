@@ -53,6 +53,17 @@ export async function pauseForAnswer(ctx: RunContext, event: RuntimeEvent<"ask">
         ...(safeDetail ? { detailFormat: "text" as const } : {}),
         status: "pending",
         actions: safeActions,
+        ...(event.questions?.length
+          ? {
+              questions: event.questions.map((question) => ({
+                text: redactSecrets(question.text, ctx.secrets),
+                actions: question.actions.map((action) => ({
+                  id: action.id,
+                  label: redactSecrets(action.label, ctx.secrets),
+                })),
+              })),
+            }
+          : {}),
       },
     ],
     // Keep unredacted labels on the run for resume; message blocks stay redacted.
