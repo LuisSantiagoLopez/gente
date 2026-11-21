@@ -51,8 +51,10 @@ export function isRunActivityEvent(event: {
 
 function finishStep(step: RunActivityStep, payload: Record<string, unknown>): RunActivityStep {
   const outcome = payload.outcome;
-  // Gente: a question card or approval that paused the run is done once it was shown.
-  if (outcome === "paused") return { ...step, status: "succeeded" };
+  // Gente: a question card is done once shown; the answer comes back as the run resumes.
+  // Other pauses (an approval) finish later under the same step.
+  if (outcome === "paused")
+    return payload.name === "ask_user" ? { ...step, status: "succeeded" } : step;
   const durationMs =
     typeof payload.durationMs === "number" && Number.isFinite(payload.durationMs)
       ? Math.max(0, Math.round(payload.durationMs))
