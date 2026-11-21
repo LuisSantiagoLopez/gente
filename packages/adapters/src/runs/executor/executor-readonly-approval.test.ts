@@ -3403,9 +3403,11 @@ describe("outbound destinations", () => {
         expect.objectContaining({ includeExternal: false }),
         expect.anything(),
       );
-      const history = JSON.stringify(f.runtimeRun.mock.calls[0]?.[0].history);
-      if (external) expect(history).not.toContain(memory.memory);
-      else expect(history).toContain(memory.memory);
+      const request = f.runtimeRun.mock.calls[0]?.[0];
+      // Recall rides on the turn's own message, after the history, so the prefix stays cached.
+      expect(JSON.stringify(request?.history)).not.toContain(memory.memory);
+      if (external) expect(request?.prompt).not.toContain(memory.memory);
+      else expect(request?.prompt).toContain(memory.memory);
       expect(reviewMock).not.toHaveBeenCalled();
       expect(f.execute).toHaveBeenCalledOnce();
     },

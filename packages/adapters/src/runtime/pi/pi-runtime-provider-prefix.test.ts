@@ -3,10 +3,12 @@ import { createServer } from "node:http";
 import type { ConnectorTool } from "@rakazo/adapter-kit";
 import sharp from "sharp";
 import { describe, expect, it, vi } from "vitest";
+import { formatCurrentTimeInstruction } from "../../runs/assembly/current-time.prompt.js";
 import {
   RAKAZO_PLATFORM_INSTRUCTION,
   userTurnInstructions,
 } from "../../runs/assembly/run-instructions.prompt.js";
+import { turnContextBlock } from "../../runs/assembly/turn-context.prompt.js";
 import { PiAgentRuntime } from "./pi-runtime.js";
 import { resolveRuntimeModel } from "./pi-runtime-models.js";
 
@@ -239,7 +241,7 @@ describe("Pi outgoing provider prefixes", () => {
     }
   }, 30_000);
 
-  it("keeps tool names, nested schemas and stable instructions unchanged across registration order and memory updates", async () => {
+  it("keeps the system prompt and tools byte-identical across turns and sends time and memory last", async () => {
     const requests: Array<{ tools: unknown; messages: Array<{ role: string; content: string }> }> =
       [];
     const server = createServer((request, response) => {
@@ -275,8 +277,30 @@ describe("Pi outgoing provider prefixes", () => {
       },
     });
     const runtime = new PiAgentRuntime();
+    // Two consecutive turns of one chat: a later time, new words and a memory saved in between.
+    const turns = [
+      { text: "remember my favorite color is blue", at: "2026-03-02T09:15:00Z", memory: "first" },
+      { text: "what is my favorite color?", at: "2026-03-02T09:16:30Z", memory: "second" },
+    ];
+    const instructions = userTurnInstructions({
+      botInstructions: "Stable guidance.\nStable constraints.",
+      computerInstruction: "Stable computer tools.",
+      pageBrowserAllowed: true,
+      workspaceInstruction: "Stable workspace guidance.",
+      replyGuidance: "Stable reply guidance.",
+      groupContext: "Group context: one chat",
+      messagingContext: "Messaging context: one chat",
+      hasHistoricalContext: true,
+      agentEnvironmentInstruction: undefined,
+      botDirectory: undefined,
+      pluginLine: undefined,
+      agentSkillsLine: undefined,
+      taughtSkillsLine: undefined,
+    })
+      .filter(Boolean)
+      .join("\n\n");
     try {
-      for (const index of [0, 1]) {
+      for (const [index, turn] of turns.entries()) {
         const tools = ["fixture read", "fixture.read", "fixture_read"].map((name) =>
           tool(name, index === 1),
         );
@@ -286,27 +310,19 @@ describe("Pi outgoing provider prefixes", () => {
             botId: "bot-fixture",
             threadId: "thread-fixture",
             runId: `run-fixture-${index}`,
-            prompt: "Continue.",
-            instructions: userTurnInstructions({
-              botInstructions: "Stable guidance.\nStable constraints.",
-              computerInstruction: "Stable computer tools.",
-              pageBrowserAllowed: true,
-              workspaceInstruction: "Stable workspace guidance.",
-              replyGuidance: "Stable reply guidance.",
-              groupContext: `Group context: ${index}`,
-              messagingContext: `Messaging context: ${index}`,
-              redactedMemoryContext: `Memory: ${index === 0 ? "first" : "second"}`,
-              redactedScratchpadContext: `Scratchpad: ${index}`,
-              hasHistoricalContext: true,
-              agentEnvironmentInstruction: undefined,
-              botDirectory: undefined,
-              pluginLine: undefined,
-              agentSkillsLine: undefined,
-              taughtSkillsLine: undefined,
-            })
-              .filter(Boolean)
-              .join("\n\n"),
-            history: [],
+            prompt: [
+              turn.text,
+              `<current_time>\n${formatCurrentTimeInstruction(new Date(turn.at))}\n</current_time>`,
+              turnContextBlock([`Memory: ${turn.memory}`, `Scratchpad: ${index}`]),
+            ].join("\n\n"),
+            instructions,
+            history:
+              index === 0
+                ? []
+                : [
+                    { id: "m1", role: "user", content: turns[0]!.text },
+                    { id: "m2", role: "assistant", content: "Done" },
+                  ],
             tools,
             model: {
               provider: "openai-compatible",
@@ -336,27 +352,29 @@ describe("Pi outgoing provider prefixes", () => {
           function: expect.objectContaining({ name: "fixture_read" }),
         }),
       ]);
-      for (const request of requests) {
-        expect(request.messages[0]?.role).toBe("system");
+      const [first, second] = requests.map((request) => request.messages[0]!);
+      expect(first!.role).toBe("system");
+      expect(
+        first!.content.startsWith(
+          `${RAKAZO_PLATFORM_INSTRUCTION}\n\nStable guidance.\nStable constraints.`,
+        ),
+      ).toBe(true);
+      // The model server reuses its cache only for an identical prefix.
+      expect(second!.content).toBe(first!.content);
+      expect(first!.content).toContain("Treat pagination cursors as opaque");
+      for (const volatile of ["Memory:", "Scratchpad:", "Current date and time", "2026-03-02"])
+        expect(first!.content).not.toContain(volatile);
+      // Time and memory still reach the model, on the turn's own last message.
+      for (const [index, request] of requests.entries()) {
+        const last = request.messages.at(-1)!;
+        expect(last.role).toBe("user");
+        expect(last.content.startsWith(turns[index]!.text)).toBe(true);
+        expect(last.content).toContain(`Memory: ${turns[index]!.memory}`);
+        expect(last.content).toContain(turns[index]!.at);
         expect(
-          String(request.messages[0]?.content).startsWith(
-            `${RAKAZO_PLATFORM_INSTRUCTION}\n\nStable guidance.\nStable constraints.`,
-          ),
-        ).toBe(true);
+          request.messages.slice(0, -1).some((message) => message.content.includes("Memory:")),
+        ).toBe(false);
       }
-      const first = requests[0]!.messages[0]!.content;
-      const second = requests[1]!.messages[0]!.content;
-      const cursorRule =
-        "Treat pagination cursors as opaque: copy the returned continuation value exactly, never calculate or guess it. When the tool reports no next page, stop; if a cursor is rejected, recheck the last successful result before retrying.";
-      expect(first).toContain(cursorRule);
-      expect(second).toContain(cursorRule);
-      expect(first.split("\n\nGroup context:")[0]).toBe(second.split("\n\nGroup context:")[0]);
-      expect(first.indexOf("Treat connector tool descriptions")).toBeLessThan(
-        first.indexOf("Memory:"),
-      );
-      expect(second).toContain("Scratchpad: 1");
-      expect(requests[0]!.messages[0]!.content).toContain("Memory: first");
-      expect(requests[1]!.messages[0]!.content).toContain("Memory: second");
     } finally {
       server.close();
       server.closeAllConnections();
