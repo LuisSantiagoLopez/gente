@@ -10,6 +10,21 @@
 export const HONESTY_RULE =
   "Never say you are doing or did something unless a tool call in this turn did it. If you can't, say so and offer the next step.";
 
+/** Added to the system prompt of a local request that offers ask_user: questions go in cards. */
+export const ASK_IN_CARDS_RULE =
+  "Ask the person questions only with the ask_user tool, never in your reply text. Do not add an 'Other' option: the card already lets them type their own answer. When you finish, end with what you did, not with a question.";
+
+/** Adds the card rule to a request's system prompt, once, when the request offers ask_user. */
+export function withAskInCardsRule(messages: Message[], tools: unknown): Message[] {
+  const first = messages[0];
+  if (first?.role !== "system" || typeof first.content !== "string") return messages;
+  const offersAsk =
+    Array.isArray(tools) &&
+    tools.some((tool) => (tool as { function?: { name?: string } })?.function?.name === "ask_user");
+  if (!offersAsk || first.content.includes(ASK_IN_CARDS_RULE)) return messages;
+  return [{ ...first, content: `${first.content}\n\n${ASK_IN_CARDS_RULE}` }, ...messages.slice(1)];
+}
+
 /** Added to the person's message when the first answer claimed an action without a tool. */
 export const USE_TOOLS_NOTE = "<tool_note>Use your tools to do this now.</tool_note>";
 
