@@ -60,6 +60,7 @@ describe("queued run supersession", () => {
       $queryRaw: vi.fn().mockResolvedValue([]),
       externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       run: {
         findMany: vi
@@ -112,6 +113,7 @@ describe("reaction messages", () => {
     let eventSeq = 0;
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -229,6 +231,7 @@ describe("reaction turns", () => {
   }) {
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       steeringMessage: {
         create: vi.fn(),
@@ -718,6 +721,7 @@ describe("threadSnapshot", () => {
     const findManyEvents = vi.fn().mockResolvedValue([]);
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -774,6 +778,7 @@ describe("threadSnapshot", () => {
       ]);
       const tx = {
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -863,6 +868,7 @@ describe("threadSnapshot", () => {
     const findFirstRun = botRunFindFirst([run]);
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -948,6 +954,7 @@ describe("threadSnapshot", () => {
               spaceMember: { count: vi.fn().mockResolvedValue(1) },
               $executeRaw: vi.fn(async () => 0),
               $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
+              usageRecord: { groupBy: vi.fn(async () => []) },
               message: { findMany: vi.fn().mockResolvedValue([]) },
               event: {
                 findFirst: vi.fn().mockResolvedValue(null),
@@ -997,6 +1004,7 @@ describe("threadSnapshot", () => {
                 spaceMember: { count: vi.fn().mockResolvedValue(1) },
                 $executeRaw: vi.fn(async () => 0),
                 $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
+                usageRecord: { groupBy: vi.fn(async () => []) },
                 message: { findMany: vi.fn().mockResolvedValue([]) },
                 event: {
                   findFirst: vi.fn().mockResolvedValue(null),
@@ -1058,6 +1066,7 @@ describe("threadSnapshot", () => {
     const findFirstRun = botRunFindFirst([failed, completed]);
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -1097,6 +1106,7 @@ describe("threadSnapshot", () => {
     const findFirstRun = botRunFindFirst([]);
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -1563,6 +1573,7 @@ describe("threadSnapshot", () => {
     );
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -1618,6 +1629,7 @@ describe("threadSnapshot", () => {
     };
     const tx = {
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -1753,6 +1765,7 @@ function groupRunFindMany(input: { active?: unknown[]; terminals?: unknown[] }) 
 function groupPrisma(findManyRuns: ReturnType<typeof groupRunFindMany>) {
   const tx = {
     user: { findMany: vi.fn().mockResolvedValue([]) },
+    usageRecord: { groupBy: vi.fn(async () => []) },
     spaceMember: { count: vi.fn().mockResolvedValue(1) },
     $executeRaw: vi.fn(async () => 0),
     $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -1787,6 +1800,7 @@ describe("sendThreadMessage", () => {
       const tx = {
         space: { findUnique: vi.fn(async () => null) },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -1935,6 +1949,7 @@ describe("sendThreadMessage", () => {
       space: { findUnique: vi.fn(async () => null) },
       externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -2206,6 +2221,7 @@ describe("sendThreadMessage", () => {
       space: { findUnique: vi.fn(async () => null) },
       externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "group-1" }]),
@@ -2410,6 +2426,7 @@ describe("sendThreadMessage", () => {
           space: { findUnique: vi.fn(async () => null) },
           externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
           user: { findMany: vi.fn().mockResolvedValue([]) },
+          usageRecord: { groupBy: vi.fn(async () => []) },
           spaceMember: { count: vi.fn().mockResolvedValue(1) },
           $executeRaw: vi.fn(async () => 0),
           $queryRaw: vi.fn().mockResolvedValue([{ id: "group-1" }]),
@@ -2528,6 +2545,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -2619,6 +2637,7 @@ describe("sendThreadMessage", () => {
       const tx = {
         space: { findUnique: vi.fn(async () => null) },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([{ id: "group-1" }]),
@@ -2805,6 +2824,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -2903,6 +2923,7 @@ describe("sendThreadMessage", () => {
       const tx = {
         space: { findUnique: vi.fn(async () => null) },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([]),
@@ -3008,6 +3029,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       thread: {
         update: vi.fn(async ({ data }: { data: { nextMessageSeq?: unknown } }) =>
@@ -3106,6 +3128,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(2) },
       thread: {
         update: vi.fn(async ({ data }: { data: { nextMessageSeq?: unknown } }) =>
@@ -3270,6 +3293,7 @@ describe("sendThreadMessage", () => {
           create: vi.fn().mockResolvedValue({ id: "event-1", seq: 1, createdAt: new Date() }),
         },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         steeringMessage: { create: vi.fn() },
         chatGroup: {
           findFirst: vi.fn().mockResolvedValue({
@@ -3412,6 +3436,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "thread-1" }]),
@@ -3510,6 +3535,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([{ id: "group-1" }]),
@@ -3619,6 +3645,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -3723,6 +3750,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       thread: {
         update: vi.fn(async ({ data }: { data: { nextMessageSeq?: unknown } }) =>
@@ -3865,6 +3893,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -3965,6 +3994,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4041,6 +4071,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4109,6 +4140,7 @@ describe("sendThreadMessage", () => {
       const tx = {
         space: { findUnique: vi.fn(async () => null) },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4194,6 +4226,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4275,6 +4308,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4363,6 +4397,7 @@ describe("sendThreadMessage", () => {
       const tx = {
         space: { findUnique: vi.fn(async () => null) },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4479,6 +4514,7 @@ describe("sendThreadMessage", () => {
       const tx = {
         space: { findUnique: vi.fn(async () => null) },
         user: { findMany: vi.fn().mockResolvedValue([]) },
+        usageRecord: { groupBy: vi.fn(async () => []) },
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4570,6 +4606,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4664,6 +4701,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn().mockResolvedValue([]),
@@ -4740,6 +4778,7 @@ describe("sendThreadMessage", () => {
     const tx = {
       space: { findUnique: vi.fn(async () => null) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       thread: {
         update: vi.fn(async ({ data }: { data: { nextMessageSeq?: unknown } }) =>
@@ -4847,6 +4886,7 @@ describe("stopThreadRuns", () => {
     const transaction = {
       externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn(),
@@ -4980,6 +5020,7 @@ describe("stopThreadRuns", () => {
     const transaction = {
       externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn(),
@@ -5115,6 +5156,7 @@ describe("stopThreadRuns", () => {
     const transaction = {
       externalEffect: { deleteMany: vi.fn(async () => ({ count: 0 })) },
       user: { findMany: vi.fn().mockResolvedValue([]) },
+      usageRecord: { groupBy: vi.fn(async () => []) },
       spaceMember: { count: vi.fn().mockResolvedValue(1) },
       $executeRaw: vi.fn(async () => 0),
       $queryRaw: vi.fn(),
@@ -5244,6 +5286,7 @@ describe("helper snapshot settlement", () => {
         spaceMember: { count: vi.fn().mockResolvedValue(1) },
         $executeRaw: vi.fn(async () => 0),
         $queryRaw: vi.fn().mockResolvedValue([]),
+        usageRecord: { groupBy: vi.fn(async () => []) },
         message: { findMany: vi.fn().mockResolvedValue([]) },
         event: {
           findFirst: vi.fn().mockResolvedValue({ seq: 2 }),

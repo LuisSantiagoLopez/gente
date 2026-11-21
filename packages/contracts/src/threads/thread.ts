@@ -41,6 +41,28 @@ export const ThreadMessagePageSchema = z.object({
 });
 export type ThreadMessagePage = z.infer<typeof ThreadMessagePageSchema>;
 
+/** Gente: one tool call of a run, as its expandable activity list shows it. */
+export const RunActivityStepSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  input: z.string().optional(),
+  output: z.string().optional(),
+  status: z.enum(["running", "succeeded", "failed", "stopped"]),
+  startedAt: z.string(),
+  durationMs: z.number().int().nonnegative().optional(),
+});
+export type RunActivityStep = z.infer<typeof RunActivityStepSchema>;
+
+/** Gente: what a run did, step by step, with its total time and tokens once known. */
+export const RunActivitySchema = z.object({
+  runId: Id,
+  startedAt: z.string().optional(),
+  endedAt: z.string().optional(),
+  tokens: z.number().int().nonnegative().optional(),
+  steps: z.array(RunActivityStepSchema),
+});
+export type RunActivity = z.infer<typeof RunActivitySchema>;
+
 export const ThreadSnapshotSchema = z.object({
   threadId: Id,
   cursor: z.number().int().min(-1),
@@ -53,5 +75,7 @@ export const ThreadSnapshotSchema = z.object({
   run: RunSchema.nullable(),
   activeRuns: z.array(RunSchema).optional(),
   computer: ComputerStatusSchema.optional(),
+  /** Gente: the steps of recent runs, for their activity rows. */
+  runActivity: z.array(RunActivitySchema).optional(),
 });
 export type ThreadSnapshot = z.infer<typeof ThreadSnapshotSchema>;

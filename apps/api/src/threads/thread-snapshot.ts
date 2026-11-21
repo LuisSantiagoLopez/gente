@@ -1,9 +1,11 @@
-import type { ThreadSnapshot } from "@rakazo/contracts";
+import type { RunActivity, ThreadSnapshot } from "@rakazo/contracts";
 import {
   ACTIVE_RUN_STATUSES,
   BACKGROUND_HELPER_TRIGGER,
   BACKGROUND_RUN_TRIGGERS,
   projectMessages,
+  projectRunActivity,
+  RUN_ACTIVITY_KEPT,
   runFailureError,
 } from "@rakazo/core";
 import type { PrismaClient } from "@rakazo/db";
@@ -120,12 +122,17 @@ export async function threadSnapshot(
                 orderBy: { seq: "asc" },
               })
             : [];
+        const runActivity = await loadRunActivity(tx, target.threadId, [
+          ...messagePage.messages.map((message) => message.runId),
+          ...liveRuns.map((run) => run.id),
+        ]);
         return {
           messagePage,
           last,
           run: currentRun,
           activeRuns,
           liveEvents,
+          runActivity,
           shared,
           computer,
           work,
@@ -137,6 +144,7 @@ export async function threadSnapshot(
       botId: target.botId,
       threadId: target.threadId,
       cursor: core.last?.seq ?? -1,
+      runActivity: core.runActivity,
       messages: messagesWithLiveEvents(core.messagePage.messages, core.liveEvents, core.activeRuns),
       olderCursor: core.messagePage.olderCursor,
       run: core.run ? mapRun(core.run) : null,
@@ -340,4 +348,51 @@ function mapRun(run: {
     completedAt: run.completedAt?.toISOString() ?? null,
     createdAt: run.createdAt.toISOString(),
   };
+}
+
+/**
+ * Gente: the steps of the thread's newest runs, with the tokens each used, for their activity
+ * rows. Events after the snapshot's cursor may be included; replaying them changes nothing.
+ */
+async function loadRunActivity(
+  prisma: Pick<PrismaClient, "event" | "usageRecord">,
+  threadId: string,
+  candidates: readonly (string | undefined | null)[],
+): Promise<RunActivity[]> {
+  const runIds = [...new Set(candidates.filter((id): id is string => Boolean(id)))].slice(
+    -RUN_ACTIVITY_KEPT,
+  );
+  if (runIds.length === 0) return [];
+  const [events, usage] = await Promise.all([
+    prisma.event.findMany({
+      where: {
+        threadId,
+        runId: { in: runIds },
+        type: {
+          in: [
+            "run.started",
+            "agent.tool.called",
+            "agent.tool.completed",
+            "run.completed",
+            "run.failed",
+            "run.cancelled",
+          ],
+        },
+      },
+      orderBy: { seq: "asc" },
+      select: { type: true, runId: true, createdAt: true, payload: true },
+    }),
+    prisma.usageRecord.groupBy({
+      by: ["runId"],
+      where: { runId: { in: runIds } },
+      _sum: { inputTokens: true, outputTokens: true },
+    }),
+  ]);
+  const tokens = new Map(
+    usage.map((row) => [row.runId, (row._sum.inputTokens ?? 0) + (row._sum.outputTokens ?? 0)]),
+  );
+  return projectRunActivity(events).map((activity) => {
+    const used = tokens.get(activity.runId);
+    return used ? { ...activity, tokens: used } : activity;
+  });
 }

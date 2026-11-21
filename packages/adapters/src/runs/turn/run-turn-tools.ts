@@ -94,8 +94,16 @@ export async function onToolCalled(ctx: RunContext, event: RuntimeEvent<"tool">)
     botId: bot.id,
     type: "agent.tool.called",
     runId,
-    payload: { name: event.name, executionId: event.executionId },
+    // Gente: the step's plain-words label and a bounded, redacted copy of its input for the
+    // run's activity list.
+    payload: {
+      name: event.name,
+      executionId: event.executionId,
+      label: reply.activityLabel || humanizeToolName(event.name),
+      input: clipActivityText(keptToolArguments(event.args, ctx.secrets)),
+    },
   });
+  reply.activityLabel = undefined;
   await showNarrationStatus(ctx, heldNote);
   tryFlushPendingTools(reply);
   // A call can finish before or after its own event is handled, so its result is read here.
@@ -244,4 +252,14 @@ async function stopStuckToolLoop(ctx: RunContext, toolName: string, refusal?: To
     ).catch((error) => getLogger().error("bot message loop-guard return", error));
   }
   ctx.abortController.abort();
+}
+
+/** Longest input or output kept on an activity step. */
+export const ACTIVITY_TEXT_MAX_CHARS = 2_000;
+
+export function clipActivityText(text: string | undefined): string | undefined {
+  if (!text || text === "{}") return undefined;
+  return text.length > ACTIVITY_TEXT_MAX_CHARS
+    ? `${text.slice(0, ACTIVITY_TEXT_MAX_CHARS)}…`
+    : text;
 }

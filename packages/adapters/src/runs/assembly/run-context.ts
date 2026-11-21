@@ -150,6 +150,8 @@ export interface ReplyState {
   /** The last screenshot a kept call returned, saved with the reply for its later turns. */
   latestScreenshot?: { executionId: string; mimeType: AttachmentImageMimeType; data: Uint8Array };
   pendingProgress: string;
+  /** Gente: the newest tool status line, which labels the next step in the activity list. */
+  activityLabel?: string;
   lastProgressAt: number;
   hasStreamedText: boolean;
   /**
