@@ -57,6 +57,8 @@ export type RunActivityStep = z.infer<typeof RunActivityStepSchema>;
 export const RunActivitySchema = z.object({
   runId: Id,
   startedAt: z.string().optional(),
+  /** When the reply's first words appeared: the end of the run's reading and thinking. */
+  firstOutputAt: z.string().optional(),
   endedAt: z.string().optional(),
   tokens: z.number().int().nonnegative().optional(),
   steps: z.array(RunActivityStepSchema),

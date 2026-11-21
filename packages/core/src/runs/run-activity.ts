@@ -23,11 +23,23 @@ function record(value: unknown): Record<string, unknown> {
 
 const text = (value: unknown) => (typeof value === "string" && value ? value : undefined);
 
+/** Events that mark the reply's first words: streamed text or a posted bot message. */
+function isFirstOutputEvent(event: { type: string; payload?: unknown }): boolean {
+  const payload = record(event.payload);
+  if (event.type === "thread.progress") return Boolean(text(payload.text) ?? text(payload.delta));
+  return event.type === "thread.message.created" && payload.role === "bot";
+}
+
 /** Whether an event changes a run's activity list. */
-export function isRunActivityEvent(event: { type: string; runId?: string | null }): boolean {
+export function isRunActivityEvent(event: {
+  type: string;
+  runId?: string | null;
+  payload?: unknown;
+}): boolean {
   return (
     Boolean(event.runId) &&
-    (event.type === "run.started" ||
+    (isFirstOutputEvent(event) ||
+      event.type === "run.started" ||
       event.type === "agent.tool.called" ||
       event.type === "agent.tool.completed" ||
       event.type === "run.completed" ||
@@ -61,6 +73,11 @@ export function reduceRunActivity(
   const at = iso(event.createdAt);
   const activity: RunActivity = current ?? { runId: event.runId, steps: [] };
   const payload = record(event.payload);
+  if (event.type === "thread.progress" || event.type === "thread.message.created") {
+    // Only the first words count; later text leaves the activity as it is.
+    if (current?.firstOutputAt || !isFirstOutputEvent(event)) return current;
+    return { ...activity, firstOutputAt: at };
+  }
   if (event.type === "run.started") {
     return { ...activity, startedAt: activity.startedAt ?? at, endedAt: undefined };
   }
@@ -116,8 +133,9 @@ export function projectRunActivity(
   const byRun = new Map(previous.map((activity) => [activity.runId, activity]));
   for (const event of events) {
     if (!event.runId || !isRunActivityEvent(event)) continue;
-    const next = reduceRunActivity(byRun.get(event.runId), event);
-    if (!next) continue;
+    const before = byRun.get(event.runId);
+    const next = reduceRunActivity(before, event);
+    if (!next || next === before) continue;
     byRun.delete(event.runId);
     byRun.set(event.runId, next);
   }
