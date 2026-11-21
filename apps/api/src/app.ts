@@ -581,6 +581,7 @@ async function buildApp(overrides: CreateAppOverrides): Promise<AppHandles> {
     signupsEnabled: env.signupsEnabled,
     signupAllowlist: env.signupAllowlist,
     singleAccount: Boolean(env.desktopStackToken),
+    desktopStackToken: env.desktopStackToken,
     email,
     logger: authLibraryLogger("auth.request.failed"),
     onEmailError,

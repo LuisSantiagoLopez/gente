@@ -50,6 +50,7 @@ import {
 } from "./account-security.js";
 import { createAppleClientSecretCache } from "./apple-client-secret.js";
 import { breachedPasswordCheck } from "./breached-password.js";
+import { desktopOwnerSession } from "./desktop-owner-session.js";
 import { DEACTIVATED_AT_FIELD } from "./directory.js";
 import type { EmailLocaleOf } from "./email.js";
 import { emailLocale, passwordResetEmail, signInCodeEmail, verificationEmail } from "./email.js";
@@ -114,6 +115,8 @@ export interface AuthEnv {
   signupAllowlist: string | undefined;
   /** Admits a new account only while there is none, for a deployment that serves one person. */
   singleAccount?: boolean;
+  /** Gente: the desktop app's stack token; its main process signs the window in with it. */
+  desktopStackToken?: string;
   extraOrigins?: string[];
   /** SHA-256 signing certificate fingerprints of Android apps allowed to use this server's passkeys. */
   androidAppCertFingerprints?: string[];
@@ -163,6 +166,12 @@ function isUnusedEmailCodePath(path: string, body: { type?: unknown } | undefine
  * trusted proxies and drops any client-supplied copy, so a caller cannot choose its own address.
  */
 export const CLIENT_IP_HEADER = "x-rakazo-client-ip";
+
+/** Gente: how long a one-account (desktop) sign-in lasts, and how often it renews. */
+export const SINGLE_ACCOUNT_SESSION = {
+  expiresIn: 60 * 60 * 24 * 400,
+  updateAge: 60 * 60 * 24,
+} as const;
 
 /** Routes that end sessions other than the caller's own sign-out. Recorded per deleted session. */
 const REVOCATION_PATHS = new Set(["/revoke-session", "/revoke-sessions", "/revoke-other-sessions"]);
@@ -229,6 +238,23 @@ export function createAuth(prisma: PrismaClient, env: AuthEnv) {
         }),
       )
     );
+  };
+  /** Gente: the one account of a desktop workspace: the oldest person with a workspace. */
+  const soleOwner = async () => {
+    const users = await prisma.user.findMany({
+      where: { NOT: { email: { endsWith: MESSAGING_EMAIL_SUFFIX } } },
+      orderBy: { createdAt: "asc" },
+      select: { id: true },
+      take: 20,
+    });
+    if (users.length === 0) return null;
+    const members = await prisma.spaceMember.findMany({
+      where: { userId: { in: users.map((user) => user.id) } },
+      select: { userId: true },
+    });
+    const admitted = new Set(members.map((member) => member.userId));
+    const owner = users.find((user) => admitted.has(user.id));
+    return owner ? { id: owner.id } : null;
   };
   /** Refuses a new account early, before creating it, once a single-person deployment has one. */
   const admission = async () => {
@@ -319,6 +345,9 @@ export function createAuth(prisma: PrismaClient, env: AuthEnv) {
       },
     },
     rateLimit: authRateLimitOptions(),
+    // Gente: on a person's own computer (one account), the sign-in lasts: about a year, renewed
+    // each day the app is used, so an install or a week away never asks for the password again.
+    ...(env.singleAccount ? { session: SINGLE_ACCOUNT_SESSION } : {}),
     advanced: { ipAddress: { ipAddressHeaders: [CLIENT_IP_HEADER] } },
     socialProviders: {
       ...(google
@@ -517,6 +546,9 @@ export function createAuth(prisma: PrismaClient, env: AuthEnv) {
       },
     },
     plugins: [
+      ...(env.singleAccount
+        ? [desktopOwnerSession({ token: env.desktopStackToken, owner: soleOwner })]
+        : []),
       socialCallbackProtection(),
       signedBearer,
       expo(),
