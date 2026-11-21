@@ -94,7 +94,7 @@ export const conversationTools: ConnectorTool[] = [
   {
     name: "ask_user",
     description:
-      "Ask the user one short multiple-choice question with tappable options, then wait for their selection. Use this instead of asking them to type when two to four concise choices are enough. Put the content the user is deciding about, such as a draft email, in `detail`.",
+      "The only way to ask the user anything: it shows a card with tappable options (they can also type their own answer), then waits for their answer. Never ask questions in your reply text. Ask only when the task cannot go on without the answer; otherwise pick sensible defaults and do the work. Put every question you need in this one call: the first in `question` and `options`, up to three more in `more_questions`. Put the content the user is deciding about, such as a draft email, in `detail`.",
     inputSchema: {
       type: "object",
       properties: {
@@ -106,6 +106,24 @@ export const conversationTools: ConnectorTool[] = [
           minItems: 2,
           maxItems: 4,
           uniqueItems: true,
+        },
+        more_questions: {
+          type: "array",
+          maxItems: 3,
+          items: {
+            type: "object",
+            properties: {
+              question: { type: "string", maxLength: 240 },
+              options: {
+                type: "array",
+                items: { type: "string", minLength: 1, maxLength: 80 },
+                minItems: 2,
+                maxItems: 4,
+                uniqueItems: true,
+              },
+            },
+            required: ["question", "options"],
+          },
         },
       },
       required: ["question", "options"],

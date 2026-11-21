@@ -1,5 +1,6 @@
 import type { ConnectorTool } from "@rakazo/adapter-kit";
 import { BOT_INSTRUCTIONS_MAX_LENGTH, ThinkingLevelSchema } from "@rakazo/contracts";
+import { ASK_MORE_QUESTIONS_MAX } from "@rakazo/core";
 import { getLogger } from "@rakazo/logging";
 import { Type } from "typebox";
 import { MAX_APPROVAL_DETAIL_LENGTH } from "../../../approvals/approval-ask.js";
@@ -74,6 +75,19 @@ function builtinParameters(tool: ConnectorTool) {
         maxItems: 4,
         uniqueItems: true,
       }),
+      more_questions: Type.Optional(
+        Type.Array(
+          Type.Object({
+            question: Type.String({ maxLength: 240 }),
+            options: Type.Array(Type.String({ minLength: 1, maxLength: 80 }), {
+              minItems: 2,
+              maxItems: 4,
+              uniqueItems: true,
+            }),
+          }),
+          { maxItems: ASK_MORE_QUESTIONS_MAX },
+        ),
+      ),
     });
   }
   if (tool.name === "remember") {

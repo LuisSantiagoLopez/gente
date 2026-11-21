@@ -878,6 +878,8 @@ export type AgentRuntimeEvent =
       text: string;
       detail?: string;
       actions?: Array<{ id: string; label: string }>;
+      /** Gente: more questions on the same card, answered together. */
+      questions?: Array<{ text: string; actions: Array<{ id: string; label: string }> }>;
     }
   | { type: "takeover"; reason: string; executionId?: string }
   | ({

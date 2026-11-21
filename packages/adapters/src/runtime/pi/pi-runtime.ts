@@ -99,6 +99,7 @@ import type { PiSessionHandle, PiSessionRecorder } from "./pi-session.js";
 import { PiJsonlSessionRecorder } from "./pi-session.js";
 import { conversationSessionId, reliableModelStream } from "./stream/pi-runtime-stream.js";
 import { withPiThinkingActivity } from "./stream/pi-thinking-activity.js";
+import { askUserCalls } from "./tools/pi-runtime-ask-user.js";
 import {
   COMPUTER_MODE_TOOLS,
   computerSelection,
@@ -122,6 +123,7 @@ import { observedPiStream } from "./usage/pi-usage.js";
 
 const MAX_REJECTED_REQUESTS = 5;
 const ANSWERED_ON_RESUME = new Set(["ask_user", "request_takeover"]);
+
 const running = new Map<string, { controller: AbortController; work: Promise<void> }>();
 // Some OpenAI-compatible models return EOS immediately after a tool result
 // instead of taking another assistant turn. A bounded internal follow-up keeps
@@ -1137,8 +1139,9 @@ export class PiAgentRuntime implements AgentRuntime {
                 if (!tool) throw new Error("Pending checkpoint tool is no longer available");
                 const interaction =
                   call.id === restored.pendingToolCallId && ANSWERED_ON_RESUME.has(call.name);
-                // Gente: the answered card counts as this turn's one question.
-                if (interaction && call.name === "ask_user") host.askedThisTurn = true;
+                // Gente: the cards this task already asked count toward its few questions.
+                if (interaction && call.name === "ask_user")
+                  host.askedCards = askUserCalls(history);
                 let result: AgentToolResult<JsonValue | undefined>;
                 try {
                   signal.throwIfAborted();
