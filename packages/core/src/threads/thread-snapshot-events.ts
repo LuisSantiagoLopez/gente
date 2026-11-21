@@ -77,6 +77,8 @@ export function isThreadSnapshotEvent(event: { type: string }): boolean {
     event.type === "thread.message.created" ||
     event.type === "thread.message.updated" ||
     event.type === "run.started" ||
+    // Gente: a saved stretch of thinking, for the reply's activity row.
+    event.type === "run.thought" ||
     event.type === "run.waiting_input" ||
     event.type === "computer.takeover.requested" ||
     event.type === "computer.takeover.released" ||

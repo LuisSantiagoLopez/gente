@@ -51,6 +51,8 @@ export function RunActivityRow({
   const total = formatCompactDuration(elapsed(activity?.startedAt, endAt));
   const thought = formatCompactDuration(thoughtMs(activity, now));
   const liveThinking = live ? unsavedThinking(activity, draft?.thinking) : "";
+  // While the first thinking streams, it replaces the "Read your message" placeholder.
+  const shown = liveThinking && steps.length === 1 && steps[0]?.id === "read" ? [] : steps;
   // Every run gets its arrow, a plain "hey" too, live and after it ends.
   if (!live && !activity?.startedAt) return null;
   return (
@@ -90,7 +92,7 @@ export function RunActivityRow({
       </div>
       <CollapsibleContent>
         <RunActivityTimeline
-          steps={steps}
+          steps={shown}
           now={now}
           liveThinking={liveThinking}
           liveToolDraft={live ? draft?.toolDraft?.args : undefined}
