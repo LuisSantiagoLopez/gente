@@ -276,9 +276,8 @@ describe("the reply follows the conversation's language", () => {
     const last = sent.messages.at(-1);
     expect(last.content.startsWith("Tell me a joke about cats")).toBe(true);
     expect(last.content).not.toContain("Reply in Spanish");
-    // The note rides on the newest message; the system prompt is the same as for any other turn.
-    const spanish = JSON.parse(quickChatBody(body(spanishChat))!.body);
-    expect(sent.messages[0]).toEqual(spanish.messages[0]);
+    // The note rides on the newest message; the system prompt is left as it was.
+    expect(sent.messages[0]).toEqual(english[0]);
     expect(
       conversationLanguage([...spanishChat.slice(0, -1), { role: "user", content: "What's up?" }]),
     ).toBe("English");
@@ -330,5 +329,67 @@ describe("the reply follows the conversation's language", () => {
       )!.body,
     );
     expect(JSON.stringify(english)).not.toContain("reply_language");
+  });
+});
+
+describe("tasks keep their tools in any language", () => {
+  const tools = ["web_search", "write_file", "shell"].map((name) => ({
+    type: "function",
+    function: { name },
+  }));
+  const ask = (text: string) =>
+    JSON.parse(
+      quickChatBody(
+        JSON.stringify({
+          messages: [
+            { role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." },
+            { role: "user", content: `${text}${time}` },
+          ],
+          tools,
+          reasoning_effort: "none",
+        }),
+      )!.body,
+    );
+  const tasks = [
+    "make me a website",
+    "create a file notes.md",
+    "search the web for today's weather in Mexico City",
+    "send an email to Ana",
+    "remind me at 5",
+    "book a table for two",
+    "build me a landing page",
+    "hazme una página web",
+    "crea un archivo con mi lista",
+    "busca el clima de hoy en CDMX",
+    "escribe un correo a Juan",
+    "recuérdame llamar a mamá",
+    "investiga precios de vuelos a Madrid",
+    "construye un sitio para mi negocio",
+    "manda un mensaje a Pedro",
+    "faça um site para mim",
+    "crie um arquivo de notas",
+    "pesquise o tempo hoje em Lisboa",
+    "envie um e-mail para Maria",
+    "me lembre de pagar a conta",
+  ];
+  it.each(tasks)("keeps every tool and thinks briefly for %j", (text) => {
+    const out = ask(text);
+    expect(out.tools).toHaveLength(3);
+    expect(out.reasoning_effort).toBe("low");
+  });
+
+  it.each(["hey", "hola", "gracias!", "oi, tudo bem?", "good morning", "qué tal"])(
+    "answers small talk %j with the slim prompt and no tools",
+    (text) => {
+      const out = ask(text);
+      expect(out.tools).toBeUndefined();
+      expect(out.reasoning_effort).toBe("none");
+    },
+  );
+
+  it("keeps the tools for a short plain question too, without thinking", () => {
+    const out = ask("who painted the Mona Lisa?");
+    expect(out.tools).toHaveLength(3);
+    expect(out.reasoning_effort).toBe("none");
   });
 });
