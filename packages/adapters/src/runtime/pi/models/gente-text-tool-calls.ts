@@ -45,6 +45,30 @@ export function offeredTools(body: unknown): OfferedTool[] {
 }
 
 const QWEN_CALL = /<tool_call>\s*([\s\S]*?)\s*<\/tool_call>/g;
+const XML_FUNCTION = /^<function=([^>\s]+)>([\s\S]*?)(?:<\/function>|$)/;
+const XML_PARAMETER = /<parameter=([^>\s]+)>\n?([\s\S]*?)\n?<\/parameter>/g;
+
+/**
+ * `<function=name><parameter=key>value</parameter></function>`, the call format newer Qwen chat
+ * templates teach, as `{ name, arguments }`. A value that reads as JSON (a number, list, object)
+ * keeps its type; anything else is text.
+ */
+function xmlFunctionCall(
+  inner: string,
+): { name: string; arguments: Record<string, unknown> } | null {
+  const match = XML_FUNCTION.exec(inner);
+  if (!match) return null;
+  const args: Record<string, unknown> = {};
+  for (const [, key, raw] of match[2]!.matchAll(XML_PARAMETER)) {
+    const value = raw!.trim();
+    try {
+      args[key!] = /^[[{\d"-]|^(true|false|null)$/.test(value) ? JSON.parse(value) : value;
+    } catch {
+      args[key!] = value;
+    }
+  }
+  return { name: match[1]!, arguments: args };
+}
 const LIST_ITEM = /^\s*(?:[-*•]|\d{1,2}[.)]|[A-Da-d][.)])\s+(.+?)\s*$/;
 
 const stripQuotes = (value: string) =>
@@ -179,9 +203,10 @@ export function readTextToolCalls(
     else unusable = true;
   };
 
-  // Qwen-style <tool_call>{...}</tool_call>
+  // Qwen-style <tool_call>{...}</tool_call>, or its XML form with <function=...> blocks.
   let remaining = text.replace(QWEN_CALL, (_whole, inner: string) => {
-    const parsed = leadingJson(inner.trim());
+    const xml = xmlFunctionCall(inner.trim());
+    const parsed = xml ? { value: xml } : leadingJson(inner.trim());
     const call = callFromObject(parsed?.value, tools);
     if (call) add(call.name, call.args);
     else {
