@@ -19,9 +19,9 @@ urls.add("https://ollama.com/download/OllamaSetup.exe");
 const mac = read("apps/desktop/src/main/this-computer/mac-runtime.ts");
 const version = mac.match(/CONTAINER_RUNTIME_VERSION\s*=\s*"([^"]+)"/)?.[1];
 if (version) urls.add(`https://github.com/apple/container/releases/download/${version}/container-${version}-installer-signed.pkg`);
-// Every Swift model file in the ladder (Hugging Face resolves each tag to one GGUF file).
+// Every model file in the ladder (Hugging Face resolves each tag to one GGUF file).
 const brain = read("apps/desktop/src/main/burrow/brain.ts");
-for (const [, repo, quant] of brain.matchAll(/tag: "hf\.co\/(ukisai\/[^:"]+):([^"]+)"/g)) {
+for (const [, repo, quant] of brain.matchAll(/tag: "hf\.co\/([^:"]+):([^"]+)"/g)) {
   const tree = await (await fetch(`https://huggingface.co/api/models/${repo}/tree/main`)).json();
   const file = tree.find((f) => f.path.endsWith(`${quant}.gguf`) && !f.path.startsWith("mmproj"));
   urls.add(file ? `https://huggingface.co/${repo}/resolve/main/${file.path}` : `missing:${repo}:${quant}`);
