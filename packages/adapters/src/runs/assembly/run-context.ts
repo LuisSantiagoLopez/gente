@@ -150,6 +150,17 @@ export interface ReplyState {
   /** The last screenshot a kept call returned, saved with the reply for its later turns. */
   latestScreenshot?: { executionId: string; mimeType: AttachmentImageMimeType; data: Uint8Array };
   pendingProgress: string;
+  /**
+   * Gente: thinking and tool-call argument text not yet sent to the live view, redacted as it
+   * streams. `reset` clears what the view shows first.
+   */
+  pendingDraft?: { thinking: string; tool?: { name: string; args: string }; reset?: true };
+  /** Whether the live view shows draft text a reset would need to clear. */
+  draftShown?: boolean;
+  draftRedactors?: {
+    thinking: ReturnType<typeof createStreamingRedactor>;
+    tool: ReturnType<typeof createStreamingRedactor>;
+  };
   lastProgressAt: number;
   hasStreamedText: boolean;
   /**

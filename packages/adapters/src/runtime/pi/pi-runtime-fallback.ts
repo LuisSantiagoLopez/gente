@@ -101,6 +101,11 @@ export interface FallbackStreamState {
    */
   prepareForTarget?(target: RuntimeModelTarget, context: TranscriptContext): TranscriptContext;
   isProviderFailure(message: AssistantMessage): boolean;
+  /**
+   * Gente: thinking and tool-call argument text as each call generates it, even while the call's
+   * events are still held back. Display only; `reset` starts each call fresh.
+   */
+  onDraft?(draft: { thinking?: string; tool?: { name: string; args: string }; reset?: true }): void;
   /** Set once a provider rejected replayed thinking signatures; see thinking-signatures.ts. */
   dropThinkingBlocks?: boolean;
   /** Output reservations reduced by a rejected request, scoped to this run and model. */
@@ -589,7 +594,15 @@ export function fallbackAwareModelStream(
         return;
       }
       try {
+        state.onDraft?.({ reset: true });
         for await (const event of stream) {
+          if (event.type === "thinking_delta" && event.delta) {
+            state.onDraft?.({ thinking: event.delta });
+          } else if (event.type === "toolcall_delta" && event.delta) {
+            const call = event.partial.content[event.contentIndex];
+            const name = call?.type === "toolCall" ? call.name : "";
+            state.onDraft?.({ tool: { name, args: event.delta } });
+          }
           if (event.type === "error") paceSlot?.release();
           if (event.type === "done") {
             paceSlot?.settle(event.message.usage.input + event.message.usage.cacheRead);

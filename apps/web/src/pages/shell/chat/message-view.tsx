@@ -19,6 +19,7 @@ import { ComputerCard } from "../../../components/computers/ComputerCard";
 import { ArtifactFileCard } from "../../../components/messages/ArtifactFileCard";
 import { AskCard } from "../../../components/messages/AskCard";
 import { CloudAgentCard } from "../../../components/messages/CloudAgentCard";
+import { LiveDraft } from "../../../components/messages/LiveDraft";
 import { McpAppCard } from "../../../components/messages/McpAppCard";
 import { OutgoingDraftCard } from "../../../components/messages/OutgoingDraftCard";
 import { SubagentCard } from "../../../components/messages/SubagentCard";
@@ -302,11 +303,18 @@ export const MessageView = memo(function MessageView({
                   );
                 }
                 if (block.kind === "text" || block.kind === "progress") {
+                  const draft =
+                    block.kind === "progress" ? <LiveDraft key="draft" block={block} /> : null;
+                  // A status line is not reply text: beside a draft, only the draft shows.
+                  if (block.kind === "progress" && (block.activity || !block.text)) {
+                    return <div key={i}>{draft}</div>;
+                  }
                   return (
                     <div
                       key={i}
                       data-quote-message-id={block.kind === "text" ? quoteMessageId : undefined}
                     >
+                      {draft}
                       <ChatMarkdown
                         streaming={block.kind === "progress"}
                         renderMention={renderMention}
@@ -445,9 +453,12 @@ export const MessageView = memo(function MessageView({
                   className="max-w-full rounded-2xl bg-muted px-4 py-2.5 text-body-lg text-foreground"
                   dir="auto"
                 >
-                  <ChatMarkdown streaming renderMention={renderMention} onOpenPage={openPage}>
-                    {block.text}
-                  </ChatMarkdown>
+                  <LiveDraft block={block} />
+                  {block.text && !block.activity ? (
+                    <ChatMarkdown streaming renderMention={renderMention} onOpenPage={openPage}>
+                      {block.text}
+                    </ChatMarkdown>
+                  ) : null}
                 </div>
               </div>
             );

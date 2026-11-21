@@ -223,6 +223,10 @@ export const MessageBlock = z.discriminatedUnion("kind", [
     /** The person sees this text as the reply while it is written, so a call can say it then. */
     shown: z.literal(true).optional(),
     pendingToolNames: z.array(z.string()).optional(),
+    /** Gente: the model's thinking for this step as it streams. Live view only. */
+    thinking: z.string().optional(),
+    /** Gente: a tool call's arguments as the model writes them. Live view only. */
+    toolDraft: z.object({ name: z.string(), args: z.string() }).optional(),
   }),
   z.object({
     kind: z.literal("steps"),

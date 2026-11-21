@@ -24,6 +24,8 @@ export function renderableMessageBlocks(
 
 function isShown(block: MessageBlock, showToolActivity: boolean): boolean {
   if (isRetiredImportSetup(block)) return false;
+  // Gente: thinking or a tool call being written shows live, even beside a status line.
+  if (block.kind === "progress" && (block.thinking || block.toolDraft)) return true;
   return !isToolActivityBlock(block) || shouldRenderToolCard(block, showToolActivity);
 }
 
