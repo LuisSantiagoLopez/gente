@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { connectedPluginsInstruction, taughtSkillsInstruction } from "./run-instructions.prompt.js";
+import {
+  connectedPluginsInstruction,
+  RAKAZO_PLATFORM_INSTRUCTION,
+  taughtSkillsInstruction,
+} from "./run-instructions.prompt.js";
 
 describe("connectedPluginsInstruction", () => {
   it("names each connected plugin and prefers its tools to browsing", () => {
@@ -32,5 +36,13 @@ describe("taughtSkillsInstruction", () => {
 
   it("adds nothing when no skill was taught", () => {
     expect(taughtSkillsInstruction([])).toBeUndefined();
+  });
+});
+
+describe("RAKAZO_PLATFORM_INSTRUCTION", () => {
+  it("has a fixed rule that the latest message's language wins over earlier turns", () => {
+    expect(RAKAZO_PLATFORM_INSTRUCTION).toContain(
+      "Always reply in the language of the user's latest message, even if earlier turns used another language, unless they ask for another.",
+    );
   });
 });

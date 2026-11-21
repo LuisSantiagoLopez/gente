@@ -842,6 +842,12 @@ export type AgentRuntimeEvent =
   | { type: "text"; text: string }
   /** Explicit provider reasoning lifecycle only; never contains reasoning text. */
   | { type: "thinking"; active: boolean }
+  /**
+   * Gente: what the model is generating before it becomes reply text, for the live view only:
+   * thinking text and a tool call's arguments as they stream. `reset` drops what was shown, for a
+   * model call that is repeated. Never stored in the reply or replayed to a model.
+   */
+  | { type: "draft"; thinking?: string; tool?: { name: string; args: string }; reset?: true }
   /** A new assistant message starts; its text does not continue the previous text. */
   | { type: "turn" }
   /** Messages sent while the bot worked were handed to the model before this turn. */

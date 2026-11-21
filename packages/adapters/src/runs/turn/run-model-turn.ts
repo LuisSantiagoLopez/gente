@@ -1,7 +1,7 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRunRequest } from "@rakazo/adapter-kit";
 import { modelRoleConnectionId } from "@rakazo/contracts";
-import { BACKGROUND_HELPER_TRIGGER, redactSecrets } from "@rakazo/core";
+import { BACKGROUND_HELPER_TRIGGER } from "@rakazo/core";
 import { isDatabaseUnavailable, recordUsage } from "@rakazo/db";
 import { getLogger } from "@rakazo/logging";
 import { isStrategicInitiativeRun } from "../../routines/strategic-initiative.js";
@@ -124,9 +124,6 @@ function modelTurnRequest(
     currentTurnMessage,
     emptyResponseText,
     groupReplyOptional,
-    memoryContext,
-    scratchpadContext,
-    ticketContext,
     turnBlocks,
   } = turn.turnContext;
   const { scripted } = turn.model;
@@ -213,11 +210,6 @@ function modelTurnRequest(
         ? [groupContext, GROUP_UNADDRESSED_REPLY_GUIDANCE].filter(Boolean).join("\n")
         : groupContext,
       messagingContext,
-      redactedMemoryContext: memoryContext ? redactSecrets(memoryContext, runSecrets) : undefined,
-      redactedScratchpadContext: scratchpadContext
-        ? redactSecrets(scratchpadContext, runSecrets)
-        : undefined,
-      redactedTicketContext: ticketContext ? redactSecrets(ticketContext, runSecrets) : undefined,
       hasHistoricalContext: historicalContext.length > 0,
       // A background helper is not offered the history tools, so it gets no guidance on them.
       historyRetrievalEnabled:

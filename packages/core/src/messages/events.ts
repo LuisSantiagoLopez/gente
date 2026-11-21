@@ -316,6 +316,9 @@ export function reduceLiveMessageBlocks(
   current: readonly MessageBlock[],
   update: LiveMessageUpdate,
 ): MessageBlock[] {
+  if (update.type === "progress" && isDraftOnlyProgress(update.payload)) {
+    return withLiveDraft(current, update.payload?.draft);
+  }
   // A reset drops the text streamed so far (it will not be in the reply) and keeps the steps,
   // including tools still waiting on that text to finish its sentence.
   let blocks = current;
@@ -355,7 +358,17 @@ export function reduceLiveMessageBlocks(
     for (const name of pendingToolNames) next = appendToolCallSegment(next, name);
     return next;
   }
-  if (!tailText) return [...segments];
+  // Gente: thinking stays with the text that follows it; a call's arguments give way to the
+  // call's own status line once it runs.
+  const prior = tail?.kind === "progress" ? tail : undefined;
+  const drafted = applyDraft(
+    {
+      thinking: prior?.thinking,
+      toolDraft: activity || update.type === "tool" ? undefined : prior?.toolDraft,
+    },
+    update.type === "progress" ? update.payload?.draft : undefined,
+  );
+  if (!tailText && !drafted.thinking && !drafted.toolDraft) return [...segments];
   return [
     ...segments,
     {
@@ -364,6 +377,60 @@ export function reduceLiveMessageBlocks(
       ...(activity ? { activity: true as const } : {}),
       ...(shown ? { shown: true as const } : {}),
       ...(pendingToolNames.length > 0 ? { pendingToolNames } : {}),
+      ...(drafted.thinking ? { thinking: drafted.thinking } : {}),
+      ...(drafted.toolDraft ? { toolDraft: drafted.toolDraft } : {}),
+    },
+  ];
+}
+
+type ProgressBlock = Extract<MessageBlock, { kind: "progress" }>;
+type LiveDraft = Pick<ProgressBlock, "thinking" | "toolDraft">;
+
+/** A progress update that only carries thinking or tool-argument text, leaving the reply as is. */
+function isDraftOnlyProgress(payload: Record<string, unknown> | undefined): boolean {
+  return Boolean(payload?.draft) && payload?.delta === undefined && payload?.text === undefined;
+}
+
+function applyDraft(current: LiveDraft, draft: unknown): LiveDraft {
+  if (!draft || typeof draft !== "object") return current;
+  const { thinking, tool, reset } = draft as {
+    thinking?: unknown;
+    tool?: { name?: unknown; args?: unknown };
+    reset?: unknown;
+  };
+  const base: LiveDraft = reset === true ? {} : current;
+  const next: LiveDraft = { ...base };
+  if (typeof thinking === "string" && thinking) next.thinking = (base.thinking ?? "") + thinking;
+  if (tool && typeof tool.name === "string" && typeof tool.args === "string") {
+    next.toolDraft =
+      base.toolDraft && base.toolDraft.name === tool.name
+        ? { name: tool.name, args: base.toolDraft.args + tool.args }
+        : { name: tool.name, args: tool.args };
+  }
+  return next;
+}
+
+/** Puts a draft update on the live tail, adding an empty tail when the reply has none yet. */
+function withLiveDraft(current: readonly MessageBlock[], draft: unknown): MessageBlock[] {
+  const tail = current.at(-1);
+  const prior = tail?.kind === "progress" ? tail : undefined;
+  const segments = prior ? current.slice(0, -1) : [...current];
+  const {
+    thinking: _thinking,
+    toolDraft: _toolDraft,
+    ...rest
+  } = prior ?? {
+    kind: "progress" as const,
+    text: "",
+  };
+  const drafted = applyDraft({ thinking: prior?.thinking, toolDraft: prior?.toolDraft }, draft);
+  if (!rest.text && !drafted.thinking && !drafted.toolDraft) return segments;
+  return [
+    ...segments,
+    {
+      ...rest,
+      ...(drafted.thinking ? { thinking: drafted.thinking } : {}),
+      ...(drafted.toolDraft ? { toolDraft: drafted.toolDraft } : {}),
     },
   ];
 }

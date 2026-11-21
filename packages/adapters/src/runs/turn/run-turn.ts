@@ -12,11 +12,14 @@ import { publishMessage } from "../assembly/run-messages.js";
 import { requeueComputerRun, requeueInterruptedRun } from "../lifecycle/run-lifecycle.js";
 import { subagentMarksUnread } from "../lifecycle/run-notifications.js";
 import {
+  addDraft,
   canPublishDurableNarration,
   flushProgress,
   holdsTransientProgress,
   mayBeSilentEnding,
   narrationBecomesMessages,
+  PROGRESS_FLUSH_MS,
+  progressFlushDueAt,
   progressHeldForSilence,
   publishInterimMessage,
   publishMidTurnNarration,
@@ -86,10 +89,25 @@ export async function consumeRunEvents(
   }, 1_000);
   watch.unref?.();
   try {
-    for await (const event of withRuntimeCleanup(events, ctx.abortController)) {
+    for await (const event of withTrailingFlush(
+      withRuntimeCleanup(events, ctx.abortController),
+      () => progressFlushDueAt(ctx),
+      ctx.abortController,
+    )) {
       if (ctx.state.approval.pausePending) return true;
       if (!ctx.state.lease.valid) return true;
+      if (event === FLUSH_DUE) {
+        await flushProgress(ctx);
+        continue;
+      }
       if (await runLeaseLost(ctx)) return true;
+      if (event.type === "draft") {
+        addDraft(ctx, event);
+        if (!ctx.scripted && Date.now() - ctx.state.reply.lastProgressAt >= PROGRESS_FLUSH_MS) {
+          await flushProgress(ctx);
+        }
+        continue;
+      }
 
       if (
         isStrategicInitiativeRun(run) &&
@@ -178,6 +196,58 @@ export async function consumeRunEvents(
   }
 }
 
+const FLUSH_DUE = Symbol("flush due");
+
+/**
+ * Gente: the runtime's events, plus a tick when batched live output falls due with no new event
+ * to carry it, so the last words before a pause reach the screen within the flush window.
+ * Leaving early aborts the run like `withRuntimeCleanup`, so a read still waiting ends.
+ */
+export async function* withTrailingFlush<T>(
+  events: AsyncIterable<T>,
+  dueAt: () => number | undefined,
+  controller: AbortController,
+): AsyncGenerator<T | typeof FLUSH_DUE> {
+  const iterator = events[Symbol.asyncIterator]();
+  let pending: Promise<IteratorResult<T>> | undefined;
+  let complete = false;
+  try {
+    while (true) {
+      pending ??= iterator.next();
+      const due = dueAt();
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const next =
+        due === undefined
+          ? await pending
+          : await Promise.race([
+              pending,
+              new Promise<typeof FLUSH_DUE>((resolve) => {
+                timer = setTimeout(() => resolve(FLUSH_DUE), Math.max(0, due - Date.now()));
+              }),
+            ]);
+      if (timer !== undefined) clearTimeout(timer);
+      if (next === FLUSH_DUE) {
+        yield FLUSH_DUE;
+        continue;
+      }
+      pending = undefined;
+      if (next.done) {
+        complete = true;
+        return;
+      }
+      yield next.value;
+    }
+  } finally {
+    if (!complete) {
+      if (pending) {
+        controller.abort();
+        await pending.catch(() => undefined);
+      }
+      await iterator.return?.();
+    }
+  }
+}
+
 /**
  * At most once a second, check the run is still this attempt's and not cancelled or released.
  * A read that answers after `active` turns false acts on nothing.
@@ -233,7 +303,7 @@ async function streamText(ctx: RunContext, event: RuntimeEvent<"text">) {
   tryFlushPendingTools(reply);
   reply.pendingProgress += reply.redactor.push(event.text);
   const now = Date.now();
-  if (!ctx.scripted && reply.pendingProgress && now - reply.lastProgressAt >= 250) {
+  if (!ctx.scripted && reply.pendingProgress && now - reply.lastProgressAt >= PROGRESS_FLUSH_MS) {
     await flushProgress(ctx);
   }
 }

@@ -1,3 +1,4 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import type { AgentRunRequest } from "@rakazo/adapter-kit";
 import {
   expandSkillReferencesInPrompt,
@@ -43,6 +44,7 @@ import {
   voiceCallInstruction,
 } from "./run-instructions.prompt.js";
 import { loadSharedSpaceNote } from "./shared-space-note.js";
+import { turnContextBlock } from "./turn-context.prompt.js";
 
 export async function createRunContext(
   services: RunExecutorServices,
@@ -286,6 +288,9 @@ export async function buildTurnPrompt(
     earlierInChat,
     brainContext,
     projectContext,
+    memoryContext,
+    scratchpadContext,
+    ticketContext,
     turnBlocks,
   } = parts.turnContext;
   const { resolved, runModelId, runModelProvider } = parts.model;
@@ -391,9 +396,24 @@ export async function buildTurnPrompt(
     )}\n</current_time>`,
     lateRoutineNote,
     sharedSpaceNote,
+    // Last, after the person's words: it changes between turns, and anything that changes
+    // earlier in the request (the system prompt, or a message before the history) makes the
+    // model server read the whole prompt again instead of reusing what it already read.
+    turnContextBlock(
+      [
+        memoryContext,
+        scratchpadContext,
+        ticketContext,
+        recalledMemory,
+        earlierInChat,
+        brainContext,
+        projectContext,
+      ].map((block) => (block ? redactSecrets(block, runSecrets) : undefined)),
+    ),
   ]
     .filter(Boolean)
     .join("\n\n");
+  // Only the compacted summary leads the history: it changes only when the chat is compacted.
   const historicalContext: AgentRunRequest["history"] = [];
   if (compactedHistory.usedLocalSummary && compactedHistory.summary) {
     historicalContext.push({
@@ -403,22 +423,6 @@ export async function buildTurnPrompt(
         runSecrets,
       ),
     });
-  }
-  if (recalledMemory) {
-    historicalContext.push({
-      role: "user",
-      content: redactSecrets(recalledMemory, runSecrets),
-    });
-  }
-  if (earlierInChat) {
-    historicalContext.push({
-      role: "user",
-      content: redactSecrets(earlierInChat, runSecrets),
-    });
-  }
-  for (const knowledge of [brainContext, projectContext]) {
-    if (knowledge)
-      historicalContext.push({ role: "user", content: redactSecrets(knowledge, runSecrets) });
   }
   const modelImageBudget =
     resolved.maxImagesPerPrompt === undefined
