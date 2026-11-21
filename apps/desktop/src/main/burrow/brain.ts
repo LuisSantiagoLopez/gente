@@ -34,6 +34,17 @@ export type SwiftModel = {
 /** Best first. Each later entry is tried only after the one before it fails. */
 const SWIFT_LADDER = [
   {
+    // A mixture of experts: 35B weights, about 3B used per token, so it answers several times
+    // faster than the dense 27B. Needs 32 GB: about 20 GB in memory with the 32K context.
+    tag: "hf.co/unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ4_XS",
+    alias: "yourai-default",
+    name: "Qwen 3.6 35B-A3B",
+    sizeGB: 17.7,
+    note: "Your AI's model on computers with 32 GB or more. About 20 GB in memory.",
+    quant: "IQ4_XS",
+    minMemoryGB: 32,
+  },
+  {
     // 4-bit: answers cleanly and calls tools properly. The 2-bit build below sometimes wrote tool
     // calls out as raw text, so it is only for computers without the memory for this one.
     tag: "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M",
@@ -60,12 +71,12 @@ export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
 export function defaultModelFor(memoryBytes: number): SwiftModel {
   return (
     SWIFT_LADDER.find((model) => memoryBytes >= (model.minMemoryGB - 1) * 1024 ** 3) ??
-    SWIFT_LADDER[1]
+    SWIFT_LADDER[SWIFT_LADDER.length - 1]
   );
 }
 /**
- * The model Your AI uses unless the person picks another: the 27B at Q4_K_M on computers with
- * 24 GB or more, the compact IQ2_XXS build on 16 to 24 GB.
+ * The model Your AI uses unless the person picks another: Qwen 3.6 35B-A3B on 32 GB or more, the
+ * 27B at Q4_K_M on 24 to 32 GB, the compact IQ2_XXS build on 16 to 24 GB.
  */
 export const DEFAULT_MODEL: SwiftModel = defaultModelFor(totalMemory());
 /** Answers greetings and small talk in about a second while a 27B handles real work. */
@@ -409,6 +420,8 @@ export async function unloadModel(model: string): Promise<void> {
 export async function moveToFastDefault(stackDirectory: string): Promise<boolean> {
   const saved = await readSavedBrain(stackDirectory);
   if (saved === null || (saved.alias === DEFAULT_MODEL.alias && !saved.chatAlias)) return false;
+  // A model the person picked stays.
+  if (saved.userPicked) return false;
   try {
     if (!(await ollamaRunning()) && !(await startOllama())) return false;
     let tags = await installedTags();
@@ -638,7 +651,9 @@ export class Brain {
     // at others: always up to a better build, but down only when the person picked the smaller
     // one or the better one failed to load here (never on a plain launch).
     const current = hasTag(tags, model.alias) ? await aliasQuant(model.alias) : null;
-    const better = (quant: string) => SWIFT_MODELS.findIndex((m) => m.quant === quant);
+    // Better means earlier among the builds served under this same name.
+    const builds = SWIFT_MODELS.filter((m) => m.alias === model.alias);
+    const better = (quant: string) => builds.findIndex((m) => m.quant === quant);
     const movesDown =
       current !== null && better(current) >= 0 && better(current) < better(model.quant);
     const repoint =

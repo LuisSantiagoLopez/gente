@@ -58,7 +58,7 @@ export function createOllamaStub({ failLoad = [], installed = [] } = {}) {
         return send(200, { model: json.model, response: "", done: true });
       case "/api/show": {
         // The quantization is the tag's suffix (…GGUF:Q4_K_M), as Ollama reports it in details.
-        const quant = /:([A-Z0-9_]+)$/.exec(resolve(json.model))?.[1];
+        const quant = /:(?:[A-Z]+-)?([A-Z0-9_]+)$/.exec(resolve(json.model))?.[1];
         return send(200, {
           capabilities: ["completion", "tools"],
           ...(quant ? { details: { quantization_level: quant } } : {}),
