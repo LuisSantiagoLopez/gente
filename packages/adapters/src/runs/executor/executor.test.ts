@@ -125,7 +125,7 @@ describe("bot tool permissions", () => {
 });
 
 describe("tool completion audit", () => {
-  it("records result metadata without persisting tool contents", () => {
+  it("records result metadata and only a bounded text preview of the result", () => {
     const payload = toolCompletionAuditPayload({
       name: "computer_observe",
       executionId: "call-1",
@@ -156,6 +156,8 @@ describe("tool completion audit", () => {
       capturedAt: "2026-09-07T00:00:00.000Z",
       width: 1280,
       height: 720,
+      // Gente: the activity list's redacted text preview; images and raw content stay out.
+      output: "Visible window\n[image not kept]",
     });
     expect(payload).not.toHaveProperty("content");
     expect(payload).not.toHaveProperty("activeWindow");

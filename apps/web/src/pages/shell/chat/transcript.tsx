@@ -6,6 +6,7 @@ import type {
   ComputerReleaseReason,
   LoginFieldInput,
   MessageReaction,
+  RunActivity,
   ThreadMessage,
 } from "@rakazo/contracts";
 import type { ChildBotBlock, FoldedTranscript } from "@rakazo/core";
@@ -40,6 +41,7 @@ import {
 } from "react";
 import { ActiveBotGlyph } from "../../../components/ai/CollaborationMarker";
 import { VoiceChatCard } from "../../../components/call/VoiceChatCard";
+import { RunActivityRow } from "../../../components/messages/RunActivityRow";
 import {
   isDetachedRange,
   lastSelectedText,
@@ -112,7 +114,13 @@ export const Transcript = memo(function Transcript({
   onReleaseComputer,
   onOpenImportSetup,
   rpc,
+  runActivity,
+  liveRunId,
 }: {
+  /** Gente: the steps of the chat's recent runs. */
+  runActivity?: RunActivity[];
+  /** The run the working line is for. */
+  liveRunId?: string;
   scrollRef: RefObject<HTMLDivElement | null>;
   scrollRequest: { messageId: string; nonce: number } | null;
   onScrollRequestHandled: () => void;
@@ -291,6 +299,18 @@ export const Transcript = memo(function Transcript({
   const [slowAt, setSlowAt] = useState<string | null>(null);
   useTimeout(() => setSlowAt(slowKey), running ? 10_000 : null, slowKey);
   const slowStart = running && slowAt === slowKey;
+  // Gente: each run's steps, opened from its working line and, once it ends, under its reply.
+  const activityByRun = useMemo(
+    () => new Map((runActivity ?? []).map((activity) => [activity.runId, activity])),
+    [runActivity],
+  );
+  const lastMessageOfRun = new Map<string, string>();
+  for (const item of shownItems) {
+    if (item.kind === "voiceChat") continue;
+    const { message } = item;
+    if (message.role === "bot" && message.runId && !message.id.startsWith("progress:"))
+      lastMessageOfRun.set(message.runId, message.id);
+  }
   const workingLabel =
     liveActivityLine(messages) ??
     (workingRoutine
@@ -735,6 +755,11 @@ export const Transcript = memo(function Transcript({
                     />
                   </div>
                 </div>
+                {message.runId &&
+                lastMessageOfRun.get(message.runId) === message.id &&
+                !(running && message.runId === liveRunId) ? (
+                  <RunActivityRow activity={activityByRun.get(message.runId)} live={false} />
+                ) : null}
                 {!peerReceipt && messageReactions ? (
                   <div
                     data-testid="message-reactions"
@@ -762,7 +787,9 @@ export const Transcript = memo(function Transcript({
         !messages.some(
           (message) => message.id.startsWith("progress:") && liveMessageComposing(message.blocks),
         ) ? (
-          <ActiveBotGlyph bots={workingBots} label={workingLabel} />
+          <RunActivityRow activity={activityByRun.get(liveRunId ?? "")} live>
+            <ActiveBotGlyph bots={workingBots} label={workingLabel} />
+          </RunActivityRow>
         ) : null}
       </div>
       {quoteDraft ? <QuoteSelectionButton range={quoteDraft.range} onQuote={applyQuote} /> : null}

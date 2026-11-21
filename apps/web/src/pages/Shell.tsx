@@ -1235,6 +1235,8 @@ function SpaceShell() {
               onReleaseComputer={computerControls.onReleaseComputer}
               onOpenImportSetup={openImportSetup}
               rpc={rpc}
+              runActivity={activeSnapshot?.runActivity}
+              liveRunId={workingRuns[0]?.id}
             />
           )}
         </div>

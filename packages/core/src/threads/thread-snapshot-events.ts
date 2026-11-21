@@ -1,4 +1,4 @@
-import type { Run, RunStatus, RunTrigger, ThreadMessage } from "@rakazo/contracts";
+import type { Run, RunActivity, RunStatus, RunTrigger, ThreadMessage } from "@rakazo/contracts";
 import { RUN_TRIGGERS } from "@rakazo/contracts";
 import {
   isRunTerminalEvent,
@@ -12,6 +12,7 @@ import {
 } from "../messages/events.js";
 import { mergeThreadHistory, upsertMessageById } from "../messages/message-pages.js";
 import { payloadAuthor, replyMetadata } from "../messages/message-replies.js";
+import { isRunActivityEvent, projectRunActivity } from "../runs/run-activity.js";
 import {
   BACKGROUND_HELPER_TRIGGER,
   isActive,
@@ -54,6 +55,7 @@ export type LiveThreadSnapshot = {
   run: LiveThreadRun | null;
   activeRuns?: LiveThreadRun[];
   members?: { botId: string; status?: string }[];
+  runActivity?: RunActivity[];
 };
 
 const runTriggers = new Set<string>(RUN_TRIGGERS);
@@ -91,7 +93,15 @@ export function reduceThreadSnapshot<S extends LiveThreadSnapshot>(
   prev: S | null,
   event: ThreadSnapshotEvent,
 ): S | null {
-  return prev && (reduce(prev, event) as S);
+  if (!prev) return prev;
+  const next = reduce(prev, event) as S;
+  // Gente: each run's steps, kept after it ends so its activity row stays expandable.
+  if (next === prev || !event.runId || !isRunActivityEvent(event)) return next;
+  const runActivity = projectRunActivity(
+    [{ ...event, createdAt: event.createdAt ?? new Date().toISOString() }],
+    prev.runActivity,
+  );
+  return { ...next, runActivity };
 }
 
 function reduce(prev: LiveThreadSnapshot, event: ThreadSnapshotEvent): LiveThreadSnapshot {

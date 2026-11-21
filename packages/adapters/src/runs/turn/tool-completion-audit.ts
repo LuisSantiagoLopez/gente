@@ -8,6 +8,9 @@ import { sanitizeConnectorError } from "../../integrations/connector-safety.js";
 import type { ToolRefusal } from "./tool-refusal.js";
 import { refusalCode } from "./tool-refusal.js";
 import { isFailedToolResult, toolResultError } from "./tool-result-error.js";
+import { keptToolResult } from "./tool-step-calls.js";
+
+const ACTIVITY_OUTPUT_MAX_CHARS = 2_000;
 
 function isAuditableToolResult(value: unknown): value is {
   kind: "agent_tool_result";
@@ -75,6 +78,9 @@ export function toolCompletionAuditPayload(
   if (error !== undefined) {
     payload.error = sanitizeConnectorError(error, secrets);
   }
+  // Gente: what the call returned, bounded and redacted, for the run's activity list.
+  const output = keptToolResult(completion, secrets, ACTIVITY_OUTPUT_MAX_CHARS);
+  if (output) payload.output = output;
   if (!isAuditableToolResult(completion.result)) return payload;
 
   payload.contentTypes = completion.result.content.flatMap((part) => {
