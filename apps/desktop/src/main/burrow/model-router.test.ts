@@ -57,3 +57,58 @@ describe("the AI runs on this computer", () => {
     expect(local.seen).toEqual([]);
   });
 });
+
+describe("a run resumed after a restart", () => {
+  it("never sends the model a tool call without its result", async () => {
+    // A model server with the local runner's rule: a trailing call without a result is a 400.
+    const bodies: { messages: { role: string; tool_calls?: unknown[] }[] }[] = [];
+    const server = createServer(async (req, res) => {
+      const chunks: Buffer[] = [];
+      for await (const chunk of req) chunks.push(chunk as Buffer);
+      const body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+      bodies.push(body);
+      const last = body.messages.at(-1);
+      const refused = last?.role === "assistant" && (last.tool_calls?.length ?? 0) > 0;
+      res.writeHead(refused ? 400 : 200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify(
+          refused
+            ? {
+                error: {
+                  message: "Cannot continue an assistant message that contains tool calls.",
+                },
+              }
+            : { ok: true },
+        ),
+      );
+    });
+    await new Promise<void>((r) => server.listen(0, "127.0.0.1", () => r()));
+    closers.push(() => new Promise((r) => server.close(() => r())));
+    const r = await startModelRouter({
+      localBase: `http://127.0.0.1:${(server.address() as { port: number }).port}`,
+    });
+    closers.push(r.close);
+    // The app quit while "remember" ran; the resumed turn ends with the call.
+    const interrupted = {
+      model: "yourai-default",
+      messages: [
+        { role: "system", content: "You are the assistant." },
+        { role: "user", content: "remember my favorite color is blue" },
+        {
+          role: "assistant",
+          content: "",
+          tool_calls: [
+            { id: "c1", type: "function", function: { name: "remember", arguments: "{}" } },
+          ],
+        },
+      ],
+    };
+    const res = await fetch(`${r.base}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(interrupted),
+    });
+    expect(res.status).toBe(200);
+    expect(bodies[0]!.messages.at(-1)).toMatchObject({ role: "tool", tool_call_id: "c1" });
+  });
+});

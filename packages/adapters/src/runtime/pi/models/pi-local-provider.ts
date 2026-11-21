@@ -4,6 +4,7 @@ import { openAICompletionsApi } from "@earendil-works/pi-ai/api/openai-completio
 import { bestEffort } from "@rakazo/logging";
 import type { Dispatcher } from "undici";
 import { Agent, EnvHttpProxyAgent } from "undici";
+import { sanitizeChatBody } from "../../../models/chat-request-sanitizer.js";
 import { pacerTokensPerMinute } from "../../../models/endpoints/token-pacer.js";
 import { declaredVisionModelIds, inputModalities } from "../../../models/model-modalities.js";
 import { fetchPairedWithDispatcher } from "../../../network/undici-fetch.js";
@@ -103,7 +104,13 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
     ? new EnvHttpProxyAgent(MODEL_STREAM_AGENT_TIMEOUTS)
     : new Agent(MODEL_STREAM_AGENT_TIMEOUTS);
   const dispatcher = localDispatcher;
-  const transport = fetchPairedWithDispatcher(baseFetch);
+  const paired = fetchPairedWithDispatcher(baseFetch);
+  // Gente: the last step before every request leaves: a shape every local chat template accepts.
+  const transport: typeof globalThis.fetch = (input, init) =>
+    paired(
+      input,
+      typeof init?.body === "string" ? { ...init, body: sanitizeChatBody(init.body) } : init,
+    );
   // Gente (modified from Rakazo): quick chat without thinking, and a saved prefix to prewarm.
   return async (input, init) => {
     // Gente: a question that plainly needs the web becomes one model call with fresh sources.
