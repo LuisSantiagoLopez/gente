@@ -423,6 +423,8 @@ export const ModelCatalogEntrySchema = z.object({
   signIn: ModelOAuthSignInModeSchema.optional(),
   reasoning: z.boolean().optional(),
   thinkingLevels: z.array(ThinkingLevelSchema).optional(),
+  /** The level used when nothing is picked, when it is not medium. */
+  defaultThinkingLevel: ThinkingLevelSchema.optional(),
   /** Uncustomized capabilities for forms on other connections of the same provider. */
   defaultCapabilities: z
     .object({

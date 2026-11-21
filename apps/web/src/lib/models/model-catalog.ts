@@ -20,5 +20,5 @@ export function thinkingLevelLabel(level: ThinkingLevel) {
   if (level === "high") return i18n._({ id: "High", message: "High" });
   if (level === "minimal") return i18n._({ id: "Minimal", message: "Minimal" });
   if (level === "max") return i18n._({ id: "Max", message: "Max" });
-  return `${level.slice(0, 1).toUpperCase()}${level.slice(1)}`;
+  return i18n._({ id: "Off", message: "Off" });
 }

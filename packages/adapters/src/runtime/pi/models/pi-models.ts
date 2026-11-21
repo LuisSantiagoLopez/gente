@@ -31,7 +31,11 @@ import {
 import { modelProviderDefinition } from "../../../models/model-provider-registry.js";
 import { MODEL_CONNECT_TIMEOUT_MS } from "../pi-runtime-limits.js";
 import { maximumModelCallCost } from "../usage/pi-usage.js";
-import { LOCAL_PROVIDER_ID, registerLocalProvider } from "./pi-local-provider.js";
+import {
+  LOCAL_PROVIDER_ID,
+  registerLocalProvider,
+  startsWithoutThinking,
+} from "./pi-local-provider.js";
 import { applyPiModelCompatibility } from "./pi-model-compat.js";
 import { loadProviderOAuth } from "./pi-oauth.js";
 import {
@@ -56,6 +60,8 @@ export type PiCatalogEntry = {
   signIn?: ModelOAuthSignInMode;
   reasoning?: boolean;
   thinkingLevels?: ThinkingLevel[];
+  /** The level used when nothing is picked, when it is not the usual medium. */
+  defaultThinkingLevel?: ThinkingLevel;
   defaultCapabilities?: { images?: boolean; reasoning?: boolean; thinkingLevels?: ThinkingLevel[] };
   /** The model reads images. Left out where a connection setting decides it. */
   images?: boolean;
@@ -297,6 +303,9 @@ function buildPiCatalog(): PiCatalogEntry[] {
         signIn: signInMeta?.mode,
         reasoning: Boolean(model.reasoning),
         thinkingLevels,
+        ...(model.reasoning && startsWithoutThinking(model)
+          ? { defaultThinkingLevel: "off" as const }
+          : {}),
         // Compatibility metadata does not prove a model is served by a user's
         // endpoint. Keep each custom connection scoped to its entered model ID.
         // Its image support is the connection's own setting, not the catalog's.

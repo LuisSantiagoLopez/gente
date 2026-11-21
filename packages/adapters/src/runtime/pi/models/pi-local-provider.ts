@@ -90,6 +90,14 @@ function localModel(id: string): Model<"openai-completions"> {
   };
 }
 
+/**
+ * Gente: a model on this computer answers without thinking unless the person picks a level.
+ * Thinking first made a "hey" take 11 to 20 seconds instead of under one.
+ */
+export function startsWithoutThinking(model: { provider: string }): boolean {
+  return model.provider === LOCAL_PROVIDER_ID && process.env.BURROW_FAST_CHAT === "on";
+}
+
 let localDispatcher: Dispatcher | undefined;
 
 /** Node's built-in fetch, which local servers used before, honors HTTP(S)_PROXY only when asked to. */

@@ -57,7 +57,8 @@ export function RoutineModelSettings({
     selectedEntry,
     selectedModel?.modelId,
   ).filter((level) => level !== "off");
-  const defaultThinkingLevel = selectedCredential?.thinkingLevel ?? "medium";
+  const defaultThinkingLevel =
+    selectedCredential?.thinkingLevel ?? selectedEntry?.defaultThinkingLevel ?? "medium";
 
   return (
     <Popover>

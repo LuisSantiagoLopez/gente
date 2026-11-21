@@ -71,7 +71,7 @@ export const SWIFT_MODELS: readonly SwiftModel[] = SWIFT_LADDER;
 export function defaultModelFor(memoryBytes: number): SwiftModel {
   return (
     SWIFT_LADDER.find((model) => memoryBytes >= (model.minMemoryGB - 1) * 1024 ** 3) ??
-    SWIFT_LADDER[SWIFT_LADDER.length - 1]
+    SWIFT_LADDER[2]
   );
 }
 /**
