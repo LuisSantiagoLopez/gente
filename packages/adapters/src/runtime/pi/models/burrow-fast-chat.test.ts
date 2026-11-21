@@ -372,9 +372,33 @@ describe("tasks keep their tools in any language", () => {
     "envie um e-mail para Maria",
     "me lembre de pagar a conta",
   ];
-  it.each(tasks)("keeps every tool and thinks briefly for %j", (text) => {
+  it.each(tasks)("keeps every tool and starts acting without thinking for %j", (text) => {
     const out = ask(text);
     expect(out.tools).toHaveLength(3);
+    // Gente: the first step acts at once; later steps of the task think briefly.
+    expect(out.reasoning_effort).toBe("none");
+  });
+  it("thinks briefly on a later step, once a tool ran in this turn", () => {
+    const out = JSON.parse(
+      quickChatBody(
+        JSON.stringify({
+          messages: [
+            { role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." },
+            { role: "user", content: `make me a website${time}` },
+            {
+              role: "assistant",
+              content: "",
+              tool_calls: [
+                { id: "c1", type: "function", function: { name: "write_file", arguments: "{}" } },
+              ],
+            },
+            { role: "tool", tool_call_id: "c1", content: "ok" },
+          ],
+          tools,
+          reasoning_effort: "none",
+        }),
+      )!.body,
+    );
     expect(out.reasoning_effort).toBe("low");
   });
 

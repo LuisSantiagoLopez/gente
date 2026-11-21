@@ -15,7 +15,12 @@ import {
   sanitizeChatMessages,
   warmablePrefix,
 } from "../../../models/chat-request-sanitizer.js";
-import { HONESTY_RULE, withAskInCardsRule, withHonestyRule } from "./gente-honest-actions.js";
+import {
+  HONESTY_RULE,
+  toolRanThisTurn,
+  withAskInCardsRule,
+  withHonestyRule,
+} from "./gente-honest-actions.js";
 
 /** On only where Gente sets `BURROW_FAST_CHAT=on` (its desktop stack), so other setups keep Rakazo behavior. */
 const FAST_CHAT_ENV = "BURROW_FAST_CHAT";
@@ -380,8 +385,9 @@ export function quickChatBody(
   if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
     parsed.reasoning_effort = "none";
   } else if (parsed.reasoning_effort !== undefined && offersTools(parsed)) {
-    // A task with tools thinks briefly, so its steps have a real thought stream to show live.
-    parsed.reasoning_effort = "low";
+    // Gente: the first step of a task starts acting at once; measured on this Mac, "low"
+    // thinking there cost about 10 s before anything happened. Later steps think briefly.
+    parsed.reasoning_effort = toolRanThisTurn(parsed.messages) ? "low" : "none";
   }
   return { body: JSON.stringify(parsed), prefix };
 }
