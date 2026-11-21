@@ -55,6 +55,7 @@ import { useLegacyKeychainName, useLegacyUserData } from "./burrow/legacy-user-d
 import type { createDesktopLink } from "./burrow/link/link-desktop.js";
 import { enableMeetingAudioCapture, startMeetingNotetaker } from "./burrow/meeting-window.js";
 import { startModelRouter } from "./burrow/model-router.js";
+import { ensureWindowOwnerSession, isSignInPage } from "./burrow/owner-session.js";
 import { startSearchBroker } from "./burrow/search-broker.js";
 import { stackSelfHeal } from "./burrow/self-heal.js";
 import { readServiceKey, vendorKeysAllowed } from "./burrow/service-keys.js";
@@ -441,8 +442,23 @@ async function openAppOnce(targetUrl: string, switching: boolean) {
       target.partition,
       desktop.currentSetup?.mode === "new",
     );
+    // Gente: on this computer the window opens signed in, never on a sign-in screen.
+    const local = targetUrl === desktop.localStack.webUrl();
+    const stackToken = local ? await readStackToken(stackDir(app.getPath("userData"))) : null;
+    if (local)
+      await ensureWindowOwnerSession(target.value, targetUrl, stackToken).catch(() => false);
     const created = createWindow(targetUrl, target.partition);
     win = created.win;
+    if (local) {
+      const signInAgain = (_event: unknown, url: string) => {
+        if (!isSignInPage(url) || !created.win || created.win.isDestroyed()) return;
+        void ensureWindowOwnerSession(target.value, targetUrl, stackToken).then((signed) => {
+          if (signed && !created.win.isDestroyed()) created.win.loadURL(targetUrl);
+        });
+      };
+      win.webContents.on("did-navigate", signInAgain);
+      win.webContents.on("did-navigate-in-page", signInAgain);
+    }
     // Kept until the caller commits (after setup.json is written) or the switch is abandoned.
     desktop.replacedAppWindow =
       previous !== null && !previous.isDestroyed() && previous !== win ? previous : null;
