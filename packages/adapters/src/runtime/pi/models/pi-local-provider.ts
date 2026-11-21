@@ -10,7 +10,13 @@ import { declaredVisionModelIds, inputModalities } from "../../../models/model-m
 import { fetchPairedWithDispatcher } from "../../../network/undici-fetch.js";
 import { MODEL_STREAM_AGENT_TIMEOUTS } from "../pi-runtime-limits.js";
 import { splitLeadingThinkBlock } from "../stream/pi-think-tags.js";
-import { burrowFastChatInit } from "./burrow-fast-chat.js";
+import { burrowFastChatInit, guardsActionClaims } from "./burrow-fast-chat.js";
+import {
+  guardActionClaims,
+  toolRanThisTurn,
+  withHonestyRule,
+  withUseToolsNote,
+} from "./gente-honest-actions.js";
 import { filterTextToolCalls, offeredTools } from "./gente-text-tool-calls.js";
 import { cachedAnswerResponse, planWebAnswer, withPreface } from "./gente-web-answer.js";
 import { LOCAL_PROVIDER_ID, localModelIds, localModelsApiKey } from "./pi-local-provider-id.js";
@@ -142,16 +148,36 @@ function localModelFetch(baseFetch?: typeof globalThis.fetch): typeof globalThis
     if (process.env.BURROW_FAST_CHAT !== "on" || typeof sent?.body !== "string") return response;
     const known = offeredTools(parseBody(init?.body)).map((tool) => tool.name);
     const tools = offeredTools(parseBody(sent.body));
-    if (known.length === 0 && tools.length === 0) return response;
-    return filterTextToolCalls(response, {
-      tools,
-      known,
-      retry: () =>
-        transport(input, {
-          ...sent,
-          body: withFormatNote(sent.body as string),
-          dispatcher,
-        } as RequestInit & { dispatcher: Dispatcher }),
+    const filtered = (reply: Response, body: string) =>
+      known.length === 0 && tools.length === 0
+        ? reply
+        : filterTextToolCalls(reply, {
+            tools,
+            known,
+            retry: () =>
+              transport(input, {
+                ...sent,
+                body: withFormatNote(body),
+                dispatcher,
+              } as RequestInit & { dispatcher: Dispatcher }),
+          });
+    const first = await filtered(response, sent.body as string);
+    // Gente: a reply that says it did something no tool did is asked again, with its tools.
+    const original = parseBody(init?.body) as { messages?: unknown[] } | null;
+    const messages = (original?.messages ?? []) as Parameters<typeof guardsActionClaims>[0];
+    if (known.length === 0 || toolRanThisTurn(messages) || !guardsActionClaims(messages)) {
+      return first;
+    }
+    return guardActionClaims(first, async () => {
+      // Small talk went without tools; the retry gets the full request with every tool.
+      const base = tools.length > 0 ? (sent.body as string) : (init?.body as string);
+      const parsed = parseBody(base) as { messages?: Parameters<typeof withHonestyRule>[0] };
+      if (parsed?.messages) parsed.messages = withHonestyRule(parsed.messages);
+      const body = withUseToolsNote(JSON.stringify(parsed ?? {}));
+      const again = await transport(input, { ...sent, body, dispatcher } as RequestInit & {
+        dispatcher: Dispatcher;
+      });
+      return filtered(again, body);
     });
   };
 }
