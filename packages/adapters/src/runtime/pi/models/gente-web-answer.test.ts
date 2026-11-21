@@ -4,11 +4,25 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cachedAnswerResponse, keyPassages, needsWeb, planWebAnswer, withPreface } from "./gente-web-answer.js";
+import {
+  cachedAnswerResponse,
+  keyPassages,
+  needsWeb,
+  planWebAnswer,
+  withPreface,
+} from "./gente-web-answer.js";
 
-const user = (text: string) => [{ role: "system", content: "sys" }, { role: "user", content: text }];
+const user = (text: string) => [
+  { role: "system", content: "sys" },
+  { role: "user", content: text },
+];
 const body = (text: string) =>
-  JSON.stringify({ model: "m", stream: true, messages: user(text), tools: [{ type: "function", function: { name: "web_search" } }] });
+  JSON.stringify({
+    model: "m",
+    stream: true,
+    messages: user(text),
+    tools: [{ type: "function", function: { name: "web_search" } }],
+  });
 
 let dir: string;
 beforeEach(() => {
@@ -40,9 +54,17 @@ describe("one-call web answers", () => {
 
   it("builds one call with sources and no tools, then reuses the answer for an hour", async () => {
     const cloudSearch = vi.fn(async () => [
-      { title: "Mars news", url: "https://www.nasa.gov/mars", text: "The latest Mars mission news is that the rover found water ice near the equator. ".repeat(10) },
+      {
+        title: "Mars news",
+        url: "https://www.nasa.gov/mars",
+        text: "The latest Mars mission news is that the rover found water ice near the equator. ".repeat(
+          10,
+        ),
+      },
     ]);
-    const plan = await planWebAnswer(body("What's the latest news about the Mars mission?"), { cloudSearch });
+    const plan = await planWebAnswer(body("What's the latest news about the Mars mission?"), {
+      cloudSearch,
+    });
     expect(plan?.kind).toBe("ask");
     if (plan?.kind !== "ask") return;
     const sent = JSON.parse(plan.body);
@@ -58,15 +80,21 @@ describe("one-call web answers", () => {
     const streamed = await withPreface(model, plan.preface, plan.cacheKey).text();
     expect(streamed.indexOf("nasa.gov")).toBeLessThan(streamed.indexOf("water ice"));
 
-    const again = await planWebAnswer(body("what's the LATEST news about the Mars mission"), { cloudSearch });
+    const again = await planWebAnswer(body("what's the LATEST news about the Mars mission"), {
+      cloudSearch,
+    });
     expect(again).toEqual({ kind: "cached", answer: expect.stringContaining("water ice [1]") });
     expect(cloudSearch).toHaveBeenCalledTimes(1);
-    const refreshed = await planWebAnswer(body("refresh: latest news about the Mars mission"), { cloudSearch });
+    const refreshed = await planWebAnswer(body("refresh: latest news about the Mars mission"), {
+      cloudSearch,
+    });
     expect(refreshed?.kind).toBe("ask");
   });
 
   it("leaves a request alone when there are no tools or nothing was found", async () => {
-    expect(await planWebAnswer(JSON.stringify({ messages: user("latest news on Mars today") }))).toBeNull();
+    expect(
+      await planWebAnswer(JSON.stringify({ messages: user("latest news on Mars today") })),
+    ).toBeNull();
     const empty = await planWebAnswer(body("latest news about nothing at all today"), {
       cloudSearch: async () => [],
       web: { search: async () => [], fetch: async () => ({ text: "" }) } as never,

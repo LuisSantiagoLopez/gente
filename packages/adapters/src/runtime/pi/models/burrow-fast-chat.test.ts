@@ -276,8 +276,8 @@ describe("the reply follows the conversation's language", () => {
     const last = sent.messages.at(-1);
     expect(last.content.startsWith("Tell me a joke about cats")).toBe(true);
     expect(last.content).not.toContain("Reply in Spanish");
-    // The note rides on the newest message; the system prompt is left as it was.
-    expect(sent.messages[0]).toEqual(english[0]);
+    // The note rides on the newest message; the system prompt only gains the honesty rule.
+    expect(sent.messages[0].content.startsWith(english[0]!.content as string)).toBe(true);
     expect(
       conversationLanguage([...spanishChat.slice(0, -1), { role: "user", content: "What's up?" }]),
     ).toBe("English");

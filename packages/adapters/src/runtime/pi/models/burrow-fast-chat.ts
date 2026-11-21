@@ -15,6 +15,7 @@ import {
   sanitizeChatMessages,
   warmablePrefix,
 } from "../../../models/chat-request-sanitizer.js";
+import { HONESTY_RULE, withHonestyRule } from "./gente-honest-actions.js";
 
 /** On only where Gente sets `BURROW_FAST_CHAT=on` (its desktop stack), so other setups keep Rakazo behavior. */
 const FAST_CHAT_ENV = "BURROW_FAST_CHAT";
@@ -136,6 +137,16 @@ export function codingBody(parsed: {
   };
 }
 
+/** "ok", "do it", "dale": a go-ahead the reply must not answer with a pretend action. */
+const GO_AHEAD =
+  /^(ok|okay|yes|yep|sure|do it|go ahead|go|s[ií]|dale|hazlo|adelante|va|sim|pode|fa[cç]a)\b/i;
+
+/** Turns whose reply is checked for claimed actions: tasks, and short go-aheads. */
+export function guardsActionClaims(messages: readonly ChatMessage[]): boolean {
+  if (!isQuickChat(messages)) return messages.at(-1)?.role === "user";
+  return GO_AHEAD.test(latestUserWords(messages));
+}
+
 export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
   const last = messages.at(-1);
   if (!last || last.role !== "user") return false;
@@ -154,7 +165,7 @@ export function slimSystemPrompt(system: string): string {
     .join("\n\n");
   const memoryAt = system.indexOf("<durable_memory>");
   const memory = memoryAt >= 0 ? system.slice(memoryAt) : "";
-  return [head, "Reply briefly and naturally, like a friendly coworker.", memory]
+  return [head, "Reply briefly and naturally, like a friendly coworker.", HONESTY_RULE, memory]
     .filter(Boolean)
     .join("\n\n");
 }
@@ -345,6 +356,7 @@ export function quickChatBody(
   if (!Array.isArray(parsed.messages)) return null;
   parsed.messages = repairToolPairs(parsed.messages);
   parsed.messages = withReplyLanguage(parsed.messages);
+  parsed.messages = withHonestyRule(parsed.messages);
   const prefix = { ...parsed, messages: warmablePrefix(parsed.messages as WireMessage[]) };
   // Gente: only clear small talk ("hey", "gracias") skips the tool schemas and the long manual,
   // so the first word comes in about a second. Anything else keeps its tools: a short request in
