@@ -1,80 +1,65 @@
+import type { RunActivity } from "@rakazo/contracts";
 import { describe, expect, it } from "vitest";
-import { runActivitySteps, thoughtMs, toolStepCount, unsavedThinking } from "./run-activity-steps";
+import {
+  activityTimeline,
+  latestThought,
+  pastTenseLabel,
+  thoughtMs,
+  toolStepCount,
+  unsavedThinking,
+  workedMs,
+} from "./run-activity-steps";
 
 const at = (ms: number) => new Date(Date.UTC(2026, 0, 1) + ms).toISOString();
-const labels = { read: "Read your message", reply: "Wrote the reply" };
 
-describe("run activity steps", () => {
-  it("lists reading and writing for a plain chat, with times", () => {
-    const activity = {
-      runId: "r1",
+const activity: RunActivity = {
+  runId: "r1",
+  startedAt: at(0),
+  firstOutputAt: at(4_000),
+  endedAt: at(70_000),
+  steps: [
+    {
+      id: "thought-0",
+      kind: "thought",
+      label: "",
+      output: "Plan the page.\nPick a name.",
+      status: "succeeded",
       startedAt: at(0),
-      firstOutputAt: at(1200),
-      endedAt: at(3400),
-      steps: [],
-    };
-    expect(runActivitySteps(activity, labels)).toEqual([
-      {
-        id: "read",
-        label: "Read your message",
-        status: "succeeded",
-        startedAt: at(0),
-        durationMs: 1200,
-      },
-      {
-        id: "reply",
-        label: "Wrote the reply",
-        status: "succeeded",
-        startedAt: at(1200),
-        durationMs: 2200,
-      },
-    ]);
-    expect(thoughtMs(activity, 0)).toBe(1200);
+    },
+    {
+      id: "e1",
+      label: "Asking you: Which name?",
+      status: "succeeded",
+      startedAt: at(5_000),
+    },
+    { id: "e2", label: "Writing index.html", status: "succeeded", startedAt: at(65_000) },
+  ],
+};
+
+describe("run activity row", () => {
+  it("lists only real thoughts and tool steps, with no filler rows", () => {
+    expect(activityTimeline(activity).map((step) => step.id)).toEqual(["thought-0", "e1", "e2"]);
+    expect(activityTimeline({ runId: "r2", startedAt: at(0), steps: [] })).toEqual([]);
   });
 
-  it("shows reading as running until the first words, then writing as running", () => {
-    const reading = { runId: "r1", startedAt: at(0), steps: [] };
-    expect(runActivitySteps(reading, labels)).toEqual([
-      { id: "read", label: "Read your message", status: "running", startedAt: at(0) },
-    ]);
-    expect(thoughtMs(reading, Date.parse(at(500)))).toBe(500);
-    const writing = { ...reading, firstOutputAt: at(800) };
-    expect(runActivitySteps(writing, labels).map((step) => step.status)).toEqual([
-      "succeeded",
-      "running",
-    ]);
+  it("counts tool steps and leaves out the wait for a question's answer", () => {
+    expect(toolStepCount(activity)).toBe(2);
+    expect(thoughtMs(activity, 0)).toBe(4_000);
+    // 70 s from start to end, less the 60 s between the question and the next step.
+    expect(workedMs(activity, 0)).toBe(10_000);
   });
 
-  it("keeps a tool run's own steps", () => {
-    const steps = [
-      { id: "e1", label: "Searching the web", status: "succeeded" as const, startedAt: at(0) },
-    ];
-    expect(runActivitySteps({ runId: "r1", startedAt: at(0), steps }, labels)).toBe(steps);
+  it("previews the newest thought on one line and shows only unsaved live thinking", () => {
+    expect(latestThought(activity, "")).toBe("Pick a name.");
+    expect(latestThought(activity, "Now the menu.")).toBe("Now the menu.");
+    expect(unsavedThinking(activity, "Plan the page.\nPick a name. Then check it.")).toBe(
+      "Then check it.",
+    );
   });
 
-  it("has nothing to list before the run starts", () => {
-    expect(runActivitySteps(undefined, labels)).toEqual([]);
-    expect(runActivitySteps({ runId: "r1", steps: [] }, labels)).toEqual([]);
-  });
-
-  it("counts only tool calls as steps and shows only thinking not saved yet", () => {
-    const activity = {
-      runId: "r1",
-      startedAt: at(0),
-      steps: [
-        {
-          id: "thought-0",
-          kind: "thought" as const,
-          label: "",
-          output: "Plan the page.",
-          status: "succeeded" as const,
-          startedAt: at(0),
-        },
-        { id: "e1", label: "Write file", status: "running" as const, startedAt: at(10) },
-      ],
-    };
-    expect(toolStepCount(activity)).toBe(1);
-    expect(unsavedThinking(activity, "Plan the page. Then check it.")).toBe("Then check it.");
-    expect(unsavedThinking(activity, "Something new")).toBe("Something new");
+  it("says finished steps in plain past words", () => {
+    expect(pastTenseLabel("Writing index.html")).toBe("Wrote index.html");
+    expect(pastTenseLabel("Searching the web: coffee")).toBe("Searched the web: coffee");
+    expect(pastTenseLabel("Asking you: Which name?")).toBe("Asked you: Which name?");
   });
 });

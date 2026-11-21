@@ -1,24 +1,29 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// The inside of a reply's activity row, opened from its arrow: one timeline in the order things
-// happened. Thinking and tool steps take turns; each step shows its input, output and time.
-// While the run is live the newest thinking and the file being written stream at the end.
-// Rendered by RunActivityRow.tsx.
+// The inside of a reply's activity row, opened from its arrow: real thoughts in small muted
+// type and real tool steps as compact rows, in the order they happened. A step opens to show
+// its input and output. While the run is live, the newest thinking and the file being written
+// stream at the end. Rendered by RunActivityRow.tsx.
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { RunActivityStep } from "@rakazo/contracts";
 import { formatCompactDuration } from "@rakazo/core";
 import { Button } from "@rakazo/ui-web";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@rakazo/ui-web/components/ui/collapsible";
 import { Check, CircleSlash, LoaderCircle, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { pastTenseLabel } from "../../lib/chat/run-activity-steps";
 import { LiveToolDraft, useFollowEnd } from "./LiveToolDraft";
 
 /** Characters of a step's input or output shown before "Show more". */
 const PREVIEW_CHARS = 240;
 
-export function elapsed(startedAt: string | undefined, endAt: number): number | undefined {
-  if (!startedAt) return undefined;
+function elapsed(startedAt: string, endAt: number): number | undefined {
   const start = Date.parse(startedAt);
   return Number.isFinite(start) ? Math.max(0, endAt - start) : undefined;
 }
@@ -36,20 +41,14 @@ export function RunActivityTimeline({
   /** A tool call's arguments while the model writes them. */
   liveToolDraft?: string;
 }) {
-  const empty = steps.length === 0 && !liveThinking && !liveToolDraft;
   return (
     <div
-      className="ms-[7px] mt-1 flex flex-col gap-2 border-s border-border ps-3 text-body-sm"
+      className="ms-[30px] mt-1 flex flex-col gap-2 text-body-sm"
       data-testid="run-activity-timeline"
     >
-      {empty ? (
-        <span className="text-muted-foreground">
-          <Trans>Reading your message</Trans>
-        </span>
-      ) : null}
       {steps.map((step) =>
         step.kind === "thought" ? (
-          <Thought key={step.id} text={step.output ?? ""} durationMs={step.durationMs} />
+          <Thought key={step.id} text={step.output ?? ""} />
         ) : (
           <ToolStep key={step.id} step={step} now={now} />
         ),
@@ -60,40 +59,24 @@ export function RunActivityTimeline({
   );
 }
 
-function Thought({
-  text,
-  durationMs,
-  live,
-}: {
-  text: string;
-  durationMs?: number;
-  live?: boolean;
-}) {
+function Thought({ text, live }: { text: string; live?: boolean }) {
   const follow = useFollowEnd<HTMLDivElement>(text);
-  const duration = formatCompactDuration(durationMs);
   return (
-    <div className="flex flex-col gap-0.5" data-testid="activity-thought">
-      <span className="flex items-center gap-1.5 text-foreground/85">
-        {live ? <Trans>Thinking</Trans> : <Trans>Thought</Trans>}
-        {duration ? (
-          <span className="ms-auto text-muted-foreground tabular-nums">{duration}</span>
-        ) : null}
-      </span>
-      <div
-        ref={live ? follow.ref : undefined}
-        onScroll={live ? follow.onScroll : undefined}
-        className="max-h-48 overflow-y-auto whitespace-pre-wrap text-muted-foreground"
-        dir="auto"
-      >
-        {text}
-      </div>
+    <div
+      ref={live ? follow.ref : undefined}
+      onScroll={live ? follow.onScroll : undefined}
+      className="max-h-40 overflow-y-auto whitespace-pre-wrap text-muted-foreground"
+      dir="auto"
+      data-testid="activity-thought"
+    >
+      {text}
     </div>
   );
 }
 
 function StatusIcon({ status }: { status: RunActivityStep["status"] }) {
   const { t } = useLingui();
-  const className = "size-3.5 shrink-0";
+  const className = "size-3 shrink-0";
   if (status === "running")
     return <LoaderCircle aria-label={t`Running`} className={`${className} animate-spin`} />;
   if (status === "succeeded") return <Check aria-label={t`Done`} className={className} />;
@@ -103,21 +86,29 @@ function StatusIcon({ status }: { status: RunActivityStep["status"] }) {
 }
 
 function ToolStep({ step, now }: { step: RunActivityStep; now: number }) {
-  const duration = formatCompactDuration(
-    step.status === "running" ? elapsed(step.startedAt, now) : step.durationMs,
-  );
+  const running = step.status === "running";
+  const duration = formatCompactDuration(running ? elapsed(step.startedAt, now) : step.durationMs);
+  const label = running ? step.label : pastTenseLabel(step.label);
+  const details = Boolean(step.input || step.output);
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-1.5 text-foreground/85">
+    <Collapsible className="group/step" data-testid="activity-step">
+      <CollapsibleTrigger
+        disabled={!details}
+        className="flex w-full min-w-0 cursor-pointer items-center gap-1.5 rounded-md text-start text-foreground/80 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-default"
+      >
         <StatusIcon status={step.status} />
-        <span className="min-w-0 truncate">{step.label}</span>
+        <span className="min-w-0 truncate">{label}</span>
         {duration ? (
           <span className="ms-auto shrink-0 text-muted-foreground tabular-nums">{duration}</span>
         ) : null}
-      </div>
-      {step.input ? <StepText label={<Trans>Input</Trans>} text={step.input} /> : null}
-      {step.output ? <StepText label={<Trans>Output</Trans>} text={step.output} /> : null}
-    </div>
+      </CollapsibleTrigger>
+      {details ? (
+        <CollapsibleContent className="mt-1 flex flex-col gap-1.5 ps-[18px]">
+          {step.input ? <StepText label={<Trans>Input</Trans>} text={step.input} /> : null}
+          {step.output ? <StepText label={<Trans>Output</Trans>} text={step.output} /> : null}
+        </CollapsibleContent>
+      ) : null}
+    </Collapsible>
   );
 }
 
@@ -125,7 +116,7 @@ function StepText({ label, text }: { label: ReactNode; text: string }) {
   const [expanded, setExpanded] = useState(false);
   const long = text.length > PREVIEW_CHARS;
   return (
-    <div className="ms-5 flex flex-col gap-0.5">
+    <div className="flex flex-col gap-0.5">
       <span className="text-muted-foreground">{label}</span>
       <pre className="max-h-64 overflow-auto rounded-md bg-muted px-2 py-1 font-mono whitespace-pre-wrap break-words text-foreground/80">
         {long && !expanded ? `${text.slice(0, PREVIEW_CHARS)}…` : text}
