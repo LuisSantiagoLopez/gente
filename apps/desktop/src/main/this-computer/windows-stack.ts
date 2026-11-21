@@ -11,18 +11,16 @@ import { spawn } from "node:child_process";
 import { readFileSync, statSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { connectedAppsEnv, storedServiceKey } from "@rakazo/adapters/desktop-server-env";
 import type { DesktopLocalStackPhase } from "@rakazo/contracts";
-import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
+import type { SavedBrain } from "../burrow/brain.js";
+import { brainFile, swiftServerEnv } from "../burrow/brain.js";
 import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
-import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
+import type { Sealer } from "../burrow/keyring.js";
+import { sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
 import { computerEnv, readComputerChoice } from "../burrow/service-keys.js";
-import {
-  connectedAppsEnv,
-  storedServiceKey,
-} from "@rakazo/adapters/desktop-server-env";
 import { telegramSecret } from "../burrow/telegram.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
-import { ensureServerLinks } from "./server-links.js";
 import type { RunDocker } from "./docker-cli.js";
 import {
   allocateLoopbackPort,
@@ -50,18 +48,19 @@ import {
   serverDirName,
   verifyFileSha256,
 } from "./mac-runtime.js";
+import type { ServiceSpec, SpawnProcess } from "./native-stack.js";
 import {
   COMPOSE_ONLY,
   choosePort,
   downloadFailed,
   postgresAnswers,
   Service,
-  type ServiceSpec,
-  type SpawnProcess,
   StartFailure,
   servicesFailed,
+  stopLeftoverChildren,
   WEB_ENV,
 } from "./native-stack.js";
+import { ensureServerLinks } from "./server-links.js";
 
 export const WINDOWS_PORTS_FILE = ".windows-ports";
 
@@ -69,7 +68,10 @@ export const WINDOWS_PORTS_FILE = ".windows-ports";
 export function serverPackComplete(pack: string, dir: string): boolean {
   try {
     const stat = statSync(pack);
-    return readFileSync(path.join(dir, ".complete"), "utf8") === `${stat.size}:${Math.trunc(stat.mtimeMs)}`;
+    return (
+      readFileSync(path.join(dir, ".complete"), "utf8") ===
+      `${stat.size}:${Math.trunc(stat.mtimeMs)}`
+    );
   } catch {
     return false;
   }
@@ -194,10 +196,13 @@ export async function installWindowsServerBundle(
       timeoutMs: 10 * 60_000,
       signal: deps.signal,
     });
-    if (result.code !== 0) throw new DownloadError(`Unpacking the server bundle failed: ${result.stderr}`);
+    if (result.code !== 0)
+      throw new DownloadError(`Unpacking the server bundle failed: ${result.stderr}`);
   });
   const dir = path.join(root, "rakazo-server");
-  const manifest = JSON.parse(await readFile(path.join(dir, "manifest.json"), "utf8")) as ServerManifest;
+  const manifest = JSON.parse(
+    await readFile(path.join(dir, "manifest.json"), "utf8"),
+  ) as ServerManifest;
   for (const entry of ["api", "worker", "web", "migrate"] as const) {
     const file = manifest.entrypoints?.[entry];
     const resolved = typeof file === "string" ? path.resolve(dir, file) : "";
@@ -208,7 +213,11 @@ export async function installWindowsServerBundle(
 }
 
 /** Postgres's own programs inside the bundle. */
-export function postgresBin(serverDir: string, program: string, platform: string = process.platform) {
+export function postgresBin(
+  serverDir: string,
+  program: string,
+  platform: string = process.platform,
+) {
   return path.join(serverDir, "postgres", "bin", platform === "win32" ? `${program}.exe` : program);
 }
 
@@ -232,7 +241,6 @@ const { Client } = require(path.join(store, dir, "node_modules", "pg"));
 `;
 
 export class WindowsStackController extends StackLifecycle {
-
   /** Gente self-heal: whether one service is running (null when the stack has no such service). */
   serviceAlive(name: string): boolean | null {
     const service = this.services.find((s) => s.spec.name === name);
@@ -242,10 +250,9 @@ export class WindowsStackController extends StackLifecycle {
   /** Gente self-heal: restarts one service, leaving the others running. */
   async restartService(name: string): Promise<boolean> {
     const service = this.services.find((s) => s.spec.name === name);
-    if (!service) return false;
-    await service.stop();
-    service.start();
-    return true;
+    // A stop or a fresh start owns the services now; it starts its own.
+    if (!service || this.stopInFlight() || this.current.phase !== "ready") return false;
+    return service.restart();
   }
   private services: Service[] = [];
   /** Set once the bundle is unpacked, so a stop can ask Postgres to shut down cleanly. */
@@ -322,7 +329,12 @@ export class WindowsStackController extends StackLifecycle {
     };
   }
 
-  private async runTool(command: string, args: string[], env: Record<string, string>, signal: AbortSignal) {
+  private async runTool(
+    command: string,
+    args: string[],
+    env: Record<string, string>,
+    signal: AbortSignal,
+  ) {
     return this.deps.run(command, args, {
       cwd: this.deps.stackDir,
       env,
@@ -355,8 +367,9 @@ export class WindowsStackController extends StackLifecycle {
     let server: { dir: string; manifest: ServerManifest };
     try {
       await this.writeOutServer(signal);
-      server = await (this.deps.installServer ??
-        ((d, b) => installWindowsServerBundle(d, b, this.deps.tar)))(
+      server = await (
+        this.deps.installServer ?? ((d, b) => installWindowsServerBundle(d, b, this.deps.tar))
+      )(
         {
           dir: this.dir("runtime"),
           run: this.deps.run,
@@ -369,12 +382,17 @@ export class WindowsStackController extends StackLifecycle {
         this.deps.serverBundle,
       );
       // Windows: point every package junction at this exact folder spelling (see server-links.ts).
-      const relinked = ensureServerLinks(server.dir, (line) => this.push({ type: "output", line: `re-linking: ${line}` }));
-      if (relinked > 0) this.push({ type: "output", line: `re-linked ${relinked} server packages` });
+      const relinked = ensureServerLinks(server.dir, (line) =>
+        this.push({ type: "output", line: `re-linking: ${line}` }),
+      );
+      if (relinked > 0)
+        this.push({ type: "output", line: `re-linked ${relinked} server packages` });
     } catch (error) {
       if (signal.aborted) throw error;
       const detail = error instanceof Error ? error.message : String(error);
-      throw new StartFailure(error instanceof DownloadError ? downloadFailed() : servicesFailed(), [detail]);
+      throw new StartFailure(error instanceof DownloadError ? downloadFailed() : servicesFailed(), [
+        detail,
+      ]);
     }
 
     this.serverDir = server.dir;
@@ -396,12 +414,26 @@ export class WindowsStackController extends StackLifecycle {
       try {
         const init = await this.runTool(
           postgresBin(server.dir, "initdb", this.platform),
-          ["-D", pgdata, "-U", OWNER, "-E", "UTF8", "--locale=C", "-A", "scram-sha-256", `--pwfile=${pwfile}`],
+          [
+            "-D",
+            pgdata,
+            "-U",
+            OWNER,
+            "-E",
+            "UTF8",
+            "--locale=C",
+            "-A",
+            "scram-sha-256",
+            `--pwfile=${pwfile}`,
+          ],
           this.baseEnv(),
           signal,
         );
         if (init.code !== 0)
-          throw new StartFailure(servicesFailed(), [...init.stderr.trim().split("\n").slice(-5), "initdb failed"]);
+          throw new StartFailure(servicesFailed(), [
+            ...init.stderr.trim().split("\n").slice(-5),
+            "initdb failed",
+          ]);
       } finally {
         await rm(pwfile, { force: true });
       }
@@ -431,26 +463,26 @@ export class WindowsStackController extends StackLifecycle {
       { cwd: this.deps.stackDir, env: this.baseEnv(), timeoutMs: 150_000, signal, untilExit: true },
     );
     if (started.code !== 0)
-      throw new StartFailure(servicesFailed(), [started.stdout, started.stderr, "pg_ctl start failed"]);
+      throw new StartFailure(servicesFailed(), [
+        started.stdout,
+        started.stderr,
+        "pg_ctl start failed",
+      ]);
     this.postgresUp = true;
     await this.waitForDatabase(ports.postgres, signal);
     // The embedded binaries have no psql: create the database with the server's own pg client.
-    const ensured = await this.deps.run(
-      this.deps.nodeBinary,
-      ["-e", ENSURE_DATABASE_SCRIPT],
-      {
-        cwd: server.dir,
-        env: {
-          ...this.nodeEnv(),
-          GENTE_PG_URL: `postgres://${OWNER}:${encodeURIComponent(password)}@127.0.0.1:${ports.postgres}/postgres`,
-          GENTE_DATABASE: DATABASE,
-          GENTE_SERVER_DIR: server.dir,
-        },
-        timeoutMs: CLI_TIMEOUT_MS,
-        signal,
-        onLine: (line) => this.push({ type: "output", line }),
+    const ensured = await this.deps.run(this.deps.nodeBinary, ["-e", ENSURE_DATABASE_SCRIPT], {
+      cwd: server.dir,
+      env: {
+        ...this.nodeEnv(),
+        GENTE_PG_URL: `postgres://${OWNER}:${encodeURIComponent(password)}@127.0.0.1:${ports.postgres}/postgres`,
+        GENTE_DATABASE: DATABASE,
+        GENTE_SERVER_DIR: server.dir,
       },
-    );
+      timeoutMs: CLI_TIMEOUT_MS,
+      signal,
+      onLine: (line) => this.push({ type: "output", line }),
+    });
     if (ensured.code !== 0)
       throw new StartFailure(servicesFailed(), [ensured.stderr, "creating the database failed"]);
 
@@ -502,7 +534,10 @@ export class WindowsStackController extends StackLifecycle {
       ...computer,
       // Updates arrive through Gente's long-poll hand-off, signed with this computer's secret.
       ...(telegramToken
-        ? { TELEGRAM_BOT_TOKEN: telegramToken, TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken) }
+        ? {
+            TELEGRAM_BOT_TOKEN: telegramToken,
+            TELEGRAM_WEBHOOK_SECRET_TOKEN: telegramSecret(stackToken),
+          }
         : {}),
       ...searchBrokerEnv(this.deps.searchBroker?.() ?? null),
       ...modelRouterEnv(this.deps.modelRouter?.() ?? null),
@@ -522,13 +557,21 @@ export class WindowsStackController extends StackLifecycle {
     const entry = (name: "api" | "worker" | "web" | "migrate") =>
       path.join(server.dir, server.manifest.entrypoints[name]);
     const node = (name: string, args: string[], env: Record<string, string>) =>
-      this.service({ name, command: this.deps.nodeBinary, args, cwd: server.dir, env, stopSignal: "SIGTERM" });
+      this.service({
+        name,
+        command: this.deps.nodeBinary,
+        args,
+        cwd: server.dir,
+        env,
+        stopSignal: "SIGTERM",
+      });
     const api = node("api", [entry("api")], {
       ...appEnv,
       API_HOST: "127.0.0.1",
       API_PORT: String(ports.api),
       AUTH_PASSWORD_ENABLED: stackEnv.get("AUTH_PASSWORD_ENABLED") || "true",
-      AUTH_BREACHED_PASSWORD_CHECK_ENABLED: stackEnv.get("AUTH_BREACHED_PASSWORD_CHECK_ENABLED") || "false",
+      AUTH_BREACHED_PASSWORD_CHECK_ENABLED:
+        stackEnv.get("AUTH_BREACHED_PASSWORD_CHECK_ENABLED") || "false",
     });
     const worker = node("worker", ["--max-semi-space-size=64", entry("worker")], appEnv);
     const web = node("web", [entry("web")], {
@@ -555,14 +598,20 @@ export class WindowsStackController extends StackLifecycle {
     let apiHealthy = false;
     while (!signal.aborted) {
       const down = crashed();
-      if (down) throw new StartFailure(servicesFailed(), [...down.tail, `${down.spec.name} exited`]);
+      if (down)
+        throw new StartFailure(servicesFailed(), [...down.tail, `${down.spec.name} exited`]);
       apiHealthy ||= await this.deps
         .fetch(`http://127.0.0.1:${ports.api}/health`, { signal })
         .then((response) => response.ok)
         .catch(() => false);
-      if (apiHealthy && (await this.deps.probe(this.currentWebUrl, signal, stackToken)) === this.deps.imageTag) {
+      if (
+        apiHealthy &&
+        (await this.deps.probe(this.currentWebUrl, signal, stackToken)) === this.deps.imageTag
+      ) {
         this.push({ type: "ready" });
-        await pruneRuntimes(this.dir("runtime"), [path.basename(path.dirname(server.dir))]).catch(() => undefined);
+        await pruneRuntimes(this.dir("runtime"), [path.basename(path.dirname(server.dir))]).catch(
+          () => undefined,
+        );
         return;
       }
       if (Date.now() >= deadline) break;
@@ -580,14 +629,21 @@ export class WindowsStackController extends StackLifecycle {
     const result = await this.deps.run(
       this.deps.nodeBinary,
       [path.join(path.dirname(pack), "gente-server-pack.cjs"), "unpack", pack, inPlace],
-      { cwd: path.dirname(pack), env: this.nodeEnv(), timeoutMs: 30 * 60_000, signal, onLine: (line) => this.push({ type: "output", line }) },
+      {
+        cwd: path.dirname(pack),
+        env: this.nodeEnv(),
+        timeoutMs: 30 * 60_000,
+        signal,
+        onLine: (line) => this.push({ type: "output", line }),
+      },
     );
     if (result.code !== 0 || !serverPackComplete(pack, inPlace))
       throw new Error(`Writing the server out failed: ${result.stderr.slice(-500)}`);
   }
 
   private async waitForDatabase(port: number, signal: AbortSignal) {
-    const answers = this.deps.databaseAnswers ?? ((p: number, s: AbortSignal) => postgresAnswers(p, s));
+    const answers =
+      this.deps.databaseAnswers ?? ((p: number, s: AbortSignal) => postgresAnswers(p, s));
     const sleep = this.deps.sleep ?? defaultSleep;
     for (let attempt = 1; ; attempt++) {
       try {
@@ -595,13 +651,18 @@ export class WindowsStackController extends StackLifecycle {
       } catch (error) {
         if (signal.aborted) throw error;
         if (attempt >= DATABASE_ANSWER_ATTEMPTS)
-          throw new StartFailure(servicesFailed(), [`Postgres did not answer on 127.0.0.1:${port}`]);
+          throw new StartFailure(servicesFailed(), [
+            `Postgres did not answer on 127.0.0.1:${port}`,
+          ]);
         await sleep(HEALTH_POLL_INTERVAL_MS, signal);
       }
     }
   }
 
-  private appEnv(stackEnv: Map<string, string>, fixed: Record<string, string>): Record<string, string> {
+  private appEnv(
+    stackEnv: Map<string, string>,
+    fixed: Record<string, string>,
+  ): Record<string, string> {
     const fromFile = Object.fromEntries(
       [...stackEnv].filter(([name, value]) => value !== "" && !COMPOSE_ONLY.test(name)),
     );
@@ -660,7 +721,9 @@ export class WindowsStackController extends StackLifecycle {
   private async stopServices() {
     const services = this.services;
     this.services = [];
-    await Promise.all(services.map((s) => s.stop()));
+    await Promise.all(services.map((s) => s.retire()));
+    // Anything this app started that is somehow still running goes too.
+    await stopLeftoverChildren();
     if (this.serverDir && this.postgresUp) await this.stopPostgres(this.serverDir);
   }
 
@@ -669,12 +732,16 @@ export class WindowsStackController extends StackLifecycle {
     this.postgresUp = false;
     if (!this.deps.exists(path.join(this.dir("pgdata"), "postmaster.pid"))) return;
     await this.deps
-      .run(postgresBin(serverDir, "pg_ctl", this.platform), ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"], {
-        cwd: this.deps.stackDir,
-        env: this.baseEnv(),
-        timeoutMs: 30_000,
-        signal: AbortSignal.timeout(35_000),
-      })
+      .run(
+        postgresBin(serverDir, "pg_ctl", this.platform),
+        ["stop", "-D", this.dir("pgdata"), "-m", "fast", "-w"],
+        {
+          cwd: this.deps.stackDir,
+          env: this.baseEnv(),
+          timeoutMs: 30_000,
+          signal: AbortSignal.timeout(35_000),
+        },
+      )
       .catch(() => undefined);
   }
 }

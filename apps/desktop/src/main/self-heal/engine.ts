@@ -91,6 +91,11 @@ export type EngineOptions<Env> = {
   tickMs?: number;
   /** Polling while a step settles. */
   pollMs?: number;
+  /**
+   * Runs a repair only when nothing else on this computer is repairing (another healer shares
+   * it); returns null without running it otherwise.
+   */
+  exclusive?: <T>(work: () => Promise<T>) => Promise<T | null>;
 };
 
 const defaultSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -98,6 +103,8 @@ const defaultSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(r
 export class HealEngine<Env> {
   private readonly status = new Map<string, Status>();
   private heavyRunning = false;
+  /** One repair at a time: two at once (a restart during a reset) left an old server running. */
+  private repairing = false;
   private timer: NodeJS.Timeout | undefined;
   private readonly now: () => number;
   private readonly sleep: (ms: number) => Promise<void>;
@@ -147,10 +154,16 @@ export class HealEngine<Env> {
       return null;
     }
     if (++s.streak < spec.confirm) return null;
+    // Another repair is running; this one is checked again on its next turn.
+    if (this.repairing) return null;
+    this.repairing = true;
     s.healing = true;
     try {
-      return await this.repair(spec, found);
+      const exclusive = this.options.exclusive;
+      const repair = () => this.repair(spec, found);
+      return exclusive ? await exclusive(repair) : await repair();
     } finally {
+      this.repairing = false;
       s.healing = false;
       s.streak = 0;
     }

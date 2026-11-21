@@ -10,6 +10,7 @@ import path from "node:path";
 import { app } from "electron";
 import { sendRepairEvent } from "../support/outbox.js";
 import { readSupportSettings } from "../support/settings.js";
+import { exclusiveRepair } from "../this-computer/repair-lock.js";
 import type { HealEnv } from "./catalog.js";
 import { CATALOG } from "./catalog.js";
 import type { RouterHandle } from "./desktop-env.js";
@@ -50,6 +51,7 @@ export function startSelfHeal(input: {
       notify: (failureId) => fleet({ failureId, outcome: "reported" }),
     }),
     specs: CATALOG,
+    exclusive: exclusiveRepair,
     onEvent: (event) => {
       void mkdir(input.userDataDir, { recursive: true })
         .then(() => appendFile(timelineFile, `${JSON.stringify(event)}\n`))
