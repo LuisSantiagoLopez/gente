@@ -17,7 +17,10 @@ describe("Your AI Cloud client", () => {
     expect(await cloud.plan()).toEqual({ plan: { plan: "pro", planVersion: 3 }, changed: false });
     const second = fetch.mock.calls[1]!;
     expect(second[0]).toBe("https://c.test/v1/me/plan");
-    expect(second[1].headers).toMatchObject({ authorization: "Bearer tok", "if-none-match": '"v3"' });
+    expect(second[1].headers).toMatchObject({
+      authorization: "Bearer tok",
+      "if-none-match": '"v3"',
+    });
   });
 
   it("asks to sign in before any call when there is no session", async () => {
@@ -42,7 +45,10 @@ describe("Your AI Cloud client", () => {
   });
 
   it("turns a network failure into a calm offline error", async () => {
-    const cloud = createGenteCloud({ token: async () => "t", fetch: vi.fn().mockRejectedValue(new TypeError("fetch failed")) });
+    const cloud = createGenteCloud({
+      token: async () => "t",
+      fetch: vi.fn().mockRejectedValue(new TypeError("fetch failed")),
+    });
     await expect(cloud.balance()).rejects.toMatchObject({ code: "offline" });
   });
 });

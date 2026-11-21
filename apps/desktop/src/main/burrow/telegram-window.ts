@@ -36,11 +36,22 @@ export function registerTelegram(stackDir: string) {
   handleIpc("gente.telegram.connect", async (_event, raw: unknown) => {
     const token = typeof raw === "string" ? raw.trim() : "";
     if (!looksLikeBotToken(token))
-      return { ok: false, message: "That doesn't look like a BotFather token. It has a number, a colon, then letters." };
+      return {
+        ok: false,
+        message:
+          "That doesn't look like a BotFather token. It has a number, a colon, then letters.",
+      };
     const username = await telegramBotName(token);
-    if (!username) return { ok: false, message: "Telegram didn't recognize that token. Copy it again from BotFather." };
+    if (!username)
+      return {
+        ok: false,
+        message: "Telegram didn't recognize that token. Copy it again from BotFather.",
+      };
     if (!(await saveTelegramToken(token)))
-      return { ok: false, message: "Your AI couldn't save the token to the keychain. Please try again." };
+      return {
+        ok: false,
+        message: "Your AI couldn't save the token to the keychain. Please try again.",
+      };
     // The server reads the token when it starts, so it restarts once (a few seconds).
     poller?.stop();
     poller = null;

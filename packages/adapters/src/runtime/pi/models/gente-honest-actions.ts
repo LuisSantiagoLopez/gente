@@ -14,6 +14,26 @@ export const HONESTY_RULE =
 export const ASK_IN_CARDS_RULE =
   "Ask the person questions only with the ask_user tool, never in your reply text. Do not add an 'Other' option: the card already lets them type their own answer. When you finish, end with what you did, not with a question.";
 
+/**
+ * Added when a local request can write files. The model server sends a tool call only once it
+ * is complete, so one huge file means minutes of silence; small files arrive one by one.
+ */
+export const SMALL_FILES_RULE =
+  "When you build a page or app, start writing files right away with write_file, no plan first. Keep each file short (under about 120 lines): put the HTML, the CSS and the script in separate files and write them one call at a time.";
+
+/** Adds the small-files rule to a request's system prompt, once, when it offers write_file. */
+export function withSmallFilesRule(messages: Message[], tools: unknown): Message[] {
+  const first = messages[0];
+  if (first?.role !== "system" || typeof first.content !== "string") return messages;
+  const writes =
+    Array.isArray(tools) &&
+    tools.some(
+      (tool) => (tool as { function?: { name?: string } })?.function?.name === "write_file",
+    );
+  if (!writes || first.content.includes(SMALL_FILES_RULE)) return messages;
+  return [{ ...first, content: `${first.content}\n\n${SMALL_FILES_RULE}` }, ...messages.slice(1)];
+}
+
 /** Adds the card rule to a request's system prompt, once, when the request offers ask_user. */
 export function withAskInCardsRule(messages: Message[], tools: unknown): Message[] {
   const first = messages[0];

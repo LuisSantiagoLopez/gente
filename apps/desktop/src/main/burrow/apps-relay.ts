@@ -6,7 +6,8 @@
 // person's fresh sign-in and passes the mcp-session-id header both ways. No vendor key is needed
 // on this computer. A developer build without a sign-in may still use its own key.
 import { randomBytes } from "node:crypto";
-import { createServer, type Server } from "node:http";
+import type { Server } from "node:http";
+import { createServer } from "node:http";
 import { Readable } from "node:stream";
 import {
   CONNECTED_APPS_DIRECT_URL,
@@ -24,7 +25,13 @@ export interface AppsRelayDeps {
   fetch?: typeof fetch;
 }
 
-const PASS_UP = ["content-type", "accept", "mcp-session-id", "mcp-protocol-version", "last-event-id"];
+const PASS_UP = [
+  "content-type",
+  "accept",
+  "mcp-session-id",
+  "mcp-protocol-version",
+  "last-event-id",
+];
 const PASS_DOWN = ["content-type", "mcp-session-id", "cache-control"];
 
 export async function startAppsRelay(deps: AppsRelayDeps) {
@@ -52,7 +59,9 @@ export async function startAppsRelay(deps: AppsRelayDeps) {
         res.writeHead(502).end();
         return;
       }
-      res.writeHead(upstream.status, { "content-type": upstream.headers.get("content-type") ?? "application/json" });
+      res.writeHead(upstream.status, {
+        "content-type": upstream.headers.get("content-type") ?? "application/json",
+      });
       res.end(Buffer.from(await upstream.arrayBuffer()));
       return;
     }
@@ -75,7 +84,12 @@ export async function startAppsRelay(deps: AppsRelayDeps) {
       const key = await deps.devKey?.().catch(() => undefined);
       if (!key) {
         res.writeHead(401, { "content-type": "application/json" });
-        res.end(JSON.stringify({ error: "missing_token", message: "Sign in to Your AI to use connected apps." }));
+        res.end(
+          JSON.stringify({
+            error: "missing_token",
+            message: "Sign in to Your AI to use connected apps.",
+          }),
+        );
         return;
       }
       target = CONNECTED_APPS_DIRECT_URL;

@@ -143,6 +143,9 @@ export function swiftServerEnv(saved: SavedBrain | null): Record<string, string>
     RAKAZO_LOCAL_REASONING_MODELS: installed.join(","),
     RAKAZO_LOCAL_VISION_MODELS: (saved.vision ?? []).join(","),
     BURROW_FAST_CHAT: "on",
+    // The model server sends a tool call only when it is complete; writing a file can take a
+    // few silent minutes on this Mac, which is not a stall.
+    MODEL_STREAM_IDLE_TIMEOUT_MS: "600000",
     // The Link agent wallet: bots ask for a purchase (amount, merchant, reason), the person
     // approves each one in Link, and Link issues a one-time card or pay token. No card is stored.
     PAYMENT_WALLET_PROVIDER: "link",

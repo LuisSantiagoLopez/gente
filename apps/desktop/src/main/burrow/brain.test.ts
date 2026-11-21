@@ -192,6 +192,7 @@ describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS belo
       PI_DEFAULT_PROVIDER: "local",
       PI_DEFAULT_MODEL: "swift-1.5-27b",
       BURROW_FAST_CHAT: "on",
+      MODEL_STREAM_IDLE_TIMEOUT_MS: "600000",
       PAYMENT_WALLET_PROVIDER: "link",
       RAKAZO_LOCAL_MODELS: "swift-1.5-27b",
     });

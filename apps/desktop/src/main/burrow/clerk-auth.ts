@@ -6,8 +6,9 @@
 // password field. OAuth 2.0 authorization code + PKCE (S256), public client, loopback redirect on
 // 127.0.0.1 (RFC 8252). Tokens are sealed with the system keychain (Electron safeStorage).
 import { createHash, randomBytes } from "node:crypto";
-import { createServer, type Server } from "node:http";
 import { readFile, rm } from "node:fs/promises";
+import type { Server } from "node:http";
+import { createServer } from "node:http";
 import path from "node:path";
 import { writePrivateFile } from "../setup/setup-store.js";
 
@@ -55,7 +56,11 @@ export function pkcePair() {
   return { verifier, challenge };
 }
 
-async function tokenRequest(config: ClerkConfig, body: Record<string, string>, doFetch: Fetch): Promise<Tokens> {
+async function tokenRequest(
+  config: ClerkConfig,
+  body: Record<string, string>,
+  doFetch: Fetch,
+): Promise<Tokens> {
   const response = await doFetch(`${config.issuer}/oauth/token`, {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -68,7 +73,8 @@ async function tokenRequest(config: ClerkConfig, body: Record<string, string>, d
     expires_in?: number;
     error?: string;
   };
-  if (!response.ok || !data.access_token) throw new Error(`token request failed: ${data.error ?? response.status}`);
+  if (!response.ok || !data.access_token)
+    throw new Error(`token request failed: ${data.error ?? response.status}`);
   return {
     accessToken: data.access_token,
     refreshToken: data.refresh_token,
@@ -132,11 +138,19 @@ export async function signInWithBrowser(input: {
         }).toString();
         Promise.resolve(input.open(authorize.toString())).catch(reject);
       });
-      setTimeout(() => reject(new Error("sign-in timed out")), input.timeoutMs ?? 10 * 60_000).unref();
+      setTimeout(
+        () => reject(new Error("sign-in timed out")),
+        input.timeoutMs ?? 10 * 60_000,
+      ).unref();
     });
     return await tokenRequest(
       config,
-      { grant_type: "authorization_code", code: code.code, redirect_uri: code.redirectUri, code_verifier: verifier },
+      {
+        grant_type: "authorization_code",
+        code: code.code,
+        redirect_uri: code.redirectUri,
+        code_verifier: verifier,
+      },
       input.fetch ?? fetch,
     );
   } finally {
@@ -158,7 +172,9 @@ export function createClerkSession(input: {
   async function load(): Promise<Tokens | null> {
     if (tokens !== undefined) return tokens;
     try {
-      tokens = JSON.parse(input.sealer.unseal(Buffer.from(await readFile(file, "utf8"), "base64"))) as Tokens;
+      tokens = JSON.parse(
+        input.sealer.unseal(Buffer.from(await readFile(file, "utf8"), "base64")),
+      ) as Tokens;
     } catch {
       tokens = null;
     }

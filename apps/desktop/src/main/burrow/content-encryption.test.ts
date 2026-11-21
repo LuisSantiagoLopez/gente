@@ -21,7 +21,13 @@ describe("encrypting chats saved before encryption at rest", () => {
   it("runs the server's migrate once with encryption on, then marks it done", async () => {
     const run = vi.fn(async () => ({ code: 0, stdout: "", stderr: "" }));
     const marker = path.join(dir, "data", "content-encrypted");
-    const input = { run, nodeBinary: "node", server: server("apps/api/dist/cli/content-encryption.js"), env: { ENCRYPTION_KEY: "k" }, marker };
+    const input = {
+      run,
+      nodeBinary: "node",
+      server: server("apps/api/dist/cli/content-encryption.js"),
+      env: { ENCRYPTION_KEY: "k" },
+      marker,
+    };
     await expect(encryptExistingContent(input)).resolves.toBe("done");
     expect(run).toHaveBeenCalledWith(
       "node",
@@ -43,7 +49,13 @@ describe("encrypting chats saved before encryption at rest", () => {
 
   it("skips quietly on an older server without the tool", async () => {
     const run = vi.fn();
-    const input = { run, nodeBinary: "node", server: server(undefined), env: {}, marker: path.join(dir, "m") };
+    const input = {
+      run,
+      nodeBinary: "node",
+      server: server(undefined),
+      env: {},
+      marker: path.join(dir, "m"),
+    };
     await expect(encryptExistingContent(input)).resolves.toBe("unavailable");
     expect(run).not.toHaveBeenCalled();
   });

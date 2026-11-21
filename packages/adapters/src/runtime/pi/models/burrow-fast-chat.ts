@@ -20,6 +20,7 @@ import {
   toolRanThisTurn,
   withAskInCardsRule,
   withHonestyRule,
+  withSmallFilesRule,
 } from "./gente-honest-actions.js";
 
 /** On only where Gente sets `BURROW_FAST_CHAT=on` (its desktop stack), so other setups keep Rakazo behavior. */
@@ -386,6 +387,7 @@ export function quickChatBody(
   parsed.messages = withReplyLanguage(parsed.messages);
   parsed.messages = withHonestyRule(parsed.messages);
   parsed.messages = withAskInCardsRule(parsed.messages, (parsed as { tools?: unknown }).tools);
+  parsed.messages = withSmallFilesRule(parsed.messages, (parsed as { tools?: unknown }).tools);
   const prefix = { ...parsed, messages: warmablePrefix(parsed.messages as WireMessage[]) };
   // Gente: only clear small talk ("hey", "gracias") skips the tool schemas and the long manual,
   // so the first word comes in about a second. Anything else keeps its tools: a short request in

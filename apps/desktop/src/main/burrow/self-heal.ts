@@ -63,9 +63,10 @@ export class StackSelfHeal {
     if (state.phase === "failed" && this.retrying)
       return { ...state, phase: "starting", message: "", output: [] };
     if (state.phase === "failed") {
-      const offline = /ENOTFOUND|EAI_AGAIN|ENETUNREACH|ETIMEDOUT|ECONNREFUSED|internet connection/i.test(
-        `${state.message} ${state.output.join(" ")}`,
-      );
+      const offline =
+        /ENOTFOUND|EAI_AGAIN|ENETUNREACH|ETIMEDOUT|ECONNREFUSED|internet connection/i.test(
+          `${state.message} ${state.output.join(" ")}`,
+        );
       return { ...state, message: offline ? CALM_OFFLINE : CALM_FAILURE, output: [] };
     }
     return { ...state, output: [] };

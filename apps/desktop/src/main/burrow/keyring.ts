@@ -5,7 +5,7 @@
 // plain `.env` file and live encrypted by the operating system: the macOS Keychain or Windows
 // DPAPI, through Electron's safeStorage. The `.env` keeps only a `keychain:NAME` marker, so the
 // value is never on disk in the clear and existing data keeps the same key.
-import { readFile, mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { SERVICE_KEY_ENV } from "@rakazo/adapters/desktop-server-env";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
@@ -29,7 +29,8 @@ export const SEALED_SECRETS = [
 ] as const;
 export const KEYCHAIN_MARKER = "keychain:";
 
-const sealedFile = (stackDir: string, name: string) => path.join(stackDir, "keyring", `${name}.sealed`);
+const sealedFile = (stackDir: string, name: string) =>
+  path.join(stackDir, "keyring", `${name}.sealed`);
 
 /** Moves plain secrets from `.env` into OS-encrypted files; safe to run on every start. */
 export async function sealStackSecrets(stackDir: string, sealer: Sealer): Promise<string[]> {
@@ -43,7 +44,9 @@ export async function sealStackSecrets(stackDir: string, sealer: Sealer): Promis
     await mkdir(path.join(stackDir, "keyring"), { recursive: true, mode: 0o700 });
     await writePrivateFile(sealedFile(stackDir, name), sealer.seal(value).toString("base64"));
     // Check the round trip before the plain value leaves the file.
-    const back = sealer.unseal(Buffer.from((await readPrivateFile(sealedFile(stackDir, name), 65536)) ?? "", "base64"));
+    const back = sealer.unseal(
+      Buffer.from((await readPrivateFile(sealedFile(stackDir, name), 65536)) ?? "", "base64"),
+    );
     if (back !== value) throw new Error(`Could not seal ${name} with the system keychain`);
     text = text.replace(
       new RegExp(`^([\\t ]*(?:export[\\t ]+)?${name}[\\t ]*=).*$`, "gm"),

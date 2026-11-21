@@ -7,7 +7,8 @@
 
 import { CONNECTED_APPS_CLOUD_PATH } from "@rakazo/adapters/desktop-server-env";
 
-export const GENTE_CLOUD_URL = process.env.GENTE_CLOUD_URL?.trim() || "https://gente-cloud.vercel.app";
+export const GENTE_CLOUD_URL =
+  process.env.GENTE_CLOUD_URL?.trim() || "https://gente-cloud.vercel.app";
 
 export type CloudErrorCode =
   | "missing_token"
@@ -133,23 +134,35 @@ export function createGenteCloud(options: GenteCloudOptions) {
 
     /** User, plan, balance and settings in one call. */
     me: async () =>
-      (await call<{
-        plan: { name?: string; messagesUsed?: number; messagesLimit?: number; monthlyOnlineHours?: number };
-        balance: { totalSeconds?: number };
-      }>("GET", "/v1/me")).data!,
+      (
+        await call<{
+          plan: {
+            name?: string;
+            messagesUsed?: number;
+            messagesLimit?: number;
+            monthlyOnlineHours?: number;
+          };
+          balance: { totalSeconds?: number };
+        }>("GET", "/v1/me")
+      ).data!,
 
     balance: async () =>
-      (await call<{ planSeconds: number; topupSeconds: number; totalSeconds: number; totalHours: number }>(
-        "GET",
-        "/v1/balance",
-      )).data!,
+      (
+        await call<{
+          planSeconds: number;
+          topupSeconds: number;
+          totalSeconds: number;
+          totalHours: number;
+        }>("GET", "/v1/balance")
+      ).data!,
 
     /** A metered cloud computer. The connection is for this session only. */
     /** `vendor` is Gente Cloud's provider id, from @rakazo/adapters/desktop-server-env. */
     startSession: async (input: { vendor: string; taskKind?: string; maxSeconds?: number }) =>
       (await call<CloudSession>("POST", "/v1/sessions", input)).data!,
     heartbeat: async (sessionId: string) =>
-      (await call<Heartbeat>("POST", `/v1/sessions/${encodeURIComponent(sessionId)}/heartbeat`, {})).data!,
+      (await call<Heartbeat>("POST", `/v1/sessions/${encodeURIComponent(sessionId)}/heartbeat`, {}))
+        .data!,
     stopSession: async (sessionId: string) => {
       await call("POST", `/v1/sessions/${encodeURIComponent(sessionId)}/stop`, {});
     },
@@ -167,14 +180,17 @@ export function createGenteCloud(options: GenteCloudOptions) {
 
     /** Search with page text included, so nothing else has to be fetched. */
     search: async (query: string, numResults = 5) =>
-      (await call<unknown>("POST", "/v1/proxy/search", { query, numResults, includeText: true })).data,
+      (await call<unknown>("POST", "/v1/proxy/search", { query, numResults, includeText: true }))
+        .data,
 
     /** "Make my AI private": the offer and the person's place on the waitlist. */
     privateOffer: async () =>
-      (await call<{ status: string; monthlyCents: number; onWaitlist: boolean; waiting: number }>(
-        "GET",
-        "/v1/private/offer",
-      )).data!,
+      (
+        await call<{ status: string; monthlyCents: number; onWaitlist: boolean; waiting: number }>(
+          "GET",
+          "/v1/private/offer",
+        )
+      ).data!,
     joinPrivateWaitlist: async () => {
       await call("POST", "/v1/private/waitlist", {});
     },

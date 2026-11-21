@@ -7,11 +7,8 @@
 import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import {
-  type ComputerChoice,
-  KEYCHAIN_SERVICE,
-  type ServiceKey,
-} from "@rakazo/adapters/desktop-server-env";
+import type { ComputerChoice, ServiceKey } from "@rakazo/adapters/desktop-server-env";
+import { KEYCHAIN_SERVICE } from "@rakazo/adapters/desktop-server-env";
 
 export { type ComputerChoice, computerEnv } from "@rakazo/adapters/desktop-server-env";
 

@@ -6,7 +6,8 @@
 // while the computer runs, and stops it when the server is done, so hours are billed only while a
 // computer runs. The server only ever sees the session's per-computer token, never a vendor key.
 import { randomBytes } from "node:crypto";
-import { createServer, type Server, type ServerResponse } from "node:http";
+import type { Server, ServerResponse } from "node:http";
+import { createServer } from "node:http";
 import { CLOUD_COMPUTER_SESSION } from "@rakazo/adapters/desktop-server-env";
 import type { CloudSession, GenteCloud } from "./gente-cloud.js";
 
@@ -28,7 +29,9 @@ export async function startComputerBroker(cloud: () => GenteCloud | null) {
     if (!entry) return;
     clearInterval(entry.timer);
     live.delete(sandboxId);
-    await cloud()?.stopSession(entry.session.sessionId).catch(() => undefined);
+    await cloud()
+      ?.stopSession(entry.session.sessionId)
+      .catch(() => undefined);
   };
 
   const server: Server = createServer(async (req, res) => {
@@ -39,11 +42,16 @@ export async function startComputerBroker(cloud: () => GenteCloud | null) {
       // Bodies are small and fixed; nothing to read from them.
     }
     const client = cloud();
-    if (!client) return send(res, 401, { error: "missing_token", message: "Sign in to Your AI to use a cloud computer." });
+    if (!client)
+      return send(res, 401, {
+        error: "missing_token",
+        message: "Sign in to Your AI to use a cloud computer.",
+      });
     try {
       if (req.method === "POST" && path === "/sessions") {
         const session = await client.startSession(CLOUD_COMPUTER_SESSION);
-        if (!("sandboxId" in session.connection)) return send(res, 502, { error: "unexpected_session" });
+        if (!("sandboxId" in session.connection))
+          return send(res, 502, { error: "unexpected_session" });
         const sandboxId = session.connection.sandboxId;
         const timer = setInterval(() => {
           void client
@@ -67,7 +75,10 @@ export async function startComputerBroker(cloud: () => GenteCloud | null) {
         }
         if (match[2] === "/state") return send(res, 200, { running: Boolean(entry) });
         if (!entry) return send(res, 404, { error: "not_running" });
-        return send(res, 200, { sessionId: entry.session.sessionId, connection: entry.session.connection });
+        return send(res, 200, {
+          sessionId: entry.session.sessionId,
+          connection: entry.session.connection,
+        });
       }
       return send(res, 404, { error: "not_found" });
     } catch (error) {
