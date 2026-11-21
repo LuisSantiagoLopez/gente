@@ -8,7 +8,7 @@ import {
   FEEDBACK_KINDS,
   ThinkingLevelSchema,
 } from "@rakazo/contracts";
-import { scheduleCreateBranch } from "./builtin-work.tool-definition.js";
+import { ROUTINE_PROMPT_GUIDANCE, scheduleCreateBranch } from "./builtin-work.tool-definition.js";
 
 const childRoutineTargetProperties = {
   bot_id: { type: "string", description: "Id of a bot in this space." },
@@ -371,7 +371,8 @@ export const fleetTools: ConnectorTool[] = [
   {
     name: "create_child_routine",
     description:
-      "Schedule a routine that wakes a bot in this space in its own thread. Identify it by bot_id or bot_name (exact). Repeats: cron or every/unit (min 1 minute). One-shot: runAt, delayMinutes, or delaySeconds. on: events, as in schedule_create.",
+      "Schedule a routine that wakes a bot in this space in its own thread. Identify it by bot_id or bot_name (exact). Repeats: cron or every/unit (min 1 minute). One-shot: runAt, delayMinutes, or delaySeconds. on: events, as in schedule_create. " +
+      ROUTINE_PROMPT_GUIDANCE,
     inputSchema: createChildRoutineInputSchema,
   },
   {

@@ -95,8 +95,6 @@ export function promptVersionParts() {
           botInstructions: "",
           groupContext: undefined,
           messagingContext: undefined,
-          redactedMemoryContext: undefined,
-          redactedScratchpadContext: undefined,
           hasHistoricalContext: true,
           historyRetrievalEnabled: true,
           computerInstruction: "",
