@@ -249,18 +249,66 @@ export function shownProgress(ctx: Pick<RunContext, "replyMode">) {
   return ctx.replyMode === "chat" ? { shown: true as const } : {};
 }
 
+/** Gente: the longest streamed text, thinking or tool arguments wait before reaching the thread. */
+export const PROGRESS_FLUSH_MS = 50;
+
+/** Whether drafts can show: never in a run that may still end without a word. */
+function showsDrafts(ctx: RunContext) {
+  return (
+    !ctx.scripted &&
+    !holdsTransientProgress(ctx) &&
+    !ctx.groupReplyOptional &&
+    !ctx.allowSilentEmptyRun
+  );
+}
+
+/** When the batched live output is due to be sent, or undefined when there is nothing to send. */
+export function progressFlushDueAt(ctx: RunContext): number | undefined {
+  const { reply } = ctx.state;
+  if (ctx.scripted || holdsTransientProgress(ctx)) return undefined;
+  const text = Boolean(reply.pendingProgress) && !progressHeldForSilence(ctx);
+  if (!text && !(reply.pendingDraft && showsDrafts(ctx))) return undefined;
+  return reply.lastProgressAt + PROGRESS_FLUSH_MS;
+}
+
+/** Gente: add thinking or tool-argument text the model is generating to the next flush. */
+export function addDraft(
+  ctx: RunContext,
+  draft: { thinking?: string; tool?: { name: string; args: string }; reset?: true },
+) {
+  const { reply } = ctx.state;
+  if (!showsDrafts(ctx)) return;
+  if (draft.reset || !reply.draftRedactors) {
+    reply.draftRedactors = {
+      thinking: createStreamingRedactor(ctx.secrets),
+      tool: createStreamingRedactor(ctx.secrets),
+    };
+  }
+  if (draft.reset) {
+    reply.pendingDraft = reply.draftShown ? { thinking: "", reset: true } : undefined;
+    return;
+  }
+  const pending = reply.pendingDraft ?? { thinking: "" };
+  if (draft.thinking) pending.thinking += reply.draftRedactors.thinking.push(draft.thinking);
+  if (draft.tool) {
+    const args = reply.draftRedactors.tool.push(draft.tool.args);
+    // A new call's arguments replace the last one's in the view.
+    if (pending.tool && pending.tool.name !== draft.tool.name) pending.tool = undefined;
+    pending.tool = { name: draft.tool.name, args: (pending.tool?.args ?? "") + args };
+  }
+  if (pending.thinking || pending.tool || pending.reset) reply.pendingDraft = pending;
+}
+
 export async function flushProgress(ctx: RunContext) {
   const { deps, run, runId, bot, thread } = ctx;
   const { reply } = ctx.state;
   // Routines may finish silently. Do not leak narration or a partial silence
   // sentinel before the final outcome is known.
-  if (
-    ctx.scripted ||
-    !reply.pendingProgress ||
-    holdsTransientProgress(ctx) ||
-    progressHeldForSilence(ctx)
-  )
-    return;
+  if (ctx.scripted || holdsTransientProgress(ctx)) return;
+  const text = reply.pendingProgress && !progressHeldForSilence(ctx) ? reply.pendingProgress : "";
+  const draft = showsDrafts(ctx) ? reply.pendingDraft : undefined;
+  if (!text && !draft) return;
+  reply.pendingDraft = undefined;
   await deps.events.append({
     spaceId: run.spaceId,
     threadId: thread.id,
@@ -268,13 +316,20 @@ export async function flushProgress(ctx: RunContext) {
     type: "thread.progress",
     runId,
     // The first flush replaces the "working…" placeholder outright — a delta here
-    // would otherwise get appended straight onto it with no separator.
-    payload: reply.hasStreamedText
-      ? { delta: reply.pendingProgress, streaming: true, ...shownProgress(ctx) }
-      : { text: reply.pendingProgress, streaming: true, ...shownProgress(ctx) },
+    // would otherwise get appended straight onto it with no separator. A draft-only
+    // update carries neither, so the text shown stays as it is.
+    payload: {
+      ...(text ? (reply.hasStreamedText ? { delta: text } : { text }) : {}),
+      ...(draft ? { draft } : {}),
+      streaming: true,
+      ...shownProgress(ctx),
+    },
   });
-  reply.hasStreamedText = true;
-  reply.pendingProgress = "";
+  if (draft) reply.draftShown = !draft.reset || Boolean(draft.thinking || draft.tool);
+  if (text) {
+    reply.hasStreamedText = true;
+    reply.pendingProgress = "";
+  }
   reply.lastProgressAt = Date.now();
 }
 

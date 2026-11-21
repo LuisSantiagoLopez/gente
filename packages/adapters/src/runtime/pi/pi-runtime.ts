@@ -474,6 +474,9 @@ export class PiAgentRuntime implements AgentRuntime {
           selfRecoveries: 0,
           cutReplies: new WeakMap(),
           retriesEmptyReply: wouldEndEmpty,
+          onDraft: (draft) => {
+            if (!signal.aborted) queue.push({ type: "draft", ...draft });
+          },
           stream: (target, ctx, options) => {
             let accepted = false;
             if (hasCurrentImages && !target.model.input.includes("image")) {
