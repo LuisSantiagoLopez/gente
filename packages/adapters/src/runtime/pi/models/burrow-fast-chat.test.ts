@@ -100,13 +100,14 @@ describe("Your AI small-talk window", () => {
       { role: "system", content: "s" },
       ...Array.from({ length: n }, (_, i) => ({
         role: i % 2 ? "assistant" : "user",
-        content: `m${i}`,
+        // Small talk throughout, so no turn reads as a task still waiting for its reply.
+        content: i % 2 ? `m${i}` : `hi m${i}`,
       })),
       { role: "user", content: "hey" },
     ];
     const first = (n: number) =>
       JSON.parse(quickChatBody(JSON.stringify({ messages: turns(n) }))!.body).messages[1].content;
-    expect(first(10)).toBe("m0");
+    expect(first(10)).toBe("hi m0");
     expect(first(20)).toBe(first(21));
     expect(first(21)).toBe(first(22));
     expect(
@@ -415,5 +416,23 @@ describe("tasks keep their tools in any language", () => {
     const out = ask("who painted the Mona Lisa?");
     expect(out.tools).toHaveLength(3);
     expect(out.reasoning_effort).toBe("none");
+  });
+
+  it("answers a short message right after a task with the full prompt and tools", () => {
+    const tools = [{ type: "function", function: { name: "write_file" } }];
+    const body = (messages: unknown[]) =>
+      JSON.parse(
+        quickChatBody(JSON.stringify({ messages, tools, reasoning_effort: "none" }))!.body,
+      );
+    const system = { role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." };
+    const afterTask = body([
+      system,
+      { role: "user", content: "make an app, just make a nice frontemd" },
+      { role: "user", content: "hey?" },
+    ]);
+    expect(afterTask.tools).toHaveLength(1);
+    expect(afterTask.messages[0].content).toContain("Long manual.");
+    const fresh = body([system, { role: "user", content: "hey" }]);
+    expect(fresh.tools).toBeUndefined();
   });
 });

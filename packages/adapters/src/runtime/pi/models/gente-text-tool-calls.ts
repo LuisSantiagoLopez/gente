@@ -44,6 +44,9 @@ export function offeredTools(body: unknown): OfferedTool[] {
   });
 }
 
+/** How often held text sends an empty chunk so the stream does not look idle. */
+const KEEPALIVE_MS = 5_000;
+
 const QWEN_CALL = /<tool_call>\s*([\s\S]*?)\s*<\/tool_call>/g;
 const XML_FUNCTION = /^<function=([^>\s]+)>([\s\S]*?)(?:<\/function>|$)/;
 const XML_PARAMETER = /<parameter=([^>\s]+)>\n?([\s\S]*?)\n?<\/parameter>/g;
@@ -356,9 +359,20 @@ export async function filterTextToolCalls(
           }),
         );
       };
+      // While text is held back, an empty chunk now and then tells the runtime the model is
+      // still writing; without it a long held tool call (a whole web page) looked like a stall.
+      let lastSignal = Date.now();
+      const keepAlive = () => {
+        if (Date.now() - lastSignal < KEEPALIVE_MS) return;
+        lastSignal = Date.now();
+        controller.enqueue(
+          event({ ...template, choices: [{ index: 0, delta: {}, finish_reason: null }] }),
+        );
+      };
       const takeText = (text: string) => {
         if (holding) {
           held += text;
+          keepAlive();
           return;
         }
         line += text;

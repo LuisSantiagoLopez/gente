@@ -166,4 +166,12 @@ describe("where the guard applies", () => {
     expect(withAskInCardsRule(once, tools)).toBe(once);
     expect(withAskInCardsRule([system], [])).toEqual([system]);
   });
+
+  it("treats a promise to act now as a claim, but not an offer or a request", () => {
+    expect(claimsAction("Sorry about that! Let me just build that for you.")).toBe(true);
+    expect(claimsAction("I'll create a beautiful frontend app for you.")).toBe(true);
+    expect(claimsAction("¡Perdón! Voy a crear tu página ahora.")).toBe(true);
+    expect(claimsAction("Let me know if you want any changes.")).toBe(false);
+    expect(claimsAction("Do you want me to build it?")).toBe(false);
+  });
 });

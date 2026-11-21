@@ -52,10 +52,11 @@ export function CreateBotDialog({
   const save = useSave({ save: onCreate, closesScreen: true });
   const submitting = save.pending;
   const error = save.error ? errorText(save.error, t`Could not create bot`) : null;
-  const trimmed = name.trim();
+  // Gente: a bot left unnamed is called Your AI, never a stand-in like "bot".
+  const trimmed = name.trim() || "Your AI";
 
   function create() {
-    if (!trimmed || submitting) return;
+    if (submitting) return;
     save.run({ name: trimmed, ...newBotLookInput(avatarSet, look) });
   }
 
@@ -91,7 +92,7 @@ export function CreateBotDialog({
           <Input
             ref={nameRef}
             aria-label={t`Name`}
-            placeholder={t`Name your Bot`}
+            placeholder="Your AI"
             value={name}
             maxLength={BOT_NAME_MAX_LENGTH}
             onChange={(event) => setName(event.target.value)}

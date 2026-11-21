@@ -160,6 +160,29 @@ export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
 }
 
 /**
+ * Gente: a short message after a task that got no reply ("hey?" after a run that failed) is
+ * about that task, not small talk: it gets the full prompt and tools so the work can go on.
+ */
+export function followsTask(messages: readonly ChatMessage[]): boolean {
+  let replied = false;
+  let seenLatest = false;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const message = messages[i]!;
+    if (message.role === "assistant" && messageText(message.content).trim()) replied = true;
+    if (message.role !== "user") continue;
+    if (!seenLatest) {
+      seenLatest = true;
+      replied = false;
+      continue;
+    }
+    if (replied) return false;
+    const words = userWords(message.content);
+    return words.length > 0 && !(words.length <= 40 && SMALL_TALK.test(words));
+  }
+  return false;
+}
+
+/**
  * The bot's identity and memory without the long operating manual: the first two paragraphs
  * (platform and the bot's own profile) and the durable memory block.
  */
@@ -367,7 +390,7 @@ export function quickChatBody(
   // Gente: only clear small talk ("hey", "gracias") skips the tool schemas and the long manual,
   // so the first word comes in about a second. Anything else keeps its tools: a short request in
   // any language ("hazme una página web") must be able to act, not only talk about acting.
-  if (isSmallTalk(parsed.messages)) {
+  if (isSmallTalk(parsed.messages) && !followsTask(parsed.messages)) {
     const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
     // One assistant, two engines: greetings go to the small fast model when Gente set one.
     const quick = process.env.BURROW_CHAT_MODEL?.trim();

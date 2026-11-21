@@ -32,21 +32,26 @@ export const USE_TOOLS_NOTE = "<tool_note>Use your tools to do this now.</tool_n
 export const CLAIM_WINDOW_CHARS = 160;
 
 // First person, in progress or done: "I'm creating", "I've sent", "Listo, creé", "Estoy
-// buscando", "Já criei", "Estou enviando". Questions and offers ("Do you want me to create…",
+// buscando", "Já criei", "Estou enviando", and promises to act now ("Let me build…", "I'll
+// create…", "Voy a crear…"). Questions and offers ("Do you want me to create…",
 // "¿Quieres que lo cree?") do not match.
 const CLAIMS = [
   // English
   /\b(i'?m|i am)\s+(now\s+)?(creating|making|building|writing|sending|searching|looking|publishing|deploying|setting up|saving|scheduling|generating|designing|booking|ordering|opening|running|installing|uploading|downloading)\b/i,
   /\b(i'?ve|i have|i)\s+(just\s+)?(created|made|built|written|wrote|sent|published|deployed|set up|saved|scheduled|generated|designed|booked|ordered|opened|installed|uploaded|downloaded|searched)\b/i,
   /\b(done|all set)[!.,:]\s+(i|your|the)\b/i,
+  // A promise to act now, with no tool call behind it: "Let me just build…", "I'll create…".
+  /\b(let me|i'?ll|i will)\s+(now\s+|just\s+|go ahead and\s+)?(create|make|build|write|send|search|look up|publish|deploy|set up|save|schedule|generate|design|book|order|open|run|install|upload|download|code|put together|whip up)\b/i,
   /\b(your|the)\s+(website|site|page|file|email|document|reminder|event|image)\s+(is|has been)\s+(now\s+)?(ready|live|published|created|sent|saved|up)\b/i,
   // Spanish
+  /\b(d[eé]jame|voy a|ahora)\s+(crear|hacer|construir|escribir|enviar|mandar|buscar|publicar|guardar|agendar|generar|diseñar|abrir|instalar|armar|programar)\b/i,
   /\b(estoy|ya estoy)\s+(creando|haciendo|construyendo|escribiendo|enviando|mandando|buscando|publicando|guardando|agendando|generando|diseñando|abriendo|instalando|subiendo|descargando|preparando)\b/i,
   /(^|[\s¡!.,])(listo|hecho|ya)[!.,:]?\s+(he\s+|ya\s+)?(cre[eé]|hice|constru[ií]|escrib[ií]|envi[eé]|mand[eé]|publiqu[eé]|guard[eé]|agend[eé]|gener[eé]|dise[nñ][eé]|abr[ií]|instal[eé]|sub[ií]|descargu[eé])\b/i,
   /\b(he|ya)\s+(creado|hecho|construido|escrito|enviado|mandado|publicado|guardado|agendado|generado|diseñado|abierto|instalado|subido|descargado)\b/i,
   /\b(cre[eé]|publiqu[eé]|envi[eé]|mand[eé]|guard[eé])\s+(tu|el|la|los|las|un|una)\b/i,
   /\b(tu|el|la)\s+(p[aá]gina|sitio|web|archivo|correo|documento|recordatorio|evento|imagen)\s+(ya\s+)?(est[aá]|qued[oó])\s+(lista?|publicada?|creada?|enviada?|guardada?|en l[ií]nea)\b/i,
   // Portuguese
+  /\b(deixa eu|vou)\s+(criar|fazer|construir|escrever|enviar|mandar|pesquisar|publicar|salvar|agendar|gerar|abrir|instalar|montar)\b/i,
   /\b(estou|já estou)\s+(criando|fazendo|construindo|escrevendo|enviando|mandando|pesquisando|procurando|publicando|salvando|agendando|gerando|abrindo|instalando)\b/i,
   /\b(já|pronto)[!.,:]?\s+(criei|fiz|construí|escrevi|enviei|mandei|publiquei|salvei|agendei|gerei|abri|instalei)\b/i,
   /\b(eu\s+)?(criei|construí|enviei|publiquei|salvei|agendei)\s+(o|a|os|as|um|uma|seu|sua)\b/i,
@@ -197,9 +202,9 @@ export function guardActionClaims(response: Response, retry: () => Promise<Respo
             }
             if (typeof delta?.content === "string") {
               heldText += delta.content;
-              const decided =
-                heldText.length >= CLAIM_WINDOW_CHARS ||
-                /[.!?…](\s|$)|\n/.test(heldText.trim().slice(1));
+              // The whole window is judged, not just the first sentence: "Sorry about that!
+              // Let me build it now." claims in its second.
+              const decided = heldText.length >= CLAIM_WINDOW_CHARS;
               if (decided) {
                 if (claimsAction(heldText)) {
                   await swapToRetry();
