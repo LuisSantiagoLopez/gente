@@ -18,6 +18,7 @@ import { desktop } from "../desktop-state.js";
 import { handleIpc } from "../ipc/ipc.js";
 import { selfHealTimeline } from "../self-heal/start.js";
 import { NATIVE_PORTS_FILE } from "../this-computer/native-stack.js";
+import { exclusiveRepair } from "../this-computer/repair-lock.js";
 import { findMissingAppFiles } from "./app-files.js";
 import { askSupport, prewarmSupport, shouldOfferHuman } from "./assistant.js";
 import type { SupportViewState } from "./bridge.js";
@@ -149,10 +150,14 @@ function realProbe(options: SupportOptions): HealthProbe {
 function realFixes(options: SupportOptions, log: (line: string) => void): FixDeps {
   return {
     restartServices: async () => {
-      await startOllama();
-      await desktop.localStack.stop().catch(() => undefined);
-      const state = await desktop.localStack.start();
-      return state.phase === "ready" && (await ollamaRunning());
+      // Self-healing may be restarting the workspace already; never run a second restart beside it.
+      const done = await exclusiveRepair(async () => {
+        await startOllama();
+        await desktop.localStack.stop().catch(() => undefined);
+        const state = await desktop.localStack.start();
+        return state.phase === "ready" && (await ollamaRunning());
+      });
+      return done ?? false;
     },
     redownloadModel: async () => {
       // Only Gente's own model is removed; anything else the person keeps in Ollama stays.

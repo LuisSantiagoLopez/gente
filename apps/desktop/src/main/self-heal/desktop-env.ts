@@ -7,13 +7,13 @@ import { existsSync, readFileSync } from "node:fs";
 import { open, readFile, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { CONNECTED_APPS_UNCONFIGURED } from "@rakazo/adapters/desktop-server-env";
 import { app, session } from "electron";
 import { accountToken, isSignedIn } from "../burrow/account.js";
 import { OLLAMA_URL, readSavedBrain, startOllama } from "../burrow/brain.js";
 import { rebuildBrain } from "../burrow/brain-ipc.js";
-import { CONNECTED_APPS_UNCONFIGURED } from "@rakazo/adapters/desktop-server-env";
-import { COMPUTER_CHOICE_FILE, readComputerChoice } from "../burrow/service-keys.js";
 import { GENTE_CLOUD_URL } from "../burrow/gente-cloud.js";
+import { COMPUTER_CHOICE_FILE, readComputerChoice } from "../burrow/service-keys.js";
 import { desktop } from "../desktop-state.js";
 import { findMissingAppFiles } from "../support/app-files.js";
 import {
@@ -163,11 +163,15 @@ export function desktopHealEnv(input: {
         await accountToken().catch(() => null);
         return;
       }
-      const done = await stack()?.restartService?.(name);
-      if (!done) {
-        await desktop.localStack.stop().catch(() => undefined);
-        await desktop.localStack.start().catch(() => undefined);
+      const running = stack();
+      // A stack that restarts one service does it in place; when it says no, a stop or start
+      // already owns the services, and stopping it all again here would only start another set.
+      if (running?.restartService) {
+        await running.restartService(name);
+        return;
       }
+      await desktop.localStack.stop().catch(() => undefined);
+      await desktop.localStack.start().catch(() => undefined);
     },
     resetStack: async () => {
       await desktop.localStack.stop().catch(() => undefined);

@@ -10,16 +10,18 @@ import { createWriteStream, readFileSync, renameSync, statSync } from "node:fs";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { connect } from "node:net";
 import path from "node:path";
-import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/contracts";
-import { brainFile, type SavedBrain, swiftServerEnv } from "../burrow/brain.js";
-import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
-import { type Sealer, sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
-import { computerEnv, readComputerChoice } from "../burrow/service-keys.js";
 import {
   connectedAppsEnv,
   SERVER_TELEMETRY_OFF,
   storedServiceKey,
 } from "@rakazo/adapters/desktop-server-env";
+import type { DesktopLocalStackPhase, DesktopLocalStackState } from "@rakazo/contracts";
+import type { SavedBrain } from "../burrow/brain.js";
+import { brainFile, swiftServerEnv } from "../burrow/brain.js";
+import { CONTENT_ENCRYPTED_MARKER, encryptExistingContent } from "../burrow/content-encryption.js";
+import type { Sealer } from "../burrow/keyring.js";
+import { sealStackSecrets, unsealStackEnv } from "../burrow/keyring.js";
+import { computerEnv, readComputerChoice } from "../burrow/service-keys.js";
 import { telegramSecret } from "../burrow/telegram.js";
 import { t } from "../i18n.js";
 import { readPrivateFile, writePrivateFile } from "../setup/setup-store.js";
@@ -121,6 +123,28 @@ export function postgresAnswers(
   });
 }
 
+/**
+ * Pids in a `ps -axo pid=,command=` listing that run `binary` on an API or worker entry point
+ * (`…/apps/api/…` or `…/apps/worker/…`) and are neither in `ours` nor this process.
+ */
+export function strayServerPids(
+  listing: string,
+  binary: string,
+  ours: ReadonlySet<number>,
+  self: number,
+): number[] {
+  const pids: number[] = [];
+  for (const line of listing.split("\n")) {
+    const match = /^\s*(\d+)\s+(.*)$/.exec(line);
+    if (!match) continue;
+    const pid = Number(match[1]);
+    const command = match[2]!;
+    if (pid === self || ours.has(pid) || !command.startsWith(`${binary} `)) continue;
+    if (/\/apps\/(api|worker)\/\S*index\.js\b/.test(command)) pids.push(pid);
+  }
+  return pids;
+}
+
 /** Doubles from one second up to thirty, so a crash loop never spins. */
 export function restartDelay(attempt: number): number {
   return Math.min(1_000 * 2 ** attempt, 30_000);
@@ -145,11 +169,52 @@ export interface ServiceSpec {
   stopSignal: NodeJS.Signals;
 }
 
+/**
+ * Every server process this app started that has not exited yet, whichever `Service` owns it.
+ * A stack start stops all of them first, so an old API or worker can never outlive its stack.
+ */
+const liveChildren = new Set<ChildProcess>();
+
+/** The process ids of every server process this app started that is still running. */
+export function liveChildPids(): number[] {
+  return [...liveChildren].flatMap((child) => (child.pid ? [child.pid] : []));
+}
+
+/**
+ * Stops every server process this app started that is still running: SIGTERM, then SIGKILL after
+ * `graceMs`. Called before a stack starts its services, once every service was stopped.
+ */
+export async function stopLeftoverChildren(graceMs = STOP_GRACE_MS): Promise<number> {
+  const leftovers = [...liveChildren];
+  await Promise.all(
+    leftovers.map(
+      (child) =>
+        new Promise<void>((resolve) => {
+          if (child.exitCode !== null || child.signalCode !== null) {
+            liveChildren.delete(child);
+            return resolve();
+          }
+          const timer = setTimeout(() => child.kill("SIGKILL"), graceMs);
+          child.once("exit", () => {
+            clearTimeout(timer);
+            liveChildren.delete(child);
+            resolve();
+          });
+          child.kill("SIGTERM");
+        }),
+    ),
+  );
+  return leftovers.length;
+}
+
 /** One supervised process: output to its log file, restarted with backoff while the stack is up. */
 export class Service {
   private child: ChildProcess | null = null;
   private log: WriteStream | null = null;
   private stopping = false;
+  /** Set once the stack let go of this service: it never starts a process again. */
+  private retired = false;
+  private restarting: Promise<boolean> | null = null;
   private logBytes = 0;
   private rotating: Promise<void> | undefined;
   private held: string[] = [];
@@ -177,6 +242,7 @@ export class Service {
   }
 
   start() {
+    if (this.retired || this.child !== null) return;
     this.stopping = false;
     const startedAt = Date.now();
     if (!this.log) this.openLog();
@@ -185,6 +251,10 @@ export class Service {
       env: this.spec.env,
     });
     this.child = child;
+    liveChildren.add(child);
+    const forget = () => liveChildren.delete(child);
+    child.once("exit", forget);
+    child.once("close", forget);
     if (child.pid)
       void writeFile(this.pidFile(), `${child.pid}\n`, { mode: 0o600 }).catch(() => {});
     for (const stream of [child.stdout, child.stderr]) {
@@ -243,6 +313,29 @@ export class Service {
       signal.addEventListener("abort", onAbort, { once: true });
       if (!this.alive) onExit();
     });
+  }
+
+  /** The stack let go of this service: stop it for good. A restart already waiting gives up. */
+  retire(graceMs = STOP_GRACE_MS): Promise<void> {
+    this.retired = true;
+    return this.stop(graceMs);
+  }
+
+  /**
+   * Stops the process and starts a fresh one, one restart at a time. Returns false, starting
+   * nothing, when the stack let go of this service meanwhile (a reset or a quit).
+   */
+  restart(): Promise<boolean> {
+    this.restarting ??= (async () => {
+      if (this.retired) return false;
+      await this.stop();
+      if (this.retired) return false;
+      this.start();
+      return true;
+    })().finally(() => {
+      this.restarting = null;
+    });
+    return this.restarting;
   }
 
   async stop(graceMs = STOP_GRACE_MS) {
@@ -472,7 +565,6 @@ export const servicesFailed = () =>
   t("Your AI services did not start. Check the output below, then retry.");
 
 export class NativeStackController extends StackLifecycle {
-
   /** Gente self-heal: whether one service is running (null when the stack has no such service). */
   serviceAlive(name: string): boolean | null {
     const service = this.services.find((s) => s.spec.name === name);
@@ -482,10 +574,9 @@ export class NativeStackController extends StackLifecycle {
   /** Gente self-heal: restarts one service, leaving the others running. */
   async restartService(name: string): Promise<boolean> {
     const service = this.services.find((s) => s.spec.name === name);
-    if (!service) return false;
-    await service.stop();
-    service.start();
-    return true;
+    // A stop or a fresh start owns the services now; it starts its own.
+    if (!service || this.stopInFlight() || this.current.phase !== "ready") return false;
+    return service.restart();
   }
   private background: AbortController | null = null;
   private services: Service[] = [];
@@ -887,7 +978,9 @@ export class NativeStackController extends StackLifecycle {
     let existing = await this.inspectDatabase(cli, signal);
     if (existing === null && ports.database !== undefined && ports.database !== holder) {
       throw new StartFailure(
-        t("Your Your AI data is in a different computer runtime. Quit the one running, then retry."),
+        t(
+          "Your Your AI data is in a different computer runtime. Quit the one running, then retry.",
+        ),
       );
     }
     if (ports.database === undefined) {
@@ -1086,7 +1179,8 @@ export class NativeStackController extends StackLifecycle {
           signal,
         })
       ).code === 0;
-    for (let i = 0; i < 60 && !(await ready()); i++) await (this.deps.sleep ?? defaultSleep)(1_000, signal);
+    for (let i = 0; i < 60 && !(await ready()); i++)
+      await (this.deps.sleep ?? defaultSleep)(1_000, signal);
     const dump = await this.deps.run(
       cli,
       ["exec", DATABASE_CONTAINER, "pg_dumpall", "-U", NATIVE_OWNER],
@@ -1099,9 +1193,13 @@ export class NativeStackController extends StackLifecycle {
     await mkdir(this.dir("backups"), { recursive: true, mode: 0o700 });
     const stamp = new Date().toISOString().replace(/[:.]/g, "-");
     await writePrivateFile(this.dir("backups", `previous-database-${stamp}.sql`), dump.stdout);
-    await this.runtimeCommand(cli, ["stop", "--time", "30", DATABASE_CONTAINER], signal).catch(() => undefined);
+    await this.runtimeCommand(cli, ["stop", "--time", "30", DATABASE_CONTAINER], signal).catch(
+      () => undefined,
+    );
     await this.runtimeCommand(cli, ["rm", DATABASE_CONTAINER], signal);
-    await this.runtimeCommand(cli, ["volume", "rm", DATABASE_CONTAINER], signal).catch(() => undefined);
+    await this.runtimeCommand(cli, ["volume", "rm", DATABASE_CONTAINER], signal).catch(
+      () => undefined,
+    );
   }
 
   /** Runs SQL as the owner over the VM's own socket, so no password is needed or passed. */
@@ -1167,9 +1265,11 @@ export class NativeStackController extends StackLifecycle {
     this.services = [];
     const database = services.filter((service) => service.spec.name === "postgres");
     await Promise.all(
-      services.filter((service) => !database.includes(service)).map((service) => service.stop()),
+      services.filter((service) => !database.includes(service)).map((service) => service.retire()),
     );
-    await Promise.all(database.map((service) => service.stop(30_000)));
+    await Promise.all(database.map((service) => service.retire(30_000)));
+    // Anything this app started that is somehow still running goes too.
+    await stopLeftoverChildren();
   }
 
   /** A launch that crashed can leave its processes running; stop any whose command is ours. */
@@ -1198,6 +1298,26 @@ export class NativeStackController extends StackLifecycle {
         }
       }
       await rm(pidFile, { force: true });
+    }
+    await this.stopStrayServers(signal);
+  }
+
+  /**
+   * An API or worker of this app that no pid file names (a restart in an older build could leave
+   * one behind): any process running this app's binary on a server entry point, that this app did
+   * not start in this launch, is stopped. Left running, they fill the database's connections.
+   */
+  private async stopStrayServers(signal: AbortSignal) {
+    const listed = await this.deps.run("/bin/ps", ["-ww", "-axo", "pid=,command="], {
+      cwd: this.deps.stackDir,
+      env: this.baseEnv(),
+      timeoutMs: 5_000,
+      signal,
+    });
+    if (listed.code !== 0) return;
+    const ours = new Set(liveChildPids());
+    for (const pid of strayServerPids(listed.stdout, this.deps.nodeBinary, ours, process.pid)) {
+      await this.killAndWait(pid, "SIGTERM", signal);
     }
   }
 
