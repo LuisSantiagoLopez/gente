@@ -142,10 +142,7 @@ describe("normalizeRunError", () => {
     ],
     ["SAFETY margin exceeded", "The model provider returned an error."],
     ["Request timed out", "Getting your AI ready again…"],
-    [
-      '504: {"message":"Gateway error"}',
-      "Getting your AI ready again…",
-    ],
+    ['504: {"message":"Gateway error"}', "Getting your AI ready again…"],
     [
       '403: {"message":"This model requires you to upgrade to a paid plan"}',
       "Your model provider denied access to this model.",

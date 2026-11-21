@@ -117,4 +117,25 @@ describe("run activity", () => {
     );
     expect(activity?.steps[0]).toMatchObject({ startedAt: at(1), durationMs: 3000 });
   });
+
+  it("shows a question card as done even when its end is reported before its start", () => {
+    const [activity] = projectRunActivity([
+      { type: "run.started", runId: "r1", createdAt: at(0), payload: {} },
+      {
+        type: "agent.tool.completed",
+        runId: "r1",
+        createdAt: at(2),
+        payload: { name: "ask_user", executionId: "e1", outcome: "paused" },
+      },
+      {
+        type: "agent.tool.called",
+        runId: "r1",
+        createdAt: at(2),
+        payload: { name: "ask_user", executionId: "e1", label: "Asking you: Which city?" },
+      },
+    ]);
+    expect(activity?.steps).toMatchObject([
+      { id: "e1", label: "Asking you: Which city?", status: "succeeded" },
+    ]);
+  });
 });

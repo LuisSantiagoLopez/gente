@@ -116,9 +116,19 @@ export function reduceRunActivity(
   }
   if (event.type === "agent.tool.called") {
     const id = String(payload.executionId ?? `${activity.steps.length}`);
-    if (activity.steps.some((step) => step.id === id)) return activity;
     const name = String(payload.name ?? "");
     const input = text(payload.input);
+    const label = text(payload.label) ?? humanizeToolName(name);
+    // Gente: a paused call (a question card) reports its end just before its start; the step
+    // that end made keeps its status and gains its label and input here.
+    if (activity.steps.some((step) => step.id === id)) {
+      return {
+        ...activity,
+        steps: activity.steps.map((step) =>
+          step.id === id ? { ...step, label, ...(input ? { input } : {}) } : step,
+        ),
+      };
+    }
     return {
       ...activity,
       startedAt: activity.startedAt ?? at,
@@ -126,7 +136,7 @@ export function reduceRunActivity(
         ...activity.steps,
         {
           id,
-          label: text(payload.label) ?? humanizeToolName(name),
+          label,
           ...(input ? { input } : {}),
           status: "running",
           startedAt: at,
@@ -136,6 +146,16 @@ export function reduceRunActivity(
   }
   if (event.type === "agent.tool.completed") {
     const id = String(payload.executionId ?? "");
+    if (id && !activity.steps.some((step) => step.id === id)) {
+      const name = String(payload.name ?? "");
+      const early = {
+        id,
+        label: humanizeToolName(name),
+        status: "running" as const,
+        startedAt: at,
+      };
+      return { ...activity, steps: [...activity.steps, finishStep(early, payload)] };
+    }
     return {
       ...activity,
       steps: activity.steps.map((step) =>
