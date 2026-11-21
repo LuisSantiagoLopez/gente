@@ -30,6 +30,7 @@ import {
 } from "../assembly/silent-reply.js";
 import type { ExecutorDeps } from "../executor/executor-deps.js";
 import { PAGE_BROWSER_TOOL_NAMES } from "../tools/run-tool-selection.js";
+import { recordThought } from "./run-thoughts.js";
 import {
   clampUserProgressMessage,
   extractNarrationText,
@@ -289,7 +290,11 @@ export function addDraft(
     return;
   }
   const pending = reply.pendingDraft ?? { thinking: "" };
-  if (draft.thinking) pending.thinking += reply.draftRedactors.thinking.push(draft.thinking);
+  if (draft.thinking) {
+    const thinking = reply.draftRedactors.thinking.push(draft.thinking);
+    pending.thinking += thinking;
+    recordThought(ctx, thinking);
+  }
   if (draft.tool) {
     const args = reply.draftRedactors.tool.push(draft.tool.args);
     // A new call's arguments replace the last one's in the view.

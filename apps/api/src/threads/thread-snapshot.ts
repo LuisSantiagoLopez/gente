@@ -371,6 +371,7 @@ async function loadRunActivity(
         type: {
           in: [
             "run.started",
+            "run.thought",
             "agent.tool.called",
             "agent.tool.completed",
             "run.completed",

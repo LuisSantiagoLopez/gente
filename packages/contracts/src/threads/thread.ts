@@ -44,6 +44,8 @@ export type ThreadMessagePage = z.infer<typeof ThreadMessagePageSchema>;
 /** Gente: one tool call of a run, as its expandable activity list shows it. */
 export const RunActivityStepSchema = z.object({
   id: z.string(),
+  /** Gente: a stretch of thinking, its text in `output`; absent for a tool call. */
+  kind: z.literal("thought").optional(),
   label: z.string(),
   input: z.string().optional(),
   output: z.string().optional(),

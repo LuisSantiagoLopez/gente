@@ -1,46 +1,47 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
+//
+// The one arrow under each reply, like ChatGPT's. Closed, it reads "Thought for 4s" or
+// "Worked for 52s · 3 steps". Open, it shows the timeline of thinking and steps
+// (RunActivityTimeline.tsx). It is live while the run works and stays openable afterwards.
+// Rendered by the chat transcript (pages/shell/chat/transcript.tsx), once per run.
 import { Plural, Trans, useLingui } from "@lingui/react/macro";
 import { useNow } from "@rakazo/chat-ui/hooks";
-import type { RunActivity, RunActivityStep } from "@rakazo/contracts";
+import type { RunActivity } from "@rakazo/contracts";
 import { formatCompactDuration } from "@rakazo/core";
-import { Button } from "@rakazo/ui-web";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@rakazo/ui-web/components/ui/collapsible";
-import { Check, ChevronRight, CircleSlash, LoaderCircle, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
-import { useState } from "react";
-import { runActivitySteps, thoughtMs } from "../../lib/chat/run-activity-steps";
+import {
+  runActivitySteps,
+  thoughtMs,
+  toolStepCount,
+  unsavedThinking,
+} from "../../lib/chat/run-activity-steps";
+import { elapsed, RunActivityTimeline } from "./RunActivityTimeline";
 
-/** Lines of a step's input or output shown before "Show more". */
-const PREVIEW_CHARS = 240;
+/** What the model is writing right now, from the run's live progress. */
+export type LiveRunDraft = { thinking?: string; toolDraft?: { name: string; args: string } };
 
-function elapsed(startedAt: string | undefined, endAt: number): number | undefined {
-  if (!startedAt) return undefined;
-  const start = Date.parse(startedAt);
-  return Number.isFinite(start) ? Math.max(0, endAt - start) : undefined;
-}
-
-/**
- * Gente: the run's working line with a chevron that opens what it is doing step by step: each
- * tool in plain words, its input and output, how it ended and how long it took, plus the run's
- * total time and tokens. It stays openable under the reply once the run ends.
- */
 export function RunActivityRow({
   activity,
   live,
+  draft,
   children,
 }: {
   activity: RunActivity | undefined;
   live: boolean;
-  /** The working line shown beside the chevron while the run is live. */
+  /** Live only: the thinking and tool arguments streaming now. */
+  draft?: LiveRunDraft;
+  /** The working line shown beside the arrow while the run is live. */
   children?: ReactNode;
 }) {
   const { t } = useLingui();
-  const toolSteps = activity?.steps.length ?? 0;
+  const toolSteps = toolStepCount(activity);
   const steps = runActivitySteps(activity, {
     read: t`Read your message`,
     reply: t`Wrote the reply`,
@@ -49,7 +50,8 @@ export function RunActivityRow({
   const endAt = activity?.endedAt ? Date.parse(activity.endedAt) : now;
   const total = formatCompactDuration(elapsed(activity?.startedAt, endAt));
   const thought = formatCompactDuration(thoughtMs(activity, now));
-  // Gente: every run gets its arrow, a plain "hey" too, live and after it ends.
+  const liveThinking = live ? unsavedThinking(activity, draft?.thinking) : "";
+  // Every run gets its arrow, a plain "hey" too, live and after it ends.
   if (!live && !activity?.startedAt) return null;
   return (
     <Collapsible className="group" data-testid="run-activity">
@@ -67,10 +69,15 @@ export function RunActivityRow({
           {live && children ? null : (
             <span className="flex items-center gap-2" data-testid="run-activity-summary">
               {toolSteps > 0 ? (
-                <>
+                total ? (
+                  <Plural
+                    value={toolSteps}
+                    one={`Worked for ${total} · # step`}
+                    other={`Worked for ${total} · # steps`}
+                  />
+                ) : (
                   <Plural value={toolSteps} one="# step" other="# steps" />
-                  {total ? <span>· {total}</span> : null}
-                </>
+                )
               ) : thought ? (
                 <Trans>Thought for {thought}</Trans>
               ) : (
@@ -82,81 +89,25 @@ export function RunActivityRow({
         {live ? children : null}
       </div>
       <CollapsibleContent>
-        <div className="ms-[7px] mt-1 flex flex-col gap-2 border-s border-border ps-3 text-body-sm">
-          {steps.length === 0 ? (
-            <span className="text-muted-foreground">
-              <Trans>Reading your message</Trans>
+        <RunActivityTimeline
+          steps={steps}
+          now={now}
+          liveThinking={liveThinking}
+          liveToolDraft={live ? draft?.toolDraft?.args : undefined}
+        />
+        <div className="ms-[7px] flex gap-3 ps-3 pt-1 text-body-sm text-muted-foreground">
+          {total ? (
+            <span>
+              <Trans>Total {total}</Trans>
             </span>
-          ) : (
-            steps.map((step) => <ActivityStep key={step.id} step={step} now={now} />)
-          )}
-          <div className="flex gap-3 text-muted-foreground">
-            {total ? (
-              <span>
-                <Trans>Total {total}</Trans>
-              </span>
-            ) : null}
-            {activity?.tokens ? (
-              <span>
-                <Plural value={activity.tokens} one="# token" other="# tokens" />
-              </span>
-            ) : null}
-          </div>
+          ) : null}
+          {activity?.tokens ? (
+            <span>
+              <Plural value={activity.tokens} one="# token" other="# tokens" />
+            </span>
+          ) : null}
         </div>
       </CollapsibleContent>
     </Collapsible>
-  );
-}
-
-function StatusIcon({ status }: { status: RunActivityStep["status"] }) {
-  const { t } = useLingui();
-  const className = "size-3.5 shrink-0";
-  if (status === "running")
-    return <LoaderCircle aria-label={t`Running`} className={`${className} animate-spin`} />;
-  if (status === "succeeded") return <Check aria-label={t`Done`} className={className} />;
-  if (status === "failed")
-    return <X aria-label={t`Failed`} className={`${className} text-destructive`} />;
-  return <CircleSlash aria-label={t`Stopped`} className={className} />;
-}
-
-function ActivityStep({ step, now }: { step: RunActivityStep; now: number }) {
-  const duration = formatCompactDuration(
-    step.status === "running" ? elapsed(step.startedAt, now) : step.durationMs,
-  );
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-1.5 text-foreground/85">
-        <StatusIcon status={step.status} />
-        <span className="min-w-0 truncate">{step.label}</span>
-        {duration ? (
-          <span className="ms-auto shrink-0 text-muted-foreground tabular-nums">{duration}</span>
-        ) : null}
-      </div>
-      {step.input ? <StepText label={<Trans>Input</Trans>} text={step.input} /> : null}
-      {step.output ? <StepText label={<Trans>Output</Trans>} text={step.output} /> : null}
-    </div>
-  );
-}
-
-function StepText({ label, text }: { label: ReactNode; text: string }) {
-  const [expanded, setExpanded] = useState(false);
-  const long = text.length > PREVIEW_CHARS;
-  return (
-    <div className="ms-5 flex flex-col gap-0.5">
-      <span className="text-muted-foreground">{label}</span>
-      <pre className="max-h-64 overflow-auto rounded-md bg-muted px-2 py-1 font-mono whitespace-pre-wrap break-words text-foreground/80">
-        {long && !expanded ? `${text.slice(0, PREVIEW_CHARS)}…` : text}
-      </pre>
-      {long ? (
-        <Button
-          variant="text"
-          size="xs"
-          onClick={() => setExpanded((value) => !value)}
-          className="w-fit font-normal"
-        >
-          {expanded ? <Trans>Show less</Trans> : <Trans>Show more</Trans>}
-        </Button>
-      ) : null}
-    </div>
   );
 }

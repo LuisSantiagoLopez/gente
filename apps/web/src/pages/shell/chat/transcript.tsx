@@ -42,11 +42,13 @@ import {
 import { ActiveBotGlyph } from "../../../components/ai/CollaborationMarker";
 import { VoiceChatCard } from "../../../components/call/VoiceChatCard";
 import { RunActivityRow } from "../../../components/messages/RunActivityRow";
+import { liveRunDraft } from "../../../lib/chat/live-run-draft";
 import {
   isDetachedRange,
   lastSelectedText,
   quoteDraftForSelection,
 } from "../../../lib/chat/quote-selection";
+import { createStableKeyState, stableMessageKeys } from "../../../lib/chat/stable-message-keys";
 import { messageHasVisibleBlocks } from "../../../lib/chat/tool-activity-view";
 import { TRANSCRIPT_CONTENT_PADDING } from "../../../lib/chat/transcript-layout";
 import { transcriptIsNearEnd, transcriptMovedDown } from "../../../lib/chat/transcript-scroll";
@@ -304,6 +306,9 @@ export const Transcript = memo(function Transcript({
     () => new Map((runActivity ?? []).map((activity) => [activity.runId, activity])),
     [runActivity],
   );
+  // Gente: a streamed reply keeps its element when the saved message replaces it.
+  const keyState = useRef(createStableKeyState());
+  const messageKeys = stableMessageKeys(messages, keyState.current);
   const lastMessageOfRun = new Map<string, string>();
   for (const item of shownItems) {
     if (item.kind === "voiceChat") continue;
@@ -663,7 +668,7 @@ export const Transcript = memo(function Transcript({
           const peerReceipt = isPeerReceiptBlocks(message.blocks);
           const messageReactions = reactionView.reactions.get(message.id);
           return (
-            <Fragment key={message.id}>
+            <Fragment key={messageKeys.get(message.id) ?? message.id}>
               {separatorIds.has(message.id) ? (
                 <TimeSeparator createdAt={message.createdAt} locale={i18n.locale || "en"} />
               ) : null}
@@ -785,7 +790,11 @@ export const Transcript = memo(function Transcript({
         })}
         {/* Gente: the arrow stays while the reply streams; it then reads "Thought for …". */}
         {running ? (
-          <RunActivityRow activity={activityByRun.get(liveRunId ?? "")} live>
+          <RunActivityRow
+            activity={activityByRun.get(liveRunId ?? "")}
+            live
+            draft={liveRunDraft(messages, liveRunId)}
+          >
             {messages.some(
               (message) =>
                 message.id.startsWith("progress:") && liveMessageComposing(message.blocks),

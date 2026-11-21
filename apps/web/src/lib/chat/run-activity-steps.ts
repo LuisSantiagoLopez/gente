@@ -1,5 +1,6 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
+// What a reply's activity row lists, worked out from the run's activity. Used by RunActivityRow.
 import type { RunActivity, RunActivityStep } from "@rakazo/contracts";
 
 function at(value: string | undefined): number | undefined {
@@ -25,9 +26,11 @@ export function runActivitySteps(
   labels: { read: string; reply: string },
 ): RunActivityStep[] {
   if (!activity) return [];
-  if (activity.steps.length > 0) return activity.steps;
+  if (toolStepCount(activity) > 0) return activity.steps;
   const start = at(activity.startedAt);
   if (start === undefined) return [];
+  // Gente: a plain chat that thought shows its thinking, then the reply.
+  const thoughts = activity.steps;
   const first = at(activity.firstOutputAt);
   const end = at(activity.endedAt);
   const read: RunActivityStep = {
@@ -39,9 +42,9 @@ export function runActivitySteps(
       ? { durationMs: Math.max(0, (first ?? end!) - start) }
       : {}),
   };
-  if (first === undefined) return [read];
+  if (first === undefined) return thoughts.length ? thoughts : [read];
   return [
-    read,
+    ...(thoughts.length ? thoughts : [read]),
     {
       id: "reply",
       label: labels.reply,
@@ -50,4 +53,25 @@ export function runActivitySteps(
       ...(end === undefined ? {} : { durationMs: Math.max(0, end - first) }),
     },
   ];
+}
+
+/** Gente: the tool calls a run made, leaving out its stretches of thinking. */
+export function toolStepCount(activity: RunActivity | undefined): number {
+  return activity?.steps.filter((step) => step.kind !== "thought").length ?? 0;
+}
+
+/**
+ * Gente: thinking still streaming that is not yet saved as a step. The live text keeps
+ * everything since the model's turn began, so the part already saved is cut off.
+ */
+export function unsavedThinking(activity: RunActivity | undefined, live: string | undefined) {
+  const text = live?.trim() ?? "";
+  if (!text) return "";
+  const saved = activity?.steps
+    .findLast((step) => step.kind === "thought")
+    ?.output?.replace(/…$/, "")
+    .trim();
+  if (!saved) return text;
+  const end = text.lastIndexOf(saved);
+  return end < 0 ? text : text.slice(end + saved.length).trim();
 }

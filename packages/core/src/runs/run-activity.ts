@@ -40,6 +40,7 @@ export function isRunActivityEvent(event: {
     Boolean(event.runId) &&
     (isFirstOutputEvent(event) ||
       event.type === "run.started" ||
+      event.type === "run.thought" ||
       event.type === "agent.tool.called" ||
       event.type === "agent.tool.completed" ||
       event.type === "run.completed" ||
@@ -80,6 +81,35 @@ export function reduceRunActivity(
   }
   if (event.type === "run.started") {
     return { ...activity, startedAt: activity.startedAt ?? at, endedAt: undefined };
+  }
+  if (event.type === "run.thought") {
+    // Gente: thinking sits in the timeline between the steps it came before.
+    const thought = text(payload.text);
+    if (!thought) return current;
+    const durationMs =
+      typeof payload.durationMs === "number" && Number.isFinite(payload.durationMs)
+        ? Math.max(0, Math.round(payload.durationMs))
+        : undefined;
+    const ended = Date.parse(at);
+    return {
+      ...activity,
+      startedAt: activity.startedAt ?? at,
+      steps: [
+        ...activity.steps,
+        {
+          id: `thought-${activity.steps.length}`,
+          kind: "thought",
+          label: "",
+          output: thought,
+          status: "succeeded",
+          startedAt:
+            durationMs !== undefined && Number.isFinite(ended)
+              ? new Date(ended - durationMs).toISOString()
+              : at,
+          ...(durationMs === undefined ? {} : { durationMs }),
+        },
+      ],
+    };
   }
   if (event.type === "agent.tool.called") {
     const id = String(payload.executionId ?? `${activity.steps.length}`);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { runActivitySteps, thoughtMs } from "./run-activity-steps";
+import { runActivitySteps, thoughtMs, toolStepCount, unsavedThinking } from "./run-activity-steps";
 
 const at = (ms: number) => new Date(Date.UTC(2026, 0, 1) + ms).toISOString();
 const labels = { read: "Read your message", reply: "Wrote the reply" };
@@ -55,5 +55,26 @@ describe("run activity steps", () => {
   it("has nothing to list before the run starts", () => {
     expect(runActivitySteps(undefined, labels)).toEqual([]);
     expect(runActivitySteps({ runId: "r1", steps: [] }, labels)).toEqual([]);
+  });
+
+  it("counts only tool calls as steps and shows only thinking not saved yet", () => {
+    const activity = {
+      runId: "r1",
+      startedAt: at(0),
+      steps: [
+        {
+          id: "thought-0",
+          kind: "thought" as const,
+          label: "",
+          output: "Plan the page.",
+          status: "succeeded" as const,
+          startedAt: at(0),
+        },
+        { id: "e1", label: "Write file", status: "running" as const, startedAt: at(10) },
+      ],
+    };
+    expect(toolStepCount(activity)).toBe(1);
+    expect(unsavedThinking(activity, "Plan the page. Then check it.")).toBe("Then check it.");
+    expect(unsavedThinking(activity, "Something new")).toBe("Something new");
   });
 });
