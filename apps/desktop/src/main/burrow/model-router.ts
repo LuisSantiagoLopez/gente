@@ -8,6 +8,7 @@ import { randomBytes } from "node:crypto";
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import { createServer } from "node:http";
 import { Readable } from "node:stream";
+import { sanitizeChatBody } from "@rakazo/adapters/chat-request-sanitizer";
 
 export type AiMode = "fast" | "private";
 
@@ -38,10 +39,17 @@ export async function startModelRouter(deps: RouterDeps) {
     const path = req.url ?? "/";
     const isChat = req.method === "POST" && path.startsWith("/v1/chat/completions");
     const asked = Date.now();
+    // The final check before the model: a resumed run never sends a call without its result.
+    const sent =
+      isChat && body && body.length > 0
+        ? new TextEncoder().encode(sanitizeChatBody(body.toString("utf8")))
+        : body && body.length > 0
+          ? new Uint8Array(body)
+          : undefined;
     const answer = await doFetch(`${deps.localBase}${path}`, {
       method: req.method,
       headers: { "content-type": req.headers["content-type"] ?? "application/json" },
-      body: body && body.length > 0 ? new Uint8Array(body) : undefined,
+      body: sent,
     }).catch(() => null);
     if (!answer) {
       res.writeHead(502).end();

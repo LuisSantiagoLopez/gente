@@ -10,6 +10,8 @@ import { createWriteStream, existsSync } from "node:fs";
 import { appendFile, mkdir, readFile, rm, statfs, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import type { WireMessage } from "@rakazo/adapters/chat-request-sanitizer";
+import { sanitizeChatMessages } from "@rakazo/adapters/chat-request-sanitizer";
 
 /** Ollama's default address. `BURROW_OLLAMA_URL` points tests at a stand-in server. */
 export const OLLAMA_URL = process.env.BURROW_OLLAMA_URL?.trim() || "http://127.0.0.1:11434";
@@ -318,7 +320,11 @@ async function warmUp(stackDirectory: string): Promise<boolean> {
     ) as { messages?: unknown[] };
     const body =
       Array.isArray(prefix.messages) && prefix.messages.length > 0
-        ? { ...prefix, stream_options: undefined }
+        ? {
+            ...prefix,
+            messages: sanitizeChatMessages(prefix.messages as WireMessage[]),
+            stream_options: undefined,
+          }
         : { messages: [{ role: "user", content: "hi" }] };
     const res = await fetch(`${OLLAMA_URL}/v1/chat/completions`, {
       method: "POST",
@@ -361,6 +367,8 @@ async function warmTaskPrefix(stackDirectory: string, model: string): Promise<vo
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         ...prefix,
+        // A prefix saved by an older build can end in a tool call without its result.
+        messages: sanitizeChatMessages(prefix.messages as WireMessage[]),
         stream_options: undefined,
         model,
         stream: false,
