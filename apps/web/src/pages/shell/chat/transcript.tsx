@@ -783,12 +783,15 @@ export const Transcript = memo(function Transcript({
             </Fragment>
           );
         })}
-        {running &&
-        !messages.some(
-          (message) => message.id.startsWith("progress:") && liveMessageComposing(message.blocks),
-        ) ? (
+        {/* Gente: the arrow stays while the reply streams; it then reads "Thought for …". */}
+        {running ? (
           <RunActivityRow activity={activityByRun.get(liveRunId ?? "")} live>
-            <ActiveBotGlyph bots={workingBots} label={workingLabel} />
+            {messages.some(
+              (message) =>
+                message.id.startsWith("progress:") && liveMessageComposing(message.blocks),
+            ) ? null : (
+              <ActiveBotGlyph bots={workingBots} label={workingLabel} />
+            )}
           </RunActivityRow>
         ) : null}
       </div>

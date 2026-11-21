@@ -121,7 +121,7 @@ test("settings shell is two-pane and deep-links Models Memory Voice Usage", asyn
   await expect(settings.getByRole("heading", { name: "Account", exact: true })).toBeVisible();
   const streamReplies = settings.getByTestId("response-streaming-toggle");
   await expect(streamReplies).toBeVisible();
-  await expect(streamReplies).not.toBeChecked();
+  await expect(streamReplies).toBeChecked();
   await streamReplies.scrollIntoViewIfNeeded();
   await captureScreenshot(page, testInfo, "settings-shell-general");
   const scroller = settings.getByTestId("settings-scroll");

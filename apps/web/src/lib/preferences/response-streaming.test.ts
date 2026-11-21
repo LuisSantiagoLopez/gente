@@ -6,29 +6,39 @@ afterEach(() => {
   vi.resetModules();
 });
 
-describe("response streaming preference", () => {
-  it("leaves streaming off until a saved choice turns it on", async () => {
-    const store = new Map<string, string>();
-    vi.stubGlobal("localStorage", {
-      getItem: (key: string) => store.get(key) ?? null,
-      setItem: (key: string, value: string) => {
-        store.set(key, value);
-      },
-    });
-    const { responseStreamingPreference } = await import("./response-streaming");
-    expect(responseStreamingPreference.get()).toBe(false);
-    responseStreamingPreference.set(true);
-    expect(store.get(RESPONSE_STREAMING_STORAGE_KEY)).toBe("on");
-    responseStreamingPreference.set(false);
-    expect(store.get(RESPONSE_STREAMING_STORAGE_KEY)).toBe("off");
+const stubStorage = (store: Map<string, string>) =>
+  vi.stubGlobal("localStorage", {
+    getItem: (key: string) => store.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      store.set(key, value);
+    },
   });
 
-  it("reads a saved choice", async () => {
-    vi.stubGlobal("localStorage", {
-      getItem: (key: string) => (key === RESPONSE_STREAMING_STORAGE_KEY ? "on" : null),
-      setItem: () => undefined,
-    });
+describe("response streaming preference", () => {
+  it("streams replies by default and saves a choice to turn it off", async () => {
+    const store = new Map<string, string>();
+    stubStorage(store);
+    const { responseStreamingPreference, RESPONSE_STREAMING_KEY } = await import(
+      "./response-streaming"
+    );
+    expect(responseStreamingPreference.get()).toBe(true);
+    responseStreamingPreference.set(false);
+    expect(store.get(RESPONSE_STREAMING_KEY)).toBe("off");
+    responseStreamingPreference.set(true);
+    expect(store.get(RESPONSE_STREAMING_KEY)).toBe("on");
+  });
+
+  it("ignores an 'off' saved under the old default", async () => {
+    stubStorage(new Map([[RESPONSE_STREAMING_STORAGE_KEY, "off"]]));
     const { responseStreamingPreference } = await import("./response-streaming");
     expect(responseStreamingPreference.get()).toBe(true);
+  });
+
+  it("keeps a saved 'off'", async () => {
+    const { RESPONSE_STREAMING_KEY } = await import("./response-streaming");
+    vi.resetModules();
+    stubStorage(new Map([[RESPONSE_STREAMING_KEY, "off"]]));
+    const { responseStreamingPreference } = await import("./response-streaming");
+    expect(responseStreamingPreference.get()).toBe(false);
   });
 });

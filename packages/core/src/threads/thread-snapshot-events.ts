@@ -101,7 +101,11 @@ export function reduceThreadSnapshot<S extends LiveThreadSnapshot>(
     [{ ...event, createdAt: event.createdAt ?? new Date().toISOString() }],
     prev.runActivity,
   );
-  return { ...next, runActivity };
+  // Streamed text after the first words changes nothing here; keep the same list.
+  const same =
+    runActivity.length === (prev.runActivity?.length ?? 0) &&
+    runActivity.every((activity, i) => activity === prev.runActivity?.[i]);
+  return same ? next : { ...next, runActivity };
 }
 
 function reduce(prev: LiveThreadSnapshot, event: ThreadSnapshotEvent): LiveThreadSnapshot {

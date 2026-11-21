@@ -363,7 +363,7 @@ async function loadRunActivity(
     -RUN_ACTIVITY_KEPT,
   );
   if (runIds.length === 0) return [];
-  const [events, usage] = await Promise.all([
+  const [events, replies, usage] = await Promise.all([
     prisma.event.findMany({
       where: {
         threadId,
@@ -382,6 +382,18 @@ async function loadRunActivity(
       orderBy: { seq: "asc" },
       select: { type: true, runId: true, createdAt: true, payload: true },
     }),
+    // Each run's first bot message: when its reply appeared, for "Thought for" and its steps.
+    prisma.event.findMany({
+      where: {
+        threadId,
+        runId: { in: runIds },
+        type: { in: ["thread.message.created"] },
+        payload: { path: ["role"], equals: "bot" },
+      },
+      orderBy: { seq: "asc" },
+      distinct: ["runId"],
+      select: { type: true, runId: true, createdAt: true },
+    }),
     prisma.usageRecord.groupBy({
       by: ["runId"],
       where: { runId: { in: runIds } },
@@ -391,7 +403,11 @@ async function loadRunActivity(
   const tokens = new Map(
     usage.map((row) => [row.runId, (row._sum.inputTokens ?? 0) + (row._sum.outputTokens ?? 0)]),
   );
-  return projectRunActivity(events).map((activity) => {
+  const ordered = [
+    ...events,
+    ...replies.map((reply) => ({ ...reply, payload: { role: "bot" } })),
+  ].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  return projectRunActivity(ordered).map((activity) => {
     const used = tokens.get(activity.runId);
     return used ? { ...activity, tokens: used } : activity;
   });

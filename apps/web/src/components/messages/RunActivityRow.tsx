@@ -13,6 +13,7 @@ import {
 import { Check, ChevronRight, CircleSlash, LoaderCircle, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { runActivitySteps, thoughtMs } from "../../lib/chat/run-activity-steps";
 
 /** Lines of a step's input or output shown before "Show more". */
 const PREVIEW_CHARS = 240;
@@ -39,11 +40,17 @@ export function RunActivityRow({
   children?: ReactNode;
 }) {
   const { t } = useLingui();
-  const steps = activity?.steps ?? [];
+  const toolSteps = activity?.steps.length ?? 0;
+  const steps = runActivitySteps(activity, {
+    read: t`Read your message`,
+    reply: t`Wrote the reply`,
+  });
   const now = useNow(live ? 250 : null);
   const endAt = activity?.endedAt ? Date.parse(activity.endedAt) : now;
   const total = formatCompactDuration(elapsed(activity?.startedAt, endAt));
-  if (!live && steps.length === 0) return null;
+  const thought = formatCompactDuration(thoughtMs(activity, now));
+  // Gente: every run gets its arrow, a plain "hey" too, live and after it ends.
+  if (!live && !activity?.startedAt) return null;
   return (
     <Collapsible className="group" data-testid="run-activity">
       <div className="flex items-center gap-1">
@@ -57,10 +64,18 @@ export function RunActivityRow({
             strokeWidth={1.8}
             className="transition-transform duration-150 group-data-panel-open:rotate-90 motion-reduce:transition-none"
           />
-          {live ? null : (
-            <span className="flex items-center gap-2">
-              <Plural value={steps.length} one="# step" other="# steps" />
-              {total ? <span>{total}</span> : null}
+          {live && children ? null : (
+            <span className="flex items-center gap-2" data-testid="run-activity-summary">
+              {toolSteps > 0 ? (
+                <>
+                  <Plural value={toolSteps} one="# step" other="# steps" />
+                  {total ? <span>· {total}</span> : null}
+                </>
+              ) : thought ? (
+                <Trans>Thought for {thought}</Trans>
+              ) : (
+                <Trans>Thinking</Trans>
+              )}
             </span>
           )}
         </CollapsibleTrigger>
@@ -70,7 +85,7 @@ export function RunActivityRow({
         <div className="ms-[7px] mt-1 flex flex-col gap-2 border-s border-border ps-3 text-body-sm">
           {steps.length === 0 ? (
             <span className="text-muted-foreground">
-              <Trans>Thinking about what to do</Trans>
+              <Trans>Reading your message</Trans>
             </span>
           ) : (
             steps.map((step) => <ActivityStep key={step.id} step={step} now={now} />)

@@ -66,4 +66,27 @@ describe("run activity", () => {
     ]);
     expect(activity[0]?.steps).toHaveLength(1);
   });
+
+  it("records when a plain chat's first words appeared, once", () => {
+    const [activity] = projectRunActivity([
+      { type: "run.started", runId: "r2", createdAt: at(0), payload: {} },
+      { type: "thread.progress", runId: "r2", createdAt: at(1), payload: { streaming: true } },
+      { type: "thread.progress", runId: "r2", createdAt: at(2), payload: { text: "Hey" } },
+      { type: "thread.progress", runId: "r2", createdAt: at(3), payload: { delta: " there" } },
+      {
+        type: "thread.message.created",
+        runId: "r2",
+        createdAt: at(4),
+        payload: { role: "bot" },
+      },
+      { type: "run.completed", runId: "r2", createdAt: at(5), payload: {} },
+    ]);
+    expect(activity).toEqual({
+      runId: "r2",
+      startedAt: at(0),
+      firstOutputAt: at(2),
+      endedAt: at(5),
+      steps: [],
+    });
+  });
 });
