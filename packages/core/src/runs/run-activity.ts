@@ -10,7 +10,7 @@ type ActivityEvent = {
   type: string;
   runId?: string | null;
   createdAt: string | Date;
-  payload: unknown;
+  payload?: unknown;
 };
 
 const iso = (value: string | Date) => (typeof value === "string" ? value : value.toISOString());
