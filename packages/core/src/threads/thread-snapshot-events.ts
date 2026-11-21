@@ -95,8 +95,10 @@ export function reduceThreadSnapshot<S extends LiveThreadSnapshot>(
 ): S | null {
   if (!prev) return prev;
   const next = reduce(prev, event) as S;
-  // Gente: each run's steps, kept after it ends so its activity row stays expandable.
-  if (next === prev || !event.runId || !isRunActivityEvent(event)) return next;
+  // Gente: each run's steps, kept after it ends so its activity row stays expandable. An event
+  // the snapshot already holds is skipped; one that changes no message (a saved thought) is not.
+  const seen = event.seq !== undefined && prev.cursor !== undefined && event.seq <= prev.cursor;
+  if (seen || !event.runId || !isRunActivityEvent(event)) return next;
   const runActivity = projectRunActivity(
     [{ ...event, createdAt: event.createdAt ?? new Date().toISOString() }],
     prev.runActivity,
