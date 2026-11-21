@@ -34,6 +34,16 @@ const SCREENSHOT = `ask_user: "¡Hola, Test! Soy g. ¿Qué quieres que haga?"
 - "Lo que tú me digas"`;
 
 describe("tool calls written as text", () => {
+  it("reads the XML call form newer Qwen templates teach", () => {
+    const read = readTextToolCalls(
+      "<tool_call>\n<function=remember>\n<parameter=content>\nFavorite color is blue\n</parameter>\n</function>\n</tool_call>",
+      TOOLS,
+    );
+    expect(read.calls).toEqual([
+      { name: "remember", arguments: { content: "Favorite color is blue" } },
+    ]);
+  });
+
   it('turns name: "question" plus a quoted list into an ask_user call', () => {
     const read = readTextToolCalls(SCREENSHOT, TOOLS);
     expect(read.calls).toEqual([

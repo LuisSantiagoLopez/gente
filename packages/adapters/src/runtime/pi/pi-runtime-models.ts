@@ -19,7 +19,7 @@ import {
   withLiveImageInput,
   withModelCapabilities,
 } from "./models/pi-live-model.js";
-import { registerLocalProvider } from "./models/pi-local-provider.js";
+import { LOCAL_PROVIDER_ID, registerLocalProvider } from "./models/pi-local-provider.js";
 import { applyPiModelCompatibility } from "./models/pi-model-compat.js";
 import { CHATGPT_OAUTH_PROVIDER } from "./models/pi-oauth.js";
 import {
@@ -59,6 +59,9 @@ export function thinkingLevelFor(
 ): ModelThinkingLevel {
   if (!model.reasoning) return "off";
   if (preferred) return clampThinkingLevel(model, preferred);
+  // Gente: a model on this computer answers without thinking unless the person picks a level.
+  // Thinking first made a "hey" take 11 to 20 seconds instead of under one.
+  if (model.provider === LOCAL_PROVIDER_ID && process.env.BURROW_FAST_CHAT === "on") return "off";
   return clampThinkingLevel(model, REASONING_MODEL_THINKING_LEVEL);
 }
 

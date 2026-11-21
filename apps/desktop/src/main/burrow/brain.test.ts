@@ -13,6 +13,7 @@ type Stub = {
   calls: { path: string; body: Record<string, unknown> }[];
 };
 
+const MOE = "hf.co/unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ4_XS";
 const BEST = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:Q4_K_M";
 const COMPACT = "hf.co/ukisai/Swift-1.5-Qwen3.8-27B-GGUF:IQ2_XXS";
 const SMALL = "hf.co/ukisai/Swift-1.5-Ornith-9B-GGUF:Q4_K_M";
@@ -44,11 +45,50 @@ afterEach(async () => {
 const pulled = (calls: Stub["calls"]) =>
   calls.filter((c) => c.path === "/api/pull").map((c) => c.body.model);
 
+describe("Your AI brain on 32 GB+: Qwen 3.6 35B-A3B", () => {
+  it("downloads and loads it, named yourai-default with a 32K context", async () => {
+    const { brain, dir, calls } = await setup({ memoryGB: 32 });
+    await brain.start();
+    expect(brain.current().phase).toBe("ready");
+    expect(pulled(calls)).toEqual([MOE]);
+    expect(calls.find((c) => c.path === "/api/create")?.body).toMatchObject({
+      model: "yourai-default",
+      from: MOE,
+      parameters: { num_ctx: 32768 },
+    });
+    const saved = JSON.parse(await readFile(path.join(dir, "burrow-model.json"), "utf8"));
+    expect(saved).toMatchObject({ model: MOE, alias: "yourai-default", userPicked: false });
+  });
+
+  it("falls back to Swift Q4_K_M only when it can't load here", async () => {
+    const { brain } = await setup({ memoryGB: 32, failLoad: [MOE] });
+    await brain.start();
+    expect(brain.current().phase).toBe("ready");
+    expect(brain.current().model.tag).toBe(BEST);
+  });
+
+  it("moves a Swift default Your AI chose to it on launch, once it is downloaded", async () => {
+    const { brainModule, dir } = await setup({ memoryGB: 32, installed: [MOE, BEST] });
+    const file = path.join(dir, "burrow-model.json");
+    const { writeFile } = await import("node:fs/promises");
+    const swift = { model: BEST, alias: "swift-1.5-27b", installed: ["swift-1.5-27b"] };
+    await writeFile(file, JSON.stringify({ ...swift, userPicked: false }));
+    expect(await brainModule.moveToFastDefault(dir)).toBe(true);
+    expect(JSON.parse(await readFile(file, "utf8"))).toMatchObject({
+      alias: "yourai-default",
+      installed: ["yourai-default", "swift-1.5-27b"],
+    });
+    // A model the person picked stays.
+    await writeFile(file, JSON.stringify({ ...swift, userPicked: true }));
+    expect(await brainModule.moveToFastDefault(dir)).toBe(false);
+  });
+});
+
 describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS below)", () => {
   const MODEL = BEST;
 
-  it("downloads and loads the Q4_K_M 27B on a 32 GB computer, named swift-1.5-27b with a 32K context", async () => {
-    const { brain, dir, states, calls } = await setup({ memoryGB: 32 });
+  it("downloads and loads the Q4_K_M 27B on a 24 GB computer, named swift-1.5-27b with a 32K context", async () => {
+    const { brain, dir, states, calls } = await setup({ memoryGB: 24 });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(brain.current().model.tag).toBe(BEST);
@@ -72,9 +112,9 @@ describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS belo
     expect(pulled(calls)).toEqual([COMPACT]);
   });
 
-  it("moves the alias up to Q4_K_M on a 32 GB computer where it pointed at IQ2_XXS", async () => {
+  it("moves the alias up to Q4_K_M on a 24 GB computer where it pointed at IQ2_XXS", async () => {
     const { brain, calls } = await setup({
-      memoryGB: 32,
+      memoryGB: 24,
       installed: [BEST, COMPACT, `swift-1.5-27b=${COMPACT}`],
     });
     await brain.start();
@@ -97,7 +137,7 @@ describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS belo
   });
 
   it("falls back to the compact build only when Q4_K_M can't load here", async () => {
-    const { brain, calls } = await setup({ memoryGB: 32, failLoad: [BEST] });
+    const { brain, calls } = await setup({ memoryGB: 24, failLoad: [BEST] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(brain.current().model.tag).toBe(COMPACT);
@@ -107,7 +147,7 @@ describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS belo
   });
 
   it("shows one calm sentence when no build can load", async () => {
-    const { brain } = await setup({ memoryGB: 32, failLoad: [BEST, COMPACT] });
+    const { brain } = await setup({ memoryGB: 24, failLoad: [BEST, COMPACT] });
     await brain.start();
     expect(brain.current().phase).toBe("failed");
     expect(brain.current().message).toContain("short on free memory");
@@ -115,14 +155,14 @@ describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS belo
   });
 
   it("does not download again when the model is already there", async () => {
-    const { brain, calls } = await setup({ memoryGB: 32, installed: [MODEL] });
+    const { brain, calls } = await setup({ memoryGB: 24, installed: [MODEL] });
     await brain.start();
     expect(brain.current().phase).toBe("ready");
     expect(pulled(calls)).toEqual([]);
   });
 
   it("moves an older two-model setup to the one model on launch", async () => {
-    const { brainModule, dir } = await setup({ memoryGB: 32, installed: [MODEL] });
+    const { brainModule, dir } = await setup({ memoryGB: 24, installed: [MODEL] });
     const file = path.join(dir, "burrow-model.json");
     const { writeFile } = await import("node:fs/promises");
     await writeFile(
@@ -200,7 +240,7 @@ describe("Your AI memory check", () => {
 
 describe("getting the model ready as Your AI opens", () => {
   it("loads it once even when asked twice, before reading any prompt", async () => {
-    const { brainModule, dir, calls } = await setup({ memoryGB: 32, installed: [BEST] });
+    const { brainModule, dir, calls } = await setup({ memoryGB: 24, installed: [BEST] });
     const { writeFile } = await import("node:fs/promises");
     await writeFile(
       path.join(dir, "burrow-model.json"),

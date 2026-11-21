@@ -110,7 +110,10 @@ export function codingBody(parsed: {
     ...parsed,
     messages: [...system, ...(first?.role === "system" ? rest : parsed.messages)],
     tools,
-    ...(parsed.reasoning_effort !== undefined ? { reasoning_effort: "low" } : {}),
+    // Light thinking at most: a turn sent without thinking stays without it.
+    ...(parsed.reasoning_effort !== undefined && parsed.reasoning_effort !== "none"
+      ? { reasoning_effort: "low" }
+      : {}),
   };
 }
 
