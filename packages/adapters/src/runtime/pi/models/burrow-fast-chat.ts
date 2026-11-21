@@ -184,9 +184,9 @@ export function repairToolPairs(messages: ChatMessage[]): ChatMessage[] {
 }
 
 // ---- Reply language ----------------------------------------------------------------------
-// The bot answers in the language of the conversation, judged from the person's recent words
-// (typed messages and their answers to question cards), not only the newest message or the app's
-// language. A short "hey" in a Spanish chat gets a Spanish reply.
+// The bot answers in the language of the person's newest message. Only a message too short to
+// tell ("hey", "ok", "vale") borrows the recent conversation's language, so "hey" in a Spanish
+// chat gets a Spanish reply, while an English request after Spanish turns gets an English one.
 
 const LANGUAGE_WORDS: Record<"Spanish" | "Portuguese" | "English", RegExp> = {
   Spanish:
@@ -197,17 +197,37 @@ const LANGUAGE_WORDS: Record<"Spanish" | "Portuguese" | "English", RegExp> = {
     /(?<![\p{L}])(the|and|you|to|is|what|how|can|please|my|it|of|for|with|this|that|do|are|want|need|have|today|tomorrow|thanks|yes|sure)(?![\p{L}])/giu,
 };
 
-/** The person's recent words: typed messages and short answers to question cards. */
+/** Newest messages this short are too short to tell their language; they borrow the chat's. */
+const SHORT_MESSAGE_WORDS = 3;
+
+/** Ids of the ask_user calls, whose results are the person's own answers to question cards. */
+function askUserCallIds(messages: readonly ChatMessage[]): Set<string> {
+  const ids = new Set<string>();
+  for (const message of messages) {
+    if (message.role !== "assistant" || !Array.isArray(message.tool_calls)) continue;
+    for (const call of message.tool_calls as { id?: unknown; function?: { name?: unknown } }[]) {
+      if (call?.function?.name === "ask_user" && typeof call.id === "string") ids.add(call.id);
+    }
+  }
+  return ids;
+}
+
+/**
+ * The person's recent words, newest first: typed messages and answers to question cards. Other
+ * tool results (a web page, a file) are not the person's words, so they never set the language.
+ */
 function recentPersonWords(messages: readonly ChatMessage[], limit = 6): string[] {
+  const cards = askUserCallIds(messages);
   const out: string[] = [];
   for (let i = messages.length - 1; i >= 0 && out.length < limit; i--) {
-    const message = messages[i]!;
+    const message = messages[i]! as ChatMessage & { tool_call_id?: unknown };
     const words = userWords(message.content);
     if (!words) continue;
     if (message.role === "user") out.push(words);
-    // A card's answer comes back as the ask_user call's result: short, in the person's words.
     else if (
       message.role === "tool" &&
+      typeof message.tool_call_id === "string" &&
+      cards.has(message.tool_call_id) &&
       words.length <= 120 &&
       !/^Waiting for/.test(words) &&
       words !== ANSWERED_IN_CHAT &&
@@ -220,38 +240,54 @@ function recentPersonWords(messages: readonly ChatMessage[], limit = 6): string[
 
 type ReplyLanguage = "Spanish" | "Portuguese" | "English";
 
-/** The language a text is clearly in (two or more of its common words and the most of them), or null. */
-function clearLanguage(text: string): ReplyLanguage | null {
+/** The language with the most common words in a text (at least `minimum` of them), or null. */
+function clearLanguage(text: string, minimum = 2): ReplyLanguage | null {
   if (!text) return null;
   const score = (re: RegExp) => text.match(re)?.length ?? 0;
   const es = score(LANGUAGE_WORDS.Spanish) + (/[¿¡ñ]/.test(text) ? 2 : 0);
   const pt = score(LANGUAGE_WORDS.Portuguese) + (/[ãõç]/.test(text) ? 2 : 0);
   const en = score(LANGUAGE_WORDS.English);
-  if (es >= 2 && es > pt && es > en) return "Spanish";
-  if (pt >= 2 && pt > es && pt > en) return "Portuguese";
-  if (en >= 2 && en > es && en > pt) return "English";
+  if (es >= minimum && es > pt && es > en) return "Spanish";
+  if (pt >= minimum && pt > es && pt > en) return "Portuguese";
+  if (en >= minimum && en > es && en > pt) return "English";
   return null;
 }
 
 /**
- * The language to reply in: the newest message's, when it is clearly in one ("Remember that my
- * favorite color is blue" after a Spanish chat is English); otherwise, for a short or unclear
- * message like "hey", the recent conversation's (Spanish or Portuguese only). Null leaves it to
- * the model.
+ * The language to reply in. The newest message wins whenever it leans to a language ("Remember
+ * that my favorite color is blue" after a Spanish chat is English). A newest message of a few
+ * words with no lean ("hey") takes the recent conversation's language (Spanish or Portuguese
+ * only). A longer one with no lean after a Spanish or Portuguese chat gets "latest": reply in that
+ * message's own language, never the history's. Null leaves it to the model.
  */
-export function conversationLanguage(messages: readonly ChatMessage[]): ReplyLanguage | null {
+export function conversationLanguage(
+  messages: readonly ChatMessage[],
+): ReplyLanguage | "latest" | null {
   const words = recentPersonWords(messages);
+  const newestWords = words[0] ?? "";
   const recent = clearLanguage(words.slice(1).join(" \n "));
-  const newest = clearLanguage(words[0] ?? "");
+  const newest = clearLanguage(newestWords, 1);
   // English needs saying only when it breaks from a Spanish or Portuguese conversation.
   if (newest === "English")
     return recent === "Spanish" || recent === "Portuguese" ? "English" : null;
   if (newest) return newest;
   const overall = clearLanguage(words.join(" \n "));
-  return overall === "English" ? null : overall;
+  if (!overall || overall === "English") return null;
+  return newestWords.split(" ").length <= SHORT_MESSAGE_WORDS ? overall : "latest";
 }
 
 const LANGUAGE_TAG = /\n*<reply_language>[\s\S]*?<\/reply_language>/g;
+
+/** The reminder put on the person's newest message, or null when none is needed. */
+export function replyLanguageNote(messages: readonly ChatMessage[]): string | null {
+  const language = conversationLanguage(messages);
+  if (!language) return null;
+  const rule =
+    language === "latest"
+      ? "Reply in the language of this message, even if earlier messages used another language."
+      : `Reply in ${language}, the language the person is writing in.`;
+  return `<reply_language>${rule}</reply_language>`;
+}
 
 /**
  * Adds a one-line language reminder to the person's newest message (inside a tagged block, which
@@ -259,8 +295,8 @@ const LANGUAGE_TAG = /\n*<reply_language>[\s\S]*?<\/reply_language>/g;
  * start stays the same and the model server keeps reusing what it already read.
  */
 export function withReplyLanguage(messages: ChatMessage[]): ChatMessage[] {
-  const language = conversationLanguage(messages);
-  if (!language) return messages;
+  const note = replyLanguageNote(messages);
+  if (!note) return messages;
   let index = -1;
   for (let i = messages.length - 1; i >= 0; i--) {
     if (messages[i]?.role === "user") {
@@ -269,7 +305,6 @@ export function withReplyLanguage(messages: ChatMessage[]): ChatMessage[] {
     }
   }
   if (index < 0) return messages;
-  const note = `<reply_language>Reply in ${language}, the language the person is writing in.</reply_language>`;
   const target = messages[index]!;
   let content: unknown = target.content;
   if (typeof content === "string") content = `${content.replace(LANGUAGE_TAG, "")}\n\n${note}`;

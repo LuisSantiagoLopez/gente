@@ -262,6 +262,43 @@ describe("the reply follows the conversation's language", () => {
     expect(conversationLanguage(toPortuguese)).toBe("Portuguese");
   });
 
+  it("answers an English message in English after Spanish turns, even with few English words", async () => {
+    const { conversationLanguage, replyLanguageNote } = await import("./burrow-fast-chat.js");
+    const english = [
+      ...spanishChat.slice(0, -1),
+      { role: "user", content: "Tell me a joke about cats" },
+    ];
+    expect(conversationLanguage(english)).toBe("latest");
+    expect(replyLanguageNote(english)).toBe(
+      "<reply_language>Reply in the language of this message, even if earlier messages used another language.</reply_language>",
+    );
+    const sent = JSON.parse(quickChatBody(body(english))!.body);
+    const last = sent.messages.at(-1);
+    expect(last.content.startsWith("Tell me a joke about cats")).toBe(true);
+    expect(last.content).not.toContain("Reply in Spanish");
+    // The note rides on the newest message; the system prompt is the same as for any other turn.
+    const spanish = JSON.parse(quickChatBody(body(spanishChat))!.body);
+    expect(sent.messages[0]).toEqual(spanish.messages[0]);
+    expect(
+      conversationLanguage([...spanishChat.slice(0, -1), { role: "user", content: "What's up?" }]),
+    ).toBe("English");
+  });
+
+  it("ignores tool results that are not the person's own card answers", async () => {
+    const { conversationLanguage } = await import("./burrow-fast-chat.js");
+    const lookup = [
+      ...spanishChat.slice(0, -1),
+      { role: "user", content: "Look up the weather in Madrid for me" },
+      {
+        role: "assistant",
+        content: "",
+        tool_calls: [{ id: "w", function: { name: "web_search" } }],
+      },
+      { role: "tool", tool_call_id: "w", content: "hoy está soleado y con 21 grados" },
+    ];
+    expect(conversationLanguage(lookup)).toBe("English");
+  });
+
   it("tells the small-talk path to answer 'hey' in Spanish in a Spanish chat", () => {
     const sent = JSON.parse(quickChatBody(body(spanishChat))!.body);
     const last = sent.messages.at(-1);

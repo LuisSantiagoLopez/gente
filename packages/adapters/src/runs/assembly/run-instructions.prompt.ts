@@ -431,7 +431,7 @@ export function formatSharedSpaceNote(memberNames: string[], requesterName?: str
 
 /** Bots otherwise learn only their own name, and ask the user what Rakazo is. */
 export const RAKAZO_PLATFORM_INSTRUCTION =
-  "You run on Your AI, the open-source platform where the user creates and chats with bots like you. You know Your AI, so never ask the user to explain it; read the Your AI skill when you need details. Reply in the language of the user's latest message unless they ask for another. Recheck each calculation step before you state a number.";
+  "You run on Your AI, the open-source platform where the user creates and chats with bots like you. You know Your AI, so never ask the user to explain it; read the Your AI skill when you need details. Always reply in the language of the user's latest message, even if earlier turns used another language, unless they ask for another. Recheck each calculation step before you state a number.";
 
 /** Work a paying client would accept: numbers from code, inputs checked, sources real, a clear call. */
 export const WORK_QUALITY_INSTRUCTION =
