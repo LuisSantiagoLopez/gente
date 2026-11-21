@@ -20,15 +20,27 @@ import {
 const FAST_CHAT_ENV = "BURROW_FAST_CHAT";
 /** Longest user message, after dropping tagged context, still treated as plain chat. */
 export const QUICK_CHAT_MAX_CHARS = 140;
-/** Words that mean "do some work", which keeps thinking on even for a short message. */
-const TASK_WORDS =
-  /\b(create|make|build|write|research|find|search|schedule|remind|routine|every|daily|weekly|compare|analy[sz]e|plan|fix|debug|code|file|files|summari[sz]e|draft|email|emails|inbox|book|order|calculate|step|steps|calendar|meeting|remember|forget|memory|open|run|install|telegram|whatsapp|slack|computer|browser|website|site|app|image|picture|photo|video|slides|deck|doc|document|spreadsheet|pdf|buy|pay|send|call|text|message|bot|bots|skill|connect)\b/i;
+/**
+ * Words that mean "do some work", which keeps thinking and tools on even for a short message.
+ * English, Spanish and Portuguese, since a short task in any of them must still reach the tools.
+ */
+const TASK_WORDS = new RegExp(
+  `(?<![\\p{L}\\p{N}])(${[
+    // English
+    "create|make|build|write|research|find|search|look ?up|schedule|remind|routine|every|daily|weekly|compare|analy[sz]e|plan|fix|debug|code|file|files|folder|summari[sz]e|draft|email|emails|inbox|book|order|calculate|step|steps|calendar|meeting|remember|forget|memory|open|run|install|telegram|whatsapp|slack|computer|browser|website|web ?page|webpage|site|page|app|image|picture|photo|video|slides|deck|doc|document|spreadsheet|pdf|buy|pay|send|call|text|message|bot|bots|skill|connect|download|upload|save|delete|translate|generate|design|weather|news|today",
+    // Spanish
+    "haz|hazme|hacer|haga|hagas|crea|cr[eé]ame|crear|construye|constr[uú]yeme|construir|escribe|escr[ií]beme|escribir|redacta|busca|b[uú]scame|buscar|investiga|investigar|encuentra|manda|m[aá]ndame|mandar|env[ií]a|env[ií]ame|enviar|agenda|agendar|programa|recu[eé]rdame|recuerda|recordar|olvida|abre|abrir|ejecuta|instala|descarga|sube|guarda|borra|elimina|traduce|genera|dise[nñ]a|compara|analiza|resume|res[uú]meme|planea|arregla|calcula|reserva|p[aá]gina|sitio|web|archivo|archivos|carpeta|correo|correos|imagen|imagen(es)?|foto|video|v[ií]deo|documento|hoja|presentaci[oó]n|compra|c[oó]mprame|comprar|paga|pagar|llama|llamar|mensaje|recordatorio|rutina|calendario|reuni[oó]n|clima|noticias|hoy",
+    // Portuguese
+    "fa[cç]a|fazer|crie|criar|construa|escreva|pesquise|pesquisar|procure|procurar|encontre|mande|envie|enviar|agende|lembre|lembrar|abra|abrir|execute|instale|baixe|salve|apague|traduza|gere|desenhe|compare|analise|resuma|planeje|conserte|calcule|reserve|arquivo|arquivos|pasta|e-?mail|imagem|v[ií]deo|planilha|compre|comprar|pague|pagar|ligue|ligar|mensagem|lembrete|rotina|reuni[aã]o|tempo|not[ií]cias|hoje",
+  ].join("|")})(?![\\p{L}\\p{N}])`,
+  "iu",
+);
 
 type ChatMessage = { role?: string; content?: unknown; tool_calls?: unknown };
 
 /** Greetings, thanks and short acknowledgements: answered with a slim prompt and no tools. */
 const SMALL_TALK =
-  /^(hi+|hey+|hello|yo|sup|hiya|howdy|thanks|thank you|thx|ty|ok|okay|k|cool|nice|great|perfect|awesome|lol|haha+|bye|good (morning|afternoon|evening|night)|gm|gn|how are you( doing)?|how's it going|what'?s up|hola|gracias|buenos d[ií]as|buenas)\b[\s!.?,]*(\w+[\s!.?,]*){0,3}$/i;
+  /^(hi+|hey+|hello|yo|sup|hiya|howdy|thanks|thank you|thx|ty|ok|okay|k|cool|nice|great|perfect|awesome|lol|haha+|bye|good (morning|afternoon|evening|night)|gm|gn|how are you( doing)?|how's it going|what'?s up|hola|gracias|buenos d[ií]as|buenas( tardes| noches)?|qu[eé] tal|c[oó]mo est[aá]s|oi|ol[aá]|obrigad[oa]|tudo bem|bom dia|boa (tarde|noite))(?![\p{L}\p{N}])[\s!.?,¡¿]*([\p{L}\p{N}']+[\s!.?,¡¿]*){0,3}$/iu;
 /** Text messages of earlier turns kept in a slim small-talk prompt. */
 const SMALL_TALK_HISTORY = 12;
 
@@ -315,6 +327,11 @@ export function withReplyLanguage(messages: ChatMessage[]): ChatMessage[] {
   return out;
 }
 
+function offersTools(parsed: unknown): boolean {
+  const tools = (parsed as { tools?: unknown }).tools;
+  return Array.isArray(tools) && tools.length > 0;
+}
+
 /** Rewrites one chat-completions body; returns null when nothing should change. */
 export function quickChatBody(
   body: string,
@@ -329,10 +346,10 @@ export function quickChatBody(
   parsed.messages = repairToolPairs(parsed.messages);
   parsed.messages = withReplyLanguage(parsed.messages);
   const prefix = { ...parsed, messages: warmablePrefix(parsed.messages as WireMessage[]) };
-  // Gente: small talk, and short plain questions that need no tool ("who painted the Mona
-  // Lisa?"), skip the 23 tool schemas (~25k characters) and the long manual. They share one small
-  // cached prompt, so the first word comes in about a second instead of after ~10k tokens.
-  if (isSmallTalk(parsed.messages) || isPlainQuestion(parsed.messages)) {
+  // Gente: only clear small talk ("hey", "gracias") skips the tool schemas and the long manual,
+  // so the first word comes in about a second. Anything else keeps its tools: a short request in
+  // any language ("hazme una página web") must be able to act, not only talk about acting.
+  if (isSmallTalk(parsed.messages)) {
     const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
     // One assistant, two engines: greetings go to the small fast model when Gente set one.
     const quick = process.env.BURROW_CHAT_MODEL?.trim();
@@ -349,6 +366,9 @@ export function quickChatBody(
   }
   if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
     parsed.reasoning_effort = "none";
+  } else if (parsed.reasoning_effort !== undefined && offersTools(parsed)) {
+    // A task with tools thinks briefly, so its steps have a real thought stream to show live.
+    parsed.reasoning_effort = "low";
   }
   return { body: JSON.stringify(parsed), prefix };
 }
