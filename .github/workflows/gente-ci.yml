@@ -32,7 +32,7 @@ jobs:
       - name: Web (every unit test, including the 14 language catalogs)
         working-directory: apps/web
         run: npx vitest run --root ../.. apps/web/src apps/web/server
-      - name: Server and adapters (help pages, web tools, greeting, fast chat)
+      - name: Server and adapters (help pages, web tools, greeting, fast chat, request check)
         run: >
           npx vitest run
           packages/adapters/src/tools/builtin-skills.test.ts
@@ -40,6 +40,7 @@ jobs:
           packages/adapters/src/providers/web
           packages/adapters/src/providers/computer/e2b/gente-cloud-sdk.test.ts
           packages/adapters/src/runtime/pi/models
+          packages/adapters/src/models/chat-request-sanitizer.test.ts
           packages/adapters/src/runtime/pi/pi-runtime-choice.test.ts
           packages/adapters/src/runtime/pi/tools/pi-runtime-tool-dispatch.test.ts
           packages/adapters/src/mcp
