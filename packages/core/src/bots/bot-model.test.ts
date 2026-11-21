@@ -25,6 +25,17 @@ describe("botModelState", () => {
     expect(state.defaultThinkingLevel).toBe("medium");
   });
 
+  it("shows the default level the catalog gives a model that starts without thinking", () => {
+    const state = botModelState({
+      credentials,
+      catalog: [{ ...catalog[0]!, defaultThinkingLevel: "off" }, catalog[1]!],
+      me,
+      modelKey: "",
+      spaceDefaultLabel: "Space default",
+    });
+    expect(state.defaultThinkingLevel).toBe("off");
+  });
+
   it("follows the bot's own model", () => {
     const state = botModelState({
       credentials,

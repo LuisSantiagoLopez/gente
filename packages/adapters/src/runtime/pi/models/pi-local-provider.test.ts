@@ -5,6 +5,7 @@ import {
   localBaseUrl,
   localProvider,
   registerLocalProvider,
+  startsWithoutThinking,
 } from "./pi-local-provider.js";
 
 const ENV_KEYS = [
@@ -14,6 +15,7 @@ const ENV_KEYS = [
   "RAKAZO_LOCAL_MAX_TOKENS",
   "RAKAZO_LOCAL_TOKENS_PER_MINUTE",
   "RAKAZO_LOCAL_REASONING_MODELS",
+  "BURROW_FAST_CHAT",
 ] as const;
 
 const saved = new Map<string, string | undefined>();
@@ -147,5 +149,15 @@ describe("local model provider", () => {
     setModels("qwen3:4b");
     const withLocal = registerLocalProvider(builtinModels());
     expect(withLocal.getModel(LOCAL_PROVIDER_ID, "qwen3:4b")).toBeDefined();
+  });
+});
+
+describe("thinking on a model on this computer", () => {
+  it("starts off in Your AI, and stays as before elsewhere", () => {
+    delete process.env.BURROW_FAST_CHAT;
+    expect(startsWithoutThinking({ provider: LOCAL_PROVIDER_ID })).toBe(false);
+    process.env.BURROW_FAST_CHAT = "on";
+    expect(startsWithoutThinking({ provider: LOCAL_PROVIDER_ID })).toBe(true);
+    expect(startsWithoutThinking({ provider: "elsewhere" })).toBe(false);
   });
 });
