@@ -14,7 +14,7 @@ concurrency:
   group: gente-platforms-${{ github.ref }}
   cancel-in-progress: false
 env:
-  DRAFT_TAG: v1.0.5
+  DRAFT_TAG: v1.0.6
 jobs:
   gente:
     name: ${{ matrix.label }}

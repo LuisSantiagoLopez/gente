@@ -77,6 +77,8 @@ export function isThreadSnapshotEvent(event: { type: string }): boolean {
     event.type === "thread.message.created" ||
     event.type === "thread.message.updated" ||
     event.type === "run.started" ||
+    // Gente: a saved stretch of thinking, for the reply's activity row.
+    event.type === "run.thought" ||
     event.type === "run.waiting_input" ||
     event.type === "computer.takeover.requested" ||
     event.type === "computer.takeover.released" ||
@@ -95,8 +97,11 @@ export function reduceThreadSnapshot<S extends LiveThreadSnapshot>(
 ): S | null {
   if (!prev) return prev;
   const next = reduce(prev, event) as S;
-  // Gente: each run's steps, kept after it ends so its activity row stays expandable.
-  if (next === prev || !event.runId || !isRunActivityEvent(event)) return next;
+  // Gente: each run's steps, kept after it ends so its activity row stays expandable. An event
+  // the snapshot already holds is skipped; one that changes no message (a saved thought) is not.
+  const seen = event.seq !== undefined && prev.cursor !== undefined && event.seq <= prev.cursor;
+  const ignored = next === prev && event.type !== "run.thought";
+  if (seen || ignored || !event.runId || !isRunActivityEvent(event)) return next;
   const runActivity = projectRunActivity(
     [{ ...event, createdAt: event.createdAt ?? new Date().toISOString() }],
     prev.runActivity,

@@ -34,14 +34,28 @@ function files(dir: string, out: string[] = []): string[] {
 function shownStrings(): string[] {
   const strings: string[] = [];
   for (const file of files(desktopMain))
-    for (const m of readFileSync(file, "utf8").matchAll(/\bt\(\s*"((?:[^"\\]|\\.)*)"/g)) strings.push(m[1]!);
+    for (const m of readFileSync(file, "utf8").matchAll(/\bt\(\s*"((?:[^"\\]|\\.)*)"/g))
+      strings.push(m[1]!);
   const setup = path.join(root, "apps/desktop/src/setup-renderer");
   strings.push(readFileSync(path.join(setup, "setup.html"), "utf8").replace(/<[^>]+>/g, " "));
-  for (const m of readFileSync(path.join(setup, "setup.js"), "utf8").matchAll(/\bt\(\s*"((?:[^"\\]|\\.)*)"/g))
+  for (const m of readFileSync(path.join(setup, "setup.js"), "utf8").matchAll(
+    /\bt\(\s*"((?:[^"\\]|\\.)*)"/g,
+  ))
     strings.push(m[1]!);
-  for (const m of readFileSync(path.join(root, "packages/i18n/locales/en/messages.po"), "utf8").matchAll(/^msgid "(.*)"$/gm))
+  for (const m of readFileSync(
+    path.join(root, "packages/i18n/locales/en/messages.po"),
+    "utf8",
+  ).matchAll(/^msgid "(.*)"$/gm))
     strings.push(m[1]!);
-  strings.push(CALM_FAILURE, CALM_OFFLINE, CALM.offline, CALM.install, CALM.ollama, CALM.memory, CALM.space(20));
+  strings.push(
+    CALM_FAILURE,
+    CALM_OFFLINE,
+    CALM.offline,
+    CALM.install,
+    CALM.ollama,
+    CALM.memory,
+    CALM.space(20),
+  );
   return strings;
 }
 

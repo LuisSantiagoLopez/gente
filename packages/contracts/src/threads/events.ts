@@ -17,6 +17,8 @@ export const ProductEventType = z.enum([
   "thread.call.ended",
   "run.started",
   "run.steering.claimed",
+  /** Gente: one stretch of the model's thinking, kept for the reply's activity row. */
+  "run.thought",
   "run.checkpointed",
   "run.waiting_input",
   "run.completed",

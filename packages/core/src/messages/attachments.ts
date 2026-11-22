@@ -7,6 +7,7 @@ import {
   isAllowedAttachmentMimeType,
   isAttachmentImageMimeType,
 } from "@rakazo/contracts";
+import { askAnswerLabels, askQuestions, decodeAskAnswers } from "../asks/ask-questions.js";
 import { isApprovalAskBlock, isSecretAskBlock } from "../runs/action-approval.js";
 
 export class AttachmentValidationError extends Error {
@@ -289,6 +290,22 @@ function blockHistoryText(block: MessageBlock): string {
       block.detail && !isApprovalAskBlock(block) && !isSecretAskBlock(block)
         ? `\n<draft>\n${block.detail.replace(/<\s*\/\s*draft\s*>/gi, "&lt;/draft&gt;")}\n</draft>`
         : "";
+    if (block.questions?.length) {
+      const questions = askQuestions(block);
+      const answers =
+        block.status === "answered" && block.answer
+          ? decodeAskAnswers(block.answer, questions.length)
+          : undefined;
+      const labels = answers ? askAnswerLabels(questions, answers) : undefined;
+      const typed = !answers && block.status === "answered" && block.answer ? block.answer : "";
+      return [
+        ...questions.map((question, index) => {
+          const text = `${question.text}${index === 0 ? detail : ""}`;
+          return labels ? `${text}\nAnswer: ${labels[index]}` : text;
+        }),
+        ...(typed ? [`Answer: ${typed}`] : []),
+      ].join("\n");
+    }
     if (block.status !== "answered" || !block.answer) return `${block.text}${detail}`;
     const choice = block.actions?.find((action) => action.id === block.answer);
     return `${block.text}${detail}\nAnswer: ${choice?.label ?? block.answer}`;

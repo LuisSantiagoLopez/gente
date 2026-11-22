@@ -89,4 +89,53 @@ describe("run activity", () => {
       steps: [],
     });
   });
+
+  it("puts each stretch of thinking in the timeline before the step it led to", () => {
+    const [activity] = projectRunActivity([
+      { type: "run.started", runId: "r1", createdAt: at(0), payload: {} },
+      {
+        type: "run.thought",
+        runId: "r1",
+        createdAt: at(4),
+        payload: { text: "Plan the page.", durationMs: 3000 },
+      },
+      {
+        type: "agent.tool.called",
+        runId: "r1",
+        createdAt: at(5),
+        payload: { name: "write_file", executionId: "e1" },
+      },
+      { type: "run.thought", runId: "r1", createdAt: at(8), payload: { text: "Now reply." } },
+      { type: "run.completed", runId: "r1", createdAt: at(9), payload: {} },
+    ]);
+    expect(activity?.steps.map((step) => [step.kind ?? "tool", step.output ?? step.label])).toEqual(
+      [
+        ["thought", "Plan the page."],
+        ["tool", "Write file"],
+        ["thought", "Now reply."],
+      ],
+    );
+    expect(activity?.steps[0]).toMatchObject({ startedAt: at(1), durationMs: 3000 });
+  });
+
+  it("shows a question card as done even when its end is reported before its start", () => {
+    const [activity] = projectRunActivity([
+      { type: "run.started", runId: "r1", createdAt: at(0), payload: {} },
+      {
+        type: "agent.tool.completed",
+        runId: "r1",
+        createdAt: at(2),
+        payload: { name: "ask_user", executionId: "e1", outcome: "paused" },
+      },
+      {
+        type: "agent.tool.called",
+        runId: "r1",
+        createdAt: at(2),
+        payload: { name: "ask_user", executionId: "e1", label: "Asking you: Which city?" },
+      },
+    ]);
+    expect(activity?.steps).toMatchObject([
+      { id: "e1", label: "Asking you: Which city?", status: "succeeded" },
+    ]);
+  });
 });

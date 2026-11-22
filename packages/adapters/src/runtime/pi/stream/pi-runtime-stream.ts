@@ -231,6 +231,12 @@ export function reliableModelStream(
           if (response.status >= 200 && response.status < 300) watchdog.ping();
           return options?.onResponse?.(response, requestModel);
         },
+        // Gente: any chunk from the model server shows it is alive, even one that adds nothing
+        // visible yet, such as a long tool call written as text that is still being read.
+        onProviderStreamEvent: (event, eventModel) => {
+          watchdog.ping();
+          return options?.onProviderStreamEvent?.(event, eventModel);
+        },
       },
       configuredMaxTokens,
       accessToken,

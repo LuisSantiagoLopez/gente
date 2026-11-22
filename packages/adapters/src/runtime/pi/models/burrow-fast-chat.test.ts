@@ -100,13 +100,14 @@ describe("Your AI small-talk window", () => {
       { role: "system", content: "s" },
       ...Array.from({ length: n }, (_, i) => ({
         role: i % 2 ? "assistant" : "user",
-        content: `m${i}`,
+        // Small talk throughout, so no turn reads as a task still waiting for its reply.
+        content: i % 2 ? `m${i}` : `hi m${i}`,
       })),
       { role: "user", content: "hey" },
     ];
     const first = (n: number) =>
       JSON.parse(quickChatBody(JSON.stringify({ messages: turns(n) }))!.body).messages[1].content;
-    expect(first(10)).toBe("m0");
+    expect(first(10)).toBe("hi m0");
     expect(first(20)).toBe(first(21));
     expect(first(21)).toBe(first(22));
     expect(
@@ -372,9 +373,33 @@ describe("tasks keep their tools in any language", () => {
     "envie um e-mail para Maria",
     "me lembre de pagar a conta",
   ];
-  it.each(tasks)("keeps every tool and thinks briefly for %j", (text) => {
+  it.each(tasks)("keeps every tool and starts acting without thinking for %j", (text) => {
     const out = ask(text);
     expect(out.tools).toHaveLength(3);
+    // Gente: the first step acts at once; later steps of the task think briefly.
+    expect(out.reasoning_effort).toBe("none");
+  });
+  it("thinks briefly on a later step, once a tool ran in this turn", () => {
+    const out = JSON.parse(
+      quickChatBody(
+        JSON.stringify({
+          messages: [
+            { role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." },
+            { role: "user", content: `make me a website${time}` },
+            {
+              role: "assistant",
+              content: "",
+              tool_calls: [
+                { id: "c1", type: "function", function: { name: "write_file", arguments: "{}" } },
+              ],
+            },
+            { role: "tool", tool_call_id: "c1", content: "ok" },
+          ],
+          tools,
+          reasoning_effort: "none",
+        }),
+      )!.body,
+    );
     expect(out.reasoning_effort).toBe("low");
   });
 
@@ -391,5 +416,23 @@ describe("tasks keep their tools in any language", () => {
     const out = ask("who painted the Mona Lisa?");
     expect(out.tools).toHaveLength(3);
     expect(out.reasoning_effort).toBe("none");
+  });
+
+  it("answers a short message right after a task with the full prompt and tools", () => {
+    const tools = [{ type: "function", function: { name: "write_file" } }];
+    const body = (messages: unknown[]) =>
+      JSON.parse(
+        quickChatBody(JSON.stringify({ messages, tools, reasoning_effort: "none" }))!.body,
+      );
+    const system = { role: "system", content: "Platform.\n\nYou are Chief.\n\nLong manual." };
+    const afterTask = body([
+      system,
+      { role: "user", content: "make an app, just make a nice frontemd" },
+      { role: "user", content: "hey?" },
+    ]);
+    expect(afterTask.tools).toHaveLength(1);
+    expect(afterTask.messages[0].content).toContain("Long manual.");
+    const fresh = body([system, { role: "user", content: "hey" }]);
+    expect(fresh.tools).toBeUndefined();
   });
 });

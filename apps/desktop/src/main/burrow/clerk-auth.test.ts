@@ -36,7 +36,9 @@ describe("Your AI sign-in with Clerk (PKCE, loopback)", () => {
       expect(body.get("grant_type")).toBe("authorization_code");
       expect(body.get("client_id")).toBe("client123");
       expect(body.has("client_secret")).toBe(false);
-      return new Response(JSON.stringify({ access_token: "at", refresh_token: "rt", expires_in: 3600 }));
+      return new Response(
+        JSON.stringify({ access_token: "at", refresh_token: "rt", expires_in: 3600 }),
+      );
     });
     const tokens = await signInWithBrowser({ config, open: b.open, fetch: tokenFetch as never });
     const a = b.authorize();
@@ -53,17 +55,31 @@ describe("Your AI sign-in with Clerk (PKCE, loopback)", () => {
       back.searchParams.set("state", "forged");
       await fetch(back);
     };
-    await expect(signInWithBrowser({ config, open, fetch: vi.fn() as never })).rejects.toThrow(/bad state/);
+    await expect(signInWithBrowser({ config, open, fetch: vi.fn() as never })).rejects.toThrow(
+      /bad state/,
+    );
   });
 
   it("keeps the session sealed on disk and refreshes it before it expires", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "gente-account-"));
     try {
       let n = 0;
-      const fetchMock = vi.fn(async () =>
-        new Response(JSON.stringify({ access_token: `at${++n}`, refresh_token: "rt", expires_in: n === 1 ? 30 : 3600 })),
+      const fetchMock = vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({
+              access_token: `at${++n}`,
+              refresh_token: "rt",
+              expires_in: n === 1 ? 30 : 3600,
+            }),
+          ),
       );
-      const session = createClerkSession({ config, userDataDir: dir, sealer, fetch: fetchMock as never });
+      const session = createClerkSession({
+        config,
+        userDataDir: dir,
+        sealer,
+        fetch: fetchMock as never,
+      });
       await session.signIn(browser().open);
       const stored = await readFile(path.join(dir, "gente-account.sealed"), "utf8");
       expect(Buffer.from(stored, "base64").toString()).not.toContain("at1");

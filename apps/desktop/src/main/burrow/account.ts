@@ -3,10 +3,12 @@
 //
 // The person's Gente account: Clerk sign-in in the system browser, and the Gente Cloud client that
 // uses it. Local chat never needs an account; plan, hours and cloud tools do.
-import { app, Notification, shell } from "electron";
-import { createClerkSession, clerkConfig } from "./clerk-auth.js";
+
 import type { GenteAccountState, GentePrivateOffer } from "@rakazo/contracts";
-import { createGenteCloud, type GenteCloud } from "./gente-cloud.js";
+import { app, Notification, shell } from "electron";
+import { clerkConfig, createClerkSession } from "./clerk-auth.js";
+import type { GenteCloud } from "./gente-cloud.js";
+import { createGenteCloud } from "./gente-cloud.js";
 
 type Sealer = { seal(value: string): Buffer; unseal(sealed: Buffer): string };
 
@@ -44,7 +46,10 @@ export async function signInToGente(): Promise<void> {
     signedIn = true;
     new Notification({ title: "Your AI", body: "You're signed in." }).show();
   } catch {
-    new Notification({ title: "Your AI", body: "Sign-in didn't finish. Try again from the Your AI menu." }).show();
+    new Notification({
+      title: "Your AI",
+      body: "Sign-in didn't finish. Try again from the Your AI menu.",
+    }).show();
   } finally {
     onChange();
   }
@@ -76,7 +81,9 @@ export async function accountState(): Promise<GenteAccountState> {
       messagesUsed: me.plan?.messagesUsed ?? null,
       messagesLimit: me.plan?.messagesLimit ?? null,
       hoursLeft:
-        typeof me.balance?.totalSeconds === "number" ? Math.floor(me.balance.totalSeconds / 360) / 10 : null,
+        typeof me.balance?.totalSeconds === "number"
+          ? Math.floor(me.balance.totalSeconds / 360) / 10
+          : null,
       monthlyHours: me.plan?.monthlyOnlineHours ?? null,
     };
   } catch {
@@ -110,7 +117,11 @@ export async function privateOffer(change?: "join" | "leave"): Promise<GentePriv
     if (change === "join") await cloud.joinPrivateWaitlist();
     if (change === "leave") await cloud.leavePrivateWaitlist();
     const offer = await cloud.privateOffer();
-    return { monthlyCents: offer.monthlyCents, onWaitlist: offer.onWaitlist, waiting: offer.waiting };
+    return {
+      monthlyCents: offer.monthlyCents,
+      onWaitlist: offer.onWaitlist,
+      waiting: offer.waiting,
+    };
   } catch {
     return null;
   }

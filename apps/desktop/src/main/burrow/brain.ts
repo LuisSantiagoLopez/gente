@@ -143,6 +143,9 @@ export function swiftServerEnv(saved: SavedBrain | null): Record<string, string>
     RAKAZO_LOCAL_REASONING_MODELS: installed.join(","),
     RAKAZO_LOCAL_VISION_MODELS: (saved.vision ?? []).join(","),
     BURROW_FAST_CHAT: "on",
+    // The model server sends a tool call only when it is complete; writing a file can take a
+    // few silent minutes on this Mac, which is not a stall.
+    MODEL_STREAM_IDLE_TIMEOUT_MS: "600000",
     // The Link agent wallet: bots ask for a purchase (amount, merchant, reason), the person
     // approves each one in Link, and Link issues a one-time card or pay token. No card is stored.
     PAYMENT_WALLET_PROVIDER: "link",
@@ -180,7 +183,36 @@ function windowsOllamaDir(): string {
  * Settings Gente wants from the model server: two requests at once (a chat and a routine) and
  * the model kept in memory so replies never wait for a reload.
  */
-export const OLLAMA_SETTINGS = { OLLAMA_NUM_PARALLEL: "2", OLLAMA_KEEP_ALIVE: "-1" } as const;
+export const OLLAMA_SETTINGS = {
+  OLLAMA_NUM_PARALLEL: "2",
+  OLLAMA_KEEP_ALIVE: "-1",
+  // Gente: a smaller, faster prompt cache. Without these each reply re-reads more slowly.
+  OLLAMA_FLASH_ATTENTION: "1",
+  OLLAMA_KV_CACHE_TYPE: "q8_0",
+} as const;
+
+/** Homebrew's background service for Ollama, when the person set one up. */
+const BREW_OLLAMA_PLIST = path.join(
+  os.homedir(),
+  "Library",
+  "LaunchAgents",
+  "sh.brew.ollama.plist",
+);
+
+/**
+ * Starts Homebrew's Ollama service when one is set up, so there is only ever one Ollama and it
+ * keeps the settings the person gave it. Returns false when there is no such service.
+ */
+function startBrewOllamaService(): boolean {
+  if (process.platform !== "darwin" || !existsSync(BREW_OLLAMA_PLIST)) return false;
+  const uid = process.getuid?.();
+  if (uid === undefined) return false;
+  const domain = `gui/${uid}`;
+  // Loads it if it is not loaded yet (an error here just means it already is), then starts it.
+  spawn("/bin/launchctl", ["bootstrap", domain, BREW_OLLAMA_PLIST], { stdio: "ignore" }).unref();
+  spawn("/bin/launchctl", ["kickstart", `${domain}/sh.brew.ollama`], { stdio: "ignore" }).unref();
+  return true;
+}
 
 function ollamaAppPath(): string | null {
   const candidates =
@@ -222,6 +254,8 @@ export async function startOllama(): Promise<boolean> {
         spawn("setx", [name, value], { stdio: "ignore", windowsHide: true }).unref();
     }
     spawn(cli, ["serve"], { detached: true, stdio: "ignore", windowsHide: true, env }).unref();
+  } else if (startBrewOllamaService()) {
+    // Homebrew's service runs it; starting another would fight it for the port.
   } else if (appPath !== null) {
     // The Mac app keeps its own settings; Gente does not change a person's Ollama app.
     spawn("/usr/bin/open", ["-g", "-j", appPath], { detached: true, stdio: "ignore" }).unref();

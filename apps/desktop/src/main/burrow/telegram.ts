@@ -24,9 +24,14 @@ export function telegramSecret(stackToken: string): string {
 }
 
 /** Asks Telegram who the bot is; resolves to its @username, or null for a bad token. */
-export async function telegramBotName(token: string, fetchImpl: typeof fetch = fetch): Promise<string | null> {
+export async function telegramBotName(
+  token: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string | null> {
   try {
-    const res = await fetchImpl(`${TELEGRAM_API}/bot${token.trim()}/getMe`, { signal: AbortSignal.timeout(8_000) });
+    const res = await fetchImpl(`${TELEGRAM_API}/bot${token.trim()}/getMe`, {
+      signal: AbortSignal.timeout(8_000),
+    });
     const body = (await res.json()) as { ok?: boolean; result?: { username?: string } };
     return body.ok && body.result?.username ? body.result.username : null;
   } catch {
@@ -62,7 +67,9 @@ export function saveTelegramToken(token: string): Promise<boolean> {
 export async function localApiPort(stackDir: string): Promise<number | null> {
   for (const file of [".native-ports", ".windows-ports"]) {
     try {
-      const ports = JSON.parse(await readFile(path.join(stackDir, file), "utf8")) as { api?: number };
+      const ports = JSON.parse(await readFile(path.join(stackDir, file), "utf8")) as {
+        api?: number;
+      };
       if (ports.api) return ports.api;
     } catch {
       // Try the other layout.
@@ -103,11 +110,17 @@ export class TelegramPoller {
         for (const update of body.result ?? []) {
           const port = await this.apiPort();
           if (!port) throw new Error("server not ready");
-          const posted = await this.fetchImpl(`http://127.0.0.1:${port}/api/v1/messaging/webhook/telegram`, {
-            method: "POST",
-            headers: { "content-type": "application/json", "x-telegram-bot-api-secret-token": this.secret },
-            body: JSON.stringify(update),
-          });
+          const posted = await this.fetchImpl(
+            `http://127.0.0.1:${port}/api/v1/messaging/webhook/telegram`,
+            {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                "x-telegram-bot-api-secret-token": this.secret,
+              },
+              body: JSON.stringify(update),
+            },
+          );
           // A refused hand-off is retried on the next round, not skipped.
           if (!posted.ok) throw new Error(`hand-off ${posted.status}`);
           this.offset = update.update_id + 1;

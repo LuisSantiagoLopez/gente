@@ -30,6 +30,8 @@ import {
 } from "../assembly/silent-reply.js";
 import type { ExecutorDeps } from "../executor/executor-deps.js";
 import { PAGE_BROWSER_TOOL_NAMES } from "../tools/run-tool-selection.js";
+import { withoutQuestions } from "./narration-questions.js";
+import { recordThought } from "./run-thoughts.js";
 import {
   clampUserProgressMessage,
   extractNarrationText,
@@ -289,7 +291,11 @@ export function addDraft(
     return;
   }
   const pending = reply.pendingDraft ?? { thinking: "" };
-  if (draft.thinking) pending.thinking += reply.draftRedactors.thinking.push(draft.thinking);
+  if (draft.thinking) {
+    const thinking = reply.draftRedactors.thinking.push(draft.thinking);
+    pending.thinking += thinking;
+    recordThought(ctx, thinking);
+  }
   if (draft.tool) {
     const args = reply.draftRedactors.tool.push(draft.tool.args);
     // A new call's arguments replace the last one's in the view.
@@ -388,8 +394,10 @@ export async function publishNarrationBeforeAsk(ctx: RunContext) {
   const held =
     ctx.replyMode === "chat" ? reply.workingNotes : pending ? [] : reply.workingNotes.slice(-1);
   // Held notes were redacted against the secrets known when they were held; check them again.
-  const text = redactSecrets([...held, pending].filter(Boolean).join("\n\n"), ctx.secrets);
-  if (!text) return;
+  const all = redactSecrets([...held, pending].filter(Boolean).join("\n\n"), ctx.secrets);
+  if (!all) return;
+  // Gente: the card holds the questions; text questions above it would go unanswered.
+  const text = withoutQuestions(all);
   reply.messageSegments = extracted.remaining;
   reply.currentTextSegment = "";
   reply.workingNotes.length = 0;
@@ -398,7 +406,7 @@ export async function publishNarrationBeforeAsk(ctx: RunContext) {
   reply.hasStreamedText = false;
   reply.pendingProgress = "";
   reply.redactor.skip();
-  await publishInterimMessage(ctx, text);
+  if (text) await publishInterimMessage(ctx, text);
 }
 
 /**

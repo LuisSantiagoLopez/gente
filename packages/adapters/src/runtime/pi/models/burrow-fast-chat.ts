@@ -15,7 +15,13 @@ import {
   sanitizeChatMessages,
   warmablePrefix,
 } from "../../../models/chat-request-sanitizer.js";
-import { HONESTY_RULE, withHonestyRule } from "./gente-honest-actions.js";
+import {
+  HONESTY_RULE,
+  toolRanThisTurn,
+  withAskInCardsRule,
+  withHonestyRule,
+  withSmallFilesRule,
+} from "./gente-honest-actions.js";
 
 /** On only where Gente sets `BURROW_FAST_CHAT=on` (its desktop stack), so other setups keep Rakazo behavior. */
 const FAST_CHAT_ENV = "BURROW_FAST_CHAT";
@@ -152,6 +158,29 @@ export function isSmallTalk(messages: readonly ChatMessage[]): boolean {
   if (!last || last.role !== "user") return false;
   const words = userWords(last.content);
   return words.length > 0 && words.length <= 40 && SMALL_TALK.test(words);
+}
+
+/**
+ * Gente: a short message after a task that got no reply ("hey?" after a run that failed) is
+ * about that task, not small talk: it gets the full prompt and tools so the work can go on.
+ */
+export function followsTask(messages: readonly ChatMessage[]): boolean {
+  let replied = false;
+  let seenLatest = false;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const message = messages[i]!;
+    if (message.role === "assistant" && messageText(message.content).trim()) replied = true;
+    if (message.role !== "user") continue;
+    if (!seenLatest) {
+      seenLatest = true;
+      replied = false;
+      continue;
+    }
+    if (replied) return false;
+    const words = userWords(message.content);
+    return words.length > 0 && !(words.length <= 40 && SMALL_TALK.test(words));
+  }
+  return false;
 }
 
 /**
@@ -357,11 +386,13 @@ export function quickChatBody(
   parsed.messages = repairToolPairs(parsed.messages);
   parsed.messages = withReplyLanguage(parsed.messages);
   parsed.messages = withHonestyRule(parsed.messages);
+  parsed.messages = withAskInCardsRule(parsed.messages, (parsed as { tools?: unknown }).tools);
+  parsed.messages = withSmallFilesRule(parsed.messages, (parsed as { tools?: unknown }).tools);
   const prefix = { ...parsed, messages: warmablePrefix(parsed.messages as WireMessage[]) };
   // Gente: only clear small talk ("hey", "gracias") skips the tool schemas and the long manual,
   // so the first word comes in about a second. Anything else keeps its tools: a short request in
   // any language ("hazme una página web") must be able to act, not only talk about acting.
-  if (isSmallTalk(parsed.messages)) {
+  if (isSmallTalk(parsed.messages) && !followsTask(parsed.messages)) {
     const slim = smallTalkBody(parsed as { messages: ChatMessage[] });
     // One assistant, two engines: greetings go to the small fast model when Gente set one.
     const quick = process.env.BURROW_CHAT_MODEL?.trim();
@@ -379,8 +410,9 @@ export function quickChatBody(
   if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
     parsed.reasoning_effort = "none";
   } else if (parsed.reasoning_effort !== undefined && offersTools(parsed)) {
-    // A task with tools thinks briefly, so its steps have a real thought stream to show live.
-    parsed.reasoning_effort = "low";
+    // Gente: the first step of a task starts acting at once; measured on this Mac, "low"
+    // thinking there cost about 10 s before anything happened. Later steps think briefly.
+    parsed.reasoning_effort = toolRanThisTurn(parsed.messages) ? "low" : "none";
   }
   return { body: JSON.stringify(parsed), prefix };
 }

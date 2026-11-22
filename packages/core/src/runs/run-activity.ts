@@ -40,6 +40,7 @@ export function isRunActivityEvent(event: {
     Boolean(event.runId) &&
     (isFirstOutputEvent(event) ||
       event.type === "run.started" ||
+      event.type === "run.thought" ||
       event.type === "agent.tool.called" ||
       event.type === "agent.tool.completed" ||
       event.type === "run.completed" ||
@@ -50,7 +51,10 @@ export function isRunActivityEvent(event: {
 
 function finishStep(step: RunActivityStep, payload: Record<string, unknown>): RunActivityStep {
   const outcome = payload.outcome;
-  if (outcome === "paused") return step;
+  // Gente: a question card is done once shown; the answer comes back as the run resumes.
+  // Other pauses (an approval) finish later under the same step.
+  if (outcome === "paused")
+    return payload.name === "ask_user" ? { ...step, status: "succeeded" } : step;
   const durationMs =
     typeof payload.durationMs === "number" && Number.isFinite(payload.durationMs)
       ? Math.max(0, Math.round(payload.durationMs))
@@ -81,11 +85,50 @@ export function reduceRunActivity(
   if (event.type === "run.started") {
     return { ...activity, startedAt: activity.startedAt ?? at, endedAt: undefined };
   }
+  if (event.type === "run.thought") {
+    // Gente: thinking sits in the timeline between the steps it came before.
+    const thought = text(payload.text);
+    if (!thought) return current;
+    const durationMs =
+      typeof payload.durationMs === "number" && Number.isFinite(payload.durationMs)
+        ? Math.max(0, Math.round(payload.durationMs))
+        : undefined;
+    const ended = Date.parse(at);
+    return {
+      ...activity,
+      startedAt: activity.startedAt ?? at,
+      steps: [
+        ...activity.steps,
+        {
+          id: `thought-${activity.steps.length}`,
+          kind: "thought",
+          label: "",
+          output: thought,
+          status: "succeeded",
+          startedAt:
+            durationMs !== undefined && Number.isFinite(ended)
+              ? new Date(ended - durationMs).toISOString()
+              : at,
+          ...(durationMs === undefined ? {} : { durationMs }),
+        },
+      ],
+    };
+  }
   if (event.type === "agent.tool.called") {
     const id = String(payload.executionId ?? `${activity.steps.length}`);
-    if (activity.steps.some((step) => step.id === id)) return activity;
     const name = String(payload.name ?? "");
     const input = text(payload.input);
+    const label = text(payload.label) ?? humanizeToolName(name);
+    // Gente: a paused call (a question card) reports its end just before its start; the step
+    // that end made keeps its status and gains its label and input here.
+    if (activity.steps.some((step) => step.id === id)) {
+      return {
+        ...activity,
+        steps: activity.steps.map((step) =>
+          step.id === id ? { ...step, label, ...(input ? { input } : {}) } : step,
+        ),
+      };
+    }
     return {
       ...activity,
       startedAt: activity.startedAt ?? at,
@@ -93,7 +136,7 @@ export function reduceRunActivity(
         ...activity.steps,
         {
           id,
-          label: text(payload.label) ?? humanizeToolName(name),
+          label,
           ...(input ? { input } : {}),
           status: "running",
           startedAt: at,
@@ -103,6 +146,16 @@ export function reduceRunActivity(
   }
   if (event.type === "agent.tool.completed") {
     const id = String(payload.executionId ?? "");
+    if (id && !activity.steps.some((step) => step.id === id)) {
+      const name = String(payload.name ?? "");
+      const early = {
+        id,
+        label: humanizeToolName(name),
+        status: "running" as const,
+        startedAt: at,
+      };
+      return { ...activity, steps: [...activity.steps, finishStep(early, payload)] };
+    }
     return {
       ...activity,
       steps: activity.steps.map((step) =>

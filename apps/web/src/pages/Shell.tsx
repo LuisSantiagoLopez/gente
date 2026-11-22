@@ -647,6 +647,20 @@ function SpaceShell() {
     },
     [bots, transcriptMembers],
   );
+  // Gente: the figure beside each reply's activity line.
+  const runBot = (botId: string | undefined): GroupAvatarMember[] => {
+    const bot = botId ? resolveTranscriptBot(botId) : undefined;
+    return bot
+      ? [
+          {
+            botId,
+            color: bot.color ?? FALLBACK_BOT_COLOR,
+            avatarSet: bot.avatarSet,
+            name: bot.name,
+          },
+        ]
+      : [];
+  };
   const workingBots: GroupAvatarMember[] = workingRuns.map((run) => {
     const bot = resolveTranscriptBot(run.botId);
     return {
@@ -1205,6 +1219,7 @@ function SpaceShell() {
               dismissableAskIds={dismissableAskIds}
               running={transcriptRunning}
               workingBots={workingBots}
+              runBot={runBot}
               workingRoutine={workingRoutineName(workingRuns)}
               userBubble={userBubble}
               onCallBack={

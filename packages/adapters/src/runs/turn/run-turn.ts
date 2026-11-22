@@ -28,6 +28,7 @@ import {
   shownProgress,
   tryFlushPendingTools,
 } from "../lifecycle/run-progress.js";
+import { saveThought } from "../lifecycle/run-thoughts.js";
 import {
   assistantTurnSeparator,
   extractNarrationText,
@@ -127,8 +128,11 @@ export async function consumeRunEvents(
         event.type === "takeover" ||
         event.type === "turn" ||
         event.type === "done"
-      )
+      ) {
         await publishThinking(false);
+        // Gente: the thinking before this tool or text is done; keep it for the activity row.
+        await saveThought(ctx);
+      }
 
       // Check complete assistant turns so split sentinel chunks are recognized
       // without treating a partial identifier (NO_RESPONSE_POLICY) as silence.
@@ -193,6 +197,7 @@ export async function consumeRunEvents(
     clearInterval(watch);
     // Run completion clears thinking too; never let this replace the turn's own outcome.
     await publishThinking(false).catch(() => {});
+    await bestEffort("run.thought", saveThought(ctx));
   }
 }
 

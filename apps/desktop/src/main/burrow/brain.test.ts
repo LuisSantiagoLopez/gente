@@ -192,6 +192,7 @@ describe("Your AI brain (Swift 1.5 27B: Q4_K_M with 24 GB+, compact IQ2_XXS belo
       PI_DEFAULT_PROVIDER: "local",
       PI_DEFAULT_MODEL: "swift-1.5-27b",
       BURROW_FAST_CHAT: "on",
+      MODEL_STREAM_IDLE_TIMEOUT_MS: "600000",
       PAYMENT_WALLET_PROVIDER: "link",
       RAKAZO_LOCAL_MODELS: "swift-1.5-27b",
     });
@@ -258,5 +259,17 @@ describe("getting the model ready as Your AI opens", () => {
     );
     expect(work.map((c) => c.path)).toEqual(["/api/generate", "/v1/chat/completions"]);
     expect(work[0]?.body).toMatchObject({ model: "swift-1.5-27b", prompt: "", keep_alive: -1 });
+  });
+});
+
+describe("Ollama settings", () => {
+  it("asks for the fast prompt cache as well as two requests and a model kept loaded", async () => {
+    const { OLLAMA_SETTINGS } = await import("./brain.js");
+    expect(OLLAMA_SETTINGS).toEqual({
+      OLLAMA_NUM_PARALLEL: "2",
+      OLLAMA_KEEP_ALIVE: "-1",
+      OLLAMA_FLASH_ATTENTION: "1",
+      OLLAMA_KV_CACHE_TYPE: "q8_0",
+    });
   });
 });

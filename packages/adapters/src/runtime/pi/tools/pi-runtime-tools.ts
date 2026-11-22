@@ -45,6 +45,7 @@ import {
 } from "../pi-runtime-limits.js";
 import type { RuntimeModelTarget } from "../pi-runtime-models.js";
 import { recordPiTelemetryContent, withPiTelemetrySpan } from "../usage/pi-telemetry.js";
+import { askUserCard, preparedMoreQuestions } from "./pi-runtime-ask-user.js";
 import { COMPUTER_MODE_TOOLS } from "./pi-runtime-computer-mode.js";
 import { parametersFor, prepareFleetArguments } from "./pi-runtime-tool-parameters.js";
 
@@ -268,6 +269,7 @@ export function describeToolActivity(
   if (toolName === "set_child_bot_model") return "Setting a bot's model";
   if (toolName === "create_child_routine") return `Scheduling routine: ${detail(record.name)}`;
   if (toolName === "remember") return "Saving a note to memory";
+  if (toolName === "ask_user") return `Asking you: ${detail(record.question)}`;
   if (toolName === "save_shared_memory") return `Saving shared memory: ${detail(record.path)}`;
   if (toolName === "web_search") return `Searching the web: ${detail(record.query)}`;
   if (toolName === "web_fetch") return `Reading page: ${detail(redactActivityUrl(record.url))}`;
@@ -412,6 +414,7 @@ function toAgentTool(
           // Keep a missing/invalid options value as-is so schema minItems can reject it;
           // coercing to [] would look like a valid empty list upstream.
           options,
+          ...preparedMoreQuestions(raw.more_questions),
         };
       }
       if (tool.name === "request_secret") {
@@ -557,51 +560,7 @@ function toAgentTool(
                   terminate: true,
                 };
               }
-              if (tool.name === "ask_user") {
-                // Gente: one question card per turn. Once it was asked (or answered and the run
-                // resumed), another ask would repeat it, so the model is told to go on instead.
-                if (host.askedThisTurn) {
-                  return {
-                    content: [
-                      {
-                        type: "text",
-                        text: "You already asked the person a question in this turn and have their answer. Do not ask again: continue with that answer, in the language they use.",
-                      },
-                    ],
-                    details: args,
-                  };
-                }
-                const options = Array.isArray(args.options)
-                  ? args.options.map((option) => String(option).trim())
-                  : [];
-                if (
-                  options.length < 2 ||
-                  options.length > 4 ||
-                  options.some((option) => option.length === 0 || option.length > 80) ||
-                  new Set(options).size !== options.length
-                ) {
-                  throw new Error("ask_user requires two to four unique, non-empty options");
-                }
-                host.pausePending = true;
-                host.askedThisTurn = true;
-                host.queue.push({
-                  type: "ask",
-                  ...(host.request.onCheckpoint ? { executionId } : {}),
-                  text: String(args.question ?? "What should I use?"),
-                  ...(typeof args.detail === "string" && args.detail
-                    ? { detail: args.detail }
-                    : {}),
-                  actions: options.map((label, index) => ({
-                    id: `choice-${index + 1}`,
-                    label,
-                  })),
-                });
-                return {
-                  content: [{ type: "text", text: "Waiting for the user's choice." }],
-                  details: args,
-                  terminate: true,
-                };
-              }
+              if (tool.name === "ask_user") return askUserCard(host, args, executionId);
               if (tool.name === "request_secret") {
                 if (host.request.executeTool) {
                   const result = await host.request.executeTool(tool.name, args, executionId);
@@ -831,8 +790,8 @@ export interface ToolHost {
   signal: AbortSignal;
   agentNamespace?: string;
   pausePending: boolean;
-  /** Gente: a question card was already asked (or answered, on resume) in this turn. */
-  askedThisTurn?: boolean;
+  /** Gente: question cards this task already asked, the answered one included on resume. */
+  askedCards?: number;
   captureCheckpoint?: (toolCallId: string, executionId: string) => Promise<void>;
   /** Shell commands that returned output and are still running. */
   pendingShells: Array<Promise<FinishedShellCommand>>;

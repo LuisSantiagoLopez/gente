@@ -5,7 +5,8 @@
 // a loopback-only endpoint, guarded by a random token, that forwards one search to the cloud with
 // the account's session. Signed out, it answers 404 and the server falls back to its own search.
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { createServer, type Server } from "node:http";
+import type { Server } from "node:http";
+import { createServer } from "node:http";
 import type { GenteCloud } from "./gente-cloud.js";
 
 export interface SearchBroker {
@@ -14,12 +15,20 @@ export interface SearchBroker {
   close(): Promise<void>;
 }
 
-export async function startSearchBroker(cloud: () => GenteCloud | null, signedIn: () => boolean): Promise<SearchBroker> {
+export async function startSearchBroker(
+  cloud: () => GenteCloud | null,
+  signedIn: () => boolean,
+): Promise<SearchBroker> {
   const token = randomBytes(32).toString("hex");
   const expected = Buffer.from(`Bearer ${token}`);
   const server: Server = createServer(async (req, res) => {
     const auth = Buffer.from(req.headers.authorization ?? "");
-    if (req.method !== "POST" || req.url !== "/search" || auth.length !== expected.length || !timingSafeEqual(auth, expected)) {
+    if (
+      req.method !== "POST" ||
+      req.url !== "/search" ||
+      auth.length !== expected.length ||
+      !timingSafeEqual(auth, expected)
+    ) {
       res.writeHead(404).end();
       return;
     }
@@ -33,7 +42,9 @@ export async function startSearchBroker(cloud: () => GenteCloud | null, signedIn
     }
     const query = (() => {
       try {
-        return String((JSON.parse(raw) as { query?: unknown }).query ?? "").slice(0, 500).trim();
+        return String((JSON.parse(raw) as { query?: unknown }).query ?? "")
+          .slice(0, 500)
+          .trim();
       } catch {
         return "";
       }

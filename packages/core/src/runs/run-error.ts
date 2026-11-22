@@ -384,7 +384,9 @@ export function normalizeRunError(
       : /\banthropic\b|anthropic_/i.test(signals)
         ? translate("Your Anthropic")
         : translate("Your model provider");
-  const localModel = !/\b(openrouter|openai|anthropic)\b|openrouter_|openai_|anthropic_/i.test(signals);
+  const localModel = !/\b(openrouter|openai|anthropic)\b|openrouter_|openai_|anthropic_/i.test(
+    signals,
+  );
 
   let resetAt: number | undefined;
   let kind: RunErrorKind | undefined;

@@ -144,6 +144,15 @@ export const MessageBlock = z.discriminatedUnion("kind", [
         }),
       )
       .optional(),
+    /** Gente: more questions on the same card, each with its own options, answered together. */
+    questions: z
+      .array(
+        z.object({
+          text: z.string(),
+          actions: z.array(z.object({ id: z.string(), label: z.string() })),
+        }),
+      )
+      .optional(),
   }),
   z.object({
     kind: z.literal("choice"),

@@ -15,8 +15,12 @@ import {
 } from "@rakazo/contracts";
 import {
   ACTIVE_RUN_STATUSES,
+  askAnswersText,
+  askQuestions,
   BACKGROUND_HELPER_TRIGGER,
   callIdFromClientNonce,
+  decodeAskAnswers,
+  encodeAskAnswers,
   instructionUpdateDiff,
   isApprovalAskBlock,
   isConversationalRun,
@@ -253,7 +257,15 @@ async function commitAnswerRunInput(
   const approvalAsk = isApprovalAskBlock(pendingAsk);
   const secretAsk = isSecretAskBlock(pendingAsk);
   const choiceAsk = !approvalAsk && !secretAsk && Boolean(pendingAsk.actions?.length);
-  const selectedChoice = choiceAsk ? resolveAskChoice(input.answer, pendingAsk.actions) : undefined;
+  // Gente: a card with several questions answers them all at once, one answer each.
+  const cardQuestions = choiceAsk && pendingAsk.questions?.length ? askQuestions(pendingAsk) : [];
+  const cardAnswers = cardQuestions.length
+    ? decodeAskAnswers(input.answer, cardQuestions.length)
+    : undefined;
+  const selectedChoice =
+    choiceAsk && !cardQuestions.length
+      ? resolveAskChoice(input.answer, pendingAsk.actions)
+      : undefined;
   const dismissed = Boolean(input.dismiss);
   // A secret request can be turned down; every other card needs an answer.
   if (dismissed && (!secretAsk || input.answer)) return null;
@@ -369,7 +381,11 @@ async function commitAnswerRunInput(
   });
   if (queued.count !== 1) return null;
 
-  const recordedAnswer = secretAsk ? "" : (selectedChoice?.id ?? approvalAnswer);
+  const recordedAnswer = secretAsk
+    ? ""
+    : cardAnswers
+      ? encodeAskAnswers(cardAnswers)
+      : (selectedChoice?.id ?? approvalAnswer);
   const callId = callIdFromClientNonce(input.clientNonce);
   const recordsCallUtterance = Boolean(callId && !secretAsk);
 
@@ -492,7 +508,11 @@ async function commitAnswerRunInput(
         prompt: resumePrompt(
           { ...run, trigger: resumedTrigger },
           pendingAsk.text,
-          selectedChoice ? `Selected choice ${selectedChoice.id}: ${resumeLabel}` : input.answer,
+          cardAnswers
+            ? askAnswersText(cardQuestions, cardAnswers)
+            : selectedChoice
+              ? `Selected choice ${selectedChoice.id}: ${resumeLabel}`
+              : input.answer,
         ),
       },
     });

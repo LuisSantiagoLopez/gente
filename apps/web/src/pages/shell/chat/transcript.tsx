@@ -14,8 +14,6 @@ import {
   expandPeerReplies,
   groupVoiceChats,
   isPeerReceiptBlocks,
-  liveActivityLine,
-  liveMessageComposing,
   peerExchangeLines,
   projectBotMentions,
   projectMessageReactions,
@@ -39,14 +37,15 @@ import {
   useRef,
   useState,
 } from "react";
-import { ActiveBotGlyph } from "../../../components/ai/CollaborationMarker";
 import { VoiceChatCard } from "../../../components/call/VoiceChatCard";
 import { RunActivityRow } from "../../../components/messages/RunActivityRow";
+import { liveRunDraft } from "../../../lib/chat/live-run-draft";
 import {
   isDetachedRange,
   lastSelectedText,
   quoteDraftForSelection,
 } from "../../../lib/chat/quote-selection";
+import { createStableKeyState, stableMessageKeys } from "../../../lib/chat/stable-message-keys";
 import { messageHasVisibleBlocks } from "../../../lib/chat/tool-activity-view";
 import { TRANSCRIPT_CONTENT_PADDING } from "../../../lib/chat/transcript-layout";
 import { transcriptIsNearEnd, transcriptMovedDown } from "../../../lib/chat/transcript-scroll";
@@ -87,6 +86,7 @@ export const Transcript = memo(function Transcript({
   dismissableAskIds,
   running,
   workingBots,
+  runBot,
   workingRoutine,
   userBubble,
   onCallBack,
@@ -138,6 +138,8 @@ export const Transcript = memo(function Transcript({
   dismissableAskIds: Set<string>;
   running: boolean;
   workingBots: GroupAvatarMember[];
+  /** Gente: the figure beside a finished reply's activity line. */
+  runBot?: (botId: string | undefined) => GroupAvatarMember[];
   workingRoutine?: string;
   /** Your bubbles take the bot's color in its own chat. */
   userBubble?: { background: string; foreground: string };
@@ -292,32 +294,27 @@ export const Transcript = memo(function Transcript({
       item.kind === "voiceChat" || messageHasVisibleBlocks(item.message.blocks, showToolActivity),
   );
   const shownItems = showTail ? items.slice(-FIRST_FRAME_ROWS) : items;
-  // Gente: never sit silent. If nothing has shown after 10 s, say so calmly; the worker's own
-  // watchdog restarts it when a run is not picked up.
-  // The wait starts again whenever the run or the message count changes.
-  const slowKey = `${running}:${messages.length}`;
-  const [slowAt, setSlowAt] = useState<string | null>(null);
-  useTimeout(() => setSlowAt(slowKey), running ? 10_000 : null, slowKey);
-  const slowStart = running && slowAt === slowKey;
   // Gente: each run's steps, opened from its working line and, once it ends, under its reply.
   const activityByRun = useMemo(
     () => new Map((runActivity ?? []).map((activity) => [activity.runId, activity])),
     [runActivity],
   );
-  const lastMessageOfRun = new Map<string, string>();
+  // Gente: a streamed reply keeps its element when the saved message replaces it.
+  const keyState = useRef(createStableKeyState());
+  const messageKeys = stableMessageKeys(messages, keyState.current);
+  // Gente: each run's activity line sits above its first reply, live or done.
+  const firstMessageOfRun = new Map<string, string>();
   for (const item of shownItems) {
     if (item.kind === "voiceChat") continue;
     const { message } = item;
-    if (message.role === "bot" && message.runId && !message.id.startsWith("progress:"))
-      lastMessageOfRun.set(message.runId, message.id);
+    if (message.role === "bot" && message.runId && !firstMessageOfRun.has(message.runId))
+      firstMessageOfRun.set(message.runId, message.id);
   }
-  const workingLabel =
-    liveActivityLine(messages) ??
-    (workingRoutine
-      ? t`Running ${workingRoutine}…`
-      : slowStart
-        ? t`Getting things moving…`
-        : t`Reading…`);
+  const activityBots = (botId: string | undefined) => {
+    const working = workingBots.filter((bot) => bot.botId === botId);
+    return working.length ? working : (runBot?.(botId) ?? workingBots);
+  };
+  const routineLabel = workingRoutine ? t`Running ${workingRoutine}…` : undefined;
   const [quoteDraft, setQuoteDraft] = useState<{
     message: ThreadMessage;
     text: string;
@@ -663,12 +660,25 @@ export const Transcript = memo(function Transcript({
           const peerReceipt = isPeerReceiptBlocks(message.blocks);
           const messageReactions = reactionView.reactions.get(message.id);
           return (
-            <Fragment key={message.id}>
+            <Fragment key={messageKeys.get(message.id) ?? message.id}>
               {separatorIds.has(message.id) ? (
                 <TimeSeparator createdAt={message.createdAt} locale={i18n.locale || "en"} />
               ) : null}
               {message.id === unreadDividerId ? (
                 <UnreadDivider afterSeparator={separatorIds.has(message.id)} />
+              ) : null}
+              {message.runId && firstMessageOfRun.get(message.runId) === message.id ? (
+                <RunActivityRow
+                  activity={activityByRun.get(message.runId)}
+                  live={running && message.runId === liveRunId}
+                  draft={
+                    running && message.runId === liveRunId
+                      ? liveRunDraft(messages, liveRunId)
+                      : undefined
+                  }
+                  bots={activityBots(message.botId)}
+                  liveLabel={routineLabel}
+                />
               ) : null}
               <div
                 data-message-id={message.id}
@@ -755,11 +765,6 @@ export const Transcript = memo(function Transcript({
                     />
                   </div>
                 </div>
-                {message.runId &&
-                lastMessageOfRun.get(message.runId) === message.id &&
-                !(running && message.runId === liveRunId) ? (
-                  <RunActivityRow activity={activityByRun.get(message.runId)} live={false} />
-                ) : null}
                 {!peerReceipt && messageReactions ? (
                   <div
                     data-testid="message-reactions"
@@ -783,16 +788,15 @@ export const Transcript = memo(function Transcript({
             </Fragment>
           );
         })}
-        {/* Gente: the arrow stays while the reply streams; it then reads "Thought for …". */}
-        {running ? (
-          <RunActivityRow activity={activityByRun.get(liveRunId ?? "")} live>
-            {messages.some(
-              (message) =>
-                message.id.startsWith("progress:") && liveMessageComposing(message.blocks),
-            ) ? null : (
-              <ActiveBotGlyph bots={workingBots} label={workingLabel} />
-            )}
-          </RunActivityRow>
+        {/* Gente: before the run's first reply, its activity line waits at the bottom. */}
+        {running && !firstMessageOfRun.has(liveRunId ?? "") ? (
+          <RunActivityRow
+            activity={activityByRun.get(liveRunId ?? "")}
+            live
+            draft={liveRunDraft(messages, liveRunId)}
+            bots={workingBots}
+            liveLabel={routineLabel}
+          />
         ) : null}
       </div>
       {quoteDraft ? <QuoteSelectionButton range={quoteDraft.range} onQuote={applyQuote} /> : null}

@@ -8,7 +8,6 @@ import {
   isQuestionAskBlock,
   isSecretAskBlock,
   receiptItems,
-  resolveAskChoice,
   selectedAskActionLabel,
 } from "@rakazo/core";
 import { Button, cn, Textarea } from "@rakazo/ui-web";
@@ -18,7 +17,7 @@ import type { RpcClient } from "../../lib/query/rpc";
 import { rpc as selectedSpaceRpc } from "../../lib/query/rpc";
 import { errorText } from "../../lib/query/user-error";
 import { BuiCard } from "../ai/primitives";
-import { OptionRow, optionLetter } from "./OptionRow";
+import { QuestionOptions } from "./QuestionOptions";
 import { SecretAskCard } from "./SecretAskCard";
 
 export type AskBlock = Extract<ThreadMessage["blocks"][number], { kind: "ask" }>;
@@ -165,8 +164,6 @@ function PromptAskCard({
     : askActions;
   const optionQuestion =
     !approvalActions && !block.instructionUpdate && Boolean(askActions?.length);
-  const chosenOption =
-    answered && displayedAnswer ? resolveAskChoice(displayedAnswer, askActions) : undefined;
   // Typed replies already have their own message; the question must not repeat them.
   const typedAnswer =
     answered &&
@@ -300,19 +297,13 @@ function PromptAskCard({
         </form>
       ) : optionQuestion ? (
         // Options stay in place once answered: the chosen one is marked, the rest dim.
-        <div className="mt-2.5 space-y-0.5">
-          {askActions?.map((action, index) => (
-            <OptionRow
-              key={action.id}
-              letter={optionLetter(index)}
-              selected={chosenOption?.id === action.id}
-              disabled={answered || !canAnswer || submitting}
-              onClick={() => void submitAnswer(action.id)}
-            >
-              {pendingAction === action.id ? <Trans>Sending…</Trans> : action.label}
-            </OptionRow>
-          ))}
-        </div>
+        <QuestionOptions
+          block={block}
+          answer={answered ? (displayedAnswer ?? "") : undefined}
+          disabled={!canAnswer || submitting}
+          pendingAction={pendingAction}
+          onSubmit={(value) => void submitAnswer(value)}
+        />
       ) : typedAnswer ? (
         answerIsSeparate ? null : (
           <blockquote
