@@ -106,7 +106,7 @@ describe("fetchLinuxUpdateSignature", () => {
       "signature\n",
     );
     expect(fetchUrl).toHaveBeenCalledWith(
-      "https://github.com/LuisSantiagoLopez/gente/releases/download/v1.2.3/Gente-1.2.3.AppImage.sig",
+      "https://github.com/LuisSantiagoLopez/yourai-releases/releases/download/v1.2.3/Gente-1.2.3.AppImage.sig",
       expect.any(AbortSignal),
     );
   });

@@ -15,6 +15,8 @@ concurrency:
   cancel-in-progress: false
 env:
   DRAFT_TAG: v1.0.6
+  # Public installers and update feeds live in a downloads-only repo; the source repo is private.
+  RELEASES_REPO: LuisSantiagoLopez/yourai-releases
 jobs:
   gente:
     name: ${{ matrix.label }}
@@ -146,17 +148,44 @@ jobs:
       - name: Attach the installer to the draft release (never published)
         # Only this workflow's own runs; gates that call it (gente-windows) test without attaching.
         if: success() && github.workflow == 'gente-platforms'
-        env: { GH_TOKEN: "${{ github.token }}" }
+        # RELEASES_TOKEN: a token with contents write on the releases repo.
+        env: { GH_TOKEN: "${{ secrets.RELEASES_TOKEN }}" }
         run: |
-          test "$(gh release view "$DRAFT_TAG" --json isDraft -q .isDraft)" = true
+          test "$(gh release view "$DRAFT_TAG" -R "$RELEASES_REPO" --json isDraft -q .isDraft)" = true
           for f in apps/desktop/out/*.exe apps/desktop/out/*.dmg; do
-            if [ -f "$f" ]; then gh release upload "$DRAFT_TAG" "$f" --clobber; fi
+            if [ -f "$f" ]; then gh release upload "$DRAFT_TAG" "$f" -R "$RELEASES_REPO" --clobber; fi
           done
           # Auto-update feed for Windows x64 (latest.yml and the installer's blockmap). Only the x64
-          # job uploads it, so the arm64 build can't overwrite it. Unsigned Mac builds can't
-          # update themselves, so Mac users download each version.
+          # job uploads it, so the arm64 build can't overwrite it. The Mac feed (latest-mac.yml)
+          # is written once both DMGs exist, by the mac-update-feed job below.
           if [ "${{ matrix.label }}" = windows-x64 ]; then
             for f in apps/desktop/out/latest.yml apps/desktop/out/*.exe.blockmap; do
-              if [ -f "$f" ]; then gh release upload "$DRAFT_TAG" "$f" --clobber; fi
+              if [ -f "$f" ]; then gh release upload "$DRAFT_TAG" "$f" -R "$RELEASES_REPO" --clobber; fi
             done
           fi
+  mac-update-feed:
+    # latest-mac.yml with the size and sha512 of both DMGs; the Mac updater refuses any DMG that
+    # does not match it. Runs only when every platform passed, so a broken build is never offered.
+    name: mac update feed
+    needs: gente
+    if: success() && github.workflow == 'gente-platforms'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: installer-macos-*
+          path: ${{ runner.temp }}/dmgs
+          merge-multiple: true
+      - name: Write latest-mac.yml
+        run: |
+          node scripts/gente-mac-feed.mjs "$RUNNER_TEMP/dmgs" > "$RUNNER_TEMP/latest-mac.yml"
+          cat "$RUNNER_TEMP/latest-mac.yml"
+      - name: Attach latest-mac.yml to the draft release (never published)
+        env: { GH_TOKEN: "${{ secrets.RELEASES_TOKEN }}" }
+        run: |
+          test "$(gh release view "$DRAFT_TAG" -R "$RELEASES_REPO" --json isDraft -q .isDraft)" = true
+          gh release upload "$DRAFT_TAG" "$RUNNER_TEMP/latest-mac.yml" -R "$RELEASES_REPO" --clobber

@@ -8,6 +8,10 @@ import { SignatureUnreachableError } from "./linux-update-signature.js";
 export const LAUNCH_CHECK_DELAY_MS = 8_000;
 /** A connected server drives the renderer, so a manual check cannot become a request loop. */
 export const MIN_CHECK_INTERVAL_MS = 60_000;
+/** Gente: the shortest gap between a failed update and a "Try again" check. */
+export const RETRY_AFTER_ERROR_MS = 3_000;
+/** Gente: background checks run on launch and then every 6 hours. */
+export const PERIODIC_CHECK_MS = 6 * 60 * 60 * 1_000;
 
 export interface UpdaterEnvironment {
   packaged: boolean;
@@ -189,6 +193,8 @@ export function reduceUpdateState(
           percent: null,
           message: failure.message,
           checkedAt: now,
+          // Gente: the UI offers one button that moves the app to Applications.
+          fix: "move-to-applications",
         };
       }
       if (failure.kind === "no-releases" && state.phase === "checking") {
@@ -241,7 +247,12 @@ export function shouldCheck(
     return options.userInitiated === true && options.environmentSupportsUpdates === true;
   }
   if (state.phase !== "idle" && state.phase !== "error") return false;
-  return now - lastCheck >= MIN_CHECK_INTERVAL_MS || lastCheck === 0;
+  // Gente: "Try again" after a failure should not wait out the full interval.
+  const floor =
+    options.userInitiated === true && state.phase === "error"
+      ? RETRY_AFTER_ERROR_MS
+      : MIN_CHECK_INTERVAL_MS;
+  return now - lastCheck >= floor || lastCheck === 0;
 }
 
 export interface ElectronAutoUpdater {
@@ -320,6 +331,8 @@ export class DesktopUpdateController {
     private readonly clock: UpdateClock = systemClock,
     private readonly onInstallFailure?: () => void,
     private readonly verifyDownload?: DownloadVerifier,
+    /** Gente: false waits for the Update button instead of downloading as soon as one is found. */
+    private readonly downloadOnFind = true,
   ) {
     this.current = initialUpdateState(environment);
   }
@@ -389,7 +402,7 @@ export class DesktopUpdateController {
             return;
           }
           this.push({ type: "available", version });
-          void this.download();
+          if (this.downloadOnFind) void this.download();
         });
         updater.on("update-not-available", () => this.push({ type: "not-available" }));
         updater.on("download-progress", (payload) => {
@@ -474,6 +487,7 @@ export class DesktopUpdateController {
         availableVersion: null,
         percent: null,
         message: null,
+        fix: undefined,
       });
       // Do not make the user wait out the launch-check interval to retry.
       this.lastCheck = 0;

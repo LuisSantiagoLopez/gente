@@ -9,13 +9,7 @@ import type { GenteSupportBridge } from "../support/bridge.js";
  * the window that sent the call and on nothing else. `computerPill` is the small "Gente is using
  * your computer" window, whose page may only ask to stop and say where the pointer is.
  */
-export type IpcWindow =
-  | "app"
-  | "appOrReplaced"
-  | "setup"
-  | "support"
-  | "computerPill"
-  | "telegram";
+export type IpcWindow = "app" | "appOrReplaced" | "setup" | "support" | "computerPill" | "telegram";
 
 type BridgeMethod = (...args: never[]) => unknown;
 
@@ -131,7 +125,8 @@ export const ipcChannels = {
   "desktop.gente.consumeMessage": appPage<NonNullable<Desktop["gente"]>["consumeMessage"]>(true),
   "desktop.gente.privateOffer": appPage<NonNullable<Desktop["gente"]>["privateOffer"]>(null),
   "desktop.gente.setAiMode": appPage<NonNullable<Desktop["gente"]>["setAiMode"]>(REJECTS),
-  "desktop.gente.setPrivateWaitlist": appPage<NonNullable<Desktop["gente"]>["setPrivateWaitlist"]>(null),
+  "desktop.gente.setPrivateWaitlist":
+    appPage<NonNullable<Desktop["gente"]>["setPrivateWaitlist"]>(null),
   "desktop.gente.signIn": appPage<NonNullable<Desktop["gente"]>["signIn"]>(REJECTS),
   "desktop.gente.signOut": appPage<NonNullable<Desktop["gente"]>["signOut"]>(REJECTS),
   "desktop.locale.set": appPage<Desktop["locale"]["set"]>(undefined),
@@ -147,6 +142,9 @@ export const ipcChannels = {
   "desktop.update.check": appPageLive<Desktop["update"]["check"]>(),
   "desktop.update.download": appPageLive<Desktop["update"]["download"]>(),
   "desktop.update.install": appPageLive<Desktop["update"]["install"]>(),
+  "desktop.update.moveToApplications":
+    appPageLive<NonNullable<Desktop["update"]["moveToApplications"]>>(),
+  "desktop.update.updateNow": appPageLive<NonNullable<Desktop["update"]["updateNow"]>>(),
   "desktop.update.state": appPageLive<Desktop["update"]["state"]>(),
   "desktop.window.close": ownWindow<Desktop["window"]["close"]>(undefined),
   "desktop.window.minimize": ownWindow<Desktop["window"]["minimize"]>(undefined),

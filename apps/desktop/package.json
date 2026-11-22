@@ -154,7 +154,8 @@
       {
         "provider": "github",
         "owner": "LuisSantiagoLopez",
-        "repo": "gente"
+        "repo": "yourai-releases",
+        "private": false
       }
     ],
     "copyright": "Copyright 2026 DeskHead Inc. Based on Rakazo by Elie Steinbock (Apache-2.0).",

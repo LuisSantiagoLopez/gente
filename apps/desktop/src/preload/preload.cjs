@@ -105,6 +105,8 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
     check: () => ipcRenderer.invoke("desktop.update.check"),
     download: () => ipcRenderer.invoke("desktop.update.download"),
     install: () => ipcRenderer.invoke("desktop.update.install"),
+    updateNow: () => ipcRenderer.invoke("desktop.update.updateNow"),
+    moveToApplications: () => ipcRenderer.invoke("desktop.update.moveToApplications"),
   },
   oauth: {
     open: (url) => ipcRenderer.invoke("desktop.oauth.open", url),

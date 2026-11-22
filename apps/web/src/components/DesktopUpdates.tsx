@@ -1,10 +1,16 @@
+// Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+// Gente: one "Update to vX.Y.Z" button. A click checks, downloads (with progress), verifies,
+// installs and relaunches. A failure shows one plain sentence and "Try again". A Mac app run from
+// a DMG or Downloads gets one "Move to Applications" button first.
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useTimeout } from "@rakazo/chat-ui/hooks";
 import type { DesktopUpdateState } from "@rakazo/contracts";
-import { Button, SectionHeading, toast } from "@rakazo/ui-web";
+import { Button, SectionHeading } from "@rakazo/ui-web";
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { desktopBridge } from "../lib/platform/desktop";
+
+type Action = "check" | "update" | "move";
 
 function useDesktopUpdates() {
   const { t } = useLingui();
@@ -16,14 +22,15 @@ function useDesktopUpdates() {
   const pending = useRef(false);
   const revision = useRef(0);
 
-  // Each finished read schedules the next one, two seconds on.
+  // Each finished read schedules the next one: every half second while an update runs (so the
+  // progress moves), otherwise every two seconds.
   const [nextRefresh, setNextRefresh] = useState<object | null>(null);
   async function refresh() {
     if (!bridge) return;
     const started = revision.current;
     try {
       const next = await bridge.state();
-      if (started === revision.current && !pending.current) {
+      if (started === revision.current) {
         setState((current) =>
           current &&
           Object.entries(next).every(
@@ -42,17 +49,26 @@ function useDesktopUpdates() {
   useEffect(() => {
     void refresh();
   }, [bridge]);
-  useTimeout(() => void refresh(), bridge && nextRefresh ? 2_000 : null, nextRefresh);
+  useTimeout(
+    () => void refresh(),
+    bridge && nextRefresh ? (busy ? 500 : 2_000) : null,
+    nextRefresh,
+  );
 
-  async function act(action: "check" | "install") {
+  async function act(action: Action) {
     if (!bridge || pending.current) return;
     pending.current = true;
-    revision.current++;
     setBusy(true);
     setError(null);
     if (action === "check") setConfirmedCheck(null);
     try {
-      const next = await bridge[action]();
+      const next =
+        action === "check"
+          ? await bridge.check()
+          : action === "move"
+            ? await (bridge.moveToApplications ?? bridge.state)()
+            : await (bridge.updateNow ?? bridge.install)();
+      revision.current++;
       setState(next);
       if (
         action === "check" &&
@@ -62,13 +78,12 @@ function useDesktopUpdates() {
       ) {
         setConfirmedCheck(next.checkedAt);
       }
-      if (next.phase === "error" || action === "install") {
-        setError(next.message);
+      if (next.phase === "error" || (action === "update" && next.message)) {
+        setError(next.message ?? t`The update did not finish. Your current version is still here.`);
       }
     } catch {
-      setError(t`Could not complete the update. Try again.`);
+      setError(t`The update did not finish. Your current version is still here.`);
     } finally {
-      revision.current++;
       pending.current = false;
       setBusy(false);
     }
@@ -78,93 +93,60 @@ function useDesktopUpdates() {
 
 const UpdatesContext = createContext<ReturnType<typeof useDesktopUpdates> | null>(null);
 
-const DESKTOP_UPDATE_TOAST = "desktop-update";
-
 export function DesktopUpdatesProvider({ children }: { children: ReactNode }) {
   const updates = useDesktopUpdates();
-  const [dismissed, setDismissed] = useState<string | null>(null);
-  const { state, error } = updates;
-  useEffect(() => {
-    if (error) setDismissed(null);
-  }, [error]);
-  const prompt = Boolean(
-    state &&
-      (state.phase === "ready" || (error && state.availableVersion)) &&
-      dismissed !== state.availableVersion,
-  );
-  // Keep the toast up while a retry runs, so a quick failure reuses it instead of racing
-  // its dismissal.
-  const [shown, setShown] = useState(false);
-  const visible = prompt || (shown && updates.busy);
-  useEffect(() => {
-    setShown(visible);
-  }, [visible]);
-  useEffect(() => {
-    if (!visible) return;
-    // The app's Toaster renders inside this provider, so the toast reads live state from context.
-    toast.custom(() => <DesktopUpdatePrompt onLater={setDismissed} />, {
-      id: DESKTOP_UPDATE_TOAST,
-      duration: Number.POSITIVE_INFINITY,
-      dismissible: false,
-    });
-    return () => {
-      toast.dismiss(DESKTOP_UPDATE_TOAST);
-    };
-  }, [visible]);
   return <UpdatesContext.Provider value={updates}>{children}</UpdatesContext.Provider>;
 }
 
-function DesktopUpdatePrompt({ onLater }: { onLater: (version: string | null) => void }) {
-  const { t } = useLingui();
-  const updates = useContext(UpdatesContext);
-  if (!updates?.state) return null;
-  const { state, busy, error, act } = updates;
-  return (
-    <aside
-      aria-label={t`Desktop update`}
-      className="w-full rounded-xl border border-border bg-card p-3 text-card-foreground shadow-lg"
-    >
-      <div className="flex items-center gap-2">
-        <Button
-          disabled={busy}
-          onClick={() => void act(state.phase === "ready" ? "install" : "check")}
-        >
-          {state.phase === "ready" ? (
-            <Trans>Restart to update</Trans>
-          ) : (
-            <Trans>Check for updates</Trans>
-          )}
-        </Button>
-        <Button variant="ghost" disabled={busy} onClick={() => onLater(state.availableVersion)}>
-          <Trans>Later</Trans>
-        </Button>
-      </div>
-      {error || state.message ? (
-        <p role="status" className="mt-2 text-body">
-          {error ?? state.message}
-        </p>
-      ) : null}
-    </aside>
-  );
+/** What the Update button should say and do right now. Null when there is nothing to offer. */
+export function updateOffer(state: DesktopUpdateState | null, busy: boolean, error: string | null) {
+  if (!state) return null;
+  if (state.fix === "move-to-applications") {
+    return { kind: "move" as const, version: null, percent: null, message: state.message };
+  }
+  const version = state.availableVersion;
+  if (version === null) return null;
+  const running = busy || state.phase === "downloading" || state.phase === "checking";
+  if (running) {
+    return { kind: "running" as const, version, percent: state.percent, message: null };
+  }
+  if (state.phase === "error" || error) {
+    return { kind: "retry" as const, version, percent: null, message: error ?? state.message };
+  }
+  if (state.phase === "available" || state.phase === "ready") {
+    return { kind: "update" as const, version, percent: null, message: null };
+  }
+  return null;
 }
 
 export function useSidebarUpdate() {
   const updates = useContext(UpdatesContext);
+  const offer = updates ? updateOffer(updates.state, updates.busy, updates.error) : null;
   return {
-    available: updates?.state?.phase === "ready",
-    busy: updates?.busy ?? false,
-    install: () => {
-      void updates?.act("install");
-    },
+    offer,
+    run: () => void updates?.act(offer?.kind === "move" ? "move" : "update"),
   };
+}
+
+/** The button's label, shared by the sidebar and Settings. */
+export function UpdateLabel({ offer }: { offer: NonNullable<ReturnType<typeof updateOffer>> }) {
+  if (offer.kind === "move") return <Trans>Move to Applications</Trans>;
+  if (offer.kind === "retry") return <Trans>Try again</Trans>;
+  if (offer.kind === "running") {
+    return offer.percent === null ? (
+      <Trans>Updating…</Trans>
+    ) : (
+      <Trans>Updating… {offer.percent}%</Trans>
+    );
+  }
+  return <Trans>Update to v{offer.version}</Trans>;
 }
 
 export function DesktopUpdateSection() {
   const updates = useContext(UpdatesContext);
   if (!updates?.state) return null;
   const { state, busy, error, act, confirmedCheck } = updates;
-  const ready = state.phase === "ready";
-  const downloading = state.phase === "available" || state.phase === "downloading";
+  const offer = updateOffer(state, busy, error);
   return (
     <section
       data-testid="desktop-update-settings"
@@ -175,28 +157,32 @@ export function DesktopUpdateSection() {
       </SectionHeading>
       <div className="mt-3 flex items-center justify-between gap-3">
         <span className="text-body text-muted-foreground">v{state.currentVersion}</span>
-        <Button
-          variant="outline"
-          disabled={busy || downloading || state.phase === "checking"}
-          onClick={() => void act(ready ? "install" : "check")}
-        >
-          {ready ? (
-            <Trans>Restart to update</Trans>
-          ) : downloading ? (
-            <Trans>Downloading…</Trans>
-          ) : busy || state.phase === "checking" ? (
-            <Trans>Checking…</Trans>
-          ) : (
-            <Trans>Check for updates</Trans>
-          )}
-        </Button>
+        {offer ? (
+          <Button
+            disabled={offer.kind === "running"}
+            onClick={() => void act(offer.kind === "move" ? "move" : "update")}
+          >
+            <UpdateLabel offer={offer} />
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            disabled={busy || state.phase === "checking"}
+            onClick={() => void act("check")}
+          >
+            {busy || state.phase === "checking" ? (
+              <Trans>Checking…</Trans>
+            ) : (
+              <Trans>Check for updates</Trans>
+            )}
+          </Button>
+        )}
       </div>
       <p role="status" className="mt-2 text-body text-muted-foreground">
-        {error ??
+        {offer?.message ??
+          error ??
           state.message ??
-          (downloading ? (
-            `${state.percent ?? 0}%`
-          ) : state.phase === "idle" && confirmedCheck && state.checkedAt === confirmedCheck ? (
+          (state.phase === "idle" && confirmedCheck && state.checkedAt === confirmedCheck ? (
             <Trans>Up to date</Trans>
           ) : null)}
       </p>

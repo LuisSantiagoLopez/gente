@@ -76,3 +76,50 @@ Read the files in this order to follow the code.
 
 The test that proves step 5 end to end:
 `packages/testkit/src/runtime/pi-runtime-ask-answer.test.ts`.
+
+# Updates
+
+One button updates the app on every platform.
+
+## When it shows
+- The app checks 8 seconds after launch, then every 6 hours.
+- If a newer version exists, the sidebar shows **Update to vX.Y.Z**. So does Settings.
+- Nothing downloads until you click.
+
+## Where the versions come from
+- Releases live in the public repo `LuisSantiagoLopez/yourai-releases` (no source code).
+- `latest.yml` is the Windows feed. `latest-mac.yml` is the Mac feed.
+- The `gente-platforms` workflow uploads both. It writes `latest-mac.yml` only after both
+  DMGs (arm64 and x64) are built, with the size and sha512 of each.
+
+## Windows
+electron-updater downloads the installer, checks it, installs it and relaunches.
+The button just starts it (`apps/desktop/src/main/updates/auto-update.ts`).
+
+## Mac (unsigned builds)
+Squirrel.Mac refuses apps without an Apple Developer ID, so the Mac uses its own updater
+(`apps/desktop/src/main/updates/mac/`), driven by the same button:
+1. Read `latest-mac.yml` and compare versions (`versions.ts`, `mac-feed.ts`).
+2. Download the DMG for this Mac (arm64 or x64) with the app's own HTTP client, so macOS adds no
+   quarantine flag. Check its size and sha512 (`download.ts`).
+3. Mount the DMG read-only and check the app inside is ours and the right version
+   (`mac-installer.ts`).
+4. Start a small helper script, then quit (`helper-script.ts`). The helper waits for the app to
+   quit, moves the old app to a backup, copies the new one in with `ditto`, removes quarantine,
+   relaunches, and unmounts the DMG. If the copy fails, it puts the backup back and relaunches
+   the old version. The next check then shows "Try again".
+5. If the app folder is not writable, the helper starts behind the macOS admin prompt. You type
+   your password into macOS; the app never sees it.
+
+If the app runs from the DMG or from Downloads (macOS "translocation"), the button says
+**Move to Applications** instead. One click moves it and relaunches it there.
+
+## Safe by default
+- Any failure leaves the old version running and shows one sentence plus **Try again**.
+- Each step is written to `support.log`.
+- Your data lives in `~/Library/Application Support`, outside the app, so updates never touch it.
+
+## Tests
+- Unit: `apps/desktop/src/main/updates/mac/*.test.ts`, `update-now.test.ts`.
+- End to end on a Mac, all in a temp folder: `mac/mac-update.e2e.test.ts` (real DMG, local
+  server, real `open`; good update, corrupted download, rollback).

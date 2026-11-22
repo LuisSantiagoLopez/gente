@@ -28,7 +28,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
-import { useSidebarUpdate } from "../../../components/DesktopUpdates";
+import { UpdateLabel, useSidebarUpdate } from "../../../components/DesktopUpdates";
 import { IconTooltip } from "../../../components/IconTooltip";
 import type { Organization } from "../../../lib/spaces/organizations";
 
@@ -119,7 +119,7 @@ export function SidebarFooter({
     measure();
     return () => observer.disconnect();
   }, [mini]);
-  return (
+  const footer = (
     <div
       data-testid="sidebar-footer"
       className={`flex shrink-0 items-center gap-2 bg-transparent ${mini ? "flex-col px-1 py-2" : "px-2.5 py-3"}`}
@@ -303,20 +303,58 @@ export function SidebarFooter({
           />
         </Button>
       ) : null}
-      {update.available ? (
-        <IconTooltip label={t`Install update`}>
+      {update.offer && mini ? (
+        <IconTooltip label={update.offer.message ?? t`Update`}>
           <Button
             size="icon-lg"
             className="rounded-full"
-            aria-label={t`Install update`}
-            disabled={update.busy}
-            onClick={update.install}
+            data-testid="sidebar-update"
+            aria-label={t`Update`}
+            disabled={update.offer.kind === "running"}
+            onClick={update.run}
           >
             <Download aria-hidden="true" />
           </Button>
         </IconTooltip>
       ) : null}
     </div>
+  );
+  // Gente: the Update button sits on its own calm row above the footer, with room for its label,
+  // progress and a one-sentence failure.
+  const offer = update.offer;
+  if (!offer || mini) return footer;
+  return (
+    <>
+      <div data-testid="sidebar-update-row" className="shrink-0 px-2.5 pt-2">
+        <Button
+          variant="secondary"
+          size="lg"
+          data-testid="sidebar-update"
+          className="w-full justify-start gap-2"
+          disabled={offer.kind === "running"}
+          onClick={update.run}
+        >
+          <Download className="text-muted-foreground" strokeWidth={1.75} aria-hidden="true" />
+          <span className="truncate">
+            <UpdateLabel offer={offer} />
+          </span>
+        </Button>
+        {offer.kind === "running" && offer.percent !== null ? (
+          <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-secondary" aria-hidden="true">
+            <div
+              className="h-full bg-primary transition-[width]"
+              style={{ width: `${offer.percent}%` }}
+            />
+          </div>
+        ) : null}
+        {offer.message ? (
+          <p role="status" className="px-1 pt-1.5 text-body-sm text-muted-foreground">
+            {offer.message}
+          </p>
+        ) : null}
+      </div>
+      {footer}
+    </>
   );
 }
 

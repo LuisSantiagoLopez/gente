@@ -66,7 +66,7 @@ async function render(
     ),
   );
 }
-function bridge(phase: DesktopUpdateState["phase"]) {
+function bridge(phase: DesktopUpdateState["phase"], extra: Partial<DesktopUpdateState> = {}) {
   const state: DesktopUpdateState = {
     phase,
     currentVersion: "0.1.0",
@@ -74,8 +74,11 @@ function bridge(phase: DesktopUpdateState["phase"]) {
     percent: null,
     message: null,
     checkedAt: null,
+    ...extra,
   };
   const install = vi.fn(async () => state);
+  const updateNow = vi.fn(async () => state);
+  const moveToApplications = vi.fn(async () => state);
   window.rakazoDesktop = {
     platform: "darwin",
     window: {
@@ -90,35 +93,80 @@ function bridge(phase: DesktopUpdateState["phase"]) {
       install,
       download: async () => state,
       check: async () => state,
+      updateNow,
+      moveToApplications,
     },
   };
-  return install;
+  return { install, updateNow, moveToApplications };
 }
+const updateButton = () =>
+  document.querySelector<HTMLButtonElement>('[data-testid="sidebar-update"]');
 it("hides update controls without a desktop bridge", async () => {
   await render();
-  expect(document.querySelector('[aria-label="Install update"]')).toBeNull();
-  expect(document.body.textContent).not.toContain("New update available");
+  expect(updateButton()).toBeNull();
 });
-it.each(["unsupported", "idle", "available", "downloading", "checking", "error"] as const)(
-  "hides install controls in phase %s",
+it.each(["unsupported", "idle", "checking"] as const)(
+  "offers no update in phase %s",
   async (phase) => {
-    bridge(phase);
+    // A background check starts from "nothing found", so no version is known yet.
+    bridge(phase, phase === "checking" ? { availableVersion: null } : {});
     await render();
-    expect(document.querySelector('[aria-label="Install update"]')).toBeNull();
-    expect(document.body.textContent).not.toContain("New update available");
+    expect(updateButton()).toBeNull();
   },
 );
-it("installs the ready update only through the footer button", async () => {
-  const install = bridge("ready");
-  await render("Ada Lovelace");
-  const icon = document.querySelector<HTMLButtonElement>('[aria-label="Install update"]')!;
-  expect(icon).not.toBeNull();
-  expect(document.body.textContent).not.toContain("New update available");
-  await act(async () => icon.click());
-  expect(install).toHaveBeenCalledTimes(1);
+it.each(["available", "ready"] as const)(
+  "offers one Update to vX button in phase %s that runs the whole update",
+  async (phase) => {
+    const { updateNow, install } = bridge(phase);
+    await render("Ada Lovelace");
+    await vi.waitFor(() => expect(updateButton()?.textContent).toBe("Update to v0.2.0"));
+    await act(async () => updateButton()!.click());
+    expect(updateNow).toHaveBeenCalledTimes(1);
+    expect(install).not.toHaveBeenCalled();
+  },
+);
+it("shows download progress while updating", async () => {
+  bridge("downloading", { percent: 42 });
+  await render();
+  await vi.waitFor(() => expect(updateButton()?.textContent).toBe("Updating… 42%"));
+  expect(updateButton()!.disabled).toBe(true);
+});
+it("shows one plain sentence and Try again after a failure", async () => {
+  const { updateNow } = bridge("error", {
+    message: "The update could not be completed. Try again later.",
+  });
+  await render();
+  await vi.waitFor(() => expect(updateButton()?.textContent).toBe("Try again"));
   expect(
-    [...document.querySelectorAll("button")].some((button) => button.textContent === "Install"),
-  ).toBe(false);
+    document.querySelector('[data-testid="sidebar-update-row"] [role="status"]')?.textContent,
+  ).toBe("The update could not be completed. Try again later.");
+  await act(async () => updateButton()!.click());
+  expect(updateNow).toHaveBeenCalledTimes(1);
+});
+it("keeps the old version message when the update call itself fails", async () => {
+  const { updateNow } = bridge("available");
+  updateNow.mockRejectedValueOnce(new Error("offline"));
+  await render();
+  await vi.waitFor(() => expect(updateButton()).not.toBeNull());
+  await act(async () => updateButton()!.click());
+  await vi.waitFor(() =>
+    expect(
+      document.querySelector('[data-testid="sidebar-update-row"] [role="status"]')?.textContent,
+    ).toBe("The update did not finish. Your current version is still here."),
+  );
+  expect(updateButton()?.textContent).toBe("Try again");
+});
+it("offers one Move to Applications button when the Mac app runs from a disk image", async () => {
+  const { moveToApplications, updateNow } = bridge("unsupported", {
+    availableVersion: null,
+    message: "Move Your AI to Applications to install updates.",
+    fix: "move-to-applications",
+  });
+  await render();
+  await vi.waitFor(() => expect(updateButton()?.textContent).toBe("Move to Applications"));
+  await act(async () => updateButton()!.click());
+  expect(moveToApplications).toHaveBeenCalledTimes(1);
+  expect(updateNow).not.toHaveBeenCalled();
 });
 it("shows the account image and falls back to the initial after a load error", async () => {
   await render("Ada Lovelace", "https://example.test/avatar.png");
@@ -182,40 +230,6 @@ it("falls back when app artwork fails and accepts replacement artwork", async ()
   ]);
   expect(pill.querySelector("img")?.src).toBe("https://example.test/new-slack.svg");
 });
-it.each(["throw", "state"] as const)(
-  "reveals a %s install failure after Later",
-  async (failure) => {
-    const install = bridge("ready");
-    if (failure === "throw") install.mockRejectedValueOnce(new Error("offline"));
-    else
-      install.mockResolvedValueOnce({
-        ...(await window.rakazoDesktop!.update.state()),
-        phase: "error",
-        message: "Update could not be installed",
-      });
-    await render();
-    // The notice is a toast, which mounts and leaves on the toaster's own timers.
-    const notice = () => document.querySelector('[aria-label="Desktop update"]');
-    const later = () =>
-      [...notice()!.querySelectorAll("button")].find((button) => button.textContent === "Later")!;
-    await vi.waitFor(() => expect(notice()).not.toBeNull());
-    await act(async () => later().click());
-    await vi.waitFor(() => expect(notice()).toBeNull());
-    await act(async () =>
-      document.querySelector<HTMLButtonElement>('[aria-label="Install update"]')!.click(),
-    );
-    await vi.waitFor(() =>
-      expect(notice()?.querySelector('[role="status"]')?.textContent).toBe(
-        failure === "throw"
-          ? "Could not complete the update. Try again."
-          : "Update could not be installed",
-      ),
-    );
-    await act(async () => later().click());
-    await vi.waitFor(() => expect(notice()).toBeNull());
-  },
-);
-
 it.each([
   [-20, 0],
   [0, 0],
