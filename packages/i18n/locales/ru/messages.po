@@ -13580,3 +13580,25 @@ msgstr "Без хранения данных"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "ZIP or postal code"
 msgstr "Почтовый индекс"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Move to Applications"
+msgstr "Переместить в Программы"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Updating…"
+msgstr "Обновление…"
+
+#. placeholder {0}: offer.percent
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Updating… {0}%"
+msgstr "Обновление… {0}%"
+
+#. placeholder {0}: offer.version
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Update to v{0}"
+msgstr "Обновить до v{0}"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "The update did not finish. Your current version is still here."
+msgstr "Обновление не завершилось. Текущая версия осталась на месте."

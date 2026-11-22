@@ -13580,3 +13580,25 @@ msgstr "零数据保留"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "ZIP or postal code"
 msgstr "邮政编码"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Move to Applications"
+msgstr "移到“应用程序”"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Updating…"
+msgstr "正在更新…"
+
+#. placeholder {0}: offer.percent
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Updating… {0}%"
+msgstr "正在更新… {0}%"
+
+#. placeholder {0}: offer.version
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Update to v{0}"
+msgstr "更新到 v{0}"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "The update did not finish. Your current version is still here."
+msgstr "更新未完成。你当前的版本仍然保留。"

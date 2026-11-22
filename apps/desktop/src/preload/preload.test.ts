@@ -71,7 +71,14 @@ describe("desktop preload bridge", () => {
       "state",
       "toggleMaximize",
     ]);
-    expect(Object.keys(bridge.update).sort()).toEqual(["check", "download", "install", "state"]);
+    expect(Object.keys(bridge.update).sort()).toEqual([
+      "check",
+      "download",
+      "install",
+      "moveToApplications",
+      "state",
+      "updateNow",
+    ]);
 
     expect(Object.keys(bridge.badge!)).toEqual(["set"]);
     await bridge.badge!.set(7);
@@ -98,6 +105,8 @@ describe("desktop preload bridge", () => {
     await bridge.update.check();
     await bridge.update.download();
     await bridge.update.install();
+    await bridge.update.updateNow?.();
+    await bridge.update.moveToApplications?.();
     await bridge.server!.change();
     expect(invoke.mock.calls.map(([channel]) => channel)).toEqual([
       "desktop.badge.set",
@@ -117,6 +126,8 @@ describe("desktop preload bridge", () => {
       "desktop.update.check",
       "desktop.update.download",
       "desktop.update.install",
+      "desktop.update.updateNow",
+      "desktop.update.moveToApplications",
       "desktop.server.change",
     ]);
   });

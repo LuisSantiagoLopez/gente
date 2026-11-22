@@ -18,7 +18,7 @@ import {
   sessionPartitionForServerUrl,
 } from "../setup/setup-config.js";
 import { reportDesktopError } from "../system/monitoring.js";
-import { LAUNCH_CHECK_DELAY_MS } from "../updates/auto-update.js";
+import { LAUNCH_CHECK_DELAY_MS, PERIODIC_CHECK_MS } from "../updates/auto-update.js";
 import type { AppDocumentState } from "./app-document-state.js";
 import { waitForMountedAppDocument } from "./app-document-state.js";
 import { contextMenuTemplate } from "./context-menu.js";
@@ -287,7 +287,7 @@ export function createWindow(url: string, partition: string | null) {
   if (!desktop.launchUpdateCheckScheduled) {
     desktop.launchUpdateCheckScheduled = true;
     setTimeout(() => void desktop.desktopUpdater.check(false), LAUNCH_CHECK_DELAY_MS).unref();
-    setInterval(() => void desktop.desktopUpdater.check(false), 60 * 60 * 1_000).unref();
+    setInterval(() => void desktop.desktopUpdater.check(false), PERIODIC_CHECK_MS).unref();
   }
   return { loaded, win };
 }

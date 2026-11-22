@@ -163,6 +163,7 @@ import {
 import type { ElectronAutoUpdater } from "./updates/auto-update.js";
 import { DesktopUpdateController } from "./updates/auto-update.js";
 import { verifyDownloadedLinuxUpdate } from "./updates/linux-update-signature.js";
+import { updateNow } from "./updates/update-now.js";
 import { applicationMenuInstaller, followUpdateState, installUpdate } from "./windows/app-menu.js";
 import { createAppOpener } from "./windows/app-opener.js";
 import {
@@ -670,6 +671,14 @@ app.whenReady().then(async () => {
     updaterEnvironment,
     // Loaded only when a packaged build actually checks for updates.
     async () => {
+      // Gente: Squirrel.Mac refuses unsigned apps, so Mac updates install from the DMG instead.
+      if (process.platform === "darwin") {
+        const { createMacUpdater } = await import("./updates/mac/create-mac-updater.js");
+        return createMacUpdater(
+          { userDataDir, logDir: path.join(stackDir(userDataDir), "logs") },
+          () => app.quit(),
+        );
+      }
       const module = await import("electron-updater");
       return (module.default ?? module).autoUpdater as unknown as ElectronAutoUpdater;
     },
@@ -680,6 +689,8 @@ app.whenReady().then(async () => {
     process.platform === "linux"
       ? (update) => verifyDownloadedLinuxUpdate(update, (url, signal) => net.fetch(url, { signal }))
       : undefined,
+    // Gente: nothing downloads until the person clicks Update.
+    false,
   );
   followUpdateState(() => installApplicationMenu());
   const screenDriver = screenDriverRelease(process.platform);
@@ -1252,6 +1263,28 @@ app.whenReady().then(async () => {
   handleIpc("desktop.update.check", () => desktop.desktopUpdater.check(true), updateState);
   handleIpc("desktop.update.download", () => desktop.desktopUpdater.download(), updateState);
   handleIpc("desktop.update.install", () => installUpdate(), updateState);
+  handleIpc(
+    "desktop.update.updateNow",
+    () =>
+      updateNow({
+        state: updateState,
+        check: () => desktop.desktopUpdater.check(true),
+        download: () => desktop.desktopUpdater.download(),
+        install: () => installUpdate(),
+      }),
+    updateState,
+  );
+  handleIpc(
+    "desktop.update.moveToApplications",
+    async () => {
+      if (process.platform === "darwin") {
+        const { moveToApplications } = await import("./updates/mac/create-mac-updater.js");
+        moveToApplications(path.join(stackDir(app.getPath("userData")), "logs"));
+      }
+      return updateState();
+    },
+    updateState,
+  );
   registerBrainIpc(stackDir(app.getPath("userData")));
   registerTelegram(stackDir(app.getPath("userData")));
   // Gente Support: local health checks, self-healing, the support window and opt-in reports.

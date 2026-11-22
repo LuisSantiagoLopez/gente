@@ -273,6 +273,8 @@ describe("handleIpc", () => {
       "desktop.update.check",
       "desktop.update.download",
       "desktop.update.install",
+      "desktop.update.moveToApplications",
+      "desktop.update.updateNow",
       "desktop.update.state",
     ]);
   });

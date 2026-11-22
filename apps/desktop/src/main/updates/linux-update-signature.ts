@@ -11,7 +11,7 @@ MCowBQYDK2VwAyEAklTbtzcfz7ZoFLioFRxwpa97Zs/N4/8oZNblx2Dfi/4=
 -----END PUBLIC KEY-----
 `;
 
-const RELEASES = "https://github.com/LuisSantiagoLopez/gente/releases/download";
+const RELEASES = "https://github.com/LuisSantiagoLopez/yourai-releases/releases/download";
 const MAX_SIGNATURE_BYTES = 1_024;
 const UPDATE_FILE = /^[A-Za-z0-9][A-Za-z0-9._-]*\.AppImage$/;
 const VERSION = /^\d+\.\d+\.\d+$/;

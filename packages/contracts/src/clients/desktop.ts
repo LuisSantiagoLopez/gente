@@ -22,6 +22,8 @@ export interface DesktopUpdateState {
   percent: number | null;
   message: string | null;
   checkedAt: string | null;
+  /** Gente: a one-click fix the UI offers next to `message` (Mac app run from a DMG or Downloads). */
+  fix?: "move-to-applications";
 }
 
 /** Gente Link v1: one message inside the sealed envelope, by `type`. */
@@ -70,6 +72,10 @@ export interface RakazoDesktopUpdate {
   download: () => Promise<DesktopUpdateState>;
   /** Quits and relaunches into the downloaded release; only useful once `phase` is `ready`. */
   install: () => Promise<DesktopUpdateState>;
+  /** Gente: one click; checks, downloads, verifies, installs and relaunches as needed. */
+  updateNow?: () => Promise<DesktopUpdateState>;
+  /** Gente (Mac): moves the app to Applications and relaunches it from there. */
+  moveToApplications?: () => Promise<DesktopUpdateState>;
 }
 
 export interface RakazoDesktopOAuthCallback {

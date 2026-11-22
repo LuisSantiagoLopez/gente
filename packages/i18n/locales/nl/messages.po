@@ -13580,3 +13580,25 @@ msgstr "Geen gegevensbewaring"
 #: apps/web/src/components/vault/VaultItemEditor.tsx
 msgid "ZIP or postal code"
 msgstr "Postcode"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Move to Applications"
+msgstr "Verplaats naar Apps"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Updating…"
+msgstr "Bijwerken…"
+
+#. placeholder {0}: offer.percent
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Updating… {0}%"
+msgstr "Bijwerken… {0}%"
+
+#. placeholder {0}: offer.version
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "Update to v{0}"
+msgstr "Bijwerken naar v{0}"
+
+#: apps/web/src/components/DesktopUpdates.tsx
+msgid "The update did not finish. Your current version is still here."
+msgstr "De update is niet voltooid. Je huidige versie is er nog."
