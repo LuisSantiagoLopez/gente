@@ -64,6 +64,9 @@ jobs:
           npx electron-builder --mac dmg --${{ matrix.arch }} --publish never
           -c.mac.identity=null -c.mac.notarize=false
           '-c.dmg.artifactName=Your-AI-${version}-${arch}.${ext}'
+      - name: Mac signature check (a downloaded copy must not say "damaged")
+        if: matrix.kind == 'mac'
+        run: bash apps/desktop/scripts/gente-check-mac-signature.sh "$(ls apps/desktop/out/*.dmg | head -1)"
       - name: Install (timed)
         run: |
           mkdir -p "$RUNNER_TEMP/e2e"
