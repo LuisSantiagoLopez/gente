@@ -68,9 +68,15 @@ export function activitySummary(view: AssistantView | undefined, now: number): A
     // Streaming stopped but the model is still busy: it is writing a tool call (a file).
     if (view.lastStreamAt !== undefined && now - view.lastStreamAt >= SILENT_WRITE_MS)
       return { kind: "working", label: "Writing…", preview: "", since: view.lastStreamAt };
+    // The reply is being written: thinking is over, so the line says how long it took.
+    if (view.parts.some((part) => part.streaming && part.text)) return finished(view, now);
     return { kind: "working", label: "Thinking…", preview: newestThoughtLine(view) };
   }
   if (view.status === "waiting") return { kind: "waiting" };
+  return finished(view, now);
+}
+
+function finished(view: AssistantView, now: number): ActivitySummary {
   const tools = toolStepCount(view);
   const thoughts = thoughtCount(view);
   // Nothing to open: no line at all, rather than a filler "Done".

@@ -40,6 +40,22 @@ export function savedThought(view: AssistantView, text: string, durationMs?: num
   return { ...view, liveThought: "", steps: [...view.steps, step] };
 }
 
+/**
+ * Text the AI wrote before a step leaves the reply (the server keeps it as a note on that step).
+ * It moves into the timeline, just before the step it led to, instead of vanishing.
+ */
+function keepNarration(view: AssistantView): AssistantView {
+  const text = liveText(view).trim();
+  const cleared = withLiveText(view, "");
+  if (!text) return cleared;
+  const note: Step = { kind: "thought", id: `note-${view.steps.length}`, text };
+  const steps = cleared.steps.slice();
+  const last = steps.at(-1);
+  const at = last?.kind === "tool" && last.status === "running" ? steps.length - 1 : steps.length;
+  steps.splice(at, 0, note);
+  return { ...cleared, steps };
+}
+
 export function applyProgress(view: AssistantView, payload: Record<string, unknown>, at?: number) {
   let next = view;
   const draft = (payload.draft ?? {}) as Record<string, unknown>;
@@ -67,7 +83,7 @@ export function applyProgress(view: AssistantView, payload: Record<string, unkno
     };
   }
   // A status line ("activity") is not reply text; a reset drops text that will not be kept.
-  if (payload.activity === true) return payload.reset === true ? withLiveText(next, "") : next;
+  if (payload.activity === true) return payload.reset === true ? keepNarration(next) : next;
   const text = str(payload.text);
   const delta = str(payload.delta);
   if (payload.reset === true && text === undefined) next = withLiveText(next, "");

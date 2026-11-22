@@ -117,6 +117,28 @@ describe("a run with a tool step", () => {
   });
 });
 
+describe("text written before a step", () => {
+  it("moves into the timeline before that step instead of vanishing", () => {
+    const chat = foldChat([
+      user(0),
+      ev("run.started", 0),
+      ev("thread.progress", 1, { text: "I'll build a rainbow app.", shown: true }),
+      ev("agent.tool.called", 3, {
+        name: "write_file",
+        label: "Writing index.html",
+        executionId: "w",
+      }),
+      ev("thread.progress", 3, { text: "I'll build a rainbow app…", reset: true, activity: true }),
+    ]);
+    const view = chat.turns[0]!.assistant!;
+    expect(view.parts).toEqual([]);
+    expect(view.steps.map((s) => [s.kind, s.kind === "thought" ? s.text : s.label])).toEqual([
+      ["thought", "I'll build a rainbow app."],
+      ["tool", "Writing index.html"],
+    ]);
+  });
+});
+
 describe("question cards and endings", () => {
   it("keeps a question card as a card and waits", () => {
     const chat = foldChat([

@@ -19,7 +19,7 @@ import {
   CollapsibleTrigger,
 } from "@rakazo/ui-web/components/ui/collapsible";
 import { ChevronRight } from "lucide-react";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { activitySummary } from "../../lib/chat-v2/activity-summary";
 import type { AssistantView } from "../../lib/chat-v2/chat-types";
 import { ActivityTimeline } from "./ActivityTimeline";
@@ -36,6 +36,7 @@ export const ActivityLine = memo(function ActivityLine({
   bots: GroupAvatarMember[];
 }) {
   const { t } = useLingui();
+  const [open, setOpen] = useState(false);
   const live = view.status === "working";
   const now = useNow(live ? 250 : null);
   const summary = activitySummary(view, now);
@@ -46,14 +47,17 @@ export const ActivityLine = memo(function ActivityLine({
       : null;
   const took = summary.kind === "done" ? (formatCompactDuration(summary.ms) ?? "0s") : "";
   return (
-    <Collapsible className="group min-w-0" data-testid="activity-line">
+    <Collapsible open={open} onOpenChange={setOpen} className="min-w-0" data-testid="activity-line">
       <div className="flex min-w-0 items-center gap-2">
         <Avatar bots={bots} />
         <CollapsibleTrigger
           aria-label={t`Show what it did`}
           className="flex min-w-0 cursor-pointer items-center gap-1.5 rounded-md py-0.5 text-body-sm text-muted-foreground outline-none hover:text-foreground/75 focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <span data-testid="activity-summary" className={`shrink-0 ${live ? "text-shimmer" : ""}`}>
+          <span
+            data-testid="activity-summary"
+            className={`shrink-0 ${summary.kind === "working" ? "text-shimmer" : ""}`}
+          >
             {summary.kind === "working" ? (
               summary.label === "Thinking…" ? (
                 <Trans>Thinking…</Trans>
@@ -77,12 +81,12 @@ export const ActivityLine = memo(function ActivityLine({
             aria-hidden
             size={13}
             strokeWidth={1.8}
-            className="shrink-0 transition-transform duration-150 group-data-panel-open:rotate-90 motion-reduce:transition-none"
+            className={`shrink-0 transition-transform duration-150 motion-reduce:transition-none ${open ? "rotate-90" : ""}`}
           />
-          {summary.kind === "working" && summary.preview ? (
+          {summary.kind === "working" && summary.preview && !open ? (
             <span
               data-testid="activity-preview"
-              className="min-w-0 truncate text-muted-foreground/60 group-data-panel-open:hidden"
+              className="min-w-0 truncate text-muted-foreground/60"
               dir="auto"
             >
               {summary.preview}

@@ -5,6 +5,7 @@
 // local model (yourai-default) on a test stack. Fixtures are in __fixtures__/.
 import { describe, expect, it } from "vitest";
 import hey from "./__fixtures__/hey.json";
+import makeApp from "./__fixtures__/make-app.json";
 import rainbows from "./__fixtures__/rainbows-think.json";
 import { replay, replyKeysOverTime } from "./chat-replay.test-helper";
 import type { ChatEvent } from "./chat-types";
@@ -97,5 +98,46 @@ describe("rainbows (thinking streamed live, then the reply)", () => {
     expect(view.status).toBe("done");
     expect(view.parts.map((p) => [p.key, p.streaming])).toEqual([["text-0", false]]);
     expect(replyKeysOverTime(states, runId)).toEqual([`${chat.turns.at(-1)!.id}/text-0`]);
+  });
+});
+
+describe("make an app (thinking, five files written, then the model ran out of room)", () => {
+  const events = makeApp as ChatEvent[];
+  const { chat, states } = replay(events);
+  const runId = runOf(events);
+  const view = chat.turns.at(-1)!.assistant!;
+
+  it("lists every real file step, finished, in order", () => {
+    const tools = view.steps.filter((s) => s.kind === "tool");
+    expect(tools).toHaveLength(5);
+    expect(tools.every((s) => s.kind === "tool" && s.status === "succeeded")).toBe(true);
+    expect(tools.map((s) => s.kind === "tool" && s.label)).toEqual(
+      events
+        .filter((e) => e.type === "agent.tool.called")
+        .map((e) => (e.payload?.label as string) ?? "write file"),
+    );
+  });
+
+  it("keeps the saved thoughts between the steps", () => {
+    const thoughts = view.steps.filter((s) => s.kind === "thought" && !s.id.startsWith("note"));
+    expect(thoughts.length).toBe(events.filter((e) => e.type === "run.thought").length);
+    expect(view.steps[0]!.kind).toBe("thought");
+  });
+
+  it("ends failed with the model's error and nothing left running", () => {
+    expect(view.status).toBe("failed");
+    expect(view.error).toMatch(/context budget/);
+    expect(view.liveThought).toBe("");
+    expect(view.toolDraft).toBeUndefined();
+  });
+
+  it("shows the saved message once, not the streamed copy too", () => {
+    expect(view.parts.map((p) => p.streaming)).toEqual([false]);
+    expect(view.replyText).toMatch(/^I'll make a visually stunning/);
+  });
+
+  it("never splits the run over two turns", () => {
+    for (const state of states)
+      expect(state.turns.filter((t) => t.assistant?.runId === runId).length).toBeLessThanOrEqual(1);
   });
 });
