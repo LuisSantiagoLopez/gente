@@ -34,6 +34,8 @@ export function offeredToolNames(tools: unknown): Set<string> {
 
 interface Group {
   needs: readonly string[];
+  /** Said whatever the request offers. */
+  always?: boolean;
   line: (has: (name: string) => boolean, options: CapabilityOptions) => string;
 }
 
@@ -47,9 +49,13 @@ const any = (has: (name: string) => boolean, names: readonly string[]) => names.
 /** Tool groups in a fixed order. A group shows only when the request offers one of its tools. */
 const GROUPS: readonly Group[] = [
   {
-    needs: ["user_computer_observe"],
-    line: () =>
-      '- The person\'s own screen (user_computer_observe, user_computer_act): for "look at my screen" or "what am I looking at", call user_computer_observe now and describe what you see.',
+    // Always said: asked to look at their screen, a model without these tools looked at its own.
+    needs: [],
+    always: true,
+    line: (has) =>
+      has("user_computer_observe")
+        ? '- The person\'s own screen (user_computer_observe, user_computer_act): for "look at my screen" or "what am I looking at", call user_computer_observe now and describe what you see.'
+        : '- The person\'s own screen: you cannot see it right now. For "look at my screen", do not look at your own computer; tell them in one sentence to turn on "Let bots use this computer" in Settings.',
   },
   {
     needs: ["computer_observe", "computer_act", "browser_navigate"],
@@ -60,7 +66,7 @@ const GROUPS: readonly Group[] = [
       const where = computerInCloud
         ? "your own computer in the cloud, a full desktop with a web browser, terminal and files. It starts by itself when you use it"
         : "your own computer, a full desktop with a web browser, terminal and files";
-      return `- Computer (${tools.join(", ")}): ${where}. For "open a computer in the cloud" or "show me your computer", call ${look} now so its screen shows. Its browser is your cloud browser: for "browse X", "use a cloud browser", "use Browserbase" or "order an Uber", open the site with ${browse} and do the task.`;
+      return `- Computer (${tools.join(", ")}): ${where}. For "open a computer in the cloud" or "show me your computer", call ${look} now so its screen shows. It is not the person's screen. Its browser is your cloud browser: for "browse X", "use a cloud browser", "use Browserbase" or "order an Uber", open the site with ${browse} and do the task; that is not an app to connect.`;
     },
   },
   {
@@ -109,7 +115,7 @@ function rules(has: (name: string) => boolean): string[] {
     'Act first: when an ask matches a tool, call it in this reply. Never answer with a menu of options or "what would you like me to do?".',
     `Just do it: a request to pay, send or delete is the approval, so do it with no confirm step. Stop and ask${has("ask_user") ? " with ask_user" : ""} only when the action would go beyond what was asked (another recipient, amount or extra item), or when the ask is truly ambiguous and a wrong guess cannot be undone.`,
     "Never deny a capability listed here, and never claim one that is not.",
-    '"What can you do?": answer in a few short lines from this list, in plain words.',
+    '"What can you do?": answer in at most four short bullets that group this list, in plain words. End after the last bullet: no question, no offer.',
   ];
 }
 
@@ -121,13 +127,9 @@ export function capabilitySection(tools: unknown, options: CapabilityOptions): s
   const names = offeredToolNames(tools);
   if (names.size === 0) return null;
   const has = (name: string) => names.has(name);
-  const lines = GROUPS.filter((group) => any(has, group.needs)).map((group) =>
+  const lines = GROUPS.filter((group) => group.always || any(has, group.needs)).map((group) =>
     group.line(has, options),
   );
-  if (!has("user_computer_observe"))
-    lines.push(
-      '- You cannot see the person\'s own screen right now. If they ask, tell them in one sentence to turn on "Let bots use this computer" in Settings.',
-    );
   return [
     OPEN,
     "Your tools right now:",
