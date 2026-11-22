@@ -48,17 +48,42 @@ Read the files in this order to follow the code.
 
 ## 6. The screen updates
 
-- The app listens on one live stream and applies each event.
-  `apps/web/src/pages/shell/chat/use-thread-sync.ts`,
-  then `packages/core/src/threads/thread-snapshot-events.ts` (`reduceThreadSnapshot`).
-- The chat list draws each message.
-  `apps/web/src/pages/shell/chat/transcript.tsx` and `message-view.tsx`.
-- A streamed reply keeps the same bubble when it becomes the saved message.
-  `apps/web/src/lib/chat/stable-message-keys.ts`.
-- Under each reply is one arrow: "Thought for 4s" or "Worked for 52s · 3 steps".
-  Open it to see the thinking and the steps in order.
-  `apps/web/src/components/messages/RunActivityRow.tsx` and `RunActivityTimeline.tsx`.
-  The steps come from `packages/core/src/runs/run-activity.ts`.
+The chat screen was rebuilt in 1.0.7 ("chat v2"). One path draws every turn.
+
+- The app listens on one live stream and hands each event to the chat screen.
+  `apps/web/src/pages/shell/chat/use-thread-sync.ts` calls `emitChatEvent`
+  (`apps/web/src/lib/chat-v2/chat-event-bus.ts`).
+- One pure reducer folds the events into turns: your message, then the AI's answer
+  (status, thinking, steps, reply text, cards, start and end times).
+  `apps/web/src/lib/chat-v2/chat-state.ts`; how each event changes one answer is in
+  `chat-run-events.ts`, the shapes in `chat-types.ts` and small helpers
+  in `chat-turns.ts`.
+- When a chat opens (or reloads), its saved messages and steps become turns, and are merged into
+  the live state without losing what is streaming. `apps/web/src/lib/chat-v2/chat-snapshot.ts`.
+- A React hook ties the two together. `apps/web/src/lib/chat-v2/use-chat-state.ts`.
+- The screen draws the turns. Read these in order:
+  1. `apps/web/src/components/chat/ChatScreen.tsx`: gathers the actions cards need.
+  2. `MessageList.tsx`: the scrolling list. Auto-scroll only while you are at the bottom
+     (`use-follow-bottom.ts`). Quoting a selection: `use-quote-selection.ts`.
+  3. `UserBubble.tsx`: your message.
+  4. `AssistantTurn.tsx`: the AI's answer.
+  5. `ActivityLine.tsx`: the one arrow beside the AI's avatar. "Thinking…" with the newest
+     thought while it works, "Writing…" with a timer while it writes a file, then
+     "Thought for 4s" or "Worked for 52s · 3 steps". Its words: `lib/chat-v2/activity-summary.ts`.
+  6. `ActivityTimeline.tsx` and `ActivityStep.tsx`: the opened arrow. Real thoughts and real
+     steps in order; click a step to see what went in and came out.
+  7. `ReplyText.tsx`: the reply. One element from the first token to the end.
+  8. `CardMessage.tsx`: question cards, pages, computers and files (reuses `message-view.tsx`).
+- Tests replay event streams recorded from real runs of the local model:
+  `apps/web/src/lib/chat-v2/chat-state.test.ts` (fixtures in `__fixtures__/`) and
+  `chat-steps.test.ts`.
+
+### Why thinking did not show before 1.0.7
+
+Fast chat turned thinking off (`reasoning_effort: "none"`) for every short question and for the
+first step of a task, so the model sent no thinking at all. Asking it to think ("think
+carefully", "piensa bien") now keeps thinking on.
+`packages/adapters/src/runtime/pi/models/burrow-thinking.ts`.
 
 ## When the AI asks you something
 

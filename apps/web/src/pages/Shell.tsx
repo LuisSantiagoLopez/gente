@@ -21,7 +21,6 @@ import {
   isRunWorking,
   newClientId,
   otherAuthor,
-  workingRoutineName,
 } from "@rakazo/core";
 import type { GroupAvatarMember } from "@rakazo/ui-web";
 import { Button } from "@rakazo/ui-web";
@@ -40,6 +39,7 @@ import {
 import { useParams } from "react-router-dom";
 import { CallCard, CallReturnBar } from "../components/call/CallCard";
 import { IncomingCall } from "../components/call/IncomingCall";
+import { ChatScreen } from "../components/chat/ChatScreen";
 import { ComputerUpdateProgress } from "../components/computers/ComputerUpdateProgress";
 import { PageLoading } from "../components/PageLoading";
 import { PageViewHost } from "../components/pages/PageViewHost";
@@ -82,7 +82,6 @@ import { ChatContextMenu } from "./shell/chat/chat-context-menu";
 import { ChatFindBar } from "./shell/chat/chat-find-bar";
 import { ChatHeader } from "./shell/chat/chat-header";
 import { FALLBACK_BOT_COLOR } from "./shell/chat/chat-shared";
-import { Transcript } from "./shell/chat/transcript";
 import { resolveTranscriptMemberName as groupTranscriptMemberName } from "./shell/chat/transcript-member-name";
 import { useChatRead } from "./shell/chat/use-chat-read";
 import { useMessageJump } from "./shell/chat/use-message-jump";
@@ -628,7 +627,6 @@ function SpaceShell() {
     [activeSnapshot, userId],
   );
   const workingRuns = currentRuns.filter((run) => isRunWorking(run.status));
-  const transcriptRunning = workingRuns.length > 0;
   const composerRunning = currentRuns.some((run) => isActive(run.status));
   const transcript = useMemo(
     () => foldPeerReplies(activeSnapshot?.messages ?? [], { includePeerReceipts: true }),
@@ -1201,8 +1199,10 @@ function SpaceShell() {
               </Button>
             </div>
           ) : (
-            <Transcript
+            <ChatScreen
               key={activeSnapshot?.threadId}
+              snapshot={activeSnapshot}
+              threadId={activeSnapshot?.threadId}
               meId={userId}
               scrollRef={thread.messageScroll}
               scrollRequest={scrollRequest}
@@ -1210,31 +1210,22 @@ function SpaceShell() {
               followRequest={composer.sentCount}
               artifactTarget={transcriptArtifactTarget}
               markedUnreadMessageId={read.markedUnreadMessageId}
-              transcript={transcript}
               showToolActivity={showToolActivity}
               olderCursor={activeSnapshot?.olderCursor ?? null}
-              unreadAfterSeq={read.unreadAfterSeq}
               loadingOlder={loadingOlder}
               answerableAskIds={answerableAskIds}
               dismissableAskIds={dismissableAskIds}
-              running={transcriptRunning}
               workingBots={workingBots}
               runBot={runBot}
-              workingRoutine={workingRoutineName(workingRuns)}
               userBubble={userBubble}
-              onCallBack={
-                bootstrapMe?.phoneCallsEnabled && !inGroup && active
-                  ? () => callBot(active)
-                  : undefined
-              }
               onLoadOlder={loadOlder}
               onOpenBot={openBot}
               onAnswer={composer.answerMessage}
               onReply={replyToMessage}
               onMarkUnread={markMessageUnread}
+              onReact={composer.reactToMessage}
               onQuote={quoteMessage}
               onQuoteShortcutChange={registerQuoteShortcut}
-              onReact={composer.reactToMessage}
               onJumpToMessage={jumpToReplyMessage}
               onOpenPeerMessages={openPeerMessages}
               memberName={resolveTranscriptMemberName}
@@ -1250,8 +1241,6 @@ function SpaceShell() {
               onReleaseComputer={computerControls.onReleaseComputer}
               onOpenImportSetup={openImportSetup}
               rpc={rpc}
-              runActivity={activeSnapshot?.runActivity}
-              liveRunId={workingRuns[0]?.id}
             />
           )}
         </div>

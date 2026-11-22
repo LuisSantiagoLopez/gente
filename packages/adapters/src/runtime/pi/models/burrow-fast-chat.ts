@@ -15,6 +15,7 @@ import {
   sanitizeChatMessages,
   warmablePrefix,
 } from "../../../models/chat-request-sanitizer.js";
+import { ASKED_THINKING_EFFORT, asksToThink } from "./burrow-thinking.js";
 import {
   HONESTY_RULE,
   toolRanThisTurn,
@@ -407,7 +408,10 @@ export function quickChatBody(
   if (Array.isArray((parsed as { tools?: unknown[] }).tools) && isCodingTurn(parsed.messages)) {
     return { body: JSON.stringify(codingBody(parsed as { messages: ChatMessage[] })), prefix };
   }
-  if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
+  if (parsed.reasoning_effort !== undefined && asksToThink(latestUserWords(parsed.messages))) {
+    // Gente: "think carefully" keeps thinking on, so it streams live in the chat's arrow.
+    parsed.reasoning_effort = ASKED_THINKING_EFFORT;
+  } else if (parsed.reasoning_effort !== undefined && isQuickChat(parsed.messages)) {
     parsed.reasoning_effort = "none";
   } else if (parsed.reasoning_effort !== undefined && offersTools(parsed)) {
     // Gente: the first step of a task starts acting at once; measured on this Mac, "low"
