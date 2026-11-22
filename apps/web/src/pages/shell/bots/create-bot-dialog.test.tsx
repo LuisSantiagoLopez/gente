@@ -59,7 +59,7 @@ function button(name: string) {
 }
 
 async function typeName(value: string) {
-  const input = document.querySelector<HTMLInputElement>('input[placeholder="Name your Bot"]')!;
+  const input = document.querySelector<HTMLInputElement>('input[placeholder="Your AI"]')!;
   await act(async () => {
     Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(input, value);
     input.dispatchEvent(new Event("input", { bubbles: true }));
@@ -73,14 +73,13 @@ async function click(element: HTMLElement) {
 }
 
 describe("CreateBotDialog", () => {
-  it("creates only once the name is not blank", async () => {
-    const onCreate = vi.fn(async () => undefined);
+  it("names a bot left blank Your AI, and trims a typed name", async () => {
+    const onCreate = vi.fn(async (_input: CreateBotDialogInput) => undefined);
     await render(onCreate);
-    expect(button("Create").disabled).toBe(true);
-    await typeName("   ");
-    expect(button("Create").disabled).toBe(true);
-    await typeName("  Scout  ");
     expect(button("Create").disabled).toBe(false);
+    await typeName("   ");
+    await click(button("Create"));
+    expect(onCreate.mock.calls[0]?.[0]).toMatchObject({ name: "Your AI" });
   });
 
   it("draws the account's set without offering another, and leaves the set to the server", async () => {

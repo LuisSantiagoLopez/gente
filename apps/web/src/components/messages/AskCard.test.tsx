@@ -811,6 +811,7 @@ it("dims the options a typed answer did not match", async () => {
     text: "Which city?",
     status: "answered",
     answer: "Paris",
+    answerMessageId: "reply-1",
     actions: [
       { id: "berlin", label: "Berlin" },
       { id: "seoul", label: "Seoul" },
@@ -819,6 +820,16 @@ it("dims the options a typed answer did not match", async () => {
   expect(container.querySelector('[data-testid="ask-answer"]')).toBeNull();
   expect(container.textContent).not.toContain("Paris");
   expect(container.querySelector("[aria-pressed]")).toBeNull();
+
+  // Typed on the card itself ("Something else"), the answer shows in that row.
+  await render({
+    kind: "ask",
+    text: "Which city?",
+    status: "answered",
+    answer: "Paris",
+    actions: [{ id: "berlin", label: "Berlin" }],
+  });
+  expect(container.textContent).toContain("Paris");
 
   await render({
     kind: "ask",

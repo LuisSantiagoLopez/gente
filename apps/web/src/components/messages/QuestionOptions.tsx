@@ -51,7 +51,9 @@ export function QuestionOptions({
   return (
     <div className="mt-2.5 flex flex-col gap-3" data-testid="question-options">
       {questions.map((question, index) => {
-        const shown = recorded?.[index] ?? picks[index] ?? "";
+        // A reply typed in the chat box has its own message; the card does not repeat it.
+        const typedInChat = answered && Boolean(block.answerMessageId);
+        const shown = typedInChat && !several ? "" : (recorded?.[index] ?? picks[index] ?? "");
         const chosen = resolveAskChoice(shown, question.actions);
         const typedShown = shown.trim() !== "" && !chosen;
         const otherOpen = !answered && typing === index;
