@@ -109,6 +109,12 @@ exports.default = async function afterPack(context) {
     console.log(`  • gente boot check: ${name} loads from inside the app`);
   }
   if (windows) fs.rmSync(path.dirname(server), { recursive: true, force: true });
+  // Last step: nothing may change the .app after this, or the signature breaks again.
+  const adhoc = require("./gente-adhoc-sign.cjs");
+  if (mac && adhoc.isUnsignedBuild(context)) {
+    adhoc.adHocSign(path.join(context.appOutDir, appName));
+    console.log("  • gente: unsigned build ad-hoc signed; codesign --verify --deep --strict passed");
+  }
 };
 
 exports.brokenLinks = brokenLinks;
