@@ -92,6 +92,16 @@ jobs:
       - name: Package the app; afterPack boots the server from inside it
         working-directory: apps/desktop
         run: npx electron-builder --mac dir --arm64 --publish never -c.mac.identity=null
+      - name: Signature holds on a quarantined copy (no "damaged" on download)
+        run: |
+          APP=$(ls -d apps/desktop/out/mac-arm64/*.app | head -1)
+          COPY="$RUNNER_TEMP/sigcheck/$(basename "$APP")"
+          mkdir -p "$RUNNER_TEMP/sigcheck" && ditto "$APP" "$COPY"
+          xattr -w com.apple.quarantine "0081;$(printf '%x' "$(date +%s)");Safari;" "$COPY"
+          codesign -dv "$COPY" 2>&1 | grep -E "Signature|Sealed"
+          codesign --verify --deep --strict --verbose=2 "$COPY"
+          out=$(spctl -a -vv "$COPY" 2>&1 || true); echo "$out"
+          ! echo "$out" | grep -qiE "sealed resource|invalid signature|damaged"
       - name: Zip the packaged app (keeps symlinks and permissions)
         run: |
           APP=$(ls -d apps/desktop/out/mac-arm64/*.app | head -1)
