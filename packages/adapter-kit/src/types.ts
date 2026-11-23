@@ -300,6 +300,8 @@ export interface SandboxKindCapabilities {
   storedHomeIsBackup: boolean;
   /** The provider can read the disk of a stopped sandbox without starting it. */
   readStoppedFiles?: boolean;
+  /** The computer runs in a hosted cloud, away from this server and the user's own machine. */
+  cloudHosted?: boolean;
 }
 
 export interface SandboxCapabilities {

@@ -4,7 +4,11 @@ import path from "node:path";
 import type { PrismaClient } from "@rakazo/db";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { HostScreen } from "../screens/host-screen.js";
-import { HOST_COMPUTER_DEVICE_ID, withHostComputerScreen } from "./host-computer-device.js";
+import {
+  HOST_COMPUTER_DEVICE_ID,
+  hostScreenChoiceAvailable,
+  withHostComputerScreen,
+} from "./host-computer-device.js";
 import { startHostComputerServer } from "./host-computer-server.js";
 import type { UserDeviceGateway } from "./user-device-protocol.js";
 
@@ -153,8 +157,24 @@ describe("this computer's screen on the desktop app's own server", () => {
   });
 
   it("changes nothing off the desktop app's own server", () => {
-    expect(withHostComputerScreen(undefined, { prisma, sandboxKind: "e2b", url: "x", token })).toBe(
-      undefined,
-    );
+    expect(withHostComputerScreen(undefined, { prisma, sandboxKind: "e2b" })).toBe(undefined);
+    expect(
+      withHostComputerScreen(undefined, { prisma, sandboxKind: "local-vm", url: "x", token }),
+    ).toBe(undefined);
+  });
+
+  it("offers this computer's screen beside cloud computers", () => {
+    expect(
+      withHostComputerScreen(undefined, { prisma, sandboxKind: "e2b", url: "x", token }),
+    ).toBeDefined();
+  });
+
+  it("knows which computer kinds leave room for this computer's screen", () => {
+    expect(hostScreenChoiceAvailable("docker")).toBe(true);
+    expect(hostScreenChoiceAvailable("e2b")).toBe(true);
+    // Bots already run on this Mac, or in a virtual machine on it.
+    expect(hostScreenChoiceAvailable("desktop")).toBe(false);
+    expect(hostScreenChoiceAvailable("local-vm")).toBe(false);
+    expect(hostScreenChoiceAvailable(undefined)).toBe(false);
   });
 });
