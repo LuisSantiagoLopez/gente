@@ -127,6 +127,7 @@ describe("local model provider", () => {
         supportsDeveloperRole: false,
         supportsReasoningEffort: true,
         thinkingFormat: "openai",
+        sendSessionAffinityHeaders: true,
       },
       thinkingLevelMap: { off: "none", xhigh: "xhigh", max: "max" },
     });
@@ -136,6 +137,8 @@ describe("local model provider", () => {
       expect(model?.compat).toEqual({
         supportsDeveloperRole: false,
         supportsReasoningEffort: false,
+        // Gente: names the chat, so Cloud GPU gives each chat its own GPU.
+        sendSessionAffinityHeaders: true,
       });
       expect(model?.thinkingLevelMap).toBeUndefined();
     }

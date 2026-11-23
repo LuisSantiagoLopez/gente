@@ -1399,7 +1399,7 @@ export class NativeStackController extends StackLifecycle {
       brain = null;
     }
     return {
-      ...swiftServerEnv(brain),
+      ...swiftServerEnv(brain, this.deps.stackDir),
       ...fromFile,
       ...this.nodeEnv(),
       DATA_DIR: this.dir("data"),

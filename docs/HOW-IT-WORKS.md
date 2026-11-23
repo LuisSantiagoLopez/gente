@@ -34,7 +34,10 @@ Read the files in this order to follow the code.
 - Tools are carried out in `packages/adapters/src/runtime/pi/tools/pi-runtime-tools.ts`.
 - Before each request goes to the local model, it is trimmed for speed (small talk, language,
   honesty rule). `packages/adapters/src/runtime/pi/models/burrow-fast-chat.ts`.
-- The request goes to Ollama on this Mac (`http://127.0.0.1:11434/v1/chat/completions`).
+- The request goes through the app's loopback model router
+  (`apps/desktop/src/main/burrow/model-router.ts`) to Ollama on this Mac
+  (`http://127.0.0.1:11434/v1/chat/completions`), or to a rented GPU when Cloud GPU is on
+  (see "Cloud GPU" below).
 
 ## 5. What the model writes streams back
 
@@ -101,3 +104,42 @@ carefully", "piensa bien") now keeps thinking on.
 
 The test that proves step 5 end to end:
 `packages/testkit/src/runtime/pi-runtime-ask-answer.test.ts`.
+
+## Cloud GPU (a rented GPU per chat)
+
+When the "Cloud GPU" switch beside Send is on, each chat gets its own GPU on Modal. It starts on the
+chat's first message (or while you type), answers with the same model as this Mac
+(Qwen 3.6 35B-A3B, FP8) and a 128K context window, and is let go when the chat is done.
+Read in this order:
+
+1. The switch and the status line ("Starting cloud GPU… 2.1 s", then "Cloud GPU · H100", then
+   gone). `apps/web/src/pages/shell/composer/CloudGpuToggle.tsx`, its words in
+   `apps/web/src/lib/cloud-gpu/cloud-gpu-status.ts`, its state in `use-cloud-gpu.ts`.
+2. The desktop side, set up once at launch. `apps/desktop/src/main/cloud-gpu/cloud-gpu-ipc.ts`.
+3. The switch itself: saved in the app's data folder, and while on it writes
+   `cloud-gpu-limits.json` (128K window) in the server's folder.
+   `apps/desktop/src/main/cloud-gpu/cloud-gpu-toggle.ts`.
+4. The worker reads that file when each run starts, so long tasks such as "make an app" no
+   longer hit "Required context exceeds the model context budget".
+   `packages/adapters/src/runtime/pi/models/pi-local-limits.ts`.
+5. Each request names its chat (`x-session-affinity`, sent by pi-ai because the local model sets
+   `sendSessionAffinityHeaders`). The router sends it to that chat's GPU.
+   `apps/desktop/src/main/burrow/model-router.ts`, then `cloud-gpu/cloud-gpu-route.ts`.
+6. One session per chat: started through the Modal control endpoint, reused for every step of the
+   chat, stopped 90 s after the final answer (5 min if a tool is still running), when the switch
+   goes off, or when the app quits. `apps/desktop/src/main/cloud-gpu/cloud-gpu-sessions.ts`.
+7. The request is reshaped for vLLM (model name, Qwen's thinking switch) and its stream is watched
+   to see whether it ended with an answer or a tool call. `cloud-gpu/cloud-gpu-request.ts`.
+8. If the GPU will not start or stops answering, one fresh GPU is tried, then this Mac answers and
+   the status line says so. The runs after that use this Mac's own window.
+9. The Modal side: `infra/cloud-gpu/modal_app.py` (vLLM on one GPU, memory + GPU snapshot, sticky
+   sessions with one session per container, scale to zero 60 s after a session ends) and
+   `infra/cloud-gpu/README.md` (deploy, key, costs).
+
+The endpoint key is in the macOS Keychain (account `gente`, service `modal-gpu`) and in the
+Modal Secret `yourai-cloud-gpu`. It is never in code or git.
+
+Tests: `apps/desktop/src/main/cloud-gpu/*.test.ts` (sessions, switch, request),
+`apps/desktop/src/main/burrow/model-router-cloud.test.ts` (on, off, one GPU per chat, fallback,
+stop at session end), `packages/adapters/src/runtime/pi/models/pi-local-limits.test.ts` and
+`apps/web/src/lib/cloud-gpu/cloud-gpu-status.test.ts`.

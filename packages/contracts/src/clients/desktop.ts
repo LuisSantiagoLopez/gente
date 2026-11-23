@@ -52,6 +52,21 @@ export interface GenteAiMode {
   fastAvailable: boolean;
 }
 
+/** Gente: the rented Cloud GPU for this Mac's chats (one GPU per chat, gone after). */
+export type GenteCloudGpuStatus =
+  | { phase: "off" }
+  | { phase: "starting"; since: number }
+  | { phase: "on"; gpu: string; startMs: number; sessions: number }
+  | { phase: "fallback"; message: string; at: number };
+
+export interface GenteCloudGpuState {
+  /** This Mac has a Cloud GPU key, so the switch can turn on. */
+  available: boolean;
+  on: boolean;
+  status: GenteCloudGpuStatus;
+  dollarsPerHour: number;
+}
+
 /** Gente: what the app shows about the person's account. Unknown values stay null. */
 export interface GenteAccountState {
   signedIn: boolean;
@@ -188,6 +203,11 @@ export interface RakazoDesktop {
     /** Where the AI runs: Fast (Gente Cloud) or Private (this computer). */
     aiMode: () => Promise<GenteAiMode>;
     setAiMode: (mode: "fast" | "private") => Promise<GenteAiMode>;
+    /** Cloud GPU: absent on releases without it. */
+    cloudGpu?: () => Promise<GenteCloudGpuState>;
+    setCloudGpu?: (on: boolean) => Promise<GenteCloudGpuState>;
+    /** Starts a GPU while the person types, so the first answer waits less. */
+    prewarmCloudGpu?: () => Promise<void>;
     /** "Make my AI private" waitlist; null when signed out or offline. */
     privateOffer: () => Promise<GentePrivateOffer | null>;
     setPrivateWaitlist: (join: boolean) => Promise<GentePrivateOffer | null>;

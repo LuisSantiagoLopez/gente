@@ -61,6 +61,7 @@ import { stackSelfHeal } from "./burrow/self-heal.js";
 import { readServiceKey, vendorKeysAllowed } from "./burrow/service-keys.js";
 import { readTelegramToken } from "./burrow/telegram.js";
 import { registerTelegram, syncTelegramPoller } from "./burrow/telegram-window.js";
+import { setUpCloudGpu } from "./cloud-gpu/cloud-gpu-ipc.js";
 import { appWindowTargets, desktop, permissionTarget } from "./desktop-state.js";
 import {
   createLocaleHandler,
@@ -179,6 +180,9 @@ import {
 import { revealSecondInstanceWindow, secondInstanceWindow } from "./windows/second-instance.js";
 import { registerWindowControls } from "./windows/window-controls.js";
 import { isMcpOAuthServerId, mcpOAuthPartition } from "./windows/window-open.js";
+
+/** Lets every rented Cloud GPU go before the app exits (set once Cloud GPU is set up). */
+let cloudGpuShutdown: (() => Promise<void>) | null = null;
 
 process.setSourceMapsEnabled(true);
 installDesktopEarlyErrorReporting();
@@ -819,7 +823,10 @@ app.whenReady().then(async () => {
   const aiMode = createAiMode(app.getPath("userData"), isPaidPlan);
   let modelRouterBase: string | null = null;
   let modelRouter: RouterHandle | null = null;
-  void startModelRouter({ localBase: OLLAMA_URL })
+  // Gente: Cloud GPU, a rented GPU per chat when the person turns it on (cloud-gpu/).
+  const cloudGpu = setUpCloudGpu({ userDataDir, stackDir: userStackDir });
+  cloudGpuShutdown = cloudGpu.shutdown;
+  void startModelRouter({ localBase: OLLAMA_URL, cloud: cloudGpu.route })
     .then((router) => {
       modelRouterBase = router.base;
       modelRouter = router;
@@ -1363,6 +1370,16 @@ app.on("quit", (_event, exitCode) => {
 });
 app.on("before-quit", (event) => {
   desktop.quitting = true;
+  if (cloudGpuShutdown) {
+    const shutdown = cloudGpuShutdown;
+    cloudGpuShutdown = null;
+    event.preventDefault();
+    // At most 4 s: a GPU the app could not reach stops itself after 5 idle minutes anyway.
+    void Promise.race([shutdown(), new Promise((r) => setTimeout(r, 4000))]).finally(() =>
+      app.quit(),
+    );
+    return;
+  }
   // Server processes this app runs itself stop with it; quit again once they have.
   if (desktop.localStack instanceof NativeStackController && desktop.localStack.hasProcesses()) {
     event.preventDefault();

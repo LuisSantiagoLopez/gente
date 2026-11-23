@@ -47,6 +47,7 @@ import { authClient } from "../lib/auth/auth";
 import { peekBootstrapSeed } from "../lib/bootstrap";
 import { setCallMinimized, startCall, useCallSession } from "../lib/calls/call-session";
 import { toolActivityPreference } from "../lib/chat/tool-activity-preference";
+import { useCloudGpu } from "../lib/cloud-gpu/use-cloud-gpu";
 import { composerEnterToSendPreference } from "../lib/composer/composer-enter-to-send-pref";
 import { computersAreUnavailable } from "../lib/computers/computer-sandbox";
 import { composerModelPickerPreference } from "../lib/models/composer-model-picker-preference";
@@ -88,6 +89,7 @@ import { useMessageJump } from "./shell/chat/use-message-jump";
 import { useReadAloud } from "./shell/chat/use-read-aloud";
 import { useThreadState } from "./shell/chat/use-thread-state";
 import { useThreadSync } from "./shell/chat/use-thread-sync";
+import { CloudGpuStatusLine, CloudGpuSwitch } from "./shell/composer/CloudGpuToggle";
 import { Composer } from "./shell/composer/composer";
 import { ComposerModelPicker } from "./shell/composer/composer-model-picker";
 import { LearnShortcuts } from "./shell/composer/learn-shortcuts";
@@ -756,6 +758,7 @@ function SpaceShell() {
     onUpgrade: () => openSettings("billing"),
   });
   const { computerBot, openComputer } = computerControls;
+  const cloudGpu = useCloudGpu();
   const composer = useComposerActions({
     rpc,
     pageSession: pages.session,
@@ -1253,24 +1256,28 @@ function SpaceShell() {
               </div>
             ) : null}
             <LearnShortcuts onOpen={setOverlay} />
+            <CloudGpuStatusLine cloud={cloudGpu} />
             <Composer
               key={inGroup ? `group:${groupId}` : `bot:${active?.id}`}
               draftKey={inGroup ? `group:${groupId}` : `bot:${active?.id}`}
               enterToSend={enterToSend}
               sendColors={userBubble}
               modelPicker={
-                showComposerModel && active && !inGroup ? (
-                  <ComposerModelPicker
-                    bot={active}
-                    disabled={Boolean(recordingSkill)}
-                    onConnect={() => openSettings("models")}
-                    onSaved={(updated) =>
-                      setBots((current) =>
-                        current.map((bot) => (bot.id === updated.id ? updated : bot)),
-                      )
-                    }
-                  />
-                ) : undefined
+                <>
+                  <CloudGpuSwitch cloud={cloudGpu} />
+                  {showComposerModel && active && !inGroup ? (
+                    <ComposerModelPicker
+                      bot={active}
+                      disabled={Boolean(recordingSkill)}
+                      onConnect={() => openSettings("models")}
+                      onSaved={(updated) =>
+                        setBots((current) =>
+                          current.map((bot) => (bot.id === updated.id ? updated : bot)),
+                        )
+                      }
+                    />
+                  ) : null}
+                </>
               }
               activeName={inGroup ? (activeGroup?.name ?? activeSnapshot?.groupName) : active?.name}
               running={composerRunning}
@@ -1279,7 +1286,11 @@ function SpaceShell() {
               attachmentNotice={composer.attachmentNotice}
               sendError={sendError}
               imageConfirmation={composer.imageConfirmation}
-              onDraftEdited={composer.clearImageConfirmation}
+              onDraftEdited={() => {
+                composer.clearImageConfirmation();
+                // Gente: a GPU starts while the person types, so the answer waits less.
+                if (cloudGpu.state?.on) cloudGpu.prewarm();
+              }}
               onOpenModels={() => {
                 // A group's failed run belongs to one member; change that bot's model.
                 const failedBotId =

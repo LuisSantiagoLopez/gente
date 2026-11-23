@@ -1,14 +1,16 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente (a fork of Rakazo by Elie Steinbock).
 //
-// The AI always runs on this computer. Gente's server talks to this loopback router, which passes
-// every model request straight to the model on this computer (Ollama on 127.0.0.1) and notes how
-// long it took to start answering, for self-heal. No cloud model, no status checks, no added wait.
+// Gente's server talks to this loopback router, which passes every model request to the model on
+// this computer (Ollama on 127.0.0.1) and notes how long it took to start answering, for
+// self-heal. With Cloud GPU on, chat requests go to the chat's rented GPU instead
+// (cloud-gpu/cloud-gpu-route.ts); if that fails, this computer answers.
 import { randomBytes } from "node:crypto";
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import { createServer } from "node:http";
 import { Readable } from "node:stream";
 import { sanitizeChatBody } from "@rakazo/adapters/chat-request-sanitizer";
+import type { CloudRoute } from "../cloud-gpu/cloud-gpu-route.js";
 
 export type AiMode = "fast" | "private";
 
@@ -16,7 +18,16 @@ export interface RouterDeps {
   localBase: string; // e.g. http://127.0.0.1:11434
   fetch?: typeof fetch;
   /** Called for each answered chat request. */
-  onAnswered?: (where: "local") => void;
+  onAnswered?: (where: "local" | "cloud") => void;
+  /** Cloud GPU, when this Mac has a key for it. */
+  cloud?: CloudRoute;
+}
+
+/** The chat a request belongs to (pi-ai sends it), so each chat gets its own GPU. */
+function sessionKey(req: IncomingMessage): string {
+  const value = req.headers["x-session-affinity"] ?? req.headers["x-session-id"];
+  const key = Array.isArray(value) ? value[0] : value;
+  return key?.trim().slice(0, 200) || "app";
 }
 
 export async function startModelRouter(deps: RouterDeps) {
@@ -32,7 +43,10 @@ export async function startModelRouter(deps: RouterDeps) {
     });
     res.writeHead(upstream.status, headers);
     if (!upstream.body) return res.end();
-    Readable.fromWeb(upstream.body as never).pipe(res);
+    const stream = Readable.fromWeb(upstream.body as never);
+    // The person stopped the answer: let the model (and a cloud session's timer) know.
+    res.once("close", () => stream.destroy());
+    stream.pipe(res);
   }
 
   async function forward(req: IncomingMessage, res: ServerResponse, body: Buffer | undefined) {
@@ -46,6 +60,15 @@ export async function startModelRouter(deps: RouterDeps) {
         : body && body.length > 0
           ? new Uint8Array(body)
           : undefined;
+    if (isChat && sent && deps.cloud?.active()) {
+      const cloud = await deps.cloud
+        .send(sessionKey(req), new TextDecoder().decode(sent))
+        .catch(() => null);
+      if (cloud) {
+        deps.onAnswered?.("cloud");
+        return pipe(cloud, res);
+      }
+    }
     const answer = await doFetch(`${deps.localBase}${path}`, {
       method: req.method,
       headers: { "content-type": req.headers["content-type"] ?? "application/json" },
