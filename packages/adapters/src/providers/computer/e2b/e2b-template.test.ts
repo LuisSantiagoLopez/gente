@@ -22,8 +22,10 @@ describe("E2B computer template", () => {
     ];
     expect(name).toBe("rakazo-computer");
     expect(options).toMatchObject({ apiKey: "e2b_test", cpuCount: 2, memoryMB: 4096 });
-    expect(JSON.parse(await Template.toJSON(template, false))).toMatchObject({
-      fromTemplate: E2B_DESKTOP_TEMPLATE,
-    });
+    const json = await Template.toJSON(template, false);
+    expect(JSON.parse(json)).toMatchObject({ fromTemplate: E2B_DESKTOP_TEMPLATE });
+    // Gente: the desktop tools and the page browser are baked in, so a computer starts at once.
+    expect(json).toContain("apt-get install");
+    expect(json).toContain("page-browser.version");
   });
 });

@@ -229,6 +229,19 @@ function localApi(): ProviderStreams {
   };
 }
 
+/**
+ * Gente: the chat client code (pi-ai's OpenAI-compatible API and the OpenAI SDK) loads on the
+ * first message, which cost about 0.7 s on that message. Load it shortly after start-up instead,
+ * in any process that has a local model, so the first "hey" answers at once.
+ */
+export function prewarmLocalChatClient(env: NodeJS.ProcessEnv = process.env): void {
+  if (prewarmed || localModelIds(env).length === 0) return;
+  prewarmed = true;
+  void import("@earendil-works/pi-ai/api/openai-completions").catch(() => undefined);
+}
+let prewarmed = false;
+setTimeout(() => prewarmLocalChatClient(), 1500).unref?.();
+
 export function localProvider(): Provider | undefined {
   const ids = localModelIds();
   if (!ids.length) return undefined;

@@ -158,6 +158,26 @@ try {
   const input = page.locator(box).last();
   await input.click();
   await page.keyboard.type(message, { delay: 15 });
+  // Exact in-page timing: from the Enter key to the first reply character on screen.
+  await page.evaluate((before) => {
+    const w = window;
+    w.__firstText = null;
+    w.__firstThought = null;
+    const seen = () => {
+      const now = performance.now();
+      const replies = document.querySelectorAll('[data-testid="reply-text"]');
+      if (w.__firstText === null && replies.length > before && replies[before].textContent.trim())
+        w.__firstText = now;
+      const thought = document.querySelector('[data-testid="activity-preview"]');
+      if (w.__firstThought === null && thought?.textContent.trim()) w.__firstThought = now;
+    };
+    new MutationObserver(seen).observe(document.body, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+    });
+    w.__sendT = performance.now();
+  }, repliesBefore);
   await page.keyboard.press("Enter");
   const sent = Date.now();
   mark("sent");
@@ -218,6 +238,15 @@ try {
     await new Promise((r) => setTimeout(r, 400));
   }
   timings.run_total_s = Number(((Date.now() - sent) / 1000).toFixed(1));
+  const exact = await page
+    .evaluate(() => ({
+      text: window.__firstText === null ? null : (window.__firstText - window.__sendT) / 1000,
+      thought:
+        window.__firstThought === null ? null : (window.__firstThought - window.__sendT) / 1000,
+    }))
+    .catch(() => ({ text: null, thought: null }));
+  timings.first_word_exact_s = exact.text === null ? null : Number(exact.text.toFixed(3));
+  timings.first_thought_exact_s = exact.thought === null ? null : Number(exact.thought.toFixed(3));
   timings.status_lines = [...statusTexts];
   const body = await page
     .locator("main")
