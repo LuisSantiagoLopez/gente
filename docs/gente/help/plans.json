@@ -5,6 +5,7 @@
       "monthlyCents": 2000,
       "yearlyCents": 20400,
       "currency": "usd",
+      "channel": "web",
       "onlineHours": 37,
       "hoursPacks": [
         {
@@ -40,6 +41,7 @@
       "monthlyCents": 10000,
       "yearlyCents": null,
       "currency": "usd",
+      "channel": "web",
       "onlineHours": 215,
       "hoursPacks": [
         {
@@ -75,6 +77,7 @@
       "monthlyCents": 20000,
       "yearlyCents": null,
       "currency": "usd",
+      "channel": "web",
       "onlineHours": 430,
       "hoursPacks": [
         {

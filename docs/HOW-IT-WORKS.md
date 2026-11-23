@@ -107,8 +107,9 @@ The test that proves step 5 end to end:
 
 ## Cloud GPU (a rented GPU per chat)
 
-When the "Cloud GPU" switch beside Send is on, each chat gets its own GPU on Modal. It starts on the
-chat's first message (or while you type), answers with the same model as this Mac
+When the "Cloud GPU" switch beside Send is on, each chat gets its own GPU on Modal. One starts the
+moment the switch turns on and while you type (a fresh GPU takes about 17 to 21 s), so it is
+usually ready by the time you press Enter. It answers with the same model as this Mac
 (Qwen 3.6 35B-A3B, FP8) and a 128K context window, and is let go when the chat is done.
 Read in this order:
 

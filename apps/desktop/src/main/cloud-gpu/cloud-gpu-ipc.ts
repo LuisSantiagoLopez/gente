@@ -10,6 +10,7 @@ import type { CloudRoute } from "./cloud-gpu-route.js";
 import { createCloudRoute } from "./cloud-gpu-route.js";
 import { createCloudGpuSessions } from "./cloud-gpu-sessions.js";
 import { createCloudGpuToggle } from "./cloud-gpu-toggle.js";
+import { createWarmPool } from "./cloud-gpu-warm.js";
 
 export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }): {
   route: CloudRoute;
@@ -19,7 +20,10 @@ export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }):
     controlUrl: CLOUD_GPU_CONTROL_URL,
     key: () => readCloudGpuKey(),
   });
+  const warm = createWarmPool({ controlUrl: CLOUD_GPU_CONTROL_URL, key: () => readCloudGpuKey() });
+  setInterval(() => void warm.tick(), 60_000).unref();
   const toggle = createCloudGpuToggle({
+    warm,
     userDataDir: input.userDataDir,
     stackDir: input.stackDir,
     sessions,
@@ -34,6 +38,7 @@ export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }):
     active: () => toggle.active(),
     fellBack: (message) => toggle.fellBack(message),
     recovered: () => toggle.recovered(),
+    activity: () => warm.activity(),
   });
   return { route, shutdown: () => toggle.shutdown() };
 }

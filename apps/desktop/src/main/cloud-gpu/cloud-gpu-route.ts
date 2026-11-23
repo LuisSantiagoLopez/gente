@@ -22,6 +22,8 @@ export interface RouteDeps {
   active: () => boolean;
   fellBack: (message: string) => Promise<void> | void;
   recovered: () => Promise<void> | void;
+  /** Each request counts as activity, so the spare GPU stays ready while a chat goes on. */
+  activity?: () => void;
   key?: () => Promise<string | undefined>;
   fetch?: typeof fetch;
 }
@@ -56,6 +58,7 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
   return {
     active: deps.active,
     async send(sessionKey, body) {
+      deps.activity?.();
       const sent = cloudChatBody(body);
       const answer = (await once(sessionKey, sent)) ?? (await once(sessionKey, sent));
       if (answer) await deps.recovered();

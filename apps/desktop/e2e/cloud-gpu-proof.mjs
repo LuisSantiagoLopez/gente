@@ -76,6 +76,23 @@ try {
   page = await withSelector(box, 180_000);
   await page.setViewportSize?.({ width: 1280, height: 860 }).catch(() => {});
   mark("signed-in");
+  // --frames: the app's own page, every 0.7 s, for the proof GIF (never the rest of the screen).
+  let frameNo = 0;
+  let frameBusy = false;
+  const framesDir = path.join(out, "frames");
+  if (flags.includes("--frames")) mkdirSync(framesDir, { recursive: true });
+  const frameTimer = flags.includes("--frames")
+    ? setInterval(() => {
+        if (frameBusy || page.isClosed()) return;
+        frameBusy = true;
+        frameNo += 1;
+        const name = path.join(framesDir, `f${String(frameNo).padStart(5, "0")}.png`);
+        page
+          .screenshot({ path: name, timeout: 5000 })
+          .catch(() => {})
+          .finally(() => (frameBusy = false));
+      }, 700)
+    : null;
   // A new workspace asks about this Mac's own computer; the test keeps bots on cloud computers.
   const useMac = page.getByRole("button", { name: "Use this Mac" });
   if (
@@ -188,6 +205,10 @@ try {
       .textContent({ timeout: 500 })
       .catch(() => "(gone)");
     await shot(page, "04-off.png");
+  }
+  if (frameTimer) {
+    await new Promise((r) => setTimeout(r, 2000));
+    clearInterval(frameTimer);
   }
 } catch (error) {
   failure = error;

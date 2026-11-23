@@ -6,11 +6,10 @@
 #
 #   Gpu      vLLM serving Qwen 3.6 35B-A3B (FP8) with an OpenAI-compatible /v1/chat/completions.
 #            Sticky sessions with at most one session per container: no two sessions share a GPU.
-#   control  A tiny CPU web endpoint the desktop app calls to start and stop a session. It holds
-#            no Modal token: it runs inside Modal, which mints session tokens for it.
 #
-# Who calls it: apps/desktop/src/main/cloud-gpu/cloud-gpu-session.ts (start, stop) and
-# apps/desktop/src/main/burrow/model-router.ts (chat requests, with the session token).
+# Sessions are started and stopped by control_app.py (a separate Modal app, so changing it never
+# throws away this server's snapshot). Chat requests come straight from the desktop app's model
+# router (apps/desktop/src/main/cloud-gpu/cloud-gpu-route.ts) with the session token.
 # Weights: `modal run infra/cloud-gpu/download_weights.py` once. Deploy: `modal deploy` this file.
 # Privacy: vLLM request logging stays off and uvicorn access logs are off, so no prompt is logged.
 import os
@@ -50,6 +49,9 @@ gpu_image = (
             "HF_HUB_ENABLE_HF_TRANSFER": "1",
             "HF_HUB_OFFLINE": "1",
             "VLLM_NO_USAGE_STATS": "1",
+            # JIT kernels land on the cache Volume, so a full boot (a new snapshot) skips rebuilding.
+            "FLASHINFER_WORKSPACE_BASE": "/root/.cache/vllm/flashinfer",
+            "DG_JIT_CACHE_DIR": "/root/.cache/vllm/deep_gemm",
             "DO_NOT_TRACK": "1",
             "YOURAI_MODEL": MODEL,
             "YOURAI_GPU": GPU,
@@ -58,7 +60,6 @@ gpu_image = (
         }
     )
 )
-control_image = modal.Image.debian_slim(python_version="3.12").uv_pip_install("fastapi[standard]")
 
 app = modal.App(APP_NAME)
 
@@ -160,61 +161,3 @@ class Gpu:
     @modal.exit()
     def stop(self):
         self.proc.terminate()
-
-
-@app.function(
-    image=control_image,
-    secrets=[secret],
-    cpu=0.25,
-    memory=512,
-    scaledown_window=10 * MINUTES,
-    timeout=20 * MINUTES,  # the first boot after a deploy builds the snapshot and takes minutes
-    enable_memory_snapshot=True,
-)
-@modal.asgi_app()
-def control():
-    import hmac
-
-    from fastapi import FastAPI, Header, HTTPException
-    from pydantic import BaseModel
-
-    api = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-    server = modal.Server.from_name(APP_NAME, "Gpu")
-
-    def check(authorization: str | None):
-        want = f"Bearer {os.environ['YOURAI_GPU_KEY']}"
-        if not authorization or not hmac.compare_digest(authorization, want):
-            raise HTTPException(status_code=401)
-
-    class Start(BaseModel):
-        idle_timeout: int = 300
-
-    class Stop(BaseModel):
-        token: str
-
-    @api.post("/start")
-    async def start(body: Start, authorization: str | None = Header(default=None)):
-        check(authorization)
-        began = time.monotonic()
-        session = await server.sessions.start.aio(idle_timeout=max(60, min(body.idle_timeout, 1800)))
-        return {
-            "url": await server.get_url.aio(),
-            "token": session.token,
-            "session_id": session.session_id,
-            "gpu": GPU,
-            "context": CONTEXT,
-            "model": SERVED_NAME,
-            "start_ms": int((time.monotonic() - began) * 1000),
-        }
-
-    @api.post("/stop")
-    async def stop(body: Stop, authorization: str | None = Header(default=None)):
-        check(authorization)
-        await server.sessions.terminate.aio(body.token)
-        return {"stopped": True}
-
-    @api.get("/health")
-    async def health():
-        return {"ok": True}
-
-    return api

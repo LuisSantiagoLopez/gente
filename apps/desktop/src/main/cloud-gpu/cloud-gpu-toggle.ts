@@ -11,6 +11,7 @@ import path from "node:path";
 import { writePrivateFile } from "../setup/setup-store.js";
 import { CLOUD_LIMITS } from "./cloud-gpu-config.js";
 import type { CloudGpuSessions, CloudGpuStatus } from "./cloud-gpu-sessions.js";
+import type { WarmPool } from "./cloud-gpu-warm.js";
 
 export const CLOUD_GPU_FILE = "cloud-gpu";
 export const LIMITS_FILE = "cloud-gpu-limits.json";
@@ -29,6 +30,8 @@ export interface ToggleDeps {
   stackDir: string;
   sessions: CloudGpuSessions;
   hasKey: () => Promise<boolean>;
+  /** The spare GPU kept ready while the person is active (cloud-gpu-warm.ts). */
+  warm?: WarmPool;
   write?: (file: string, text: string) => Promise<void>;
   remove?: (file: string) => Promise<void>;
 }
@@ -61,6 +64,8 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
     async init() {
       available = await deps.hasKey();
       await syncLimits(on && available).catch(() => undefined);
+      // Opening the app with Cloud GPU on readies a GPU before the first message.
+      if (on && available) deps.warm?.activity();
     },
     active: () => on && available,
     async set(next: unknown): Promise<CloudGpuState> {
@@ -71,8 +76,10 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
       else await remove(file);
       await syncLimits(on);
       // A GPU takes about 20 s to start, so it starts now, while the person writes.
-      if (on) deps.sessions.prewarm();
-      else await deps.sessions.stopAll();
+      if (on) {
+        deps.warm?.activity();
+        deps.sessions.prewarm();
+      } else await Promise.all([deps.sessions.stopAll(), deps.warm?.off()]);
       return this.state();
     },
     /** The cloud failed: this Mac answers, with its own window, until the cloud is back. */
@@ -84,7 +91,9 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
       if (on && available) await syncLimits(true).catch(() => undefined);
     },
     prewarm() {
-      if (on && available) deps.sessions.prewarm();
+      if (!on || !available) return;
+      deps.warm?.activity();
+      deps.sessions.prewarm();
     },
     state(): CloudGpuState {
       return {
@@ -95,7 +104,7 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
       };
     },
     /** App quit: every GPU is let go before the app exits. */
-    shutdown: () => deps.sessions.stopAll(),
+    shutdown: () => Promise.all([deps.sessions.stopAll(), deps.warm?.off()]).then(() => undefined),
   };
 }
 
