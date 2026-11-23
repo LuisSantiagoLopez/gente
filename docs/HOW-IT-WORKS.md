@@ -139,8 +139,11 @@ Read in this order:
    A chat too long for this Mac's window (over about 85,000 characters) is never handed to the
    Mac: its answer starts at once and sends an empty chunk every 20 s until the GPU is up, then
    the GPU's stream follows. `cloud-gpu/cloud-gpu-hold.ts`.
-   Screenshots are replaced by a short note (the GPU's model reads text only), and a request the
-   GPU refuses (400, 413, 422) is answered here once without dropping the GPU.
+   The GPU's model reads text only, so the newest pictures in a request (screenshots, video
+   stills) are described in words by this Mac's model first and the words go to the GPU
+   (`cloud-gpu/cloud-gpu-vision.ts`, kept per picture). Older pictures become a short note that
+   says the model has not seen them. A request the GPU refuses (400, 413, 422) is answered here
+   once without dropping the GPU.
 9. Each answer is measured as it streams: first token, tokens per second, total, as one line in
    `<stack>/logs/cloud-gpu-meter.jsonl` (numbers only). `cloud-gpu/cloud-gpu-meter.ts`.
 10. The Modal side: `infra/cloud-gpu/modal_app.py` (vLLM on one GPU, memory + GPU snapshot, sticky

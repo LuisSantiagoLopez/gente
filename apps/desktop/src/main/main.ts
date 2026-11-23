@@ -824,7 +824,7 @@ app.whenReady().then(async () => {
   let modelRouterBase: string | null = null;
   let modelRouter: RouterHandle | null = null;
   // Gente: Cloud GPU, a rented GPU per chat when the person turns it on (cloud-gpu/).
-  const cloudGpu = setUpCloudGpu({ userDataDir, stackDir: userStackDir });
+  const cloudGpu = setUpCloudGpu({ userDataDir, stackDir: userStackDir, localBase: OLLAMA_URL });
   cloudGpuShutdown = cloudGpu.shutdown;
   void startModelRouter({ localBase: OLLAMA_URL, cloud: cloudGpu.route })
     .then((router) => {

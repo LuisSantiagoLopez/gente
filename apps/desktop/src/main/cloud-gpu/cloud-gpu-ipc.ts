@@ -11,8 +11,14 @@ import type { CloudRoute } from "./cloud-gpu-route.js";
 import { createCloudRoute } from "./cloud-gpu-route.js";
 import { createCloudGpuSessions } from "./cloud-gpu-sessions.js";
 import { createCloudGpuToggle } from "./cloud-gpu-toggle.js";
+import { createVisionRelay, localDescriber } from "./cloud-gpu-vision.js";
 
-export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }): {
+export function setUpCloudGpu(input: {
+  userDataDir: string;
+  stackDir: string;
+  /** This Mac's model server, which describes pictures for the GPU model. */
+  localBase?: string;
+}): {
   route: CloudRoute;
   shutdown: () => Promise<void>;
 } {
@@ -36,6 +42,9 @@ export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }):
     fellBack: (message) => toggle.fellBack(message),
     recovered: () => toggle.recovered(),
     meter: meterFile(input.stackDir),
+    ...(input.localBase
+      ? { describeImages: createVisionRelay(localDescriber(input.localBase)) }
+      : {}),
   });
   return { route, shutdown: () => toggle.shutdown() };
 }

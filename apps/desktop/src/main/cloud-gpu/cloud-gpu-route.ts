@@ -42,6 +42,8 @@ export interface RouteDeps {
   key?: () => Promise<string | undefined>;
   fetch?: typeof fetch;
   startWaitMs?: number;
+  /** Puts pictures into words for the text-only GPU model (cloud-gpu-vision.ts). */
+  describeImages?: (body: string) => Promise<string>;
   /** Gets first-token time, tokens per second and total for each answer. */
   meter?: (line: MeterLine) => void;
 }
@@ -126,7 +128,8 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
   return {
     active: deps.active,
     async send(sessionKey, body) {
-      const sent = withUsage(cloudChatBody(body));
+      const seen = deps.describeImages ? await deps.describeImages(body).catch(() => body) : body;
+      const sent = withUsage(cloudChatBody(seen));
       let answer = await once(sessionKey, sent);
       if (answer === null) answer = await once(sessionKey, sent);
       if (answer === STARTING || answer === REFUSED_REQUEST) {
