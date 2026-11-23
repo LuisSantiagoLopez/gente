@@ -46,7 +46,12 @@ Never say a site is published unless the command printed its URL in this chat.`,
 3. Write ~/video/render.py: for each frame t, draw with Pillow (gradient background, shapes, text with ImageFont.truetype), using easing (e.g. 1-(1-x)**3) so motion is smooth, and write raw RGB bytes to ffmpeg's stdin:
    \`ffmpeg -y -f rawvideo -pix_fmt rgb24 -s 1280x720 -r 30 -i - -c:v libx264 -pix_fmt yuv420p -crf 18 -movflags +faststart ~/video/out.mp4\`
    Keep the work light (2 CPUs): draw at the final size, reuse the background, no per-pixel Python loops (use numpy). Test with 1 s first (\`--seconds 1\`), then render the whole video in the background so it does not hit the shell's time limit: \`nohup python3 ~/video/render.py > ~/video/render.log 2>&1 &\` and check \`tail -2 ~/video/render.log; ls -la ~/video/out.mp4\` every 30 s until it is done.
-4. Check it: \`ffprobe -v error -show_entries format=duration -of csv=p=0 ~/video/out.mp4\`, and pull 3 stills (\`ffmpeg -ss 2 -i out.mp4 -frames:v 1 s1.png\`) and look at them with open_path. Fix anything ugly and render again.
+4. Check it before you send it. \`ffprobe -v error -show_entries format=duration -of csv=p=0 ~/video/out.mp4\`. Then measure frames with numbers, which works even when you cannot see pictures:
+   \`python3 -c "import subprocess,numpy as np
+for t in [1,4,8,11,14]:
+  a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-ss',str(t),'-i','$HOME/video/out.mp4','-frames:v','1','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout,np.uint8).reshape(720,1280)
+  y,x=np.where(a>140); print(t,'mean',round(a.mean()),'text box',(x.min(),y.min(),x.max(),y.max()) if len(x) else None)"\`
+   A frame whose mean is under 12 is too dark; a scene with words needs a text box, centered when its middle ((x0+x1)/2) is near 640. Fix and render again until every check is right. If you can see images, also pull stills (\`ffmpeg -ss 2 -i out.mp4 -frames:v 1 s1.png\`) and look at them with open_path. Tell the user exactly how you checked (by numbers or by eye).
 5. Optional sound: a soft pad with \`ffmpeg -f lavfi -i "sine=frequency=220:duration=20" ...\` mixed low, or none.
 6. attach_file the MP4 with a name and description, and say its length and size. Never say the video is ready unless ffprobe showed its duration in this chat.`,
   },

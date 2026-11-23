@@ -9,7 +9,7 @@ import type { CloudSession } from "./cloud-gpu-sessions.js";
 
 /** Said in place of a picture: the GPU's model reads text only (`--language-model-only`). */
 export const NO_IMAGE_NOTE =
-  "[A screenshot was here. Cloud GPU's model reads text only, so it was left out. To see a page, use browser_snapshot or read its text.]";
+  "[A picture was here, but Cloud GPU's model reads text only, so you have NOT seen it. Never say how it looks or that it passed a visual check. Use browser_snapshot or page text for pages, and measure images or video frames with code.]";
 
 type Part = { type?: unknown };
 
