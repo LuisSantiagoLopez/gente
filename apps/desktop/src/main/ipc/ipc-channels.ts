@@ -9,13 +9,7 @@ import type { GenteSupportBridge } from "../support/bridge.js";
  * the window that sent the call and on nothing else. `computerPill` is the small "Gente is using
  * your computer" window, whose page may only ask to stop and say where the pointer is.
  */
-export type IpcWindow =
-  | "app"
-  | "appOrReplaced"
-  | "setup"
-  | "support"
-  | "computerPill"
-  | "telegram";
+export type IpcWindow = "app" | "appOrReplaced" | "setup" | "support" | "computerPill" | "telegram";
 
 type BridgeMethod = (...args: never[]) => unknown;
 
@@ -128,10 +122,19 @@ export const ipcChannels = {
   "desktop.gente.linkUnpair": appPage<NonNullable<Desktop["gente"]>["linkUnpair"]>(REJECTS),
   "desktop.gente.linkTake": appPage<NonNullable<NonNullable<Desktop["gente"]>["linkTake"]>>([]),
   "desktop.gente.linkSend": appPage<NonNullable<NonNullable<Desktop["gente"]>["linkSend"]>>(false),
+  "desktop.gente.cloudGpu":
+    appPage<NonNullable<NonNullable<Desktop["gente"]>["cloudGpu"]>>(REJECTS),
+  "desktop.gente.setCloudGpu":
+    appPage<NonNullable<NonNullable<Desktop["gente"]>["setCloudGpu"]>>(REJECTS),
+  "desktop.gente.setCloudGpuMode":
+    appPage<NonNullable<NonNullable<Desktop["gente"]>["setCloudGpuMode"]>>(REJECTS),
+  "desktop.gente.prewarmCloudGpu":
+    appPage<NonNullable<NonNullable<Desktop["gente"]>["prewarmCloudGpu"]>>(undefined),
   "desktop.gente.consumeMessage": appPage<NonNullable<Desktop["gente"]>["consumeMessage"]>(true),
   "desktop.gente.privateOffer": appPage<NonNullable<Desktop["gente"]>["privateOffer"]>(null),
   "desktop.gente.setAiMode": appPage<NonNullable<Desktop["gente"]>["setAiMode"]>(REJECTS),
-  "desktop.gente.setPrivateWaitlist": appPage<NonNullable<Desktop["gente"]>["setPrivateWaitlist"]>(null),
+  "desktop.gente.setPrivateWaitlist":
+    appPage<NonNullable<Desktop["gente"]>["setPrivateWaitlist"]>(null),
   "desktop.gente.signIn": appPage<NonNullable<Desktop["gente"]>["signIn"]>(REJECTS),
   "desktop.gente.signOut": appPage<NonNullable<Desktop["gente"]>["signOut"]>(REJECTS),
   "desktop.locale.set": appPage<Desktop["locale"]["set"]>(undefined),

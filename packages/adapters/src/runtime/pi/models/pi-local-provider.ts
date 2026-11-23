@@ -19,6 +19,7 @@ import {
 } from "./gente-honest-actions.js";
 import { filterTextToolCalls, offeredTools } from "./gente-text-tool-calls.js";
 import { cachedAnswerResponse, planWebAnswer, withPreface } from "./gente-web-answer.js";
+import { withLiveLimits } from "./pi-local-limits.js";
 import { LOCAL_PROVIDER_ID, localModelIds, localModelsApiKey } from "./pi-local-provider-id.js";
 
 /** Reasoning effort names for an OpenAI-style chat completions server that accepts them. */
@@ -77,7 +78,8 @@ function tokenLimit(name: string, fallback: number): number {
 function localModel(id: string): Model<"openai-completions"> {
   // Same comma-separated id list as the vision opt-in.
   const reasoning = declaredVisionModelIds(LOCAL_REASONING_MODELS_ENV).has(id);
-  return {
+  // Gente: Cloud GPU raises the window while the server runs (pi-local-limits.ts).
+  return withLiveLimits({
     id,
     name: id,
     api: "openai-completions",
@@ -85,15 +87,25 @@ function localModel(id: string): Model<"openai-completions"> {
     baseUrl: localBaseUrl(),
     reasoning,
     compat: reasoning
-      ? { supportsDeveloperRole: false, supportsReasoningEffort: true, thinkingFormat: "openai" }
-      : { supportsDeveloperRole: false, supportsReasoningEffort: false },
+      ? {
+          supportsDeveloperRole: false,
+          supportsReasoningEffort: true,
+          thinkingFormat: "openai",
+          // Gente: names the chat in x-session-affinity, so Cloud GPU gives each chat its own GPU.
+          sendSessionAffinityHeaders: true,
+        }
+      : {
+          supportsDeveloperRole: false,
+          supportsReasoningEffort: false,
+          sendSessionAffinityHeaders: true,
+        },
     ...(reasoning ? { thinkingLevelMap: { ...REASONING_THINKING_LEVELS } } : {}),
     input: inputModalities(localVisionModelIds().has(id)),
     // Runs on the operator's own hardware, so there is nothing to bill.
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: tokenLimit("RAKAZO_LOCAL_CONTEXT_WINDOW", DEFAULT_CONTEXT_WINDOW),
     maxTokens: tokenLimit("RAKAZO_LOCAL_MAX_TOKENS", DEFAULT_MAX_TOKENS),
-  };
+  });
 }
 
 /**
@@ -216,6 +228,19 @@ function localApi(): ProviderStreams {
       ),
   };
 }
+
+/**
+ * Gente: the chat client code (pi-ai's OpenAI-compatible API and the OpenAI SDK) loads on the
+ * first message, which cost about 0.7 s on that message. Load it shortly after start-up instead,
+ * in any process that has a local model, so the first "hey" answers at once.
+ */
+export function prewarmLocalChatClient(env: NodeJS.ProcessEnv = process.env): void {
+  if (prewarmed || localModelIds(env).length === 0) return;
+  prewarmed = true;
+  void import("@earendil-works/pi-ai/api/openai-completions").catch(() => undefined);
+}
+let prewarmed = false;
+setTimeout(() => prewarmLocalChatClient(), 1500).unref?.();
 
 export function localProvider(): Provider | undefined {
   const ids = localModelIds();

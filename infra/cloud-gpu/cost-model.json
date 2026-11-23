@@ -1,0 +1,65 @@
+{
+  "updated": "2026-11-23",
+  "gpu": "NVIDIA H100 80GB (Modal, us-east)",
+  "model": "Qwen/Qwen3.6-35B-A3B-FP8, vLLM 0.32, MTP 3 draft tokens",
+  "gpu_hourly_usd": 3.95,
+  "tokens_per_s_aggregate_by_concurrency": {
+    "1": 237.8,
+    "8": 1134.4,
+    "32": 2687.5,
+    "64": 3530.6
+  },
+  "tokens_per_s_per_chat_by_concurrency": {
+    "1": 346.6,
+    "8": 218.2,
+    "32": 119.4,
+    "64": 79.1
+  },
+  "first_word_s_median_by_concurrency": {
+    "1": 0.52,
+    "8": 0.79,
+    "32": 1.24,
+    "64": 1.72
+  },
+  "first_word_s_p95_by_concurrency": {
+    "1": 0.52,
+    "8": 0.79,
+    "32": 1.51,
+    "64": 2.47
+  },
+  "cost_per_1m_tokens_usd": {
+    "1": 4.614,
+    "8": 0.967,
+    "32": 0.408,
+    "64": 0.311
+  },
+  "cost_per_1m_tokens_note": "Output tokens, GPU fully busy at that many chats at once. Each chat sends a 4,000-token prompt with its own cache_salt (no shared cache). Measured from a Mac in San Francisco.",
+  "average_conversation": {
+    "messages": 10,
+    "output_tokens": 5000,
+    "cost_usd_by_concurrency": {
+      "1": 0.0231,
+      "8": 0.0048,
+      "32": 0.002,
+      "64": 0.0016
+    }
+  },
+  "cold_start_s": {
+    "dedicated_snapshot_restore": [
+      16.9,
+      20.5,
+      39.6
+    ],
+    "warm_pool_attach": 1.96,
+    "full_boot_after_deploy": 600,
+    "note": "Snapshot restore to first word; warm pool = a GPU already up, the session attaches."
+  },
+  "warm_pool_daily_usd": {
+    "always_on_24h": 94.8,
+    "active_12h": 47.4,
+    "active_8h": 31.6,
+    "scale_to_zero_idle": 0
+  },
+  "dedicated_gpu_per_chat_hourly_usd": 3.95,
+  "source": "infra/cloud-gpu/load_test.py and bench runs, see infra/cloud-gpu/SPEED-LOG.md"
+}

@@ -12,6 +12,7 @@ import os from "node:os";
 import path from "node:path";
 import type { WireMessage } from "@rakazo/adapters/chat-request-sanitizer";
 import { sanitizeChatMessages } from "@rakazo/adapters/chat-request-sanitizer";
+import { limitsFilePath } from "../cloud-gpu/cloud-gpu-toggle.js";
 
 /** Ollama's default address. `BURROW_OLLAMA_URL` points tests at a stand-in server. */
 export const OLLAMA_URL = process.env.BURROW_OLLAMA_URL?.trim() || "http://127.0.0.1:11434";
@@ -132,7 +133,10 @@ export async function readSavedBrain(stackDirectory: string): Promise<SavedBrain
 }
 
 /** The environment the API and worker get so Swift is every bot's default model. */
-export function swiftServerEnv(saved: SavedBrain | null): Record<string, string> {
+export function swiftServerEnv(
+  saved: SavedBrain | null,
+  stackDir?: string,
+): Record<string, string> {
   if (saved === null) return {};
   const installed = [saved.alias, ...saved.installed.filter((id) => id !== saved.alias)];
   return {
@@ -140,6 +144,8 @@ export function swiftServerEnv(saved: SavedBrain | null): Record<string, string>
     RAKAZO_LOCAL_MODELS_URL: `${OLLAMA_URL}/v1`,
     RAKAZO_LOCAL_CONTEXT_WINDOW: String(SWIFT_CONTEXT),
     RAKAZO_LOCAL_MAX_TOKENS: "8192",
+    // Cloud GPU writes a larger window here while it is on (cloud-gpu/cloud-gpu-toggle.ts).
+    ...(stackDir ? { RAKAZO_LOCAL_LIMITS_FILE: limitsFilePath(stackDir) } : {}),
     RAKAZO_LOCAL_REASONING_MODELS: installed.join(","),
     RAKAZO_LOCAL_VISION_MODELS: (saved.vision ?? []).join(","),
     BURROW_FAST_CHAT: "on",
