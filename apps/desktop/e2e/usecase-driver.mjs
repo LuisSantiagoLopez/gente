@@ -154,6 +154,14 @@ async function sendTurn(page, n, message) {
         .catch(() => "");
       if (act?.trim()) timing.first_activity_s = (Date.now() - sent) / 1000;
     }
+    // An approval card: the test user reads it (screenshot) and allows that one action.
+    const allow = page.getByRole("button", { name: "Allow once" }).first();
+    if (await allow.isVisible().catch(() => false)) {
+      const asked = await page.locator("main").innerText().catch(() => "");
+      timing.approvals = [...(timing.approvals ?? []), asked.split("Allow once")[0].slice(-300)];
+      await shot(page, `turn-${n}-approval-${timing.approvals.length}.png`);
+      await allow.click().catch(() => {});
+    }
     const running = await stop.isVisible().catch(() => false);
     if (running) {
       sawRunning = true;
