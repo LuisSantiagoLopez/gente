@@ -1,0 +1,2529 @@
+[
+  {
+    "type": "thread.message.created",
+    "id": "cmwsffwk3000czhl2jiw0tzda",
+    "seq": 6537,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:14.067Z",
+    "payload": {
+      "seq": 7,
+      "role": "user",
+      "author": { "id": "j2ep8JMjR1amFthmNPO12K4zl2XBY9M6", "name": "Tester" },
+      "blocks": [{ "kind": "text", "text": "explain how rainbows form, think carefully" }],
+      "runIds": ["cmwsffwjv000bzhl20lycp05x"],
+      "messageId": "cmwsffwjl0009zhl2dcjyen6g"
+    }
+  },
+  {
+    "type": "run.started",
+    "id": "cmwsffwnwoikyeg6ypwr8dq5z",
+    "seq": 6538,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:14.205Z",
+    "payload": {
+      "userId": "j2ep8JMjR1amFthmNPO12K4zl2XBY9M6",
+      "trigger": "user",
+      "routineId": null
+    }
+  },
+  {
+    "type": "thread.meta",
+    "id": "cmwsfg0kkoikzeg6yke0tb6xw",
+    "seq": 6539,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.270Z",
+    "payload": { "activity": { "thinking": true } }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0kroil0eg6ywog2wm43",
+    "seq": 6540,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.276Z",
+    "payload": { "draft": { "thinking": "The" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0maoil1eg6y242ynn5b",
+    "seq": 6541,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.331Z",
+    "payload": { "draft": { "thinking": " user is" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0nsoil2eg6yvoobkmpt",
+    "seq": 6542,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.385Z",
+    "payload": { "draft": { "thinking": " asking the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0paoil3eg6ysgd2wtm2",
+    "seq": 6543,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.439Z",
+    "payload": { "draft": { "thinking": " same" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0qtoil4eg6ygdf2pfpy",
+    "seq": 6544,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.494Z",
+    "payload": { "draft": { "thinking": " question again" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0sfoil5eg6yfxgtvv32",
+    "seq": 6545,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.552Z",
+    "payload": { "draft": { "thinking": ". I" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0txoil6eg6yxshfxxsv",
+    "seq": 6546,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.606Z",
+    "payload": { "draft": { "thinking": " already" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0vhoil7eg6yjvw4clfl",
+    "seq": 6547,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.663Z",
+    "payload": { "draft": { "thinking": " gave a" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0x0oil8eg6yobnw8fn4",
+    "seq": 6548,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.718Z",
+    "payload": { "draft": { "thinking": " very" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg0ykoil9eg6yr1xnz7cz",
+    "seq": 6549,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.774Z",
+    "payload": { "draft": { "thinking": " detailed," }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg104oilaeg6yni37xlf9",
+    "seq": 6550,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.829Z",
+    "payload": { "draft": { "thinking": " rigorous" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg11loilbeg6ym2qrjuvn",
+    "seq": 6551,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.883Z",
+    "payload": { "draft": { "thinking": " explanation earlier" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg134oilceg6yffgqz205",
+    "seq": 6552,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.937Z",
+    "payload": { "draft": { "thinking": " in" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg14ooildeg6y25jxuvc6",
+    "seq": 6553,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:19.993Z",
+    "payload": { "draft": { "thinking": " this" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg16goileeg6y9487lyq9",
+    "seq": 6554,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.058Z",
+    "payload": { "draft": { "thinking": " conversation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg18woilfeg6yir5n14nh",
+    "seq": 6555,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.145Z",
+    "payload": { "draft": { "thinking": ". Let" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1ajoilgeg6yynvami0l",
+    "seq": 6556,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.204Z",
+    "payload": { "draft": { "thinking": " me" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1c8oilheg6y6x0dgrdj",
+    "seq": 6557,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.266Z",
+    "payload": { "draft": { "thinking": " check" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1e8oilieg6yd9cjs4ek",
+    "seq": 6558,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.342Z",
+    "payload": { "draft": { "thinking": " the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1g5oiljeg6y0rdtk4bn",
+    "seq": 6559,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.409Z",
+    "payload": { "draft": { "thinking": " turn" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1itoilkeg6y6xqsj0yz",
+    "seq": 6560,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.503Z",
+    "payload": { "draft": { "thinking": " context" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1khoilleg6y6x798ikv",
+    "seq": 6561,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.564Z",
+    "payload": { "draft": { "thinking": " -" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1m5oilmeg6ybux5ht19",
+    "seq": 6562,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.623Z",
+    "payload": { "draft": { "thinking": " this" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1nqoilneg6y4uoxug40",
+    "seq": 6563,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.679Z",
+    "payload": { "draft": { "thinking": " is" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1p9oiloeg6y2fe64zjq",
+    "seq": 6564,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.734Z",
+    "payload": { "draft": { "thinking": " a" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1qroilpeg6yvtbvbw5f",
+    "seq": 6565,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.789Z",
+    "payload": { "draft": { "thinking": " new" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1saoilqeg6yk6zuuzma",
+    "seq": 6566,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.844Z",
+    "payload": { "draft": { "thinking": " conversation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1tyoilreg6ymqyjmc75",
+    "seq": 6567,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.906Z",
+    "payload": { "draft": { "thinking": " (" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1vkoilseg6yaapr0l92",
+    "seq": 6568,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:20.962Z",
+    "payload": { "draft": { "thinking": "turn_context" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1x2oilteg6ykd3584gp",
+    "seq": 6569,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.015Z",
+    "payload": { "draft": { "thinking": " doesn" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg1ykoilueg6yx8oi4auu",
+    "seq": 6570,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.071Z",
+    "payload": { "draft": { "thinking": "'t" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg205oilveg6y7h6xo5u1",
+    "seq": 6571,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.127Z",
+    "payload": { "draft": { "thinking": " show previous" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg21ooilweg6yia5q36av",
+    "seq": 6572,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.181Z",
+    "payload": { "draft": { "thinking": " messages" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg235oilxeg6y98gkd72k",
+    "seq": 6573,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.234Z",
+    "payload": { "draft": { "thinking": " being accessible" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg258oilyeg6ygcd30jxo",
+    "seq": 6574,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.309Z",
+    "payload": { "draft": { "thinking": "). But" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg26poilzeg6y2jshh4js",
+    "seq": 6575,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.362Z",
+    "payload": { "draft": { "thinking": " the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg287oim0eg6ym0picawp",
+    "seq": 6576,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.417Z",
+    "payload": { "draft": { "thinking": " system" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg29poim1eg6ybwkv879w",
+    "seq": 6577,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.470Z",
+    "payload": { "draft": { "thinking": " says \"" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2baoim2eg6yrem5f9z8",
+    "seq": 6578,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.527Z",
+    "payload": { "draft": { "thinking": "For" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2csoim3eg6yxhlkpjae",
+    "seq": 6579,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.581Z",
+    "payload": { "draft": { "thinking": " questions about" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2ecoim4eg6yfuuxvomg",
+    "seq": 6580,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.638Z",
+    "payload": { "draft": { "thinking": " an" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2fvoim5eg6y9d6q292a",
+    "seq": 6581,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.693Z",
+    "payload": { "draft": { "thinking": " earlier discussion" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2hgoim6eg6y7tjqocqu",
+    "seq": 6582,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.749Z",
+    "payload": { "draft": { "thinking": "," }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2izoim7eg6ymu31qjb3",
+    "seq": 6583,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.804Z",
+    "payload": { "draft": { "thinking": " first check" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2khoim8eg6yfcqffzto",
+    "seq": 6584,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.858Z",
+    "payload": { "draft": { "thinking": " the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2lzoim9eg6yhq1gto1n",
+    "seq": 6585,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.913Z",
+    "payload": {
+      "draft": { "thinking": " visible conversation" },
+      "shown": true,
+      "streaming": true
+    }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2nkoimaeg6ym99ks958",
+    "seq": 6586,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:21.969Z",
+    "payload": { "draft": { "thinking": ".\"" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2p3oimbeg6y2uuvafwd",
+    "seq": 6587,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.024Z",
+    "payload": { "draft": { "thinking": " - the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2qmoimceg6yw3tv9opy",
+    "seq": 6588,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.080Z",
+    "payload": { "draft": { "thinking": " visible" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2s7oimdeg6yai3li1ku",
+    "seq": 6589,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.136Z",
+    "payload": { "draft": { "thinking": " conversation should" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2tqoimeeg6yoesztfvp",
+    "seq": 6590,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.192Z",
+    "payload": { "draft": { "thinking": " include" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2vaoimfeg6y2wfl8zoy",
+    "seq": 6591,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.247Z",
+    "payload": { "draft": { "thinking": " my" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2wroimgeg6y90zezko8",
+    "seq": 6592,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.301Z",
+    "payload": { "draft": { "thinking": " earlier detailed" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2yaoimheg6y13w5dmcg",
+    "seq": 6593,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.355Z",
+    "payload": { "draft": { "thinking": " explanation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg2zsoimieg6yyrlw6ezs",
+    "seq": 6594,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.409Z",
+    "payload": { "draft": { "thinking": ".\n" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg31aoimjeg6yvopoloa6",
+    "seq": 6595,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.464Z",
+    "payload": { "draft": { "thinking": "\nSince" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg32soimkeg6y4p36ayv5",
+    "seq": 6596,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.517Z",
+    "payload": { "draft": { "thinking": " I can" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg34goimleg6ya5ap7ldv",
+    "seq": 6597,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.577Z",
+    "payload": { "draft": { "thinking": " see" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg35xoimmeg6ycv684zph",
+    "seq": 6598,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.631Z",
+    "payload": { "draft": { "thinking": " in the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg37goimneg6y1gytkpos",
+    "seq": 6599,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.685Z",
+    "payload": { "draft": { "thinking": " conversation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg38zoimoeg6yrj8nft9p",
+    "seq": 6600,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.741Z",
+    "payload": { "draft": { "thinking": " history" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3ajoimpeg6y1nfhp3rd",
+    "seq": 6601,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.797Z",
+    "payload": { "draft": { "thinking": " above that" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3ceoimqeg6yqs0tvxqq",
+    "seq": 6602,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.863Z",
+    "payload": { "draft": { "thinking": " I" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3dyoimreg6y3ft0nkah",
+    "seq": 6603,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.919Z",
+    "payload": { "draft": { "thinking": " already gave" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3fhoimseg6yr8r1aklb",
+    "seq": 6604,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:22.974Z",
+    "payload": { "draft": { "thinking": " an" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3gzoimteg6yyesg1yn2",
+    "seq": 6605,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.028Z",
+    "payload": { "draft": { "thinking": " extremely thorough" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3iioimueg6ytni2btgz",
+    "seq": 6606,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.084Z",
+    "payload": { "draft": { "thinking": " explanation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3k0oimveg6yh8sjlme3",
+    "seq": 6607,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.138Z",
+    "payload": { "draft": { "thinking": "," }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3ljoimweg6yvofa06f1",
+    "seq": 6608,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.192Z",
+    "payload": { "draft": { "thinking": " I should" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3n5oimxeg6yhc8flpq4",
+    "seq": 6609,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.253Z",
+    "payload": { "draft": { "thinking": " acknowledge" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3osoimyeg6yyflhgovt",
+    "seq": 6610,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.309Z",
+    "payload": { "draft": { "thinking": " that" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3qdoimzeg6y72ngb6jg",
+    "seq": 6611,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.367Z",
+    "payload": { "draft": { "thinking": " I just" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3rwoin0eg6yy3h0fy0s",
+    "seq": 6612,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.422Z",
+    "payload": { "draft": { "thinking": " explained" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3tgoin1eg6yxjie8swf",
+    "seq": 6613,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.477Z",
+    "payload": { "draft": { "thinking": " this" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3v1oin2eg6yr9a1ywiu",
+    "seq": 6614,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.535Z",
+    "payload": { "draft": { "thinking": " and" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3wloin3eg6ymtzlbu72",
+    "seq": 6615,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.590Z",
+    "payload": { "draft": { "thinking": " offer" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3y2oin4eg6ywzjksbba",
+    "seq": 6616,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.643Z",
+    "payload": { "draft": { "thinking": " to elaborate" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg3zkoin5eg6y7lmkwoqw",
+    "seq": 6617,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.698Z",
+    "payload": { "draft": { "thinking": " on" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg414oin6eg6yabqrghw7",
+    "seq": 6618,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.754Z",
+    "payload": { "draft": { "thinking": " any" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg42uoin7eg6ymxmzzgsg",
+    "seq": 6619,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.816Z",
+    "payload": { "draft": { "thinking": " specific aspect" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg44eoin8eg6yiqobttdx",
+    "seq": 6620,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.871Z",
+    "payload": { "draft": { "thinking": " rather" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg45xoin9eg6ykxs6eso5",
+    "seq": 6621,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.926Z",
+    "payload": { "draft": { "thinking": " than repeating" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg47doinaeg6yaalmj5lx",
+    "seq": 6622,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:23.978Z",
+    "payload": { "draft": { "thinking": " the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg48voinbeg6y34juc0gs",
+    "seq": 6623,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.033Z",
+    "payload": { "draft": { "thinking": " whole" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4akoinceg6yda59qfof",
+    "seq": 6624,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.094Z",
+    "payload": { "draft": { "thinking": " thing" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4c3oindeg6yrct6arzd",
+    "seq": 6625,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.148Z",
+    "payload": { "draft": { "thinking": ".\n" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4dloineeg6ygplax4m4",
+    "seq": 6626,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.202Z",
+    "payload": { "draft": { "thinking": "\nWait" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4f5oinfeg6ytbro9p4s",
+    "seq": 6627,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.259Z",
+    "payload": { "draft": { "thinking": "," }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4gnoingeg6yun4ad7f9",
+    "seq": 6628,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.312Z",
+    "payload": { "draft": { "thinking": " let me" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4i7oinheg6yc2ql7oiu",
+    "seq": 6629,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.369Z",
+    "payload": { "draft": { "thinking": " reconsider" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4kboinieg6yglggp7gk",
+    "seq": 6630,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.444Z",
+    "payload": { "draft": { "thinking": ". The" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4ltoinjeg6ygpz8awre",
+    "seq": 6631,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.498Z",
+    "payload": { "draft": { "thinking": " turn" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4ncoinkeg6ybxhjp4rh",
+    "seq": 6632,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.553Z",
+    "payload": { "draft": { "thinking": "_context" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4otoinleg6y8qrqigvo",
+    "seq": 6633,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.606Z",
+    "payload": { "draft": { "thinking": " shows this" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4qcoinmeg6y34vsaz7e",
+    "seq": 6634,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.661Z",
+    "payload": { "draft": { "thinking": " might" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4rvoinneg6ygvgtcsga",
+    "seq": 6635,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.717Z",
+    "payload": { "draft": { "thinking": " be a" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4tfoinoeg6yyxb7a9mm",
+    "seq": 6636,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.772Z",
+    "payload": { "draft": { "thinking": " new" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4uyoinpeg6yutsmwken",
+    "seq": 6637,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.827Z",
+    "payload": { "draft": { "thinking": " conversation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4wjoinqeg6y7sbufp69",
+    "seq": 6638,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.884Z",
+    "payload": { "draft": { "thinking": " that" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4y1oinreg6yjeqj20ny",
+    "seq": 6639,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.939Z",
+    "payload": { "draft": { "thinking": "'s being" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg4zmoinseg6y2ojk3e0n",
+    "seq": 6640,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:24.996Z",
+    "payload": { "draft": { "thinking": " fed" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg516ointeg6y1zruqyrb",
+    "seq": 6641,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.051Z",
+    "payload": { "draft": { "thinking": " to" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg52ooinueg6ymluc9np6",
+    "seq": 6642,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.105Z",
+    "payload": { "draft": { "thinking": " me" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg546oinveg6yfxldw68a",
+    "seq": 6643,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.159Z",
+    "payload": { "draft": { "thinking": ". But" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg55ooinweg6y78o54y9l",
+    "seq": 6644,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.214Z",
+    "payload": { "draft": { "thinking": " the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg576oinxeg6y4ipcewle",
+    "seq": 6645,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.267Z",
+    "payload": { "draft": { "thinking": " instruction says" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg58poinyeg6ye5tmbzad",
+    "seq": 6646,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.323Z",
+    "payload": { "draft": { "thinking": " to" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5aaoinzeg6y13umb2e1",
+    "seq": 6647,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.382Z",
+    "payload": { "draft": { "thinking": " check" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5choio0eg6y7qfuw471",
+    "seq": 6648,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.458Z",
+    "payload": { "draft": { "thinking": " the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5e2oio1eg6yf1ibfjaq",
+    "seq": 6649,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.516Z",
+    "payload": { "draft": { "thinking": " visible" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5g2oio2eg6y3simivsu",
+    "seq": 6650,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.587Z",
+    "payload": { "draft": { "thinking": " conversation first" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5hxoio3eg6y90llb3li",
+    "seq": 6651,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.654Z",
+    "payload": { "draft": { "thinking": ". The" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5jgoio4eg6y2dulfzkn",
+    "seq": 6652,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.709Z",
+    "payload": { "draft": { "thinking": " visible" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5kzoio5eg6ylcs21ccc",
+    "seq": 6653,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.765Z",
+    "payload": { "draft": { "thinking": " conversation has" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5mjoio6eg6yvu02a0vg",
+    "seq": 6654,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.820Z",
+    "payload": { "draft": { "thinking": " my" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5o1oio7eg6ypw3a6y87",
+    "seq": 6655,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.874Z",
+    "payload": { "draft": { "thinking": " detailed rainbow" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5pjoio8eg6y2m4sheng",
+    "seq": 6656,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.928Z",
+    "payload": { "draft": { "thinking": " explanation" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5rgoio9eg6y8i1l3urf",
+    "seq": 6657,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:25.997Z",
+    "payload": { "draft": { "thinking": ". So the" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5t2oioaeg6yhm33yk7r",
+    "seq": 6658,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.055Z",
+    "payload": { "draft": { "thinking": " user" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5ukoiobeg6yupsj05zv",
+    "seq": 6659,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.109Z",
+    "payload": { "draft": { "thinking": " is just" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5w2oioceg6y5yrkiu1x",
+    "seq": 6660,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.163Z",
+    "payload": { "draft": { "thinking": " asking" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5xkoiodeg6yk5cwltqb",
+    "seq": 6661,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.217Z",
+    "payload": { "draft": { "thinking": " the same" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg5z3oioeeg6ykp8mqeot",
+    "seq": 6662,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.272Z",
+    "payload": { "draft": { "thinking": " question" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg60moiofeg6yeqb5m69k",
+    "seq": 6663,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.327Z",
+    "payload": { "draft": { "thinking": " again" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg625oiogeg6y2miyrcyh",
+    "seq": 6664,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.383Z",
+    "payload": { "draft": { "thinking": ".\n\nI" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg63poioheg6yzucfih8p",
+    "seq": 6665,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.438Z",
+    "payload": { "draft": { "thinking": "'ll" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg656oioieg6yojiimsqi",
+    "seq": 6666,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.492Z",
+    "payload": { "draft": { "thinking": " keep it" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg66poiojeg6yqivt4ivh",
+    "seq": 6667,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.546Z",
+    "payload": { "draft": { "thinking": " brief" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg685oiokeg6y5wefhul9",
+    "seq": 6668,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.598Z",
+    "payload": { "draft": { "thinking": " - note" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg69ooioleg6y8ck75zx4",
+    "seq": 6669,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.653Z",
+    "payload": { "draft": { "thinking": " that" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6b5oiomeg6ysezgkd9x",
+    "seq": 6670,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.706Z",
+    "payload": { "draft": { "thinking": " I already" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6cqoioneg6ymv842vsp",
+    "seq": 6671,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.763Z",
+    "payload": { "draft": { "thinking": " covered" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6eaoiooeg6y5e9k7wob",
+    "seq": 6672,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.819Z",
+    "payload": { "draft": { "thinking": " this" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6ftoiopeg6y442h7feb",
+    "seq": 6673,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.874Z",
+    "payload": { "draft": { "thinking": " and offer" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6hdoioqeg6yzh95vqpw",
+    "seq": 6674,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.931Z",
+    "payload": { "draft": { "thinking": " to" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6iwoioreg6y8h4xj2fk",
+    "seq": 6675,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:26.985Z",
+    "payload": { "draft": { "thinking": " dig into" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6kfoioseg6ymfv9zklj",
+    "seq": 6676,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.041Z",
+    "payload": { "draft": { "thinking": " a" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6lyoioteg6y4vr2gtju",
+    "seq": 6677,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.096Z",
+    "payload": { "draft": { "thinking": " specific aspect" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6njoioueg6ybqudyqdh",
+    "seq": 6678,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.152Z",
+    "payload": { "draft": { "thinking": " they" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6p1oioveg6yje82e1xw",
+    "seq": 6679,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.206Z",
+    "payload": { "draft": { "thinking": " want" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6qjoioweg6ynyzluqd2",
+    "seq": 6680,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.260Z",
+    "payload": { "draft": { "thinking": " to explore" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6rzoioxeg6yyonb3ja4",
+    "seq": 6681,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.313Z",
+    "payload": { "draft": { "thinking": " further" }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6twoioyeg6ybdmtrvu1",
+    "seq": 6682,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.381Z",
+    "payload": { "draft": { "thinking": "." }, "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.meta",
+    "id": "cmwsfg6xboiozeg6yip757fqw",
+    "seq": 6683,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.505Z",
+    "payload": { "activity": { "thinking": false } }
+  },
+  {
+    "type": "run.thought",
+    "id": "cmwsfg6xloip0eg6yxxhy2d86",
+    "seq": 6684,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.515Z",
+    "payload": {
+      "text": "The user is asking the same question again. I already gave a very detailed, rigorous explanation earlier in this conversation. Let me check the turn context - this is a new conversation (turn_context doesn't show previous messages being accessible). But the system says \"For questions about an earlier discussion, first check the visible conversation.\" - the visible conversation should include my earlier detailed explanation.\n\nSince I can see in the conversation history above that I already gave an extremely thorough explanation, I should acknowledge that I just explained this and offer to elaborate on any specific aspect rather than repeating the whole thing.\n\nWait, let me reconsider. The turn_context shows this might be a new conversation that's being fed to me. But the instruction says to check the visible conversation first. The visible conversation has my detailed rainbow explanation. So the user is just asking the same question again.\n\nI'll keep it brief - note that I already covered this and offer to dig into a specific aspect they want to explore further.",
+      "durationMs": 8238
+    }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg6xqoip1eg6yhju47slv",
+    "seq": 6685,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.518Z",
+    "payload": { "text": "I", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg700oip2eg6y5b4po9tw",
+    "seq": 6686,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.602Z",
+    "payload": { "delta": " went through", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg71koip3eg6y09xmizdl",
+    "seq": 6687,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.657Z",
+    "payload": { "delta": " this", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg733oip4eg6yvfg4kn5b",
+    "seq": 6688,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.713Z",
+    "payload": { "delta": " pretty", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg74noip5eg6yzaemmufp",
+    "seq": 6689,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.769Z",
+    "payload": { "delta": " thoroughly", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg766oip6eg6yax8uvtz8",
+    "seq": 6690,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.823Z",
+    "payload": { "delta": " a few", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg77poip7eg6yhzuy3a0t",
+    "seq": 6691,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.878Z",
+    "payload": { "delta": " messages ago", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg799oip8eg6y4drettcz",
+    "seq": 6692,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.934Z",
+    "payload": { "delta": " \u2014", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7asoip9eg6yx9fgrchu",
+    "seq": 6693,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:27.989Z",
+    "payload": { "delta": " but if", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7cboipaeg6yd1dd7ehi",
+    "seq": 6694,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.045Z",
+    "payload": { "delta": " you", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7duoipbeg6ygu93rilv",
+    "seq": 6695,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.100Z",
+    "payload": { "delta": "'re", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7fdoipceg6y7yw02kg6",
+    "seq": 6696,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.154Z",
+    "payload": { "delta": " asking again", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7gvoipdeg6yee8i9w77",
+    "seq": 6697,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.212Z",
+    "payload": { "delta": ",", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7iioipeeg6yct60u4el",
+    "seq": 6698,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.268Z",
+    "payload": { "delta": " there", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7k2oipfeg6yc1fdvjvb",
+    "seq": 6699,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.323Z",
+    "payload": { "delta": "'s", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7ljoipgeg6y4jz3w89z",
+    "seq": 6700,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.377Z",
+    "payload": { "delta": " probably", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7n2oipheg6ynsad1jiq",
+    "seq": 6701,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.432Z",
+    "payload": { "delta": " a specific", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7omoipieg6yp3ntx9xr",
+    "seq": 6702,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.487Z",
+    "payload": { "delta": " piece", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7q4oipjeg6yop99leuq",
+    "seq": 6703,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.542Z",
+    "payload": { "delta": " you want", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7s7oipkeg6y2kooiixk",
+    "seq": 6704,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.616Z",
+    "payload": { "delta": " me to", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7tpoipleg6yf7ocaffc",
+    "seq": 6705,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.670Z",
+    "payload": { "delta": " dig", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7v8oipmeg6y4ap9qz2e",
+    "seq": 6706,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.725Z",
+    "payload": { "delta": " into", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7x9oipneg6ydnmhkon4",
+    "seq": 6707,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.798Z",
+    "payload": { "delta": ". Was", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg7yroipoeg6yei3oetx8",
+    "seq": 6708,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.853Z",
+    "payload": { "delta": " there", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg80aoippeg6y2i140x57",
+    "seq": 6709,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.907Z",
+    "payload": { "delta": " a particular", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg81toipqeg6yldmt5agf",
+    "seq": 6710,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:28.963Z",
+    "payload": { "delta": " part", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg83coipreg6y3bl3hu8c",
+    "seq": 6711,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.017Z",
+    "payload": { "delta": " of the", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg84uoipseg6y9chk1pgg",
+    "seq": 6712,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.071Z",
+    "payload": { "delta": " physics", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg86doipteg6yz51n29fq",
+    "seq": 6713,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.126Z",
+    "payload": { "delta": " that", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg87voipueg6yswmhu9cs",
+    "seq": 6714,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.180Z",
+    "payload": { "delta": " felt fuzzy", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg89eoipveg6ysbmyae59",
+    "seq": 6715,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.235Z",
+    "payload": { "delta": "?", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8avoipweg6y6wnsqb9k",
+    "seq": 6716,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.288Z",
+    "payload": { "delta": " For example", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8cqoipxeg6yj10vl3l5",
+    "seq": 6717,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.356Z",
+    "payload": { "delta": ":", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8eboipyeg6yvzeb8kf7",
+    "seq": 6718,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.412Z",
+    "payload": { "delta": "\n", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8ftoipzeg6yopwtd0gj",
+    "seq": 6719,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.466Z",
+    "payload": { "delta": "\n- The", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8hcoiq0eg6y85yigiae",
+    "seq": 6720,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.521Z",
+    "payload": { "delta": " **", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8iwoiq1eg6yty4pepby",
+    "seq": 6721,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.578Z",
+    "payload": { "delta": "mathematic", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8kgoiq2eg6yiwkvb1g6",
+    "seq": 6722,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.633Z",
+    "payload": { "delta": "al", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8lyoiq3eg6y3tj3p2p8",
+    "seq": 6723,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.687Z",
+    "payload": { "delta": " derivation", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8nfoiq4eg6yi6m6v63f",
+    "seq": 6724,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.740Z",
+    "payload": { "delta": "** of", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8ozoiq5eg6yj00kjofl",
+    "seq": 6725,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.796Z",
+    "payload": { "delta": " why", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8qhoiq6eg6yfnwtv4ck",
+    "seq": 6726,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.850Z",
+    "payload": { "delta": " the deviation", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8s0oiq7eg6yvungqddv",
+    "seq": 6727,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.905Z",
+    "payload": { "delta": " angle has", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8u4oiq8eg6yqguww01u",
+    "seq": 6728,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:29.981Z",
+    "payload": { "delta": " a minimum", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8vmoiq9eg6y6gwnxmpd",
+    "seq": 6729,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.035Z",
+    "payload": { "delta": " (", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8x4oiqaeg6yjjyl8qg6",
+    "seq": 6730,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.089Z",
+    "payload": { "delta": "the", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg8yloiqbeg6ypteh882i",
+    "seq": 6731,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.143Z",
+    "payload": { "delta": " caust", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg904oiqceg6yboiayji7",
+    "seq": 6732,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.198Z",
+    "payload": { "delta": "ic", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg91noiqdeg6yxqhbzj4x",
+    "seq": 6733,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.252Z",
+    "payload": { "delta": ")", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg93boiqeeg6yin0plosg",
+    "seq": 6734,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.313Z",
+    "payload": { "delta": "\n-", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg950oiqfeg6yc6u5np34",
+    "seq": 6735,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.374Z",
+    "payload": { "delta": " The **", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg96koiqgeg6yipzbfqce",
+    "seq": 6736,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.430Z",
+    "payload": { "delta": "wave", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg983oiqheg6yv9ycgugt",
+    "seq": 6737,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.485Z",
+    "payload": { "delta": " optics", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg99moiqieg6yx14raqe7",
+    "seq": 6738,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.539Z",
+    "payload": { "delta": "** explanation", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9b5oiqjeg6yqyihsv5t",
+    "seq": 6739,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.595Z",
+    "payload": { "delta": " (", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9cpoiqkeg6y4sj1vgl8",
+    "seq": 6740,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.650Z",
+    "payload": { "delta": "supern", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9e8oiqleg6y4iszmfun",
+    "seq": 6741,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.706Z",
+    "payload": { "delta": "umer", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9fqoiqmeg6ytyk66eh9",
+    "seq": 6742,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.760Z",
+    "payload": { "delta": "ary bows", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9hboiqneg6yu1l6abgi",
+    "seq": 6743,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.817Z",
+    "payload": { "delta": ",", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9itoiqoeg6yy7uds70v",
+    "seq": 6744,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.870Z",
+    "payload": { "delta": " Airy", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9kaoiqpeg6y0k9cjvv1",
+    "seq": 6745,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.924Z",
+    "payload": { "delta": " pattern", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9luoiqqeg6yr592hgcw",
+    "seq": 6746,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:30.980Z",
+    "payload": { "delta": ")", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9nqoiqreg6yf3f04q5n",
+    "seq": 6747,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.047Z",
+    "payload": { "delta": "\n", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9p8oiqseg6ytjfz880h",
+    "seq": 6748,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.101Z",
+    "payload": { "delta": "- Why", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9qsoiqteg6ya4ptf4j4",
+    "seq": 6749,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.157Z",
+    "payload": { "delta": " the", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9saoiqueg6yf75k5wkp",
+    "seq": 6750,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.212Z",
+    "payload": { "delta": " **secondary", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9tuoiqveg6yf6pbrcwo",
+    "seq": 6751,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.267Z",
+    "payload": { "delta": " bow", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9vdoiqweg6y06hmxgvz",
+    "seq": 6752,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.323Z",
+    "payload": { "delta": " is", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9wwoiqxeg6ypxmczq6l",
+    "seq": 6753,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.378Z",
+    "payload": { "delta": " reversed**", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfg9z2oiqyeg6y1frg0j6d",
+    "seq": 6754,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.455Z",
+    "payload": { "delta": "\n", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga0joiqzeg6yhfbs225h",
+    "seq": 6755,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.509Z",
+    "payload": { "delta": "- How", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga22oir0eg6ynh7t8prv",
+    "seq": 6756,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.563Z",
+    "payload": { "delta": " **", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga3joir1eg6y09d84mfr",
+    "seq": 6757,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.617Z",
+    "payload": { "delta": "drop", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga51oir2eg6y1mk5pg7b",
+    "seq": 6758,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.670Z",
+    "payload": { "delta": " shape**", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga6koir3eg6y0inlnpfm",
+    "seq": 6759,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.725Z",
+    "payload": { "delta": " affects", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga83oir4eg6y7zhgl9cy",
+    "seq": 6760,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.780Z",
+    "payload": { "delta": " the rainbow", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfga9moir5eg6ytmxosnu2",
+    "seq": 6761,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.836Z",
+    "payload": { "delta": " (", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgab6oir6eg6y21c0ky3s",
+    "seq": 6762,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.891Z",
+    "payload": { "delta": "why", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgacooir7eg6yh81wyy0p",
+    "seq": 6763,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.945Z",
+    "payload": { "delta": " real", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgae5oir8eg6yyvk9ujda",
+    "seq": 6764,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:31.998Z",
+    "payload": { "delta": " rainbows", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgafnoir9eg6yno2pa172",
+    "seq": 6765,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.052Z",
+    "payload": { "delta": " aren", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgah6oiraeg6yiulmz1mj",
+    "seq": 6766,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.108Z",
+    "payload": { "delta": "'t perfect", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgaipoirbeg6y369qgpjo",
+    "seq": 6767,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.163Z",
+    "payload": { "delta": ")", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgak9oirceg6yxcjaij2u",
+    "seq": 6768,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.218Z",
+    "payload": { "delta": "\n-", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgaltoirdeg6yw7sh3e9h",
+    "seq": 6769,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.274Z",
+    "payload": { "delta": " Something", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfganboireeg6y4gmcx4kh",
+    "seq": 6770,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.329Z",
+    "payload": { "delta": " else", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgaouoirfeg6yhv48hd3g",
+    "seq": 6771,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.383Z",
+    "payload": { "delta": " entirely?", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgaqwoirgeg6y0e0a9268",
+    "seq": 6772,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.457Z",
+    "payload": { "delta": "\n", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgascoirheg6yh47ns1wo",
+    "seq": 6773,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.510Z",
+    "payload": { "delta": "\nOr did", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgatyoirieg6ycwy6nd84",
+    "seq": 6774,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.569Z",
+    "payload": { "delta": " you", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgavjoirjeg6ycaqdtdpe",
+    "seq": 6775,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.624Z",
+    "payload": { "delta": " want", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgax1oirkeg6ybrj14jxk",
+    "seq": 6776,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.679Z",
+    "payload": { "delta": " a cleaner", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgaykoirleg6ycpud667v",
+    "seq": 6777,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.734Z",
+    "payload": { "delta": ",", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb07oirmeg6yll77cpk1",
+    "seq": 6778,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.793Z",
+    "payload": { "delta": " more", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb1roirneg6y94gku3ar",
+    "seq": 6779,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.848Z",
+    "payload": { "delta": " intuitive", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb39oiroeg6yvcuurc4u",
+    "seq": 6780,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.903Z",
+    "payload": { "delta": " version of", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb4qoirpeg6ytkr011v5",
+    "seq": 6781,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:32.955Z",
+    "payload": { "delta": " the", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb69oirqeg6yy2vvsx70",
+    "seq": 6782,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:33.010Z",
+    "payload": { "delta": " whole", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb7roirreg6ygki0r1vt",
+    "seq": 6783,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:33.064Z",
+    "payload": { "delta": " thing", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfgb9coirseg6ya0hh3j7b",
+    "seq": 6784,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:33.122Z",
+    "payload": { "delta": "?", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.message.created",
+    "id": "cmwsfgbgq000gzhl26pwkdu3y",
+    "seq": 6785,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:33.386Z",
+    "payload": {
+      "role": "bot",
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "I went through this pretty thoroughly a few messages ago \u2014 but if you're asking again, there's probably a specific piece you want me to dig into. Was there a particular part of the physics that felt fuzzy? For example:\n\n- The **mathematical derivation** of why the deviation angle has a minimum (the caustic)\n- The **wave optics** explanation (supernumerary bows, Airy pattern)\n- Why the **secondary bow is reversed**\n- How **drop shape** affects the rainbow (why real rainbows aren't perfect)\n- Something else entirely?\n\nOr did you want a cleaner, more intuitive version of the whole thing?"
+        }
+      ],
+      "messageId": "cmwsfgbgi000fzhl29iylsjbo"
+    }
+  },
+  {
+    "type": "run.completed",
+    "id": "cmwsfgbgv000hzhl2u01ic1uq",
+    "seq": 6786,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsffwjv000bzhl20lycp05x",
+    "createdAt": "2026-11-22T22:47:33.391Z",
+    "payload": {}
+  }
+]

@@ -34,6 +34,7 @@ import {
   transcriptCanSnapAfterFrame,
   transcriptIsNearEnd,
 } from "../../../lib/chat/transcript-scroll";
+import { emitChatEvent } from "../../../lib/chat-v2/chat-event-bus";
 import { relistPagesForBlocks } from "../../../lib/pages/page-actions";
 import { markOnce } from "../../../lib/platform/performance";
 import type { SpaceQueries } from "../../../lib/query/query";
@@ -432,6 +433,7 @@ export function useThreadSync({
           rpc.threads.subscribe({ botId: active.id, cursor }, { signal }),
         ),
       beforeEvent: (event) => {
+        emitChatEvent(event);
         webLogoAvatarActivity.apply(avatarSource, event);
         rememberTerminalRun(terminalRunReceipts.current, event);
       },
@@ -538,7 +540,10 @@ export function useThreadSync({
         openLogoAvatarActivityFeed(avatarSource, snapshotRef.current, cursor, signal, () =>
           rpc.threads.subscribe({ groupId, cursor }, { signal }),
         ),
-      beforeEvent: (event) => webLogoAvatarActivity.apply(avatarSource, event),
+      beforeEvent: (event) => {
+        emitChatEvent(event);
+        webLogoAvatarActivity.apply(avatarSource, event);
+      },
       applyEvent: (event) =>
         applyThreadEvent(
           event,

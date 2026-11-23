@@ -1,0 +1,162 @@
+[
+  {
+    "type": "thread.message.created",
+    "id": "cmwsfcnbz0003zhl2pruvheao",
+    "seq": 6523,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:42.143Z",
+    "payload": {
+      "seq": 5,
+      "role": "user",
+      "author": { "id": "j2ep8JMjR1amFthmNPO12K4zl2XBY9M6", "name": "Tester" },
+      "blocks": [{ "kind": "text", "text": "hey" }],
+      "runIds": ["cmwsfcnbd0002zhl2i7p9uunu"],
+      "messageId": "cmwsfcnb00000zhl2ua8p0wrb"
+    }
+  },
+  {
+    "type": "run.started",
+    "id": "cmwsfcng5oikneg6yawrdaojz",
+    "seq": 6524,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:42.294Z",
+    "payload": {
+      "userId": "j2ep8JMjR1amFthmNPO12K4zl2XBY9M6",
+      "trigger": "user",
+      "routineId": null
+    }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcuffoikoeg6yzlalnieb",
+    "seq": 6525,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.342Z",
+    "payload": { "text": "Hey", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcuhboikpeg6yjfhlhvsv",
+    "seq": 6526,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.410Z",
+    "payload": { "delta": " there! How", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcuj0oikqeg6ymc2ew2w7",
+    "seq": 6527,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.470Z",
+    "payload": { "delta": "'s", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcukmoikreg6yiehli01w",
+    "seq": 6528,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.528Z",
+    "payload": { "delta": " your", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcum5oikseg6ywe12efc4",
+    "seq": 6529,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.582Z",
+    "payload": { "delta": " Sunday going", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcunnoikteg6ya4201c2i",
+    "seq": 6530,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.637Z",
+    "payload": { "delta": "?", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcup5oikueg6yt22zc2yz",
+    "seq": 6531,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.692Z",
+    "payload": { "delta": " Anything", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcur3oikveg6yr2p2q0jw",
+    "seq": 6532,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.762Z",
+    "payload": { "delta": " interesting on", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcusnoikweg6yasqtr9in",
+    "seq": 6533,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.818Z",
+    "payload": { "delta": " your", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.progress",
+    "id": "cmwsfcuu8oikxeg6yzru76a8c",
+    "seq": 6534,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:51.873Z",
+    "payload": { "delta": " mind?", "shown": true, "streaming": true }
+  },
+  {
+    "type": "thread.message.created",
+    "id": "cmwsfcv0y0007zhl2qoco2v7c",
+    "seq": 6535,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:52.114Z",
+    "payload": {
+      "role": "bot",
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "Hey there! How's your Sunday going? Anything interesting on your mind?"
+        }
+      ],
+      "messageId": "cmwsfcv0w0006zhl2zvxdtug1"
+    }
+  },
+  {
+    "type": "run.completed",
+    "id": "cmwsfcv100008zhl2yfiqpsia",
+    "seq": 6536,
+    "threadId": "cmwsexauq00092fl2zmvxb5m2",
+    "botId": "cmwsexauke9cmgplj4b1uy9l4",
+    "runId": "cmwsfcnbd0002zhl2i7p9uunu",
+    "createdAt": "2026-11-22T22:44:52.116Z",
+    "payload": {}
+  }
+]
