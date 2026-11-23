@@ -132,7 +132,13 @@ Read in this order:
    to see whether it ended with an answer or a tool call. `cloud-gpu/cloud-gpu-request.ts`.
 8. If the GPU will not start or stops answering, one fresh GPU is tried, then this Mac answers and
    the status line says so. The runs after that use this Mac's own window.
-9. The Modal side: `infra/cloud-gpu/modal_app.py` (vLLM on one GPU, memory + GPU snapshot, sticky
+   A request waits at most 90 s for its GPU to start (`START_WAIT_MS`): the runtime drops a
+   request with no reply after 120 s, and the first start after a deploy can take many minutes.
+   Until the GPU is up, this Mac answers each step at once and the line says
+   "this Mac answers until it is ready". Quitting waits at most 3 s for a GPU still starting.
+9. Each answer is measured as it streams: first token, tokens per second, total, as one line in
+   `<stack>/logs/cloud-gpu-meter.jsonl` (numbers only). `cloud-gpu/cloud-gpu-meter.ts`.
+10. The Modal side: `infra/cloud-gpu/modal_app.py` (vLLM on one GPU, memory + GPU snapshot, sticky
    sessions with one session per container, scale to zero 60 s after a session ends) and
    `infra/cloud-gpu/README.md` (deploy, key, costs).
 
@@ -143,3 +149,22 @@ Tests: `apps/desktop/src/main/cloud-gpu/*.test.ts` (sessions, switch, request),
 `apps/desktop/src/main/burrow/model-router-cloud.test.ts` (on, off, one GPU per chat, fallback,
 stop at session end), `packages/adapters/src/runtime/pi/models/pi-local-limits.test.ts` and
 `apps/web/src/lib/cloud-gpu/cloud-gpu-status.test.ts`.
+
+## Making things in one chat: an app, a website, a video
+
+The model learns how from three built-in skills, listed in every turn's skills catalog and read
+with `skill_read`: "Build a web app", "Publish a website" and "Make a video with code".
+`packages/adapters/src/tools/builtin-make-skills.prompt.ts` (added to the list in
+`builtin-skills.prompt.ts`).
+
+- The work happens on the bot's cloud computer (E2B). It has ffmpeg, python3 and Chrome; it has
+  no Node and no Pillow, so the skills install them.
+- Websites go online with `npx vercel deploy --temporary`: a live link with no account, for 60
+  minutes, plus a claim link that keeps it live after a free Vercel sign-in.
+- Videos are drawn frame by frame with Pillow and piped to ffmpeg (H.264, yuv420p), because image
+  and video generators may be unavailable.
+- Files reach the person with `attach_file`; an HTML file with a name opens as an artifact.
+
+How these were tested: `apps/desktop/e2e/usecase-driver.mjs` drives one long chat on a packaged
+build (throwaway data, `GENTE_STACK=native`, optional Cloud GPU). Each file dropped in its inbox
+folder is sent as the next message; every turn writes timings, the reply and a screenshot.
