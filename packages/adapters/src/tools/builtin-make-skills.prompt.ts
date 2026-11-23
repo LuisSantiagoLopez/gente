@@ -33,7 +33,7 @@ Build: one folder, e.g. ~/sites/<name>/, with index.html and styles.css. Preview
 Publish (no account needed):
 1. Node is not installed on the cloud computer. Install it once: \`which npx || (curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - >/dev/null && sudo apt-get install -y nodejs >/dev/null)\`
 2. \`cd ~/sites/<name> && npx -y vercel@latest deploy --temporary --yes 2>&1 | tail -15\`
-3. The output has the live URL (https://….tmp.now) and a claim link. Open the live URL with browser_navigate to check it loads. Then give the user both: the live link, and the claim link with this note: "It stays live for 60 minutes; open the claim link and sign in to Vercel (free) to keep it." Running the same command again in the same folder updates the same site.
+3. The output has the live URL (https://….tmp.now) and a claim link. Copy both exactly from the output. Check the site loads with `curl -s -o /dev/null -w '%{http_code}' <url>`: it must print 200 (this works even when you cannot see the screen). On 404, run the deploy again from the folder that holds index.html. Then give the user both: the live link, and the claim link with this note: "It stays live for 60 minutes; open the claim link and sign in to Vercel (free) to keep it." Running the same command again in the same folder updates the same site.
 Never say a site is published unless the command printed its URL in this chat.`,
   },
   {
