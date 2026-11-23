@@ -1,5 +1,6 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
 import { buildSkillMd } from "@rakazo/core";
+import { MAKE_SKILLS } from "./builtin-make-skills.prompt.js";
 
 // Gente hosts its own help pages in its public repository (docs/help). Self-hosting and plugin
 // building are left out: they are not part of the Gente app.
@@ -71,6 +72,7 @@ ${RAKAZO_DOCS.map(([topics, url]) => `- ${topics}: ${url}`).join("\n")}
 
 Your AI is open source; its code is at github.com/LuisSantiagoLopez/gente. It is based on Rakazo by Elie Steinbock (Apache-2.0).`,
   },
+  ...MAKE_SKILLS,
 ];
 
 export const BUILTIN_AGENT_SKILLS: Array<{

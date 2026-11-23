@@ -28,6 +28,18 @@ describe("built-in skills", () => {
         name: "Your AI",
         description: "What Your AI is and how to use it: chat apps, computers, billing, hosting",
       },
+      {
+        name: "Build a web app",
+        description: "Make a small working app (tracker, to-do, calculator) and test it",
+      },
+      {
+        name: "Publish a website",
+        description: "Make a beautiful website and put it online with a live link",
+      },
+      {
+        name: "Make a video with code",
+        description: "Make a short animated MP4 video with code when no generator works",
+      },
     ]);
   });
 
