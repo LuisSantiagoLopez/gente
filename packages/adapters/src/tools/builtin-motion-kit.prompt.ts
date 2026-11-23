@@ -6,6 +6,7 @@
 // with a warm gradient, glow, drifting embers, eased text, cross-fades and a soft music pad.
 // The text-only cloud model wrote its own renderers and could not see the result (black frames,
 // a giant circle over the title); a known-good renderer makes the result good without sight.
+// Lines shrink to fit 88% of the width, so long titles and vertical video (size [1080, 1920]) fit.
 // Tested 2026-11-23: 15 s renders in about 20 s on a Mac, 1 to 2 minutes on a 2-CPU computer.
 // Who reads this: builtin-make-skills.prompt.ts.
 
@@ -59,6 +60,13 @@ def text_layer(scene, local, dur):
     if scene.get("kicker"): items.append(("body", int(H * 0.035), scene["kicker"].upper(), pal["accent"], 0.0, 6))
     if scene.get("title"): items.append(("display", int(H * scene.get("title_scale", 0.13)), scene["title"], pal["title"], 0.25, 0))
     if scene.get("line"): items.append(("body", int(H * 0.042), scene["line"], pal["text"], 0.6, 1))
+    fitted = []
+    for kind, size, txt, color, delay, spacing in items:
+        # Shrink a line until it fits 88% of the width (long titles, vertical video).
+        while size > 12 and d.textlength(txt, font=font(kind, size)) + spacing * len(txt) > W * 0.88:
+            size = int(size * 0.92)
+        fitted.append((kind, size, txt, color, delay, spacing))
+    items = fitted
     heights, widths = [], []
     for kind, size, txt, _, _, spacing in items:
         b = d.textbbox((0, 0), txt, font=font(kind, size))

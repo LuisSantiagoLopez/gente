@@ -49,12 +49,12 @@ Never say a site is published unless the command printed its URL in this chat.`,
    (Another display font from github.com/google/fonts works too; save it as display.ttf.)
 3. Write ~/video/motion.py with write_file, exactly as the kit below, and ~/video/scenes.json like:
    {"palette": {"top": "#140b07", "bottom": "#3e1f10", "glow": "#d9702a", "title": "#f6e7d2", "accent": "#e8a34c", "text": "#d9c3a5"}, "scenes": [{"seconds": 4, "kicker": "Introducing", "title": "Hearthstone", "title_scale": 0.17, "rule": true}]}
-   "title_scale" is the title height as a share of the frame (0.09 for long titles, up to 0.17 for one word). "music_hz" (optional) is a list of three notes for the soft pad.
+   "size": [1080, 1920] makes a vertical video (default [1280, 720]). "title_scale" is the title height as a share of the frame (0.09 for long titles, up to 0.17 for one word). "music_hz" (optional) is a list of three notes for the soft pad.
 4. Try 2 s: \`cd ~/video && python3 motion.py scenes.json test.mp4 --seconds 2\`. Then render the whole video in the background (the shell stops long commands): \`cd ~/video && nohup python3 motion.py scenes.json out.mp4 > render.log 2>&1 &\` and check \`tail -1 ~/video/render.log\` every 30 s until it prints done.
 5. Check it before you send it: \`ffprobe -v error -show_entries format=duration -of csv=p=0 ~/video/out.mp4\`, then measure a frame in each scene with numbers (this works without sight):
    \`python3 -c "import subprocess,numpy as np
 for t in [1,4,8,11,14]:
-  a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-ss',str(t),'-i','$HOME/video/out.mp4','-frames:v','1','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout,np.uint8).reshape(720,1280)
+  a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-ss',str(t),'-i','$HOME/video/out.mp4','-frames:v','1','-vf','scale=1280:720','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout,np.uint8).reshape(720,1280)
   y,x=np.where(a>140); print(t,'mean',round(a.mean()),'text box',(x.min(),y.min(),x.max(),y.max()) if len(x) else None)"\`
    Use times inside your scenes. Each mean should be 12 or more and each scene should show a text box whose middle ((x0+x1)/2) is near 640. If a check fails, fix scenes.json (shorter text, smaller title_scale) and render again.
 6. attach_file ~/video/out.mp4 with a name and description. Say its length, and say plainly how you checked it (by numbers, or by eye if you could see stills). Never say the video is ready unless ffprobe showed its duration in this chat.
