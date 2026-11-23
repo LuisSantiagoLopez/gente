@@ -58,3 +58,25 @@ One warm H100 serves many chats (vLLM batching). Each chat: 4,000-token prompt w
 - Privacy: no prompt logs (vLLM default, uvicorn access log off), per-chat `cache_salt`, nothing on
   disk, container gone 5 min after the last request.
 - Numbers for the billing page: `infra/cloud-gpu/cost-model.json`.
+
+## Round 5: measured in the app (packaged 1.0.8, throwaway data, Cloud GPU shared)
+
+Same packaged build, same prompts, from pressing Send to the reply on screen.
+
+| Test | This Mac (Ollama) | Cloud GPU (shared H100) |
+|---|---|---|
+| "hey", first word | 2.32 s | 1.32 s (2.33 s before the warm connection and Keychain cache) |
+| 600-word story, first word | 21.9 s (thinks first) | 2.33 s |
+| 600-word story, total | 54.6 s (~25 tokens/s) | 5.2 s (~320 tokens/s; 2.5 s of writing) |
+| Cold start, first word on a fresh GPU | n/a | 17.5 s, 45.8 s ("Starting cloud GPU… N s" shown) |
+| "make a simple to-do web app" | 143 s, 3 files, works, no context error | 188 s, 3 files, works, no context error |
+| Ask card, card on screen | 20.7 s | 2.6 s; answer used 3.7 s after the click |
+
+- The to-do app time is set by the bots' computer (E2B), not the model: it took 132 s (local run)
+  and 177 s (cloud run) to start. The cloud model's own work in that run was about 35 s.
+- Fixes this round: keep-alive connection opened while typing (TLS was ~160 ms per message),
+  Keychain key cached (a process launch per message), one cache salt per app so a person's chats
+  reuse their long instructions, and a cold shared GPU is waited for (503) instead of falling back.
+- Still over 1 s for "hey": about 0.6 to 0.9 s is the app itself (run setup before the model
+  call); the GPU answers a bare "hey" in 0.36 to 0.52 s from the Mac. A us-west GPU would save
+  ~0.1 s but costs 1.75x, so it is not used.
