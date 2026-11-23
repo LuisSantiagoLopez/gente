@@ -1368,6 +1368,7 @@ app.on("window-all-closed", () => {
 app.on("quit", (_event, exitCode) => {
   if (exitCode === 0) desktop.desktopUpdater?.installOnQuit();
 });
+let stoppingPlainStack = false;
 app.on("before-quit", (event) => {
   desktop.quitting = true;
   if (cloudGpuShutdown) {
@@ -1381,9 +1382,19 @@ app.on("before-quit", (event) => {
     return;
   }
   // Server processes this app runs itself stop with it; quit again once they have.
-  if (desktop.localStack instanceof NativeStackController && desktop.localStack.hasProcesses()) {
+  // Gente: the plain-process stack (Windows, Intel Macs, GENTE_STACK=native) runs the API,
+  // worker, web and Postgres as this app's children too; quitting left all four running.
+  const stack = desktop.localStack;
+  const ownsProcesses =
+    (stack instanceof NativeStackController && stack.hasProcesses()) ||
+    (stack instanceof WindowsStackController && !stoppingPlainStack && stack.managedStackRunning());
+  if (stack && ownsProcesses) {
     event.preventDefault();
-    void desktop.localStack.stop().finally(() => app.quit());
+    stoppingPlainStack = true;
+    // At most 20 s, so a stuck process never keeps the app from quitting.
+    void Promise.race([stack.stop(), new Promise((r) => setTimeout(r, 20_000))]).finally(() =>
+      app.quit(),
+    );
     return;
   }
   clearTimeout(desktop.warmWindowTimer);
