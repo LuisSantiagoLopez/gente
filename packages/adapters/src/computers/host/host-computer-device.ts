@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@rakazo/db";
+import { sandboxKindCapabilities } from "../sandbox/sandbox-kind-capabilities.js";
 import type { HostComputerEnvironment, HostComputerRequest } from "./host-computer-protocol.js";
 import { HostComputerSandbox } from "./host-computer-sandbox.js";
 import { UserDeviceOfflineError } from "./user-device-gateway.js";
@@ -12,12 +13,21 @@ export const HOST_COMPUTER_DEVICE_ID = "this-computer";
  * approval as a paired computer. Its commands already run as the bot's computer, so only the
  * screen goes this way.
  */
+/**
+ * Whether the desktop app may offer its own screen next to bots' computers of this kind: Docker
+ * computers beside this Mac, or computers hosted in the cloud. Gente runs bots on cloud computers,
+ * and before this the person could never let a bot look at their screen.
+ */
+export function hostScreenChoiceAvailable(sandboxKind: string | null | undefined): boolean {
+  return sandboxKind === "docker" || Boolean(sandboxKindCapabilities(sandboxKind).cloudHosted);
+}
+
 export function withHostComputerScreen(
   devices: UserDeviceGateway | undefined,
   options: { prisma: PrismaClient; sandboxKind: string; url?: string; token?: string },
 ): UserDeviceGateway | undefined {
   const { prisma, url, token } = options;
-  if (options.sandboxKind !== "docker" || !url || !token) return devices;
+  if (!hostScreenChoiceAvailable(options.sandboxKind) || !url || !token) return devices;
   const host = new HostComputerSandbox(url, token);
 
   // Approvals count from the latest settings change, so turning access off and on asks again.

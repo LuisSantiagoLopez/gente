@@ -8,6 +8,7 @@
 //   send it to the model server when it opens and the first reply finds its prompt already read.
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { sandboxKindCapabilities } from "../../../computers/sandbox/sandbox-kind-capabilities.js";
 import type { WireMessage } from "../../../models/chat-request-sanitizer.js";
 import {
   ANSWERED_IN_CHAT,
@@ -16,6 +17,7 @@ import {
   warmablePrefix,
 } from "../../../models/chat-request-sanitizer.js";
 import { ASKED_THINKING_EFFORT, asksToThink } from "./burrow-thinking.js";
+import { withCapabilities, withoutCapabilities } from "./gente-capabilities.prompt.js";
 import {
   HONESTY_RULE,
   toolRanThisTurn,
@@ -188,7 +190,9 @@ export function followsTask(messages: readonly ChatMessage[]): boolean {
  * The bot's identity and memory without the long operating manual: the first two paragraphs
  * (platform and the bot's own profile) and the durable memory block.
  */
-export function slimSystemPrompt(system: string): string {
+export function slimSystemPrompt(full: string): string {
+  // The full prompt's capability section names tools a slim request may not offer.
+  const system = withoutCapabilities(full);
   const head = system
     .split(/\n\s*\n/)
     .slice(0, 2)
@@ -373,6 +377,15 @@ function offersTools(parsed: unknown): boolean {
   return Array.isArray(tools) && tools.length > 0;
 }
 
+/** Whether the bots' computers are hosted in the cloud, from the computer kind this server runs. */
+function capabilityOptions() {
+  return {
+    computerInCloud: Boolean(
+      sandboxKindCapabilities(process.env.SANDBOX_PROVIDER?.trim()).cloudHosted,
+    ),
+  };
+}
+
 /** Rewrites one chat-completions body; returns null when nothing should change. */
 export function quickChatBody(
   body: string,
@@ -389,6 +402,11 @@ export function quickChatBody(
   parsed.messages = withHonestyRule(parsed.messages);
   parsed.messages = withAskInCardsRule(parsed.messages, (parsed as { tools?: unknown }).tools);
   parsed.messages = withSmallFilesRule(parsed.messages, (parsed as { tools?: unknown }).tools);
+  parsed.messages = withCapabilities(
+    parsed.messages,
+    (parsed as { tools?: unknown }).tools,
+    capabilityOptions(),
+  );
   const prefix = { ...parsed, messages: warmablePrefix(parsed.messages as WireMessage[]) };
   // Gente: only clear small talk ("hey", "gracias") skips the tool schemas and the long manual,
   // so the first word comes in about a second. Anything else keeps its tools: a short request in
@@ -406,7 +424,10 @@ export function quickChatBody(
     };
   }
   if (Array.isArray((parsed as { tools?: unknown[] }).tools) && isCodingTurn(parsed.messages)) {
-    return { body: JSON.stringify(codingBody(parsed as { messages: ChatMessage[] })), prefix };
+    const coding = codingBody(parsed as { messages: ChatMessage[] });
+    // The slim coding prompt drops the full one's capability section; it gets one for its own tools.
+    coding.messages = withCapabilities(coding.messages, coding.tools, capabilityOptions());
+    return { body: JSON.stringify(coding), prefix };
   }
   if (parsed.reasoning_effort !== undefined && asksToThink(latestUserWords(parsed.messages))) {
     // Gente: "think carefully" keeps thinking on, so it streams live in the chat's arrow.

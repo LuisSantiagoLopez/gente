@@ -12,8 +12,9 @@ const databaseUrl = process.env.VERIFY_DATABASE === "1" ? process.env.DATABASE_U
 it.skipIf(!databaseUrl).each([
   { sandboxProvider: "docker", nativeToken: true, expected: true },
   { sandboxProvider: "docker", nativeToken: false, expected: false },
+  { sandboxProvider: "e2b", nativeToken: true, expected: true },
   { sandboxProvider: "fake", nativeToken: true, expected: false },
-])("exposes native host choice only on a managed Docker instance (%j)", async (fixture) => {
+])("exposes native host choice only on a managed Docker or cloud-computer instance (%j)", async (fixture) => {
   const dataDir = await mkdtemp(join(tmpdir(), "rakazo-host-choice-"));
   const email = `host-choice-${fixture.sandboxProvider}-${fixture.nativeToken}@example.test`;
   const handles = await createApp({

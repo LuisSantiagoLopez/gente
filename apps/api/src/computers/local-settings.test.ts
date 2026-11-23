@@ -57,6 +57,11 @@ describe("native computer host capability", () => {
     }
     expect(f.upsert).not.toHaveBeenCalled();
   });
+  it("saves the host choice beside cloud computers, for this computer's screen", async () => {
+    const f = fixture("e2b");
+    expect((await f.request('{"computerHost":"this-mac"}')).status).toBe(200);
+    expect(f.upsert).toHaveBeenCalledTimes(1);
+  });
   it("saves only a bounded host choice on the app-managed Docker instance", async () => {
     const f = fixture();
     expect((await f.request('{"computerHost":"this-mac"}')).status).toBe(200);
@@ -68,7 +73,7 @@ describe("native computer host capability", () => {
     for (const body of ["null", "{", '{"computerHost":"remote"}'])
       expect((await f.request(body)).status).toBe(400);
     expect((await f.request("x".repeat(1025))).status).toBe(413);
-    expect((await fixture("e2b").request('{"computerHost":"this-mac"}')).status).toBe(403);
+    expect((await fixture("local-vm").request('{"computerHost":"this-mac"}')).status).toBe(403);
     expect(f.upsert).toHaveBeenCalledTimes(1);
   });
 });
