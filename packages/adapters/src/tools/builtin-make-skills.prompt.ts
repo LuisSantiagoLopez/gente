@@ -52,6 +52,7 @@ for t in [1,4,8,11,14]:
   a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-ss',str(t),'-i','$HOME/video/out.mp4','-frames:v','1','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout,np.uint8).reshape(720,1280)
   y,x=np.where(a>140); print(t,'mean',round(a.mean()),'text box',(x.min(),y.min(),x.max(),y.max()) if len(x) else None)"\`
    A frame whose mean is under 12 is too dark; a scene with words needs a text box, centered when its middle ((x0+x1)/2) is near 640. Fix and render again until every check is right. If you can see images, also pull stills (\`ffmpeg -ss 2 -i out.mp4 -frames:v 1 s1.png\`) and look at them with open_path. Tell the user exactly how you checked (by numbers or by eye).
+   Layout rules that keep it clean without looking: center each line with draw.textbbox (x = (W - width) / 2); space lines at least 1.4 × the font size; one title and at most one small line per scene; put an underline 14 px below the text box, never through it; never a flat black background (keep the warm gradient in every scene); soft effects (steam, glow) are thin and see-through (alpha under 90) and blurred with ImageFilter.GaussianBlur, never solid white shapes. Cross-fade between scenes over 0.5 s.
 5. Optional sound: a soft pad with \`ffmpeg -f lavfi -i "sine=frequency=220:duration=20" ...\` mixed low, or none.
 6. attach_file the MP4 with a name and description, and say its length and size. Never say the video is ready unless ffprobe showed its duration in this chat.`,
   },
