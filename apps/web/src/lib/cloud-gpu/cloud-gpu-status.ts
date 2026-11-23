@@ -13,7 +13,8 @@ export function cloudGpuLine(state: GenteCloudGpuState | null, now: number): Clo
   const status = state.status;
   if (status.phase === "starting") {
     const seconds = Math.max(0, (now - status.since) / 1000).toFixed(1);
-    return { text: `Starting cloud GPU… ${seconds} s`, tone: "busy" };
+    const mac = status.macAnswering ? " · this Mac answers until it is ready" : "";
+    return { text: `Starting cloud GPU… ${seconds} s${mac}`, tone: "busy" };
   }
   if (status.phase === "on") {
     return { text: `Cloud GPU · ${status.gpu}`, tone: "on" };

@@ -112,4 +112,29 @@ describe("Cloud GPU sessions", () => {
     await new Promise((r) => setTimeout(r, 0));
     expect(sessions.status()).toEqual({ phase: "off" });
   });
+
+  it("quitting does not wait for a GPU that is still starting, and stops it once it arrives", async () => {
+    let release: (r: Response) => void = () => {};
+    const calls: string[] = [];
+    const fetch = (async (url: string) => {
+      const path = new URL(url).pathname;
+      calls.push(path);
+      if (path === "/start") return new Promise<Response>((r) => (release = r));
+      return Response.json({ stopped: true });
+    }) as typeof globalThis.fetch;
+    const sessions = createCloudGpuSessions({
+      controlUrl: "https://control.example",
+      key: async () => "k",
+      fetch,
+      setTimer: (fn, ms) => setTimeout(fn, Math.min(ms, 20)),
+      clearTimer: (h) => clearTimeout(h as NodeJS.Timeout),
+    });
+    sessions.prewarm();
+    const started = Date.now();
+    await sessions.stopAll();
+    expect(Date.now() - started).toBeLessThan(1000);
+    release(Response.json({ url: "https://gpu.example/1", token: "tok-1", gpu: "H100" }));
+    await new Promise((r) => setTimeout(r, 10));
+    expect(calls).toEqual(["/start", "/stop"]);
+  });
 });

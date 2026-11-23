@@ -55,7 +55,7 @@ export interface GenteAiMode {
 /** Gente: the rented Cloud GPU for this Mac's chats (one GPU per chat, gone after). */
 export type GenteCloudGpuStatus =
   | { phase: "off" }
-  | { phase: "starting"; since: number }
+  | { phase: "starting"; since: number; /** Set while this Mac answers in its place. */ macAnswering?: boolean }
   | { phase: "on"; gpu: string; startMs: number; sessions: number }
   | { phase: "fallback"; message: string; at: number };
 

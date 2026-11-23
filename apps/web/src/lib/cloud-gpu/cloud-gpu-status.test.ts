@@ -17,6 +17,13 @@ describe("Cloud GPU status line", () => {
     expect(cloudGpuLine({ ...base, status: { phase: "off" } }, 0)).toBeNull();
   });
 
+  it("says when this Mac answers while the GPU is still starting", () => {
+    const status = { phase: "starting" as const, since: 1000, macAnswering: true };
+    expect(cloudGpuLine({ ...base, status }, 3100)?.text).toBe(
+      "Starting cloud GPU… 2.1 s · this Mac answers until it is ready",
+    );
+  });
+
   it("says plainly where messages go, without claiming they stay on this Mac", () => {
     expect(CLOUD_PRIVACY_NOTE).toMatch(/rented GPU used only by this chat/);
     expect(CLOUD_PRIVACY_NOTE).not.toMatch(/leaves|this Mac/i);

@@ -12,7 +12,7 @@ export type CloudSession = { url: string; token: string; gpu: string; startMs: n
 
 export type CloudGpuStatus =
   | { phase: "off" }
-  | { phase: "starting"; since: number }
+  | { phase: "starting"; since: number; macAnswering?: boolean }
   | { phase: "on"; gpu: string; startMs: number; sessions: number }
   | { phase: "fallback"; message: string; at: number };
 
@@ -41,6 +41,9 @@ type Entry = {
 };
 
 export const SPARE = "__spare__";
+
+/** How long stopping waits for a GPU that is still starting (quit must stay quick). */
+export const STOP_WAIT_MS = 3000;
 
 export function createCloudGpuSessions(deps: SessionDeps) {
   const doFetch = deps.fetch ?? fetch;
@@ -142,8 +145,13 @@ export function createCloudGpuSessions(deps: SessionDeps) {
     entries.delete(key);
     if (entry.timer !== undefined) clearTimer(entry.timer);
     changed();
-    const ready = entry.ready ?? (await entry.session.catch(() => null));
-    if (ready) await control("/stop", { token: ready.token }).catch(() => undefined);
+    // A GPU still starting can take minutes (the first boot after a deploy). Quitting must not
+    // wait for it: the stop is sent when it arrives, and Modal ends a forgotten session by itself.
+    const stopSession = (ready: CloudSession | null) =>
+      ready ? control("/stop", { token: ready.token }).catch(() => undefined) : undefined;
+    if (entry.ready) return void (await stopSession(entry.ready));
+    const late = entry.session.then(stopSession, () => undefined);
+    await Promise.race([late, new Promise((r) => setTimer(() => r(undefined), STOP_WAIT_MS))]);
   }
 
   return {
@@ -168,8 +176,12 @@ export function createCloudGpuSessions(deps: SessionDeps) {
       const first = ready[0];
       if (first)
         return { phase: "on", gpu: first.gpu, startMs: first.startMs, sessions: ready.length };
-      if (list.length > 0)
-        return { phase: "starting", since: Math.min(...list.map((e) => e.startedAt)) };
+      if (list.length > 0) {
+        const since = Math.min(...list.map((e) => e.startedAt));
+        // Without this the line kept counting up while this Mac was in fact writing the answer.
+        const macAnswering = Boolean(fallback && now() - fallback.at < 5 * 60_000);
+        return macAnswering ? { phase: "starting", since, macAnswering } : { phase: "starting", since };
+      }
       if (fallback && now() - fallback.at < 60_000) return { phase: "fallback", ...fallback };
       return { phase: "off" };
     },

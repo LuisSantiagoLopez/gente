@@ -7,6 +7,7 @@
 import { handleIpc } from "../ipc/ipc.js";
 import { CLOUD_GPU_CONTROL_URL, readCloudGpuKey } from "./cloud-gpu-config.js";
 import type { CloudRoute } from "./cloud-gpu-route.js";
+import { meterFile } from "./cloud-gpu-meter.js";
 import { createCloudRoute } from "./cloud-gpu-route.js";
 import { createCloudGpuSessions } from "./cloud-gpu-sessions.js";
 import { createCloudGpuToggle } from "./cloud-gpu-toggle.js";
@@ -34,6 +35,7 @@ export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }):
     active: () => toggle.active(),
     fellBack: (message) => toggle.fellBack(message),
     recovered: () => toggle.recovered(),
+    meter: meterFile(input.stackDir),
   });
   return { route, shutdown: () => toggle.shutdown() };
 }
