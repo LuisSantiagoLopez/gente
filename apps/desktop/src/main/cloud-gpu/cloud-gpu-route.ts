@@ -5,14 +5,15 @@
 // it tries one fresh GPU, then gives up and returns null so this Mac's model answers instead,
 // with a plain message in the status line. Who calls it: model-router.ts (the `cloud` dep).
 import { readCloudGpuKey } from "./cloud-gpu-config.js";
-import type { Finish } from "./cloud-gpu-request.js";
-import { cloudChatBody, cloudHeaders, watchFinish } from "./cloud-gpu-request.js";
 import type { MeterLine } from "./cloud-gpu-meter.js";
 import { meterStream, withUsage } from "./cloud-gpu-meter.js";
+import type { Finish } from "./cloud-gpu-request.js";
+import { cloudChatBody, cloudHeaders, watchFinish } from "./cloud-gpu-request.js";
 import type { CloudGpuSessions } from "./cloud-gpu-sessions.js";
 
 export const FALLBACK_MESSAGE = "Cloud GPU didn't answer, so this Mac answered instead.";
-export const STILL_STARTING_MESSAGE = "Cloud GPU is still starting, so this Mac answered this step.";
+export const STILL_STARTING_MESSAGE =
+  "Cloud GPU is still starting, so this Mac answered this step.";
 
 /**
  * How long one request waits for its GPU to start. The runtime gives up on a request with no
@@ -68,10 +69,12 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
     if (session === STARTING) {
       // This request counted as in flight; once the GPU is up, start its idle clock.
       slow.add(sessionKey);
-      pending.then(
-        () => deps.sessions.done(sessionKey, "tool"),
-        () => undefined,
-      ).finally(() => slow.delete(sessionKey));
+      pending
+        .then(
+          () => deps.sessions.done(sessionKey, "tool"),
+          () => undefined,
+        )
+        .finally(() => slow.delete(sessionKey));
       return STARTING;
     }
     if (!session) return null;

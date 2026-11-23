@@ -20,7 +20,9 @@ async function drain(stream: ReadableStream<Uint8Array>) {
 
 describe("cloud GPU meter", () => {
   it("asks for usage only on streamed requests", () => {
-    expect(JSON.parse(withUsage('{"stream":true}')).stream_options).toEqual({ include_usage: true });
+    expect(JSON.parse(withUsage('{"stream":true}')).stream_options).toEqual({
+      include_usage: true,
+    });
     expect(withUsage('{"stream":false}')).toBe('{"stream":false}');
     expect(withUsage("not json")).toBe("not json");
   });

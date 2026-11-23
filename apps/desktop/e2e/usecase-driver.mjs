@@ -24,10 +24,16 @@ const t0 = Date.now();
 const log = (...a) => console.log(`${((Date.now() - t0) / 1000).toFixed(1)}s`, ...a);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const status = (state, extra = {}) =>
-  writeFileSync(path.join(out, "status.json"), JSON.stringify({ state, at: new Date().toISOString(), ...extra }, null, 2));
+  writeFileSync(
+    path.join(out, "status.json"),
+    JSON.stringify({ state, at: new Date().toISOString(), ...extra }, null, 2),
+  );
 
 const app = await electron.launch({
   executablePath: exe,
+  // A new ad-hoc signature asks the Keychain for the safe-storage key; that prompt cannot show
+  // while the screen is locked (overnight runs), so the test uses Chromium's mock keychain.
+  args: ["--use-mock-keychain"],
   timeout: 180_000,
   env: {
     ...process.env,
@@ -39,7 +45,9 @@ const app = await electron.launch({
   },
 });
 const shot = (page, name) =>
-  page.screenshot({ path: path.join(out, name), timeout: 15_000 }).catch((e) => log("shot", name, e.message));
+  page
+    .screenshot({ path: path.join(out, name), timeout: 15_000 })
+    .catch((e) => log("shot", name, e.message));
 const box = 'textarea, [contenteditable="true"]';
 
 async function withSelector(selector, ms) {
@@ -53,7 +61,7 @@ async function withSelector(selector, ms) {
 }
 
 async function openWorkspace() {
-  const setup = await app.firstWindow();
+  const setup = await app.firstWindow({ timeout: 240_000 });
   let page;
   let clicked = false;
   const deadline = Date.now() + 20 * 60_000;
@@ -61,7 +69,10 @@ async function openWorkspace() {
     page = app.windows().find((w) => w.url().startsWith("http"));
     if (page) break;
     if (!clicked && (await setup.isEnabled("#continue", { timeout: 1000 }).catch(() => false)))
-      await setup.click("#continue", { timeout: 5000 }).then(() => (clicked = true), () => {});
+      await setup.click("#continue", { timeout: 5000 }).then(
+        () => (clicked = true),
+        () => {},
+      );
     await sleep(2000);
   }
   if (!page) throw new Error("app window never opened");
@@ -76,8 +87,16 @@ async function openWorkspace() {
   await page.setViewportSize?.({ width: 1280, height: 900 }).catch(() => {});
   const useMac = page.getByRole("button", { name: "Use this Mac" });
   // A new workspace asks where bots run; the test keeps them off this Mac (cloud computers).
-  if (await useMac.waitFor({ timeout: 20_000 }).then(() => true, () => false)) {
-    await page.getByRole("button", { name: "Docker" }).click().catch(() => page.keyboard.press("Escape"));
+  if (
+    await useMac.waitFor({ timeout: 20_000 }).then(
+      () => true,
+      () => false,
+    )
+  ) {
+    await page
+      .getByRole("button", { name: "Docker" })
+      .click()
+      .catch(() => page.keyboard.press("Escape"));
     await useMac.waitFor({ state: "hidden", timeout: 10_000 }).catch(() => {});
     await sleep(1000);
   }
@@ -91,7 +110,10 @@ async function openWorkspace() {
 }
 
 async function saveTranscript(page) {
-  const text = await page.locator("main").innerText().catch(() => "");
+  const text = await page
+    .locator("main")
+    .innerText()
+    .catch(() => "");
   writeFileSync(path.join(out, "transcript.txt"), text);
   return text;
 }
@@ -112,14 +134,24 @@ async function sendTurn(page, n, message) {
   let idleSince = null;
   const end = sent + 40 * 60_000;
   while (Date.now() < end) {
-    const s = await page.getByTestId("cloud-gpu-status").textContent({ timeout: 300 }).catch(() => null);
+    const s = await page
+      .getByTestId("cloud-gpu-status")
+      .textContent({ timeout: 300 })
+      .catch(() => null);
     if (s) statusLines.add(s.replace(/\d+(\.\d+)? ?s\b/g, "N s"));
     if (timing.first_word_s === undefined) {
-      const said = await replies.nth(before).textContent({ timeout: 300 }).catch(() => "");
+      const said = await replies
+        .nth(before)
+        .textContent({ timeout: 300 })
+        .catch(() => "");
       if (said?.trim()) timing.first_word_s = (Date.now() - sent) / 1000;
     }
     if (timing.first_activity_s === undefined) {
-      const act = await page.getByTestId("activity-preview").last().textContent({ timeout: 300 }).catch(() => "");
+      const act = await page
+        .getByTestId("activity-preview")
+        .last()
+        .textContent({ timeout: 300 })
+        .catch(() => "");
       if (act?.trim()) timing.first_activity_s = (Date.now() - sent) / 1000;
     }
     const running = await stop.isVisible().catch(() => false);
@@ -145,7 +177,8 @@ async function sendTurn(page, n, message) {
   const all = await replies.allTextContents().catch(() => []);
   timing.reply = all.slice(before).join("\n---\n");
   timing.reply_chars = timing.reply.length;
-  await saveTranscript(page);
+  const whole = await saveTranscript(page);
+  writeFileSync(path.join(out, `transcript-${n}.txt`), whole);
   await shot(page, `turn-${n}.png`);
   writeFileSync(path.join(out, `turn-${n}.json`), `${JSON.stringify(timing, null, 2)}\n`);
   log("turn", n, "done", timing.total_s, "s");
@@ -159,7 +192,9 @@ try {
   status("idle", { turn: 0 });
   const done = new Set();
   for (;;) {
-    const next = readdirSync(inbox).filter((f) => /^\d+\.txt$/.test(f) && !done.has(f)).sort()[0];
+    const next = readdirSync(inbox)
+      .filter((f) => /^\d+\.txt$/.test(f) && !done.has(f))
+      .sort()[0];
     if (!next) {
       await sleep(2000);
       continue;
@@ -171,7 +206,11 @@ try {
     page = app.windows().find((w) => !w.isClosed() && w.url().startsWith("http")) ?? page;
     if (text.startsWith("!shot ")) await shot(page, `${text.slice(6).trim()}.png`);
     else if (text.startsWith("!click ")) {
-      await page.getByRole("button", { name: text.slice(7).trim() }).first().click().catch((e) => log("click", e.message));
+      await page
+        .getByRole("button", { name: text.slice(7).trim() })
+        .first()
+        .click()
+        .catch((e) => log("click", e.message));
       await sendTurnWait(page, n);
     } else await sendTurn(page, n, text);
     status("idle", { turn: n });
@@ -194,10 +233,16 @@ async function sendTurnWait(page, n) {
   let idle = null;
   while (Date.now() - start < 40 * 60_000) {
     if (await stop.isVisible().catch(() => false)) idle = null;
-    else if (Date.now() - start > 10_000 && (idle ??= Date.now()) && Date.now() - idle > 4000) break;
+    else if (Date.now() - start > 10_000) {
+      idle ??= Date.now();
+      if (Date.now() - idle > 4000) break;
+    }
     await sleep(500);
   }
   await saveTranscript(page);
   await shot(page, `turn-${n}.png`);
-  writeFileSync(path.join(out, `turn-${n}.json`), `${JSON.stringify({ turn: n, click: true, total_s: (Date.now() - start) / 1000 }, null, 2)}\n`);
+  writeFileSync(
+    path.join(out, `turn-${n}.json`),
+    `${JSON.stringify({ turn: n, click: true, total_s: (Date.now() - start) / 1000 }, null, 2)}\n`,
+  );
 }

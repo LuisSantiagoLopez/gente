@@ -180,7 +180,9 @@ export function createCloudGpuSessions(deps: SessionDeps) {
         const since = Math.min(...list.map((e) => e.startedAt));
         // Without this the line kept counting up while this Mac was in fact writing the answer.
         const macAnswering = Boolean(fallback && now() - fallback.at < 5 * 60_000);
-        return macAnswering ? { phase: "starting", since, macAnswering } : { phase: "starting", since };
+        return macAnswering
+          ? { phase: "starting", since, macAnswering }
+          : { phase: "starting", since };
       }
       if (fallback && now() - fallback.at < 60_000) return { phase: "fallback", ...fallback };
       return { phase: "off" };

@@ -6,8 +6,8 @@
 // once at launch, before the model router starts; main.ts also calls `shutdown` on quit.
 import { handleIpc } from "../ipc/ipc.js";
 import { CLOUD_GPU_CONTROL_URL, readCloudGpuKey } from "./cloud-gpu-config.js";
-import type { CloudRoute } from "./cloud-gpu-route.js";
 import { meterFile } from "./cloud-gpu-meter.js";
+import type { CloudRoute } from "./cloud-gpu-route.js";
 import { createCloudRoute } from "./cloud-gpu-route.js";
 import { createCloudGpuSessions } from "./cloud-gpu-sessions.js";
 import { createCloudGpuToggle } from "./cloud-gpu-toggle.js";

@@ -1,4 +1,5 @@
 // Modified by DeskHead Inc. in 2026 for Gente (fork of Rakazo, Apache-2.0).
+
 import { randomUUID } from "node:crypto";
 import { setTimeout as sleep } from "node:timers/promises";
 import type { BrowserProvider, SandboxProvider } from "@rakazo/adapter-kit";
@@ -73,6 +74,7 @@ import { awaitScreenTurn } from "../turn/screen-turn.js";
 import { DESKTOP_HELD_FOR_TAKEOVER_MESSAGE } from "../turn/takeover-resume.prompt.js";
 import type { ToolCall, ToolHandlers } from "./run-tool-gate.js";
 import { auditToolCall } from "./run-tool-gate.js";
+import { detachedGuiOpener } from "./shell-gui-openers.js";
 
 function appendComputerCommand(ctx: RunContext, payload: ComputerCommand) {
   const { deps, run, runId, bot, thread } = ctx;
@@ -656,7 +658,7 @@ export const computerTools: ToolHandlers = {
           computer,
           {
             argv: shellEnvironment
-              ? nativeShellCommandArgv(command, shellEnvironment)
+              ? nativeShellCommandArgv(detachedGuiOpener(command) ?? command, shellEnvironment)
               : [
                   "bash",
                   "-c",
@@ -667,7 +669,7 @@ export const computerTools: ToolHandlers = {
                   ctx.computer.stored.id,
                   runId,
                   randomUUID(),
-                  command,
+                  detachedGuiOpener(command) ?? command,
                 ],
             cwd,
             env:

@@ -25,7 +25,10 @@ export function withUsage(body: string): string {
   try {
     const parsed = JSON.parse(body) as Record<string, unknown>;
     if (parsed.stream !== true) return body;
-    parsed.stream_options = { ...(parsed.stream_options as object | undefined), include_usage: true };
+    parsed.stream_options = {
+      ...(parsed.stream_options as object | undefined),
+      include_usage: true,
+    };
     return JSON.stringify(parsed);
   } catch {
     return body;
