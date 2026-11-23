@@ -1,6 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente. A GPU that is slow to start never makes a chat request time out.
 import { describe, expect, it } from "vitest";
+import { KEEPALIVE } from "./cloud-gpu-hold.js";
 import { createCloudRoute, REFUSED_MESSAGE, STILL_STARTING_MESSAGE } from "./cloud-gpu-route.js";
 import type { CloudGpuSessions } from "./cloud-gpu-sessions.js";
 
@@ -69,5 +70,31 @@ describe("Cloud GPU route", () => {
     expect(await route.send("chat-a", "{}")).toBeNull();
     expect(calls).toEqual(["done:tool"]);
     expect(fallbacks).toEqual([REFUSED_MESSAGE]);
+  });
+
+  it("holds a chat too long for this Mac until its GPU is up", async () => {
+    const { sessions, release } = slowSessions();
+    const fallbacks: string[] = [];
+    const sse = 'data: {"choices":[{"delta":{"content":"hi"},"finish_reason":"stop"}]}\n\n';
+    const route = createCloudRoute({
+      sessions,
+      active: () => true,
+      fellBack: (m) => void fallbacks.push(m),
+      recovered: () => undefined,
+      key: async () => "k",
+      startWaitMs: 10,
+      fetch: (async () => new Response(sse, { status: 200 })) as typeof fetch,
+    });
+    const long = JSON.stringify({
+      stream: true,
+      messages: [{ role: "user", content: "x".repeat(90_000) }],
+    });
+    const answer = await route.send("chat-b", long);
+    expect(answer?.status).toBe(200);
+    expect(fallbacks).toEqual([]);
+    setTimeout(release, 20);
+    const text = await answer?.text();
+    expect(text?.startsWith(KEEPALIVE)).toBe(true);
+    expect(text).toContain('"content":"hi"');
   });
 });

@@ -190,7 +190,8 @@ try {
   let page = await openWorkspace();
   await shot(page, "00-ready.png");
   status("idle", { turn: 0 });
-  const done = new Set();
+  // RESUME=1 reopens an existing chat: messages already in the inbox were sent before.
+  const done = new Set(process.env.RESUME === "1" ? readdirSync(inbox) : []);
   for (;;) {
     const next = readdirSync(inbox)
       .filter((f) => /^\d+\.txt$/.test(f) && !done.has(f))
@@ -203,7 +204,8 @@ try {
     const n = next.replace(".txt", "");
     const text = readFileSync(path.join(inbox, next), "utf8").trim();
     if (text === "!quit") break;
-    page = app.windows().find((w) => !w.isClosed() && w.url().startsWith("http")) ?? page;
+    // The app can swap its window (a workspace restart); always use the one showing the chat.
+    page = await withSelector(box, 10 * 60_000);
     if (text.startsWith("!shot ")) await shot(page, `${text.slice(6).trim()}.png`);
     else if (text.startsWith("!click ")) {
       await page

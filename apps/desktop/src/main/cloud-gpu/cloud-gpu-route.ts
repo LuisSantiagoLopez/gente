@@ -5,11 +5,12 @@
 // it tries one fresh GPU, then gives up and returns null so this Mac's model answers instead,
 // with a plain message in the status line. Who calls it: model-router.ts (the `cloud` dep).
 import { readCloudGpuKey } from "./cloud-gpu-config.js";
+import { heldResponse, tooLongForMac } from "./cloud-gpu-hold.js";
 import type { MeterLine } from "./cloud-gpu-meter.js";
 import { meterStream, withUsage } from "./cloud-gpu-meter.js";
 import type { Finish } from "./cloud-gpu-request.js";
 import { cloudChatBody, cloudHeaders, watchFinish } from "./cloud-gpu-request.js";
-import type { CloudGpuSessions } from "./cloud-gpu-sessions.js";
+import type { CloudGpuSessions, CloudSession } from "./cloud-gpu-sessions.js";
 
 export const FALLBACK_MESSAGE = "Cloud GPU didn't answer, so this Mac answered instead.";
 export const STILL_STARTING_MESSAGE =
@@ -67,6 +68,15 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
     const session = await Promise.race([pending.catch(() => null), waited]);
     clearTimeout(timer);
     if (session === STARTING) {
+      // A chat too long for this Mac waits for its GPU, with the answer already under way.
+      if (tooLongForMac(body))
+        return heldResponse(
+          pending.then(async (ready) => {
+            const answer = await ask(sessionKey, ready, secret, body);
+            if (answer instanceof Response) return answer;
+            throw new Error("Cloud GPU did not answer");
+          }),
+        );
       // This request counted as in flight; once the GPU is up, start its idle clock.
       slow.add(sessionKey);
       pending
@@ -78,6 +88,15 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
       return STARTING;
     }
     if (!session) return null;
+    return ask(sessionKey, session, secret, body);
+  }
+
+  async function ask(
+    sessionKey: string,
+    session: CloudSession,
+    secret: string,
+    body: string,
+  ): Promise<Response | null | typeof REFUSED_REQUEST> {
     const answer = await doFetch(`${session.url}/v1/chat/completions`, {
       method: "POST",
       headers: cloudHeaders(session, secret),
