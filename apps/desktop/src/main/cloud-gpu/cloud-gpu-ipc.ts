@@ -10,6 +10,7 @@ import {
   CLOUD_GPU_SHARED_URL,
   readCloudGpuKey,
 } from "./cloud-gpu-config.js";
+import { keepAliveFetch, warmConnection } from "./cloud-gpu-http.js";
 import type { CloudRoute } from "./cloud-gpu-route.js";
 import { createCloudRoute } from "./cloud-gpu-route.js";
 import { createCloudGpuSessions } from "./cloud-gpu-sessions.js";
@@ -42,10 +43,21 @@ export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }):
     hasKey: async () => Boolean(await readCloudGpuKey()),
   });
   toggleMode = () => toggle.mode();
-  void toggle.init();
+  // The shared GPU's connection is opened before the first message (app open, switch, typing).
+  const warmLink = () => {
+    if (toggle.active() && toggle.mode() === "shared") warmConnection(CLOUD_GPU_SHARED_URL);
+  };
+  void toggle.init().then(warmLink);
   handleIpc("desktop.gente.cloudGpu", () => toggle.state());
-  handleIpc("desktop.gente.setCloudGpu", (_event, on: unknown) => toggle.set(on));
-  handleIpc("desktop.gente.prewarmCloudGpu", () => toggle.prewarm());
+  handleIpc("desktop.gente.setCloudGpu", async (_event, on: unknown) => {
+    const state = await toggle.set(on);
+    warmLink();
+    return state;
+  });
+  handleIpc("desktop.gente.prewarmCloudGpu", () => {
+    toggle.prewarm();
+    warmLink();
+  });
   handleIpc("desktop.gente.setCloudGpuMode", (_event, mode: unknown) => toggle.setMode(mode));
   const route = createCloudRoute({
     sessions,
@@ -55,6 +67,7 @@ export function setUpCloudGpu(input: { userDataDir: string; stackDir: string }):
     fellBack: (message) => toggle.fellBack(message),
     recovered: () => toggle.recovered(),
     activity: () => warm.activity(),
+    fetch: keepAliveFetch,
   });
   return { route, shutdown: () => toggle.shutdown() };
 }

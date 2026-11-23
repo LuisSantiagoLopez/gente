@@ -33,8 +33,20 @@ export const GPU_DOLLARS_PER_HOUR: Record<string, number> = {
 
 export const KEYCHAIN = { account: "gente", service: "modal-gpu" } as const;
 
-/** The endpoint key, read from the Keychain when needed and never written anywhere else. */
-export function readCloudGpuKey(platform = process.platform): Promise<string | undefined> {
+let cachedKey: { value: string | undefined; at: number } | null = null;
+
+/**
+ * The endpoint key, read from the Keychain and kept in memory for 10 minutes (reading it costs
+ * a process launch, which sat in front of every message). Never written anywhere else.
+ */
+export async function readCloudGpuKey(platform = process.platform): Promise<string | undefined> {
+  if (cachedKey && Date.now() - cachedKey.at < 10 * 60_000) return cachedKey.value;
+  const value = await readKeychainKey(platform);
+  cachedKey = { value, at: Date.now() };
+  return value;
+}
+
+function readKeychainKey(platform: string): Promise<string | undefined> {
   if (process.env.GENTE_CLOUD_GPU_KEY) return Promise.resolve(process.env.GENTE_CLOUD_GPU_KEY);
   if (platform !== "darwin") return Promise.resolve(undefined);
   return new Promise((resolve) => {

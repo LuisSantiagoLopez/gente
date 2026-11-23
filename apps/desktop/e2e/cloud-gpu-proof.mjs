@@ -56,6 +56,8 @@ function recordHostChoice(dir) {
 
 const app = await electron.launch({
   executablePath: exe,
+  // A test build is signed anew each time; the real Keychain would ask the owner to allow it.
+  args: ["--use-mock-keychain"],
   timeout: 180_000,
   env: {
     ...process.env,

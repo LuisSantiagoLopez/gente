@@ -2,8 +2,9 @@
 // New file in Gente.
 //
 // Shared mode, the default: every chat goes to one warm GPU that answers many chats at once
-// (infra/cloud-gpu/shared_app.py). Nothing to start or stop per chat. Each chat gets its own
-// `cache_salt`, so no chat can reuse (or time) another chat's prompt cache.
+// (infra/cloud-gpu/shared_app.py). Nothing to start or stop per chat. This app's requests carry
+// their own `cache_salt`, so no other person's chats can reuse (or time) this person's prompt
+// cache, while this person's own chats reuse the long instructions they all start with.
 // It offers the same calls as cloud-gpu-sessions.ts, so cloud-gpu-route.ts treats both alike.
 // Who calls it: cloud-gpu-route.ts and cloud-gpu-toggle.ts (status).
 import { createHash, randomBytes } from "node:crypto";
@@ -32,8 +33,8 @@ export function createSharedGpu(input: { url: string; now?: () => number }) {
     failed(_key: string) {
       waitingSince = null;
     },
-    /** A per-chat salt for vLLM's prompt cache. */
-    salt: (key: string) => createHash("sha256").update(`${launchSecret}:${key}`).digest("hex"),
+    /** This app's salt for vLLM's prompt cache (the same for its chats, unknown to others). */
+    salt: (_key: string) => createHash("sha256").update(launchSecret).digest("hex"),
     status(): CloudGpuStatus {
       // A warm GPU answers in under a second; a longer wait is a cold start worth showing.
       if (waitingSince !== null && now() - waitingSince > 800)

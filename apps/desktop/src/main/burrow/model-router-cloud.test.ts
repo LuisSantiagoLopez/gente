@@ -119,7 +119,7 @@ describe("Cloud GPU in the model router", () => {
     expect(t.sessions.status()).toEqual({ phase: "off" });
   });
 
-  it("shared mode: one GPU for every chat, the key only, and a different cache salt per chat", async () => {
+  it("shared mode: one GPU for every chat, the key only, and this app's own cache salt", async () => {
     const seen: Array<{ salt: string; session?: string }> = [];
     const gpuUrl = await serve(async (req, res) => {
       const chunks: Buffer[] = [];
@@ -155,7 +155,9 @@ describe("Cloud GPU in the model router", () => {
       }).then((r) => r.text());
     expect(control).toEqual([]); // nothing to start or stop
     expect(seen.map((s) => s.session)).toEqual([undefined, undefined, undefined]);
-    expect(seen[0]?.salt).toBe(seen[2]?.salt);
-    expect(seen[0]?.salt).not.toBe(seen[1]?.salt);
+    // One salt for this app's chats (they share their long instructions), secret to others.
+    expect(seen[0]?.salt).toMatch(/^[0-9a-f]{64}$/);
+    expect(new Set(seen.map((s) => s.salt)).size).toBe(1);
+    expect(createSharedGpu({ url: gpuUrl }).salt("a")).not.toBe(seen[0]?.salt);
   });
 });

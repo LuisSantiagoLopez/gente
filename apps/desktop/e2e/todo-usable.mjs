@@ -25,7 +25,9 @@ if (added) {
   const row = page.locator("li, .todo, [class*=item]").filter({ hasText: item }).first();
   const box = row.locator("input[type=checkbox]");
   const before = await row.evaluate((el) => el.className + el.outerHTML.length);
+  const toggle = row.locator("[class*=check], [class*=toggle], [class*=circle]").first();
   if (await box.count()) await box.first().check();
+  else if (await toggle.count()) await toggle.click();
   else await row.click();
   const after = await row.evaluate((el) => el.className + el.outerHTML.length);
   checked = (await box.count()) ? await box.first().isChecked() : before !== after;
