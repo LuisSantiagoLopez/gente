@@ -160,4 +160,38 @@ describe("Cloud GPU in the model router", () => {
     expect(new Set(seen.map((s) => s.salt)).size).toBe(1);
     expect(createSharedGpu({ url: gpuUrl }).salt("a")).not.toBe(seen[0]?.salt);
   });
+
+  it("shared mode waits for a cold GPU (503 while it starts) instead of falling back", async () => {
+    let calls = 0;
+    const gpuUrl = await serve(async (req, res) => {
+      for await (const _ of req) {
+        // drain
+      }
+      calls += 1;
+      if (calls < 3) return res.writeHead(503).end();
+      res.writeHead(200, { "content-type": "text/event-stream" }).end(SSE);
+    });
+    const shared = createSharedGpu({ url: gpuUrl });
+    const fallbacks: string[] = [];
+    const cloud = createCloudRoute({
+      sessions: createCloudGpuSessions({ controlUrl: gpuUrl, key: async () => "secret" }),
+      shared,
+      mode: () => "shared",
+      active: () => true,
+      fellBack: (m) => void fallbacks.push(m),
+      recovered: () => undefined,
+      key: async () => "secret",
+    });
+    const router = await startModelRouter({ localBase: "http://127.0.0.1:9", cloud });
+    closers.push(router.close);
+    const text = await fetch(`${router.base}/v1/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}",
+    }).then((r) => r.text());
+    expect(text).toContain('"content":"hi"');
+    expect(calls).toBe(3);
+    expect(fallbacks).toEqual([]);
+    expect(shared.status().phase).toBe("on");
+  });
 });

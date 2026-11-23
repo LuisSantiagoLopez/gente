@@ -125,9 +125,8 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
         available,
         on: on && available,
         mode,
-        status: !on
-          ? deps.sessions.status()
-          : dedicated()
+        status:
+          !on || dedicated() || deps.sessions.status().phase === "fallback"
             ? deps.sessions.status()
             : (deps.shared as SharedGpu).status(),
         dollarsPerHour: deps.sessions.dollarsPerHour(),

@@ -12,6 +12,9 @@ import type { SharedGpu } from "./cloud-gpu-shared.js";
 
 export type CloudMode = "shared" | "dedicated";
 
+/** How long a chat waits for a cold shared GPU before this Mac answers instead. */
+export const SHARED_START_WAIT_MS = 90_000;
+
 export const FALLBACK_MESSAGE = "Cloud GPU didn't answer, so this Mac answered instead.";
 
 export interface CloudRoute {
@@ -46,11 +49,21 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
     const pool = shared ?? deps.sessions;
     const session = await pool.session(sessionKey).catch(() => null);
     if (!session) return null;
-    const answer = await doFetch(`${session.url}/v1/chat/completions`, {
-      method: "POST",
-      headers: cloudHeaders(session, secret),
-      body: shared ? withCacheSalt(body, shared.salt(sessionKey)) : body,
-    }).catch(() => null);
+    const post = () =>
+      doFetch(`${session.url}/v1/chat/completions`, {
+        method: "POST",
+        headers: cloudHeaders(session, secret),
+        body: shared ? withCacheSalt(body, shared.salt(sessionKey)) : body,
+      }).catch(() => null);
+    let answer = await post();
+    // A shared GPU that is still starting answers 503; wait for it (the status line counts up)
+    // instead of falling back at once. A snapshot restore takes about 20 to 40 s.
+    const startedWaiting = Date.now();
+    while (shared && answer?.status === 503 && Date.now() - startedWaiting < SHARED_START_WAIT_MS) {
+      await answer.text().catch(() => undefined);
+      await new Promise((r) => setTimeout(r, 1000));
+      answer = await post();
+    }
     if (!answer?.ok || !answer.body) {
       // Read and drop the error body so the connection is freed.
       await answer?.text().catch(() => undefined);
