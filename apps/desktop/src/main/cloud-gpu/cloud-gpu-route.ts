@@ -21,6 +21,10 @@ export const STILL_STARTING_MESSAGE = "Cloud GPU is still starting, so this Mac 
  */
 export const START_WAIT_MS = 90_000;
 const STARTING = Symbol("starting");
+const REFUSED_REQUEST = Symbol("refused");
+/** Statuses that are about the request, not the GPU. */
+const REFUSED = new Set([400, 413, 422]);
+export const REFUSED_MESSAGE = "Cloud GPU could not read this step, so this Mac answered it.";
 
 export interface CloudRoute {
   active(): boolean;
@@ -46,7 +50,10 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
   /** Chats whose GPU already missed one wait: they answer here at once until it is up. */
   const slow = new Set<string>();
 
-  async function once(sessionKey: string, body: string): Promise<Response | null | typeof STARTING> {
+  async function once(
+    sessionKey: string,
+    body: string,
+  ): Promise<Response | null | typeof STARTING | typeof REFUSED_REQUEST> {
     const secret = await key();
     if (!secret) return null;
     const pending = deps.sessions.session(sessionKey);
@@ -76,6 +83,12 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
     if (!answer?.ok || !answer.body) {
       // Read and drop the error body so the connection is freed.
       await answer?.text().catch(() => undefined);
+      // The GPU said no to this one request (too long, a part it cannot read): it is still
+      // healthy, so keep it for the next step instead of starting a new one.
+      if (answer && REFUSED.has(answer.status)) {
+        deps.sessions.done(sessionKey, "tool");
+        return REFUSED_REQUEST;
+      }
       deps.sessions.failed(sessionKey);
       return null;
     }
@@ -94,8 +107,8 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
       const sent = withUsage(cloudChatBody(body));
       let answer = await once(sessionKey, sent);
       if (answer === null) answer = await once(sessionKey, sent);
-      if (answer === STARTING) {
-        await deps.fellBack(STILL_STARTING_MESSAGE);
+      if (answer === STARTING || answer === REFUSED_REQUEST) {
+        await deps.fellBack(answer === STARTING ? STILL_STARTING_MESSAGE : REFUSED_MESSAGE);
         return null;
       }
       if (answer) await deps.recovered();

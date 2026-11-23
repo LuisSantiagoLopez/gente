@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente. Tests the request sent to the rented GPU and how its answer ended.
 import { describe, expect, it } from "vitest";
-import { cloudChatBody, watchFinish } from "./cloud-gpu-request.js";
+import { cloudChatBody, NO_IMAGE_NOTE, watchFinish } from "./cloud-gpu-request.js";
 
 describe("cloud chat request", () => {
   it("renames the model and turns Ollama's thinking switch into Qwen's", () => {
@@ -32,5 +32,25 @@ describe("cloud chat request", () => {
       "answer",
     );
     expect(await run('data: {"choices":[{"delta":{"content":"hi"}}]}\n\n')).toBe("aborted");
+  });
+
+  it("turns pictures into a short note, since the GPU's model reads text only", () => {
+    const messages = [
+      { role: "user", content: "hi" },
+      {
+        role: "tool",
+        content: [
+          { type: "text", text: "screen" },
+          { type: "image_url", image_url: { url: "data:image/png;base64,AAAA" } },
+        ],
+      },
+    ];
+    const body = JSON.parse(cloudChatBody(JSON.stringify({ messages })));
+    expect(body.messages[0]).toEqual({ role: "user", content: "hi" });
+    expect(body.messages[1].content).toEqual([
+      { type: "text", text: "screen" },
+      { type: "text", text: NO_IMAGE_NOTE },
+    ]);
+    expect(JSON.stringify(body)).not.toContain("base64");
   });
 });

@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente. A GPU that is slow to start never makes a chat request time out.
 import { describe, expect, it } from "vitest";
-import { createCloudRoute, STILL_STARTING_MESSAGE } from "./cloud-gpu-route.js";
+import { createCloudRoute, REFUSED_MESSAGE, STILL_STARTING_MESSAGE } from "./cloud-gpu-route.js";
 import type { CloudGpuSessions } from "./cloud-gpu-sessions.js";
 
 function slowSessions() {
@@ -48,5 +48,26 @@ describe("Cloud GPU route", () => {
     const answer = await route.send("chat-a", body);
     expect(answer?.status).toBe(200);
     expect(await answer?.text()).toContain("hi");
+  });
+
+  it("keeps a healthy GPU when it refuses one request", async () => {
+    const calls: string[] = [];
+    const sessions = {
+      session: async () => ({ url: "https://gpu.example", token: "t", gpu: "H100", startMs: 1 }),
+      done: (key: string, finish: string) => void calls.push(`done:${finish}`),
+      failed: () => void calls.push("failed"),
+    } as unknown as CloudGpuSessions;
+    const fallbacks: string[] = [];
+    const route = createCloudRoute({
+      sessions,
+      active: () => true,
+      fellBack: (m) => void fallbacks.push(m),
+      recovered: () => undefined,
+      key: async () => "k",
+      fetch: (async () => new Response("bad", { status: 400 })) as typeof fetch,
+    });
+    expect(await route.send("chat-a", "{}")).toBeNull();
+    expect(calls).toEqual(["done:tool"]);
+    expect(fallbacks).toEqual([REFUSED_MESSAGE]);
   });
 });

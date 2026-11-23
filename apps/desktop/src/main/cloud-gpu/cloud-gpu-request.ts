@@ -7,6 +7,33 @@
 import { CLOUD_LIMITS, CLOUD_MODEL } from "./cloud-gpu-config.js";
 import type { CloudSession } from "./cloud-gpu-sessions.js";
 
+/** Said in place of a picture: the GPU's model reads text only (`--language-model-only`). */
+export const NO_IMAGE_NOTE =
+  "[A screenshot was here. Cloud GPU's model reads text only, so it was left out. To see a page, use browser_snapshot or read its text.]";
+
+type Part = { type?: unknown };
+
+/**
+ * Pictures (screenshots from computer_observe, attached images) become a short note. vLLM
+ * refused the whole request otherwise, the chat lost its GPU and the Mac answered every later
+ * step with a window too small for the task.
+ */
+export function withoutImages(messages: unknown): unknown {
+  if (!Array.isArray(messages)) return messages;
+  return messages.map((message) => {
+    const content = (message as { content?: unknown } | null)?.content;
+    if (!Array.isArray(content)) return message;
+    if (!content.some((part: Part) => part?.type === "image_url" || part?.type === "input_image"))
+      return message;
+    const parts = content.map((part: Part) =>
+      part?.type === "image_url" || part?.type === "input_image"
+        ? { type: "text", text: NO_IMAGE_NOTE }
+        : part,
+    );
+    return { ...(message as object), content: parts };
+  });
+}
+
 /** The same chat for vLLM: its model name, and Qwen's own switch for thinking. */
 export function cloudChatBody(body: string): string {
   let parsed: Record<string, unknown>;
@@ -16,6 +43,7 @@ export function cloudChatBody(body: string): string {
     return body;
   }
   parsed.model = CLOUD_MODEL;
+  parsed.messages = withoutImages(parsed.messages);
   const effort = parsed.reasoning_effort;
   delete parsed.reasoning_effort;
   // Ollama-only fields; vLLM rejects some of them.
