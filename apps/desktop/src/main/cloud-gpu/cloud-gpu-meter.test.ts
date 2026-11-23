@@ -28,7 +28,7 @@ describe("cloud GPU meter", () => {
   it("measures first token, tokens per second and total, and passes bytes through", async () => {
     const times = [0, 2000, 2500, 3000, 4000];
     let i = 0;
-    const now = () => times[Math.min(i++, times.length - 1)];
+    const now = () => times[Math.min(i++, times.length - 1)] ?? 0;
     const text = sse([
       { choices: [{ delta: { reasoning_content: "hm" } }] },
       { choices: [{ delta: { content: "Hi" } }] },
@@ -55,7 +55,7 @@ describe("cloud GPU meter", () => {
       prompt_tokens: 900,
       finish: "stop",
     });
-    expect(lines[0].total_s).toBeGreaterThan(2);
-    expect(lines[0].tokens_per_s).toBeGreaterThan(0);
+    expect(lines[0]?.total_s).toBeGreaterThan(2);
+    expect(lines[0]?.tokens_per_s).toBeGreaterThan(0);
   });
 });
