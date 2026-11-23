@@ -1,5 +1,8 @@
 import { once } from "node:events";
+import { mkdtempSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
+import os from "node:os";
+import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 type WireRequest = {
@@ -109,6 +112,20 @@ describe("local model output limit on the wire", () => {
       RAKAZO_LOCAL_MAX_TOKENS: "20000",
     });
     expect(outputLimit(request)).toBe(8000);
+  });
+
+  // Gente: a whole run with Cloud GPU's window (a getter-only limit once hung runs here).
+  it("runs with Cloud GPU's larger limits from the limits file", async () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), "cloud-limits-"));
+    const file = path.join(dir, "cloud-gpu-limits.json");
+    writeFileSync(file, JSON.stringify({ contextWindow: 131_072, maxTokens: 32_768 }));
+    const request = await wireRequest({
+      ...localServer,
+      RAKAZO_LOCAL_CONTEXT_WINDOW: "32768",
+      RAKAZO_LOCAL_MAX_TOKENS: "8192",
+      RAKAZO_LOCAL_LIMITS_FILE: file,
+    });
+    expect(outputLimit(request)).toBe(32_768);
   });
 
   it("leaves other providers on the default", async () => {

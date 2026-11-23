@@ -10,7 +10,7 @@ import { execFile } from "node:child_process";
 /** The deployed control endpoint (`control` in infra/cloud-gpu/modal_app.py). */
 export const CLOUD_GPU_CONTROL_URL =
   process.env.GENTE_CLOUD_GPU_URL?.trim() ||
-  "https://luis-santiago-l-sanchez--yourai-cloud-gpu-control.modal.run";
+  "https://luis-santiago-l-sanchez--yourai-cloud-gpu-control.us-east.modal.run";
 
 /** The model name vLLM serves on the GPU. */
 export const CLOUD_MODEL = "yourai-cloud";

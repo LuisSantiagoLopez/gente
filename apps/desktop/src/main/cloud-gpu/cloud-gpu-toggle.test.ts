@@ -20,10 +20,12 @@ async function make(hasKey = true) {
   const sessions = createCloudGpuSessions({
     controlUrl: "https://control.example",
     key: async () => "k",
-    fetch: (async (url: string) =>
-      new URL(url).pathname === "/start"
-        ? Response.json({ url: "https://gpu.example", token: "t", gpu: "H100" })
-        : (stops.push("stop"), Response.json({}))) as typeof fetch,
+    fetch: (async (url: string) => {
+      if (new URL(url).pathname === "/start")
+        return Response.json({ url: "https://gpu.example", token: "t", gpu: "H100" });
+      stops.push("stop");
+      return Response.json({});
+    }) as typeof fetch,
   });
   const toggle = createCloudGpuToggle({
     userDataDir: dir,
@@ -52,10 +54,11 @@ describe("Cloud GPU switch", () => {
     expect(JSON.parse(await readFile(limitsFilePath(dir), "utf8"))).toEqual(CLOUD_LIMITS);
   });
 
-  it("turning it off removes the cloud window and stops every GPU", async () => {
+  it("turning it on starts a GPU at once; off stops every GPU and removes the cloud window", async () => {
     const { dir, toggle, sessions, stops } = await make();
     await toggle.set(true);
-    await sessions.session("chat-a");
+    expect(toggle.state().status.phase).toBe("starting");
+    await sessions.session("chat-a"); // the chat takes the GPU started on switch-on
     await toggle.set(false);
     expect(stops).toEqual(["stop"]);
     expect(await exists(limitsFilePath(dir))).toBe(false);
@@ -69,8 +72,9 @@ describe("Cloud GPU switch", () => {
   });
 
   it("after a fallback, runs use this Mac's window again", async () => {
-    const { dir, toggle } = await make();
+    const { dir, toggle, sessions } = await make();
     await toggle.set(true);
+    await sessions.stopAll(); // the GPU started on switch-on did not come up
     await toggle.fellBack("Cloud GPU didn't answer, so this Mac answered instead.");
     expect(await exists(limitsFilePath(dir))).toBe(false);
     expect(toggle.state().status).toMatchObject({ phase: "fallback" });

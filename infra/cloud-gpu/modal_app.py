@@ -168,6 +168,7 @@ class Gpu:
     cpu=0.25,
     memory=512,
     scaledown_window=10 * MINUTES,
+    timeout=20 * MINUTES,  # the first boot after a deploy builds the snapshot and takes minutes
     enable_memory_snapshot=True,
 )
 @modal.asgi_app()

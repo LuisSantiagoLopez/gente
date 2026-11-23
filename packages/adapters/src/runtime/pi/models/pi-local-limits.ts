@@ -53,15 +53,17 @@ export function withLiveLimits<T extends { contextWindow: number; maxTokens: num
 ): T {
   const base = { contextWindow: model.contextWindow, maxTokens: model.maxTokens };
   if (!env[LOCAL_LIMITS_FILE_ENV]?.trim()) return model;
-  Object.defineProperty(model, "contextWindow", {
-    enumerable: true,
-    configurable: true,
-    get: () => readLocalLimits(env).contextWindow ?? base.contextWindow,
-  });
-  Object.defineProperty(model, "maxTokens", {
-    enumerable: true,
-    configurable: true,
-    get: () => readLocalLimits(env).maxTokens ?? base.maxTokens,
-  });
+  // A value set on the model later (the runtime adjusts limits) wins over the file.
+  const set: { contextWindow?: number; maxTokens?: number } = {};
+  for (const key of ["contextWindow", "maxTokens"] as const) {
+    Object.defineProperty(model, key, {
+      enumerable: true,
+      configurable: true,
+      get: () => set[key] ?? readLocalLimits(env)[key] ?? base[key],
+      set: (value: number) => {
+        set[key] = value;
+      },
+    });
+  }
   return model;
 }

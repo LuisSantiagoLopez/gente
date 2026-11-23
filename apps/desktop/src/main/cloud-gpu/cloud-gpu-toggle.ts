@@ -70,7 +70,9 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
       if (on) await write(file, "on");
       else await remove(file);
       await syncLimits(on);
-      if (!on) await deps.sessions.stopAll();
+      // A GPU takes about 20 s to start, so it starts now, while the person writes.
+      if (on) deps.sessions.prewarm();
+      else await deps.sessions.stopAll();
       return this.state();
     },
     /** The cloud failed: this Mac answers, with its own window, until the cloud is back. */
