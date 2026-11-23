@@ -9,6 +9,8 @@
 // Cost: one idle H100 ($3.95/h) only while the person is active.
 // Who calls it: cloud-gpu-toggle.ts (on, off, typing, quit) and cloud-gpu-route.ts (each answer).
 
+import { randomUUID } from "node:crypto";
+
 export const LEASE_MINUTES = 15;
 const RENEW_EVERY_MS = 5 * 60_000;
 
@@ -27,6 +29,8 @@ export function createWarmPool(deps: WarmDeps) {
   let renewedAt = 0;
   let warm = false;
   let lastActive = 0;
+  // This app's lease id: quitting drops only this app's lease, never another person's.
+  const client = randomUUID();
 
   async function post(minutes: number) {
     const key = await deps.key();
@@ -34,7 +38,7 @@ export function createWarmPool(deps: WarmDeps) {
     await doFetch(`${deps.controlUrl}/warm`, {
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-      body: JSON.stringify({ minutes, mode: deps.mode?.() ?? "shared" }),
+      body: JSON.stringify({ minutes, mode: deps.mode?.() ?? "shared", client }),
       signal: AbortSignal.timeout(30_000),
     }).catch(() => undefined);
   }

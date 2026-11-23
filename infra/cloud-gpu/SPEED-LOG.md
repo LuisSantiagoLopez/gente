@@ -80,3 +80,34 @@ Same packaged build, same prompts, from pressing Send to the reply on screen.
 - Still over 1 s for "hey": about 0.6 to 0.9 s is the app itself (run setup before the model
   call); the GPU answers a bare "hey" in 0.36 to 0.52 s from the Mac. A us-west GPU would save
   ~0.1 s but costs 1.75x, so it is not used.
+
+## Round 6: the two misses ("hey" under 1 s; to-do app under 60 s)
+
+First word is now timed inside the page (Enter key to first reply character, MutationObserver),
+so the proof script's own polling no longer adds up to 0.4 s.
+
+**"hey" app-side setup.** A trace through run assembly and a CPU profile of the gap before the
+model call showed assembly takes 110 to 260 ms, then 680 ms went to loading pi-ai's chat client
+(the OpenAI SDK) on the first message: 634 ms of that was opening files. It is now loaded 1.5 s
+after the server starts (`prewarmLocalChatClient` in pi-local-provider.ts).
+
+| "hey", first word (warm GPU) | Before | After |
+|---|---|---|
+| Cloud, exact in-page | 1.105 s | 0.66 s, 0.63 s, 0.98 s, 1.31 s |
+| Gap from setup done to model call | 840 ms | 40 to 50 ms |
+| This Mac, exact in-page | | 1.66 s |
+
+**To-do app.** The bots' E2B computer spent 170 s of its 177 s start installing desktop tools and
+the page browser on every fresh sandbox. They are now baked into the `rakazo-computer` E2B
+template (same steps still run on start and find everything in place).
+
+| "make a simple to-do web app" | Computer start | Total | App works |
+|---|---|---|---|
+| Cloud, before | 177 s | 188 s | yes |
+| Cloud, after (GPU cold: 33 s restore) | 7.7 s | 77 s | yes |
+| Cloud, after (GPU warm) | 4.5 s | 12.2 s, 8.3 s | yes, yes |
+| This Mac, after | | 522 s | yes |
+
+- Found and fixed: one app quitting sent `/warm 0` and turned off the shared GPU for everyone
+  (that is why one run hit a cold GPU). Each app now holds its own lease (`client` id); the
+  pool stays warm while any lease is live.

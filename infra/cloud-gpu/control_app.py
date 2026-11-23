@@ -7,7 +7,7 @@
 #
 #   POST /start  {idle_timeout}  -> a sticky session on its own GPU: {url, token, gpu, ...}
 #   POST /stop   {token}         -> ends that session; the GPU scales down 60 s later
-#   POST /warm   {minutes, mode} -> keeps one GPU ready for that long (0 = stop now): the shared
+#   POST /warm   {minutes, mode, client} -> this app's lease on one ready GPU (0 = drop it): the shared
 #                                   GPU, or a spare dedicated one, so a
 #                                   new chat never waits for a cold start. A 2-minute check lets
 #                                   the spare go when the lease runs out, even if the app crashed.
@@ -74,6 +74,8 @@ def control():
     class Warm(BaseModel):
         minutes: int = 15
         mode: str = "shared"
+        # Each app holds its own lease; the pool stays warm while any lease is live.
+        client: str = "default"
 
     @api.post("/start")
     async def start(body: Start, authorization: str | None = Header(default=None)):
@@ -102,10 +104,17 @@ def control():
         check(authorization)
         minutes = max(0, min(body.minutes, MAX_WARM_MINUTES))
         mode = "dedicated" if body.mode == "dedicated" else "shared"
+        client = body.client[:64] or "default"
         until = time.time() + minutes * 60
-        await leases.put.aio(f"until:{mode}", until)
-        await set_spare(1 if minutes > 0 else 0, mode)
-        return {"warm_until": until if minutes > 0 else None}
+        held = await leases.get.aio(f"leases:{mode}", {}) or {}
+        if minutes > 0:
+            held[client] = until
+        else:
+            held.pop(client, None)
+        held = {k: v for k, v in held.items() if v > time.time()}
+        await leases.put.aio(f"leases:{mode}", held)
+        await set_spare(1 if held else 0, mode)
+        return {"warm_until": until if minutes > 0 else None, "leases": len(held)}
 
     @api.get("/health")
     async def health():
@@ -116,9 +125,11 @@ def control():
 
 @app.function(image=image, schedule=modal.Period(minutes=2), cpu=0.125, memory=256)
 async def expire_warm():
-    """Lets the spare GPU go once nobody renewed the lease (the app quit or crashed)."""
+    """Lets the spare GPU go once no app renewed its lease (they quit or crashed)."""
     for mode in ("shared", "dedicated"):
-        until = await leases.get.aio(f"until:{mode}", 0)
-        if until and until < time.time():
-            await set_spare(0, mode)
-            await leases.put.aio(f"until:{mode}", 0)
+        held = await leases.get.aio(f"leases:{mode}", {}) or {}
+        live = {k: v for k, v in held.items() if v > time.time()}
+        if live != held:
+            await leases.put.aio(f"leases:{mode}", live)
+            if not live:
+                await set_spare(0, mode)
