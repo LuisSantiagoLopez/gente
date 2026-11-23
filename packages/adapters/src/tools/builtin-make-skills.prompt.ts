@@ -8,6 +8,8 @@
 // Checked on the cloud computer on 2026-11-22: ffmpeg and python3 are there; node and Pillow are
 // not; `vercel deploy --temporary` works without an account. Who reads this: builtin-skills.
 
+import { MOTION_KIT_PY } from "./builtin-motion-kit.prompt.js";
+
 export const MAKE_SKILLS: Array<{ name: string; description: string; body: string }> = [
   {
     name: "Build a web app",
@@ -39,21 +41,28 @@ Never say a site is published unless the command printed its URL in this chat.`,
   {
     name: "Make a video with code",
     description: "Make a short animated MP4 video with code when no generator works",
-    body: `Use this when someone asks for a video and generate_video is missing or fails. You make motion graphics with code and render them with ffmpeg on your computer.
+    body: `Use this when someone asks for a video and generate_video is missing or fails. You make a motion-graphics video with code on your computer, using the tested motion kit below so it looks good even when you cannot see pictures.
 
-1. Write a short plan: 10–30 s, 3–5 scenes, one line of text each, a palette, and the motion (fades, slides, scale, easing). 1280×720 (or 1080×1920 for vertical) at 30 fps.
-2. Install once: \`pip install --quiet pillow numpy\` (ffmpeg is already there). Download a good font, e.g. \`curl -sL -o ~/Inter.ttf https://github.com/rsms/inter/raw/v3.19/docs/font-files/Inter-Bold.otf\`.
-3. Write ~/video/render.py: for each frame t, draw with Pillow (gradient background, shapes, text with ImageFont.truetype), using easing (e.g. 1-(1-x)**3) so motion is smooth, and write raw RGB bytes to ffmpeg's stdin:
-   \`ffmpeg -y -f rawvideo -pix_fmt rgb24 -s 1280x720 -r 30 -i - -c:v libx264 -pix_fmt yuv420p -crf 18 -movflags +faststart ~/video/out.mp4\`
-   Keep the work light (2 CPUs): draw at the final size, reuse the background, no per-pixel Python loops (use numpy). Test with 1 s first (\`--seconds 1\`), then render the whole video in the background so it does not hit the shell's time limit: \`nohup python3 ~/video/render.py > ~/video/render.log 2>&1 &\` and check \`tail -2 ~/video/render.log; ls -la ~/video/out.mp4\` every 30 s until it is done.
-4. Check it before you send it. \`ffprobe -v error -show_entries format=duration -of csv=p=0 ~/video/out.mp4\`. Then measure frames with numbers, which works even when you cannot see pictures:
+1. Plan 3 to 5 scenes for 10 to 30 s. Each scene: a kicker (2 to 4 words), a title (at most 4 words), an optional line (at most 8 words), its seconds, and optional "rule": true (a thin line under it) and "glow" (0.5 to 1.2). Pick a palette for the brand: top, bottom (background gradient), glow, title, accent, text as hex colors.
+2. Set up once:
+   \`mkdir -p ~/video && cd ~/video && pip install --quiet pillow numpy && curl -sL -o display.ttf "https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf" && curl -sL -o body.otf https://github.com/rsms/inter/raw/v3.19/docs/font-files/Inter-Medium.otf\`
+   (Another display font from github.com/google/fonts works too; save it as display.ttf.)
+3. Write ~/video/motion.py with write_file, exactly as the kit below, and ~/video/scenes.json like:
+   {"palette": {"top": "#140b07", "bottom": "#3e1f10", "glow": "#d9702a", "title": "#f6e7d2", "accent": "#e8a34c", "text": "#d9c3a5"}, "scenes": [{"seconds": 4, "kicker": "Introducing", "title": "Hearthstone", "title_scale": 0.17, "rule": true}]}
+   "title_scale" is the title height as a share of the frame (0.09 for long titles, up to 0.17 for one word). "music_hz" (optional) is a list of three notes for the soft pad.
+4. Try 2 s: \`cd ~/video && python3 motion.py scenes.json test.mp4 --seconds 2\`. Then render the whole video in the background (the shell stops long commands): \`cd ~/video && nohup python3 motion.py scenes.json out.mp4 > render.log 2>&1 &\` and check \`tail -1 ~/video/render.log\` every 30 s until it prints done.
+5. Check it before you send it: \`ffprobe -v error -show_entries format=duration -of csv=p=0 ~/video/out.mp4\`, then measure a frame in each scene with numbers (this works without sight):
    \`python3 -c "import subprocess,numpy as np
 for t in [1,4,8,11,14]:
   a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-ss',str(t),'-i','$HOME/video/out.mp4','-frames:v','1','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout,np.uint8).reshape(720,1280)
   y,x=np.where(a>140); print(t,'mean',round(a.mean()),'text box',(x.min(),y.min(),x.max(),y.max()) if len(x) else None)"\`
-   A frame whose mean is under 12 is too dark; a scene with words needs a text box, centered when its middle ((x0+x1)/2) is near 640. Fix and render again until every check is right. If you can see images, also pull stills (\`ffmpeg -ss 2 -i out.mp4 -frames:v 1 s1.png\`) and look at them with open_path. Tell the user exactly how you checked (by numbers or by eye).
-   Layout rules that keep it clean without looking: center each line with draw.textbbox (x = (W - width) / 2); space lines at least 1.4 × the font size; one title and at most one small line per scene; put an underline 14 px below the text box, never through it; never a flat black background (keep the warm gradient in every scene); soft effects (steam, glow) are thin and see-through (alpha under 90) and blurred with ImageFilter.GaussianBlur, never solid white shapes. Cross-fade between scenes over 0.5 s.
-5. Optional sound: a soft pad with \`ffmpeg -f lavfi -i "sine=frequency=220:duration=20" ...\` mixed low, or none.
-6. attach_file the MP4 with a name and description, and say its length and size. Never say the video is ready unless ffprobe showed its duration in this chat.`,
+   Use times inside your scenes. Each mean should be 12 or more and each scene should show a text box whose middle ((x0+x1)/2) is near 640. If a check fails, fix scenes.json (shorter text, smaller title_scale) and render again.
+6. attach_file ~/video/out.mp4 with a name and description. Say its length, and say plainly how you checked it (by numbers, or by eye if you could see stills). Never say the video is ready unless ffprobe showed its duration in this chat.
+To change the video later, edit scenes.json and render again. Only write your own renderer if the user asks for something the kit cannot do, and then keep the same checks.
+
+The motion kit (motion.py):
+\`\`\`python
+${MOTION_KIT_PY}
+\`\`\``,
   },
 ];
