@@ -12,6 +12,11 @@ export const CLOUD_GPU_CONTROL_URL =
   process.env.GENTE_CLOUD_GPU_URL?.trim() ||
   "https://luis-santiago-l-sanchez--yourai-cloud-gpu-control.us-east.modal.run";
 
+/** Shared mode's GPU (`Shared` in infra/cloud-gpu/shared_app.py): many chats on one warm GPU. */
+export const CLOUD_GPU_SHARED_URL =
+  process.env.GENTE_CLOUD_GPU_SHARED_URL?.trim() ||
+  "https://luis-santiago-l-sanchez--yourai-cloud-gpu-shared-shared.us-east.modal.direct";
+
 /** The model name vLLM serves on the GPU. */
 export const CLOUD_MODEL = "yourai-cloud";
 

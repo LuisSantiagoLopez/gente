@@ -27,3 +27,34 @@ GPU: Modal H100 unless said. Model: Qwen 3.6 35B-A3B FP8, vLLM 0.32, MTP (3 draf
   getter-only property; the runtime assigns limits on the model, which threw. Fixed (setter), with
   a wire test that runs a whole turn with the cloud limits file.
 - Prewarm: a GPU starts when the switch turns on and while the person types.
+- Local "make a simple to-do web app" in the app (Ollama, E2B computer): 143 s, 3 files, no
+  context error, the app works (added and checked off a to-do in Chrome).
+
+## Round 3: warm pool
+
+- Slowest part: a cold GPU (17 to 40 s from a snapshot, about 10 min after a deploy).
+- Fix: `/warm` lease on the control app keeps one GPU up while the person is active (renewed on
+  the switch, typing and each answer; ends after 15 idle minutes, or by a 2-minute check if the
+  app crashed). Control moved to its own Modal app, so changing it never drops the GPU snapshot.
+- Result: a new dedicated session attaches to the warm GPU in 1.96 s (was 17 to 21 s).
+
+## Round 4: shared mode (default) for the economics
+
+One warm H100 serves many chats (vLLM batching). Each chat: 4,000-token prompt with its own
+`cache_salt`, ~350-token answer. Second run (first run warms batch shapes; it was 2 to 4x worse).
+
+| Chats at once | Total tokens/s | Per chat tokens/s | First word median / p95 | $ per 1M tokens (GPU full) |
+|---|---|---|---|---|
+| 1 | 238 | 347 | 0.52 s / 0.52 s | $4.61 |
+| 8 | 1,134 | 218 | 0.79 s / 0.79 s | $0.97 |
+| 32 | 2,688 | 119 | 1.24 s / 1.51 s | $0.41 |
+| 64 | 3,531 | 79 | 1.72 s / 2.47 s | $0.31 |
+
+- Average conversation (10 messages, ~5,000 output tokens): $0.002 at 32 chats at once,
+  $0.023 alone on the GPU.
+- The fixed cost is the GPU being up: $3.95/h = $94.80/day always on, $47.40/day for 12 active
+  hours, $0 idle with scale to zero (but then a 17 to 40 s cold start).
+- Dedicated (a GPU per chat) costs $3.95/h per chat while it is up; kept as the "Private" option.
+- Privacy: no prompt logs (vLLM default, uvicorn access log off), per-chat `cache_salt`, nothing on
+  disk, container gone 5 min after the last request.
+- Numbers for the billing page: `infra/cloud-gpu/cost-model.json`.

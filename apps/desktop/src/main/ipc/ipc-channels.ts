@@ -126,6 +126,8 @@ export const ipcChannels = {
     appPage<NonNullable<NonNullable<Desktop["gente"]>["cloudGpu"]>>(REJECTS),
   "desktop.gente.setCloudGpu":
     appPage<NonNullable<NonNullable<Desktop["gente"]>["setCloudGpu"]>>(REJECTS),
+  "desktop.gente.setCloudGpuMode":
+    appPage<NonNullable<NonNullable<Desktop["gente"]>["setCloudGpuMode"]>>(REJECTS),
   "desktop.gente.prewarmCloudGpu":
     appPage<NonNullable<NonNullable<Desktop["gente"]>["prewarmCloudGpu"]>>(undefined),
   "desktop.gente.consumeMessage": appPage<NonNullable<Desktop["gente"]>["consumeMessage"]>(true),

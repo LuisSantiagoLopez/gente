@@ -6,6 +6,7 @@
 // the run to end, and writes screenshots and timings.json. Uses the real local model and, with
 // --cloud, the real Modal GPU. Not part of CI.
 //   node e2e/cloud-gpu-proof.mjs <app-executable> <out-dir> <data-dir> [--cloud] [--ask]
+import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { _electron as electron } from "@playwright/test";
@@ -15,6 +16,9 @@ const cloud = flags.includes("--cloud");
 const ask = flags.includes("--ask");
 const out = path.resolve(outArg);
 mkdirSync(out, { recursive: true });
+// Bots' computers on E2B through the developer's own key (Keychain), as in a dev build.
+mkdirSync(dataDir, { recursive: true });
+writeFileSync(path.join(dataDir, "dev-vendor-keys"), "");
 const t0 = Date.now();
 const timings = {};
 const log = (...a) => console.log(`${((Date.now() - t0) / 1000).toFixed(1)}s`, ...a);
@@ -26,6 +30,29 @@ const shot = (page, name) =>
   page
     .screenshot({ path: path.join(out, name), timeout: 15_000 })
     .catch((e) => log("shot", name, e.message));
+
+/** Sets the host choice in this test's own Postgres (found through its API process). */
+function recordHostChoice(dir) {
+  const pids = execFileSync("pgrep", ["-f", "rakazo-server/apps/api/dist/index.js"], {
+    encoding: "utf8",
+  })
+    .trim()
+    .split("\n");
+  for (const pid of pids) {
+    const env = execFileSync("ps", ["eww", "-p", pid], { encoding: "utf8" });
+    if (!env.includes(`DATA_DIR=${dir}/stack/data`)) continue;
+    const url = (/DATABASE_MIGRATION_URL=(\S+)/.exec(env) ?? /DATABASE_URL=(\S+)/.exec(env))?.[1];
+    if (!url) continue;
+    execFileSync("/opt/homebrew/opt/postgresql@17/bin/psql", [
+      url,
+      "-c",
+      `INSERT INTO deployment_settings (id, "computerHost", "updatedAt") VALUES ('default', 'docker', now())
+       ON CONFLICT (id) DO UPDATE SET "computerHost" = 'docker'`,
+    ]);
+    return;
+  }
+  throw new Error("test API process not found");
+}
 
 const app = await electron.launch({
   executablePath: exe,
@@ -39,7 +66,7 @@ const app = await electron.launch({
 });
 let failure = null;
 try {
-  const setup = await app.firstWindow();
+  const setup = await app.firstWindow({ timeout: 240_000 });
   let page;
   const deadline = Date.now() + 20 * 60_000;
   let clicked = false;
@@ -93,16 +120,20 @@ try {
           .finally(() => (frameBusy = false));
       }, 700)
     : null;
-  // A new workspace asks about this Mac's own computer; the test keeps bots on cloud computers.
-  const useMac = page.getByRole("button", { name: "Use this Mac" });
+  // A new workspace asks where bots run. This Mac has no Docker, and "this Mac" would let test
+  // bots touch the owner's files, so the throwaway database records "docker" and bots use E2B.
+  const hostPrompt = page.getByText("Where should bots run?");
   if (
-    await useMac.waitFor({ timeout: 8000 }).then(
+    await hostPrompt.waitFor({ timeout: 30_000 }).then(
       () => true,
       () => false,
     )
   ) {
-    await page.keyboard.press("Escape");
-    await new Promise((r) => setTimeout(r, 1000));
+    recordHostChoice(dataDir);
+    log("host choice recorded");
+    await page.reload();
+    page = await withSelector(box, 60_000);
+    await hostPrompt.waitFor({ state: "hidden", timeout: 30_000 });
   }
   if (cloud) {
     const sw = page.getByTestId("cloud-gpu-switch");

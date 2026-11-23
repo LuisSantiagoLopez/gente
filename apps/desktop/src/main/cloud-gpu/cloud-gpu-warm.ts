@@ -17,6 +17,8 @@ export interface WarmDeps {
   key: () => Promise<string | undefined>;
   fetch?: typeof fetch;
   now?: () => number;
+  /** Which GPU pool to keep warm: the shared one, or a spare dedicated one. */
+  mode?: () => "shared" | "dedicated";
 }
 
 export function createWarmPool(deps: WarmDeps) {
@@ -32,7 +34,7 @@ export function createWarmPool(deps: WarmDeps) {
     await doFetch(`${deps.controlUrl}/warm`, {
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-      body: JSON.stringify({ minutes }),
+      body: JSON.stringify({ minutes, mode: deps.mode?.() ?? "shared" }),
       signal: AbortSignal.timeout(30_000),
     }).catch(() => undefined);
   }

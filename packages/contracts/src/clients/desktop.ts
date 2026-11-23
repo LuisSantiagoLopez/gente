@@ -63,6 +63,8 @@ export interface GenteCloudGpuState {
   /** This Mac has a Cloud GPU key, so the switch can turn on. */
   available: boolean;
   on: boolean;
+  /** Shared: one warm GPU for many chats (default). Dedicated: a GPU of its own per chat. */
+  mode?: "shared" | "dedicated";
   status: GenteCloudGpuStatus;
   dollarsPerHour: number;
 }
@@ -206,6 +208,7 @@ export interface RakazoDesktop {
     /** Cloud GPU: absent on releases without it. */
     cloudGpu?: () => Promise<GenteCloudGpuState>;
     setCloudGpu?: (on: boolean) => Promise<GenteCloudGpuState>;
+    setCloudGpuMode?: (mode: "shared" | "dedicated") => Promise<GenteCloudGpuState>;
     /** Starts a GPU while the person types, so the first answer waits less. */
     prewarmCloudGpu?: () => Promise<void>;
     /** "Make my AI private" waitlist; null when signed out or offline. */

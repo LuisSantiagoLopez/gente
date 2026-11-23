@@ -34,7 +34,8 @@ export function cloudHeaders(session: CloudSession, key: string): Record<string,
   return {
     "content-type": "application/json",
     authorization: `Bearer ${key}`,
-    "modal-authorization": `Bearer ${session.token}`,
+    // A dedicated GPU is reached through its session; the shared one needs only the key.
+    ...(session.token ? { "modal-authorization": `Bearer ${session.token}` } : {}),
   };
 }
 

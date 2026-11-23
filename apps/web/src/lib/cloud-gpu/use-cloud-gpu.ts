@@ -39,10 +39,15 @@ export function useCloudGpu() {
     if (!gente?.setCloudGpu) return;
     setState(await gente.setCloudGpu(on));
   }, []);
+  const setMode = useCallback(async (mode: "shared" | "dedicated") => {
+    const gente = bridge();
+    if (!gente?.setCloudGpuMode) return;
+    setState(await gente.setCloudGpuMode(mode));
+  }, []);
   const prewarm = useCallback(() => {
     void bridge()
       ?.prewarmCloudGpu?.()
       .catch(() => undefined);
   }, []);
-  return { state, now, setOn, prewarm };
+  return { state, now, setOn, setMode, prewarm };
 }

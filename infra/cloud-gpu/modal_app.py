@@ -64,14 +64,14 @@ gpu_image = (
 app = modal.App(APP_NAME)
 
 
-def vllm_command() -> list[str]:
+def vllm_command(max_seqs: int = 8) -> list[str]:
     cmd = [
         "vllm", "serve", model_dir(),
         "--served-model-name", SERVED_NAME,
         "--host", "0.0.0.0", "--port", str(PORT),
         "--api-key", os.environ["YOURAI_GPU_KEY"],
         "--max-model-len", str(CONTEXT),
-        "--max-num-seqs", "8",
+        "--max-num-seqs", str(max_seqs),
         "--gpu-memory-utilization", "0.92",
         "--enable-prefix-caching",
         "--reasoning-parser", "qwen3",

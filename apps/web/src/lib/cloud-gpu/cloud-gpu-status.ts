@@ -26,6 +26,14 @@ export function cloudGpuLine(state: GenteCloudGpuState | null, now: number): Clo
 export const CLOUD_PRIVACY_NOTE =
   "Cloud GPU is on: your messages go to a rented GPU used only by this chat, and it is deleted after.";
 
+/** Shared mode: one GPU answers many people's chats, each request kept apart. */
+export const SHARED_PRIVACY_NOTE =
+  "Cloud GPU is on: your messages go to a rented GPU shared with other chats. Each request is kept apart, nothing is stored, and it is deleted after.";
+
+export function privacyNote(state: GenteCloudGpuState | null): string {
+  return state?.mode === "dedicated" ? CLOUD_PRIVACY_NOTE : SHARED_PRIVACY_NOTE;
+}
+
 /** Poll fast while something is changing, slowly otherwise. */
 export function pollDelay(state: GenteCloudGpuState | null): number {
   if (!state?.on) return 5000;

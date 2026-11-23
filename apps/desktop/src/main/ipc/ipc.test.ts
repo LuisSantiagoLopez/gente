@@ -254,6 +254,7 @@ describe("handleIpc", () => {
       "desktop.gente.linkUnpair",
       "desktop.gente.cloudGpu",
       "desktop.gente.setCloudGpu",
+      "desktop.gente.setCloudGpuMode",
       "desktop.gente.setAiMode",
       "desktop.gente.signIn",
       "desktop.gente.signOut",

@@ -8,6 +8,9 @@ import { readCloudGpuKey } from "./cloud-gpu-config.js";
 import type { Finish } from "./cloud-gpu-request.js";
 import { cloudChatBody, cloudHeaders, watchFinish } from "./cloud-gpu-request.js";
 import type { CloudGpuSessions } from "./cloud-gpu-sessions.js";
+import type { SharedGpu } from "./cloud-gpu-shared.js";
+
+export type CloudMode = "shared" | "dedicated";
 
 export const FALLBACK_MESSAGE = "Cloud GPU didn't answer, so this Mac answered instead.";
 
@@ -18,7 +21,11 @@ export interface CloudRoute {
 }
 
 export interface RouteDeps {
+  /** Dedicated mode: one GPU per chat. */
   sessions: CloudGpuSessions;
+  /** Shared mode (the default): one warm GPU for many chats. */
+  shared?: SharedGpu;
+  mode?: () => CloudMode;
   active: () => boolean;
   fellBack: (message: string) => Promise<void> | void;
   recovered: () => Promise<void> | void;
@@ -35,20 +42,23 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
   async function once(sessionKey: string, body: string): Promise<Response | null> {
     const secret = await key();
     if (!secret) return null;
-    const session = await deps.sessions.session(sessionKey).catch(() => null);
+    const shared = deps.mode?.() !== "dedicated" ? deps.shared : undefined;
+    const pool = shared ?? deps.sessions;
+    const session = await pool.session(sessionKey).catch(() => null);
     if (!session) return null;
     const answer = await doFetch(`${session.url}/v1/chat/completions`, {
       method: "POST",
       headers: cloudHeaders(session, secret),
-      body,
+      body: shared ? withCacheSalt(body, shared.salt(sessionKey)) : body,
     }).catch(() => null);
     if (!answer?.ok || !answer.body) {
       // Read and drop the error body so the connection is freed.
       await answer?.text().catch(() => undefined);
-      deps.sessions.failed(sessionKey);
+      pool.failed(sessionKey);
       return null;
     }
-    const onEnd = (finish: Finish) => deps.sessions.done(sessionKey, finish);
+    shared?.answered();
+    const onEnd = (finish: Finish) => pool.done(sessionKey, finish);
     return new Response(watchFinish(answer.body, onEnd), {
       status: answer.status,
       headers: answer.headers,
@@ -66,4 +76,13 @@ export function createCloudRoute(deps: RouteDeps): CloudRoute {
       return answer;
     },
   };
+}
+
+/** vLLM keeps each salt's prompt cache apart, so chats on a shared GPU never share a cache. */
+function withCacheSalt(body: string, salt: string): string {
+  try {
+    return JSON.stringify({ ...(JSON.parse(body) as object), cache_salt: salt });
+  } catch {
+    return body;
+  }
 }

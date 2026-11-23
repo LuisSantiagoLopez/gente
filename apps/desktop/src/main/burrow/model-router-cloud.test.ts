@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { afterEach, describe, expect, it } from "vitest";
 import { createCloudRoute, FALLBACK_MESSAGE } from "../cloud-gpu/cloud-gpu-route.js";
 import { createCloudGpuSessions } from "../cloud-gpu/cloud-gpu-sessions.js";
+import { createSharedGpu } from "../cloud-gpu/cloud-gpu-shared.js";
 import { startModelRouter } from "./model-router.js";
 
 const closers: Array<() => Promise<void>> = [];
@@ -116,5 +117,45 @@ describe("Cloud GPU in the model router", () => {
     await t.sessions.stop("thread-1");
     expect(t.control).toEqual(["/start", "/stop"]);
     expect(t.sessions.status()).toEqual({ phase: "off" });
+  });
+
+  it("shared mode: one GPU for every chat, the key only, and a different cache salt per chat", async () => {
+    const seen: Array<{ salt: string; session?: string }> = [];
+    const gpuUrl = await serve(async (req, res) => {
+      const chunks: Buffer[] = [];
+      for await (const c of req) chunks.push(c as Buffer);
+      seen.push({
+        salt: JSON.parse(Buffer.concat(chunks).toString()).cache_salt,
+        session: req.headers["modal-authorization"] as string | undefined,
+      });
+      res.writeHead(200, { "content-type": "text/event-stream" }).end(SSE);
+    });
+    const control: string[] = [];
+    const controlUrl = await serve((req, res) => {
+      control.push(String(req.url));
+      res.end("{}");
+    });
+    const sessions = createCloudGpuSessions({ controlUrl, key: async () => "secret" });
+    const cloud = createCloudRoute({
+      sessions,
+      shared: createSharedGpu({ url: gpuUrl }),
+      mode: () => "shared",
+      active: () => true,
+      fellBack: () => undefined,
+      recovered: () => undefined,
+      key: async () => "secret",
+    });
+    const router = await startModelRouter({ localBase: "http://127.0.0.1:9", cloud });
+    closers.push(router.close);
+    for (const thread of ["a", "b", "a"])
+      await fetch(`${router.base}/v1/chat/completions`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-session-affinity": thread },
+        body: JSON.stringify({ model: "yourai-default", messages: [] }),
+      }).then((r) => r.text());
+    expect(control).toEqual([]); // nothing to start or stop
+    expect(seen.map((s) => s.session)).toEqual([undefined, undefined, undefined]);
+    expect(seen[0]?.salt).toBe(seen[2]?.salt);
+    expect(seen[0]?.salt).not.toBe(seen[1]?.salt);
   });
 });

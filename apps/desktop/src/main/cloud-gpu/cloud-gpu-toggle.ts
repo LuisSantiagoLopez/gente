@@ -10,16 +10,22 @@ import { rm } from "node:fs/promises";
 import path from "node:path";
 import { writePrivateFile } from "../setup/setup-store.js";
 import { CLOUD_LIMITS } from "./cloud-gpu-config.js";
+import type { CloudMode } from "./cloud-gpu-route.js";
 import type { CloudGpuSessions, CloudGpuStatus } from "./cloud-gpu-sessions.js";
+import type { SharedGpu } from "./cloud-gpu-shared.js";
 import type { WarmPool } from "./cloud-gpu-warm.js";
 
 export const CLOUD_GPU_FILE = "cloud-gpu";
 export const LIMITS_FILE = "cloud-gpu-limits.json";
+/** "dedicated" when the person wants a GPU of their own per chat; absent means shared. */
+export const MODE_FILE = "cloud-gpu-mode";
 
 export type CloudGpuState = {
   /** A key is in the Keychain, so this Mac can rent a GPU. */
   available: boolean;
   on: boolean;
+  /** Shared: one warm GPU for many chats (default). Dedicated: a GPU of its own per chat. */
+  mode: CloudMode;
   status: CloudGpuStatus;
   dollarsPerHour: number;
 };
@@ -29,6 +35,7 @@ export interface ToggleDeps {
   /** The server's folder; the limits file goes here (RAKAZO_LOCAL_LIMITS_FILE). */
   stackDir: string;
   sessions: CloudGpuSessions;
+  shared?: SharedGpu;
   hasKey: () => Promise<boolean>;
   /** The spare GPU kept ready while the person is active (cloud-gpu-warm.ts). */
   warm?: WarmPool;
@@ -52,6 +59,14 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
     on = false;
   }
   let available = false;
+  const modeFile = path.join(deps.userDataDir, MODE_FILE);
+  let mode: CloudMode = "shared";
+  try {
+    if (readFileSync(modeFile, "utf8").trim() === "dedicated") mode = "dedicated";
+  } catch {
+    mode = "shared";
+  }
+  const dedicated = () => mode === "dedicated" || !deps.shared;
 
   /** Runs that start now use the cloud window; runs already going keep theirs. */
   async function syncLimits(cloud: boolean) {
@@ -78,7 +93,7 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
       // A GPU takes about 20 s to start, so it starts now, while the person writes.
       if (on) {
         deps.warm?.activity();
-        deps.sessions.prewarm();
+        if (dedicated()) deps.sessions.prewarm();
       } else await Promise.all([deps.sessions.stopAll(), deps.warm?.off()]);
       return this.state();
     },
@@ -93,13 +108,28 @@ export function createCloudGpuToggle(deps: ToggleDeps) {
     prewarm() {
       if (!on || !available) return;
       deps.warm?.activity();
-      deps.sessions.prewarm();
+      if (dedicated()) deps.sessions.prewarm();
+    },
+    mode: () => mode,
+    /** Shared or dedicated. Switching lets go of any dedicated GPUs. */
+    async setMode(next: unknown): Promise<CloudGpuState> {
+      if (next !== "shared" && next !== "dedicated") return this.state();
+      mode = next;
+      if (mode === "dedicated") await write(modeFile, "dedicated");
+      else await remove(modeFile);
+      if (mode === "shared") await deps.sessions.stopAll();
+      return this.state();
     },
     state(): CloudGpuState {
       return {
         available,
         on: on && available,
-        status: deps.sessions.status(),
+        mode,
+        status: !on
+          ? deps.sessions.status()
+          : dedicated()
+            ? deps.sessions.status()
+            : (deps.shared as SharedGpu).status(),
         dollarsPerHour: deps.sessions.dollarsPerHour(),
       };
     },

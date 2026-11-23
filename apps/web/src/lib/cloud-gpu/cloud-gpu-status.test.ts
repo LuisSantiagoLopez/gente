@@ -1,7 +1,7 @@
 // Copyright 2026 DeskHead Inc. Licensed under the Apache License, Version 2.0.
 // New file in Gente. Tests the Cloud GPU status line words.
 import { describe, expect, it } from "vitest";
-import { CLOUD_PRIVACY_NOTE, cloudGpuLine } from "./cloud-gpu-status";
+import { CLOUD_PRIVACY_NOTE, cloudGpuLine, SHARED_PRIVACY_NOTE } from "./cloud-gpu-status";
 
 const base = { available: true, on: true, dollarsPerHour: 0 };
 
@@ -20,5 +20,6 @@ describe("Cloud GPU status line", () => {
   it("says plainly where messages go, without claiming they stay on this Mac", () => {
     expect(CLOUD_PRIVACY_NOTE).toMatch(/rented GPU used only by this chat/);
     expect(CLOUD_PRIVACY_NOTE).not.toMatch(/leaves|this Mac/i);
+    expect(SHARED_PRIVACY_NOTE).toMatch(/shared with other chats.*nothing is stored/);
   });
 });

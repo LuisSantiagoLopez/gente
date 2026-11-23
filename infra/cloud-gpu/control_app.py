@@ -7,7 +7,8 @@
 #
 #   POST /start  {idle_timeout}  -> a sticky session on its own GPU: {url, token, gpu, ...}
 #   POST /stop   {token}         -> ends that session; the GPU scales down 60 s later
-#   POST /warm   {minutes}       -> keeps one spare GPU ready for that long (0 = stop now), so a
+#   POST /warm   {minutes, mode} -> keeps one GPU ready for that long (0 = stop now): the shared
+#                                   GPU, or a spare dedicated one, so a
 #                                   new chat never waits for a cold start. A 2-minute check lets
 #                                   the spare go when the lease runs out, even if the app crashed.
 # Every call needs `Authorization: Bearer <key>` (Modal Secret `yourai-cloud-gpu`).
@@ -19,6 +20,7 @@ import time
 import modal
 
 GPU_APP = "yourai-cloud-gpu"
+SHARED_APP = "yourai-cloud-gpu-shared"
 GPU = os.environ.get("YOURAI_GPU", "H100")
 CONTEXT = 131072
 MAX_WARM_MINUTES = 60
@@ -29,9 +31,14 @@ leases = modal.Dict.from_name("yourai-cloud-gpu-warm", create_if_missing=True)
 image = modal.Image.debian_slim(python_version="3.12").uv_pip_install("fastapi[standard]")
 
 
-async def set_spare(count: int):
-    server = modal.Server.from_name(GPU_APP, "Gpu")
-    await server.autoscaler.update.aio(buffer_containers=count)
+async def set_spare(count: int, mode: str = "dedicated"):
+    """Dedicated: a spare GPU beyond the ones chats hold. Shared: keep one shared GPU up."""
+    if mode == "shared":
+        shared = modal.Server.from_name(SHARED_APP, "Shared")
+        await shared.autoscaler.update.aio(min_containers=count)
+    else:
+        server = modal.Server.from_name(GPU_APP, "Gpu")
+        await server.autoscaler.update.aio(buffer_containers=count)
 
 
 @app.function(
@@ -66,6 +73,7 @@ def control():
 
     class Warm(BaseModel):
         minutes: int = 15
+        mode: str = "shared"
 
     @api.post("/start")
     async def start(body: Start, authorization: str | None = Header(default=None)):
@@ -93,9 +101,10 @@ def control():
     async def warm(body: Warm, authorization: str | None = Header(default=None)):
         check(authorization)
         minutes = max(0, min(body.minutes, MAX_WARM_MINUTES))
+        mode = "dedicated" if body.mode == "dedicated" else "shared"
         until = time.time() + minutes * 60
-        await leases.put.aio("until", until)
-        await set_spare(1 if minutes > 0 else 0)
+        await leases.put.aio(f"until:{mode}", until)
+        await set_spare(1 if minutes > 0 else 0, mode)
         return {"warm_until": until if minutes > 0 else None}
 
     @api.get("/health")
@@ -108,7 +117,8 @@ def control():
 @app.function(image=image, schedule=modal.Period(minutes=2), cpu=0.125, memory=256)
 async def expire_warm():
     """Lets the spare GPU go once nobody renewed the lease (the app quit or crashed)."""
-    until = await leases.get.aio("until", 0)
-    if until and until < time.time():
-        await set_spare(0)
-        await leases.put.aio("until", 0)
+    for mode in ("shared", "dedicated"):
+        until = await leases.get.aio(f"until:{mode}", 0)
+        if until and until < time.time():
+            await set_spare(0, mode)
+            await leases.put.aio(f"until:{mode}", 0)

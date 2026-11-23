@@ -6,7 +6,7 @@
 // while it is on. Shown only in the desktop app on a Mac that has a Cloud GPU key.
 // Who calls it: apps/web/src/pages/Shell.tsx. State: lib/cloud-gpu/use-cloud-gpu.ts.
 import { Switch } from "@rakazo/ui-web";
-import { CLOUD_PRIVACY_NOTE, cloudGpuLine } from "../../../lib/cloud-gpu/cloud-gpu-status";
+import { cloudGpuLine, privacyNote } from "../../../lib/cloud-gpu/cloud-gpu-status";
 import type { useCloudGpu } from "../../../lib/cloud-gpu/use-cloud-gpu";
 
 type CloudGpu = ReturnType<typeof useCloudGpu>;
@@ -16,7 +16,7 @@ export function CloudGpuSwitch({ cloud }: { cloud: CloudGpu }) {
   return (
     <span
       className="pointer-events-auto flex shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground"
-      title={cloud.state.on ? CLOUD_PRIVACY_NOTE : "Use a fast rented GPU for this chat"}
+      title={cloud.state.on ? privacyNote(cloud.state) : "Use a fast rented GPU for this chat"}
     >
       <Switch
         id="cloud-gpu-switch"
@@ -29,6 +29,19 @@ export function CloudGpuSwitch({ cloud }: { cloud: CloudGpu }) {
       <label htmlFor="cloud-gpu-switch" className="cursor-pointer">
         Cloud GPU
       </label>
+      {cloud.state.on && cloud.state.mode ? (
+        // Shared is the default and costs far less; Private rents a GPU for this chat alone.
+        <select
+          aria-label="Cloud GPU type"
+          data-testid="cloud-gpu-mode"
+          className="cursor-pointer rounded bg-transparent text-body-sm text-muted-foreground"
+          value={cloud.state.mode}
+          onChange={(event) => void cloud.setMode(event.target.value as "shared" | "dedicated")}
+        >
+          <option value="shared">Shared</option>
+          <option value="dedicated">Private</option>
+        </select>
+      ) : null}
     </span>
   );
 }
@@ -51,7 +64,9 @@ export function CloudGpuStatusLine({ cloud }: { cloud: CloudGpu }) {
     >
       {line ? <span className={`tabular-nums ${tone}`}>{line.text}</span> : null}
       {line && cloud.state.on ? <span className="text-muted-foreground"> · </span> : null}
-      {cloud.state.on ? <span className="text-muted-foreground">{CLOUD_PRIVACY_NOTE}</span> : null}
+      {cloud.state.on ? (
+        <span className="text-muted-foreground">{privacyNote(cloud.state)}</span>
+      ) : null}
     </div>
   );
 }

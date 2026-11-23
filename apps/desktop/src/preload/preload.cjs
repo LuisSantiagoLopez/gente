@@ -36,6 +36,7 @@ contextBridge.exposeInMainWorld("rakazoDesktop", {
     setAiMode: (mode) => ipcRenderer.invoke("desktop.gente.setAiMode", mode),
     cloudGpu: () => ipcRenderer.invoke("desktop.gente.cloudGpu"),
     setCloudGpu: (on) => ipcRenderer.invoke("desktop.gente.setCloudGpu", on),
+    setCloudGpuMode: (mode) => ipcRenderer.invoke("desktop.gente.setCloudGpuMode", mode),
     prewarmCloudGpu: () => ipcRenderer.invoke("desktop.gente.prewarmCloudGpu"),
     privateOffer: () => ipcRenderer.invoke("desktop.gente.privateOffer"),
     linkState: () => ipcRenderer.invoke("desktop.gente.linkState"),
