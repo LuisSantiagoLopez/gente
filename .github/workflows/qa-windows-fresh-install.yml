@@ -23,8 +23,7 @@ jobs:
         shell: pwsh
         run: |
           $ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
-          $r = Invoke-WebRequest -Uri "https://joinyourai.com/api/download?os=win&test=nolog" -MaximumRedirection 0 -SkipHttpErrorCheck -UserAgent $ua
-          "status=$($r.StatusCode) location=$($r.Headers.Location)" | Tee-Object out/download.txt
+          curl.exe -sI -A $ua "https://joinyourai.com/api/download?os=win&test=nolog" | Select-String -Pattern "^(HTTP|location)" | Tee-Object out/download.txt
           $dest = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
           Invoke-WebRequest -Uri "https://joinyourai.com/api/download?os=win&test=nolog" -OutFile $dest -UserAgent $ua
           Set-Content -Path $dest -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3`r`nHostUrl=https://joinyourai.com/"
@@ -66,7 +65,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          cd /c/qa
+          mkdir -p /c/qa && cd /c/qa && cp "$GITHUB_WORKSPACE/qa/first-run.mjs" . && [ -d node_modules/playwright-core ] || npm i --silent playwright-core@1.64.1
           (node "$GITHUB_WORKSPACE/apps/desktop/scripts/ollama-stub.mjs" > "$GITHUB_WORKSPACE/out/stub.log" 2>&1 &)
           sleep 3
           node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/stub" stub
