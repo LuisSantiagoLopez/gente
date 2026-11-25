@@ -118,7 +118,9 @@ jobs:
             $t = "$env:TEMP\probe-$case\Your-AI-Setup.exe"; New-Item -ItemType Directory -Force (Split-Path $t) | Out-Null; Copy-Item $src $t -Force
             if ($case -eq "marked") { Set-Content -Path $t -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3`r`nHostUrl=https://joinyourai.com/" } else { Remove-Item -Path $t -Stream Zone.Identifier -ErrorAction SilentlyContinue }
             $j = Start-Job { param($t, $d) $sw = [Diagnostics.Stopwatch]::StartNew(); $p = Start-Process $t -ArgumentList "/S", "/D=$d" -PassThru; "Start-Process returned after $([int]$sw.Elapsed.TotalSeconds)s pid=$($p.Id)" } -ArgumentList $t, "C:\probe-$case"
-            if (Wait-Job $j -Timeout 60) { "$case : $(Receive-Job $j)" } else { "$case : Start-Process still blocked after 60s" } | Tee-Object -Append out/probe.txt
+            Start-Sleep 20; try { Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $b = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height; $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size); $bmp.Save("$PWD/out/probe-$case-20s.png") } catch { "shot failed: $_" | Add-Content out/probe.txt }
+            $r = if (Wait-Job $j -Timeout 40) { "$case : $(Receive-Job $j)" } else { "$case : Start-Process still blocked after 60s (prompt waiting for a click)" }
+            $r | Tee-Object -Append out/probe.txt
             Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -like "*probe-*" -or $_.Name -match "Your-AI-Setup" } | ForEach-Object { "  running: $($_.Name) $($_.ExecutablePath)" ; Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue } | Tee-Object -Append out/probe.txt
             Stop-Job $j -ErrorAction SilentlyContinue; Remove-Job $j -Force -ErrorAction SilentlyContinue
           }
