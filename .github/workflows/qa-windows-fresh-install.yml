@@ -32,20 +32,9 @@ jobs:
           $sig = Get-AuthenticodeSignature $dest
           "authenticode=$($sig.Status) signer=$($sig.SignerCertificate.Subject)" | Tee-Object -Append out/download.txt
           Get-Content -Path $dest -Stream Zone.Identifier | Tee-Object -Append out/download.txt
-      - name: Evidence - ShellExecute on an Internet-marked exe blocks headless
-        shell: pwsh
-        continue-on-error: true
-        run: |
-          Add-Type -AssemblyName System.Windows.Forms,System.Drawing
-          $t = "$env:USERPROFILE\Downloads\probe.exe"; Copy-Item "$env:WINDIR\System32\whoami.exe" $t
-          Set-Content -Path $t -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3`r`nHostUrl=https://joinyourai.com/"
-          $j = Start-Job { param($t) $sw=[Diagnostics.Stopwatch]::StartNew(); Start-Process $t -Wait; "returned after $([int]$sw.Elapsed.TotalSeconds)s" } -ArgumentList $t
-          if (Wait-Job $j -Timeout 45) { "probe: $(Receive-Job $j)" | Tee-Object out/probe.txt } else { "probe: Start-Process still blocked after 45s (security prompt waiting)" | Tee-Object out/probe.txt }
-          try { $b = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height; $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size); $bmp.Save("out/probe-screen.png") } catch { "shot failed: $_" | Add-Content out/probe.txt }
-          Get-Process | Where-Object { $_.ProcessName -match "whoami|probe" } | Stop-Process -Force -ErrorAction SilentlyContinue
-          Stop-Job $j -ErrorAction SilentlyContinue; Remove-Job $j -Force -ErrorAction SilentlyContinue
       - name: Install (silent NSIS), check files
         shell: pwsh
+        timeout-minutes: 30
         run: |
           Add-Type -AssemblyName System.Windows.Forms,System.Drawing
           function Shot($name) { try { $b = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height; $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size); $bmp.Save("out/install-$name.png"); $g.Dispose(); $bmp.Dispose() } catch { "shot failed: $_" | Add-Content out/install.txt } }
@@ -81,34 +70,59 @@ jobs:
           "pe machine=0x{0:x} (0x8664=x64, 0xaa64=arm64)" -f $m | Tee-Object -Append out/install.txt
           Get-ChildItem "$env:USERPROFILE\Desktop","$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Filter "*Your AI*" -Recurse -ErrorAction SilentlyContinue | ForEach-Object { "shortcut=$($_.FullName)" } | Tee-Object -Append out/install.txt
           Add-Content $env:GITHUB_ENV "YOURAI_EXE=$($exe.FullName)"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: windows-install, path: out, retention-days: 14 }
       - name: Playwright
+        timeout-minutes: 10
         shell: bash
-        run: mkdir -p /c/qa && cd /c/qa && npm init -y >/dev/null && npm i --silent playwright-core@1.64.1
-      - name: Real first run (real Ollama + model download), 35 minutes max
+        run: mkdir -p /c/qa && cd /c/qa && npm init -y >/dev/null && npm i --silent playwright-core@1.64.1 && cp "$GITHUB_WORKSPACE/qa/first-run.mjs" .
+      - name: Real first run (no stand-in model) - what a new user sees during setup, 12 minutes
+        timeout-minutes: 20
         shell: bash
         continue-on-error: true
-        run: cd /c/qa && cp "$GITHUB_WORKSPACE/qa/first-run.mjs" . && node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/real" real
-      - name: Logs after the real run
+        run: cd /c/qa && node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/real" real 12
+      - name: Stop the app and any Ollama it started
         if: always()
+        timeout-minutes: 5
         shell: pwsh
         run: |
-          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama|postgres|node" } | Format-Table Id,ProcessName,WS -AutoSize | Out-String | Tee-Object out/processes-after-real.txt
-          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo" | ForEach-Object { Copy-Item -Recurse -ErrorAction SilentlyContinue "$($_.FullName)\logs" "out/appdata-logs-$($_.Name)" }
-          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama" } | Stop-Process -Force -ErrorAction SilentlyContinue
-      - name: Account creation and first chat (model server stubbed, CPU runner)
+          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama|postgres" } | Format-Table Id,ProcessName,WS -AutoSize | Out-String | Tee-Object out/processes-after-real.txt
+          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama|postgres" } | Stop-Process -Force -ErrorAction SilentlyContinue
+          Start-Sleep 3
+          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo|Burrow" | ForEach-Object { Copy-Item -Recurse -ErrorAction SilentlyContinue "$($_.FullName)\logs" "out/real-app-logs-$($_.Name)"; Copy-Item -Recurse -ErrorAction SilentlyContinue "$($_.FullName)\stack\logs" "out/real-stack-logs-$($_.Name)" }
+          (Get-NetTCPConnection -LocalPort 11434 -State Listen -ErrorAction SilentlyContinue | Measure-Object).Count | ForEach-Object { "listeners on 11434 after stop: $_" } | Tee-Object -Append out/processes-after-real.txt
+      - name: Account creation and first chat (stand-in model in the test process, CPU runner)
         if: always()
+        timeout-minutes: 35
         shell: bash
-        run: |
-          mkdir -p /c/qa && cd /c/qa && cp "$GITHUB_WORKSPACE/qa/first-run.mjs" . && [ -d node_modules/playwright-core ] || npm i --silent playwright-core@1.64.1
-          (node "$GITHUB_WORKSPACE/apps/desktop/scripts/ollama-stub.mjs" > "$GITHUB_WORKSPACE/out/stub.log" 2>&1 &)
-          sleep 3
-          node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/stub" stub
+        run: cd /c/qa && node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/stub" stub 25
       - name: Final logs
         if: always()
+        timeout-minutes: 5
         shell: pwsh
         run: |
-          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo" | ForEach-Object { Copy-Item -Recurse -Force -ErrorAction SilentlyContinue "$($_.FullName)\logs" "out/final-logs-$($_.Name)" }
-          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo" | Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 200 FullName,Length | Format-Table -AutoSize | Out-String -Width 300 | Set-Content out/appdata-files.txt
+          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama|postgres" } | Stop-Process -Force -ErrorAction SilentlyContinue
+          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo|Burrow" | ForEach-Object { Copy-Item -Recurse -Force -ErrorAction SilentlyContinue "$($_.FullName)\logs" "out/final-app-logs-$($_.Name)"; Copy-Item -Recurse -Force -ErrorAction SilentlyContinue "$($_.FullName)\stack\logs" "out/final-stack-logs-$($_.Name)" }
+          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo|Burrow" | Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 200 FullName,Length | Format-Table -AutoSize | Out-String -Width 300 | Set-Content out/appdata-files.txt
+          foreach ($m in "real","stub") { if (Test-Path "out/$m/run.log") { "== $m"; Get-Content "out/$m/run.log" -Tail 60 } }
+      - name: Evidence - the same installer through Start-Process (ShellExecute), with and without the Internet mark
+        if: always()
+        timeout-minutes: 6
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          # Runs last, into throwaway folders, so it cannot change where the real install went.
+          $src = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
+          foreach ($case in "marked","unmarked") {
+            $t = "$env:TEMP\probe-$case\Your-AI-Setup.exe"; New-Item -ItemType Directory -Force (Split-Path $t) | Out-Null; Copy-Item $src $t -Force
+            if ($case -eq "marked") { Set-Content -Path $t -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3`r`nHostUrl=https://joinyourai.com/" } else { Remove-Item -Path $t -Stream Zone.Identifier -ErrorAction SilentlyContinue }
+            $j = Start-Job { param($t, $d) $sw = [Diagnostics.Stopwatch]::StartNew(); $p = Start-Process $t -ArgumentList "/S", "/D=$d" -PassThru; "Start-Process returned after $([int]$sw.Elapsed.TotalSeconds)s pid=$($p.Id)" } -ArgumentList $t, "C:\probe-$case"
+            if (Wait-Job $j -Timeout 60) { "$case : $(Receive-Job $j)" } else { "$case : Start-Process still blocked after 60s" } | Tee-Object -Append out/probe.txt
+            Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -like "*probe-*" -or $_.Name -match "Your-AI-Setup" } | ForEach-Object { "  running: $($_.Name) $($_.ExecutablePath)" ; Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue } | Tee-Object -Append out/probe.txt
+            Stop-Job $j -ErrorAction SilentlyContinue; Remove-Job $j -Force -ErrorAction SilentlyContinue
+          }
+          Get-Content out/probe.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: windows-fresh-install, path: out, retention-days: 14 }
