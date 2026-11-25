@@ -35,14 +35,30 @@ jobs:
       - name: Install (silent NSIS), check files
         shell: pwsh
         run: |
+          Add-Type -AssemblyName System.Windows.Forms,System.Drawing
+          function Shot($name) { try { $b = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height; $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size); $bmp.Save("out/install-$name.png"); $g.Dispose(); $bmp.Dispose() } catch { "shot failed: $_" | Add-Content out/install.txt } }
           $dest = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
-          $t = Measure-Command { $p = Start-Process $dest -ArgumentList "/S" -Wait -PassThru; "installer exit=$($p.ExitCode)" | Tee-Object out/install.txt }
-          "install seconds=$([int]$t.TotalSeconds)" | Tee-Object -Append out/install.txt
+          $sw = [Diagnostics.Stopwatch]::StartNew()
+          $p = Start-Process $dest -ArgumentList "/S" -PassThru
+          $i = 0
+          while (-not $p.HasExited -and $sw.Elapsed.TotalMinutes -lt 30) {
+            Start-Sleep 30; $i++
+            $dir = "$env:LOCALAPPDATA\Programs\Your AI"
+            $n = if (Test-Path "$dir\resources\rakazo-server") { (Get-ChildItem "$dir\resources\rakazo-server" -Directory -ErrorAction SilentlyContinue | Measure-Object).Count } else { -1 }; $sz = if (Test-Path "$dir\Your AI.exe") { "exe-present" } else { "no-exe" }
+            $procs = Get-CimInstance Win32_Process | Where-Object { $_.Name -match "Your|Setup|nsExec" } | ForEach-Object { $cl = [string]$_.CommandLine; if ($cl.Length -gt 200) { $cl = $cl.Substring(0,200) }; "$($_.Name)[$($_.ProcessId)] $cl" }
+            "t=$([int]$sw.Elapsed.TotalSeconds)s $sz serverTopDirs=$n procs=$($procs -join ' | ')" | Tee-Object -Append out/install.txt
+            if ($i % 4 -eq 1) { Shot "t$([int]$sw.Elapsed.TotalSeconds)" }
+          }
+          "installer exited=$($p.HasExited) exit=$(if ($p.HasExited) { $p.ExitCode }) seconds=$([int]$sw.Elapsed.TotalSeconds)" | Tee-Object -Append out/install.txt
+          Shot "end"
+          Get-MpComputerStatus -ErrorAction SilentlyContinue | Select-Object RealTimeProtectionEnabled,AntivirusEnabled | Format-List | Out-String | Add-Content out/install.txt
+          if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force; Get-Process | Where-Object { $_.ProcessName -match "Your AI" } | Stop-Process -Force -ErrorAction SilentlyContinue }
+          $done = Test-Path "$env:LOCALAPPDATA\Programs\Your AI\resources\rakazo-server\.complete"
+          "server unpack complete marker=$done" | Tee-Object -Append out/install.txt
           $exe = Get-ChildItem "$env:LOCALAPPDATA\Programs" -Recurse -Filter "Your AI.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
           if (-not $exe) { $exe = Get-ChildItem "C:\Program Files" -Recurse -Filter "Your AI.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 }
           "exe=$($exe.FullName)" | Tee-Object -Append out/install.txt
           if (-not $exe) { throw "Your AI.exe not found after install" }
-          "machine=$([System.Reflection.AssemblyName]::GetAssemblyName($exe.FullName) 2>$null)" | Out-Null
           $bytes = [System.IO.File]::ReadAllBytes($exe.FullName); $pe = [BitConverter]::ToInt32($bytes,0x3c); $m = [BitConverter]::ToUInt16($bytes,$pe+4)
           "pe machine=0x{0:x} (0x8664=x64, 0xaa64=arm64)" -f $m | Tee-Object -Append out/install.txt
           Get-ChildItem "$env:USERPROFILE\Desktop","$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Filter "*Your AI*" -Recurse -ErrorAction SilentlyContinue | ForEach-Object { "shortcut=$($_.FullName)" } | Tee-Object -Append out/install.txt
