@@ -1,0 +1,81 @@
+# QA: an outside user's first install on a clean Windows machine, from the live joinyourai.com link.
+# Runs only on pushes to qa/windows-fresh-install. Uploads screenshots and logs as an artifact.
+name: qa-windows-fresh-install
+on:
+  push:
+    branches: [qa/windows-fresh-install]
+jobs:
+  fresh:
+    runs-on: windows-2025
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: "apps/desktop/scripts/ollama-stub.mjs\nqa", sparse-checkout-cone-mode: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24.15.0 }
+      - name: Machine
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force out | Out-Null
+          Get-ComputerInfo -Property OsName,OsVersion,OsArchitecture,CsTotalPhysicalMemory | Format-List | Tee-Object out/machine.txt
+          Get-PSDrive C,D -ErrorAction SilentlyContinue | Format-Table | Tee-Object -Append out/machine.txt
+      - name: Download from the live site, like a visitor
+        shell: pwsh
+        run: |
+          $ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+          $r = Invoke-WebRequest -Uri "https://joinyourai.com/api/download?os=win&test=nolog" -MaximumRedirection 0 -SkipHttpErrorCheck -UserAgent $ua
+          "status=$($r.StatusCode) location=$($r.Headers.Location)" | Tee-Object out/download.txt
+          $dest = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
+          Invoke-WebRequest -Uri "https://joinyourai.com/api/download?os=win&test=nolog" -OutFile $dest -UserAgent $ua
+          Set-Content -Path $dest -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3`r`nHostUrl=https://joinyourai.com/"
+          $f = Get-Item $dest
+          "size=$($f.Length) sha256=$((Get-FileHash $dest -Algorithm SHA256).Hash)" | Tee-Object -Append out/download.txt
+          $sig = Get-AuthenticodeSignature $dest
+          "authenticode=$($sig.Status) signer=$($sig.SignerCertificate.Subject)" | Tee-Object -Append out/download.txt
+          Get-Content -Path $dest -Stream Zone.Identifier | Tee-Object -Append out/download.txt
+      - name: Install (silent NSIS), check files
+        shell: pwsh
+        run: |
+          $dest = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
+          $t = Measure-Command { $p = Start-Process $dest -ArgumentList "/S" -Wait -PassThru; "installer exit=$($p.ExitCode)" | Tee-Object out/install.txt }
+          "install seconds=$([int]$t.TotalSeconds)" | Tee-Object -Append out/install.txt
+          $exe = Get-ChildItem "$env:LOCALAPPDATA\Programs" -Recurse -Filter "Your AI.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $exe) { $exe = Get-ChildItem "C:\Program Files" -Recurse -Filter "Your AI.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 }
+          "exe=$($exe.FullName)" | Tee-Object -Append out/install.txt
+          if (-not $exe) { throw "Your AI.exe not found after install" }
+          "machine=$([System.Reflection.AssemblyName]::GetAssemblyName($exe.FullName) 2>$null)" | Out-Null
+          $bytes = [System.IO.File]::ReadAllBytes($exe.FullName); $pe = [BitConverter]::ToInt32($bytes,0x3c); $m = [BitConverter]::ToUInt16($bytes,$pe+4)
+          "pe machine=0x{0:x} (0x8664=x64, 0xaa64=arm64)" -f $m | Tee-Object -Append out/install.txt
+          Get-ChildItem "$env:USERPROFILE\Desktop","$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Filter "*Your AI*" -Recurse -ErrorAction SilentlyContinue | ForEach-Object { "shortcut=$($_.FullName)" } | Tee-Object -Append out/install.txt
+          Add-Content $env:GITHUB_ENV "YOURAI_EXE=$($exe.FullName)"
+      - name: Playwright
+        shell: bash
+        run: mkdir -p /c/qa && cd /c/qa && npm init -y >/dev/null && npm i --silent playwright-core@1.64.1
+      - name: Real first run (real Ollama + model download), 35 minutes max
+        shell: bash
+        continue-on-error: true
+        run: cd /c/qa && cp "$GITHUB_WORKSPACE/qa/first-run.mjs" . && node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/real" real
+      - name: Logs after the real run
+        if: always()
+        shell: pwsh
+        run: |
+          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama|postgres|node" } | Format-Table Id,ProcessName,WS -AutoSize | Out-String | Tee-Object out/processes-after-real.txt
+          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo" | ForEach-Object { Copy-Item -Recurse -ErrorAction SilentlyContinue "$($_.FullName)\logs" "out/appdata-logs-$($_.Name)" }
+          Get-Process | Where-Object { $_.ProcessName -match "Your AI|ollama" } | Stop-Process -Force -ErrorAction SilentlyContinue
+      - name: Account creation and first chat (model server stubbed, CPU runner)
+        if: always()
+        shell: bash
+        run: |
+          cd /c/qa
+          (node "$GITHUB_WORKSPACE/apps/desktop/scripts/ollama-stub.mjs" > "$GITHUB_WORKSPACE/out/stub.log" 2>&1 &)
+          sleep 3
+          node first-run.mjs "$YOURAI_EXE" "$GITHUB_WORKSPACE/out/stub" stub
+      - name: Final logs
+        if: always()
+        shell: pwsh
+        run: |
+          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo" | ForEach-Object { Copy-Item -Recurse -Force -ErrorAction SilentlyContinue "$($_.FullName)\logs" "out/final-logs-$($_.Name)" }
+          Get-ChildItem "$env:APPDATA" -Directory | Where-Object Name -match "Your AI|gente|rakazo" | Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 200 FullName,Length | Format-Table -AutoSize | Out-String -Width 300 | Set-Content out/appdata-files.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: windows-fresh-install, path: out, retention-days: 14 }
