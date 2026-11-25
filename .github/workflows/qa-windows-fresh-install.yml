@@ -25,7 +25,14 @@ jobs:
           $ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
           curl.exe -sI -A $ua "https://joinyourai.com/api/download?os=win&test=nolog" | Select-String -Pattern "^(HTTP|location)" | Tee-Object out/download.txt
           $dest = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
-          Invoke-WebRequest -Uri "https://joinyourai.com/api/download?os=win&test=nolog" -OutFile $dest -UserAgent $ua
+          # Since 25 Nov ~3:24 PM PT the site puts an email + Terms gate in front of the download
+          # (/api/download without a signed link redirects to /?get=win#get). The test does not submit the
+          # gate (no fake leads); it then takes the same file the gate hands out, from the release.
+          $loc = (curl.exe -sI -A $ua "https://joinyourai.com/api/download?os=win&test=nolog" | Select-String -Pattern "^location:\s*(\S+)").Matches.Groups[1].Value
+          $url = if ($loc -like "https://github.com/*") { $loc } else { "gate in front of the download (redirect: $loc); using the release file" | Tee-Object -Append out/download.txt; "https://github.com/LuisSantiagoLopez/gente/releases/download/v1.0.6/Your-AI-Setup-1.0.6.exe" }
+          "url=$url" | Tee-Object -Append out/download.txt
+          Invoke-WebRequest -Uri $url -OutFile $dest -UserAgent $ua
+          $mz = [System.IO.File]::ReadAllBytes($dest)[0..1]; if ([char]$mz[0] + [char]$mz[1] -ne "MZ") { throw "downloaded file is not a Windows program" }
           Set-Content -Path $dest -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3`r`nHostUrl=https://joinyourai.com/"
           $f = Get-Item $dest
           "size=$($f.Length) sha256=$((Get-FileHash $dest -Algorithm SHA256).Hash)" | Tee-Object -Append out/download.txt
