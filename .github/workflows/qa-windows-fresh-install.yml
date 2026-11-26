@@ -47,8 +47,13 @@ jobs:
           Add-Type -AssemblyName System.Windows.Forms,System.Drawing
           function Shot($name) { try { $b = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height; $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size); $bmp.Save("out/install-$name.png"); $g.Dispose(); $bmp.Dispose() } catch { "shot failed: $_" | Add-Content out/install.txt } }
           $dest = "$env:USERPROFILE\Downloads\Your-AI-Setup.exe"
+          # Hosted runners ship with Defender real-time scanning off; a real PC has it on, and it scans every
+          # file the installer writes. Turn it on so the install time is what a person would see.
+          Set-MpPreference -DisableRealtimeMonitoring $false -ErrorAction SilentlyContinue
+          Start-Sleep 5
+          "defender before install: $((Get-MpComputerStatus -ErrorAction SilentlyContinue | Select-Object RealTimeProtectionEnabled,AntivirusEnabled,OnAccessProtectionEnabled | Out-String).Trim() -replace '\s+',' ')" | Tee-Object out/install.txt
           $sw = [Diagnostics.Stopwatch]::StartNew()
-          "start $(Get-Date -Format o)" | Tee-Object out/install.txt
+          "start $(Get-Date -Format o)" | Tee-Object -Append out/install.txt
           # Start-Process (ShellExecute) on a file with an Internet-zone mark opens the
           # "Open File - Security Warning" prompt and blocks on a headless runner. A person double-clicking
           # sees SmartScreen/that prompt instead. Start the installer directly so the test measures the install.
@@ -58,7 +63,7 @@ jobs:
           $i = 0
           while (-not $p.HasExited -and $sw.Elapsed.TotalMinutes -lt 25) {
             Start-Sleep 30; $i++
-            $dir = "$env:LOCALAPPDATA\Programs\Your AI"
+            $dir = "$env:LOCALAPPDATA\Programs\gente"
             $n = if (Test-Path "$dir\resources\rakazo-server") { (Get-ChildItem "$dir\resources\rakazo-server" -Directory -ErrorAction SilentlyContinue | Measure-Object).Count } else { -1 }; $sz = if (Test-Path "$dir\Your AI.exe") { "exe-present" } else { "no-exe" }
             $procs = Get-CimInstance Win32_Process | Where-Object { $_.Name -match "Your|Setup|nsExec" } | ForEach-Object { $cl = [string]$_.CommandLine; if ($cl.Length -gt 200) { $cl = $cl.Substring(0,200) }; "$($_.Name)[$($_.ProcessId)] $cl" }
             "t=$([int]$sw.Elapsed.TotalSeconds)s $sz serverTopDirs=$n procs=$($procs -join ' | ')" | Tee-Object -Append out/install.txt
@@ -68,7 +73,7 @@ jobs:
           Shot "end"
           Get-MpComputerStatus -ErrorAction SilentlyContinue | Select-Object RealTimeProtectionEnabled,AntivirusEnabled | Format-List | Out-String | Add-Content out/install.txt
           if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force; Get-Process | Where-Object { $_.ProcessName -match "Your AI" } | Stop-Process -Force -ErrorAction SilentlyContinue }
-          $done = Test-Path "$env:LOCALAPPDATA\Programs\Your AI\resources\rakazo-server\.complete"
+          $done = Test-Path "$env:LOCALAPPDATA\Programs\gente\resources\rakazo-server\.complete"
           "server unpack complete marker=$done" | Tee-Object -Append out/install.txt
           $exe = Get-ChildItem "$env:LOCALAPPDATA\Programs" -Recurse -Filter "Your AI.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
           if (-not $exe) { $exe = Get-ChildItem "C:\Program Files" -Recurse -Filter "Your AI.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 }
